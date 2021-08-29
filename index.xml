@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Sunday Breakfast</title>
+    <title>Do Nothing</title>
     <link>https://ecnedaced-seirots.github.io/</link>
-    <description>Recent content on Sunday Breakfast</description>
+    <description>Recent content on Do Nothing</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -15,6 +15,7 @@
       <guid>https://ecnedaced-seirots.github.io/post/blog-init/</guid>
       <description>When the rain begins to fall&amp;hellip;</description>
     </item>
+    
     
   </channel>
 </rss>
