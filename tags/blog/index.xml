@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>blog on Do Nothing</title>
+    <title>blog on 何もしない</title>
     <link>https://ecnedaced-seirots.github.io/tags/blog/</link>
-    <description>Recent content in blog on Do Nothing</description>
+    <description>Recent content in blog on 何もしない</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>立ち上がれ！</title>
+      <link>https://ecnedaced-seirots.github.io/post/do-nothing/</link>
+      <pubDate>Mon, 30 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/do-nothing/</guid>
+      <description>戦え！</description>
+    </item>
+    
     <item>
       <title>It&#39;s raining cats and dogs!</title>
       <link>https://ecnedaced-seirots.github.io/post/blog-init/</link>
