@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/</link>
-    <description>Recent content on Go Buddy Go</description>
+    <title>fluentbit on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/fluentbit/</link>
+    <description>Recent content in fluentbit on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 12 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/fluentbit/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
       <link>https://ecnedaced-seirots.github.io/post/a/fluentbit/</link>
@@ -28,29 +28,6 @@ fluent-bit-compatible.yaml
 fluentbit-cluster.yaml
 apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &amp;#34;On&amp;#34; read.tail: &amp;#34;Off&amp;#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac.</description>
     </item>
-    
-    <item>
-      <title>マークダウン記法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
-      <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
-      <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp;amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  </description>
-    </item>
-    
-    <item>
-      <title>最初の投稿</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/first/</link>
-      <pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/first/</guid>
-      <description>とりあえず最初の投稿です。</description>
-    </item>
-    
     
   </channel>
 </rss>
