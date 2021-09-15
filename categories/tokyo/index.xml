@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tokyo on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/tokyo/</link>
+    <description>Recent content in Tokyo on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 15 Sep 2021 23:53:34 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/tokyo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>井の頭公園 - 2018年4月</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/inokashira-park/</link>
+      <pubDate>Wed, 15 Sep 2021 23:53:34 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/inokashira-park/</guid>
+      <description>小ネタでもいいからどんどんポストしたいと思っているけどそれもなかなかできないもんだな。写真だけ。2018年4月の東京・井の頭公園。
+ </description>
+    </item>
+    
+  </channel>
+</rss>
