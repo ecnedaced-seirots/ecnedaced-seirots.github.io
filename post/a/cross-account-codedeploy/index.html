@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし） | Go Buddy Go</title>
+<meta name="keywords" content="CodeDeploy, AWS, IAM" />
+<meta name="description" content="AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
+ 参考
+異なる AWS アカウントでアプリケーションをデプロイする
+（上記ページにリンクあり。assumeロールの設定は以下参考）
+IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
+ 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+① 配布元(Dev)
+② 配布先(Stg)
+概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
+基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
+ 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+  配布先②アカウントにて、①がassumeするためのロールAを作成する。
+  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
+IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
+ インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &ndash;&gt; [アクセス許可の追加] &ndash;&gt; [インラインポリシーの作成] [JSON] タブ選択
+以下の内容を設定する。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）" />
+<meta property="og:description" content="AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
+ 参考
+異なる AWS アカウントでアプリケーションをデプロイする
+（上記ページにリンクあり。assumeロールの設定は以下参考）
+IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
+ 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+① 配布元(Dev)
+② 配布先(Stg)
+概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
+基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
+ 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+  配布先②アカウントにて、①がassumeするためのロールAを作成する。
+  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
+IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
+ インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &ndash;&gt; [アクセス許可の追加] &ndash;&gt; [インラインポリシーの作成] [JSON] タブ選択
+以下の内容を設定する。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-25T13:28:51&#43;09:00" />
+<meta property="article:modified_time" content="2021-09-25T13:28:51&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）"/>
+<meta name="twitter:description" content="AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
+ 参考
+異なる AWS アカウントでアプリケーションをデプロイする
+（上記ページにリンクあり。assumeロールの設定は以下参考）
+IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
+ 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+① 配布元(Dev)
+② 配布先(Stg)
+概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
+基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
+ 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+  配布先②アカウントにて、①がassumeするためのロールAを作成する。
+  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
+IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
+ インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &ndash;&gt; [アクセス許可の追加] &ndash;&gt; [インラインポリシーの作成] [JSON] タブ選択
+以下の内容を設定する。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）",
+      "item": "https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）",
+  "name": "AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）",
+  "description": "AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。\n 参考\n異なる AWS アカウントでアプリケーションをデプロイする\n（上記ページにリンクあり。assumeロールの設定は以下参考）\nIAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任\n 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。\n① 配布元(Dev)\n② 配布先(Stg)\n概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。\n基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。\n 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)\n  配布先②アカウントにて、①がassumeするためのロールAを作成する。\n  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。\nrootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。\nIAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。\n インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ \u0026ndash;\u0026gt; [アクセス許可の追加] \u0026ndash;\u0026gt; [インラインポリシーの作成] [JSON] タブ選択\n以下の内容を設定する。\n{ \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Action\u0026#34;: \u0026#34;sts:AssumeRole\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:iam::②配布先のアカウントID:role/ロールA\u0026#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。\n{ \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: [ { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Action\u0026#34;: \u0026#34;s3:ListAllMyBuckets\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;*\u0026#34; }, { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Action\u0026#34;: [ \u0026#34;s3:ListBucket\u0026#34;, \u0026#34;s3:GetBucketLocation\u0026#34; ], \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::staging-app\u0026#34; #検証環境の資材格納バケット名 }, { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Action\u0026#34;: [ \u0026#34;s3:GetObject\u0026#34;, \u0026#34;s3:PutObject\u0026#34;, \u0026#34;s3:DeleteObject\u0026#34; ], \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::staging-app/*\u0026#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。",
+  "keywords": [
+    "CodeDeploy", "AWS", "IAM"
+  ],
+  "articleBody": "AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。\n 参考\n異なる AWS アカウントでアプリケーションをデプロイする\n（上記ページにリンクあり。assumeロールの設定は以下参考）\nIAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任\n 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。\n① 配布元(Dev)\n② 配布先(Stg)\n概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。\n基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。\n 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)\n  配布先②アカウントにて、①がassumeするためのロールAを作成する。\n  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。\nrootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。\nIAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。\n インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ – [アクセス許可の追加] – [インラインポリシーの作成] [JSON] タブ選択\n以下の内容を設定する。\n{ \"Version\": \"2012-10-17\", \"Statement\": { \"Effect\": \"Allow\", \"Action\": \"sts:AssumeRole\", \"Resource\": \"arn:aws:iam::②配布先のアカウントID:role/ロールA\" } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Action\": \"s3:ListAllMyBuckets\", \"Resource\": \"*\" }, { \"Effect\": \"Allow\", \"Action\": [ \"s3:ListBucket\", \"s3:GetBucketLocation\" ], \"Resource\": \"arn:aws:s3:::staging-app\" #検証環境の資材格納バケット名 }, { \"Effect\": \"Allow\", \"Action\": [ \"s3:GetObject\", \"s3:PutObject\", \"s3:DeleteObject\" ], \"Resource\": \"arn:aws:s3:::staging-app/*\" } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。\n$ aws sts assume-role --role-arn \"②配布先のアカウントID:role/ロールA\" --role-session-name \"deployment-test\"  すると以下の形式の認証情報が出力される。\n{ \"Credentials\": { \"AccessKeyId\": \"[access key id]\" \"SecretAccessKey\": \"[secret access key id]\", \"SessionToken\": \"[token id]\", \"Expiration\": \"2021-09-20T15:08:00Z\" } }  上記を環境変数にセットする。Windowsの場合はexportをsetに変更する。\n$ export AWS_ACCESS_KEY_ID=[access key id] $ export AWS_SECRET_ACCESS_KEY=[secret access key id] $ export AWS_SESSION_TOKEN=[token id]  これでセッション保持期間の間（expireの時刻)は②アカウントのロールAの権限で作業が可能となる。セッション時間はデフォルトで1時間だが、伸ばしたい場合は–duration-secondsオプションを使う。（ロールAの最大セッション期間がそれに応じた時間に設定されている前提）2時間なら7200、3時間なら10800と指定する。\n デプロイ実行  最初にやる時はデプロイ前にaws s3 cpを実行して、対象S3バケットへ読み書き可能かチェックしておくとよい。\nCLIでpush [オプション]を実行し、S3に資材を格納する。この時 3.で作成したアプリケーション名を指定する。（これによりただ単にS3に資材を配置するのではなく、資材をアプリケーションのリビジョンと関連付けることになる）sourceはここではCodeCommitのローカルリポジトリパスを指定しているが、指定するのはappspec.ymlを配置したディレクトリとなる。\n$ aws deploy push ¥ --application-name [aplication-name] ¥ --s3-location s3://[staging-app]/[staging-app-key] ¥ --ignore-hidden-files ¥ --source /path/to/source  pushが成功すると資材がzip形式で格納される。ターミナル上ではE-Tagを含む実行コマンド情報が標準出力される。詳細は割愛するがこれを元にcreate-deploymentにてデプロイを実行する。この時 3.で作成したデプロイメントグループを指定する。成功すれば②配布先となるec2にS3から資材が配置される。ちなみにpushはコンソールから実行できないが、デプロイは可能である。しかしそのために実行画面を切り替えるのも面倒なので（コンソールでもassumeする）、ここは引き続きCLIでやる方が自然かと。\n (注1) 配布元①アカウントにバケットを作成してもよいが、また追加の設定が必要となる。今回は配布先②に作成した。\n その他ポイント 最初deployのコマンドは通ったがその先で失敗した。この時コンソール上では以下のエラーが表示されていた。\n The overall deployment failed because too many individual instances failed deployment, too few healthy instances are available for deployment, or some instances in your deployment group are experiencing problems.\n  これだけではわからないのでログを確認してみたところ、こんなエラーが繰り返し吐かれていた。\n/var/log/aws/codedeploy-agent/codedeploy-agent.log\n InstanceAgent::Plugins::CodeDeployPlugin::CommandPoller: Missing credentials - please check if this instance was started with an IAM instance profile\n  確かに配布先ec2にはIAMロールをアタッチしていなかったため、インスタンスプロファイルが存在しない。するとcodedepoloyエージェントが上記のログを吐くわけだ。配布先のec2にインスタンスプロファイルを割り当てるため、別途IAMロールを作成してIAMロールをアタッチしたところ成功した。\nIAMをアタッチしても同じエラーが出る場合、エージェントを再起動してみる。候補が表示されなかったりエラーになったりしてIAMのアタッチ自体が不可能な場合は、インスタンスを一旦停止して再試行してみる。\n",
+  "wordCount" : "221",
+  "inLanguage": "en",
+  "datePublished": "2021-09-25T13:28:51+09:00",
+  "dateModified": "2021-09-25T13:28:51+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）
+    </h1>
+    <div class="post-meta">September 25, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/deployments-cross-account.html">異なる AWS アカウントでアプリケーションをデプロイする</a></p>
+<p>（上記ページにリンクあり。assumeロールの設定は以下参考）<br>
+<a href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html">IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任</a></p>
+<p> </p>
+<h3 id="環境前提">環境前提<a hidden class="anchor" aria-hidden="true" href="#環境前提">#</a></h3>
+<p>配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。</p>
+<p>① 配布元(Dev)<br>
+② 配布先(Stg)</p>
+<h3 id="概要">概要<a hidden class="anchor" aria-hidden="true" href="#概要">#</a></h3>
+<p>①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。</p>
+<p>基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。</p>
+<p> </p>
+<h3 id="作業内容">作業内容<a hidden class="anchor" aria-hidden="true" href="#作業内容">#</a></h3>
+<ol>
+<li>
+<p>配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)</p>
+</li>
+<li>
+<p>配布先②アカウントにて、①がassumeするためのロールAを作成する。</p>
+</li>
+</ol>
+<p>ロールAで定義する内容
+(1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。</p>
+<p>rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。</p>
+<p>IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。</p>
+<p> </p>
+<p>インラインポリシー例 (①アカウントで設定)
+デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &ndash;&gt; [アクセス許可の追加] &ndash;&gt; [インラインポリシーの作成] [JSON] タブ選択</p>
+<p>以下の内容を設定する。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
+  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+  <span style="color:#f92672">&#34;Statement&#34;</span>: {
+    <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+    <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>,
+    <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34;</span>
+  }
+}
+</code></pre></div><p> </p>
+<p>(2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
+  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+    {
+      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:ListAllMyBuckets&#34;</span>,
+      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+    },
+    {
+      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+      <span style="color:#f92672">&#34;Action&#34;</span>: [
+        <span style="color:#e6db74">&#34;s3:ListBucket&#34;</span>,
+        <span style="color:#e6db74">&#34;s3:GetBucketLocation&#34;</span>
+       ],
+      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::staging-app&#34;</span> <span style="color:#960050;background-color:#1e0010">#検証環境の資材格納バケット名</span>
+    },
+    {
+      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+      <span style="color:#f92672">&#34;Action&#34;</span>: [
+        <span style="color:#e6db74">&#34;s3:GetObject&#34;</span>,
+        <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
+        <span style="color:#e6db74">&#34;s3:DeleteObject&#34;</span>
+      ],
+      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::staging-app/*&#34;</span>
+    }
+  ]
+}
+</code></pre></div><p> </p>
+<ol start="3">
+<li>②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。</li>
+</ol>
+<p> </p>
+<ol start="4">
+<li>①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。</li>
+</ol>
+<p>この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。</p>
+<pre><code>$ aws sts assume-role --role-arn &quot;②配布先のアカウントID:role/ロールA&quot; --role-session-name &quot;deployment-test&quot;
+</code></pre><p> </p>
+<p>すると以下の形式の認証情報が出力される。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
+    <span style="color:#f92672">&#34;Credentials&#34;</span>: {
+        <span style="color:#f92672">&#34;AccessKeyId&#34;</span>: <span style="color:#e6db74">&#34;[access key id]&#34;</span>
+        <span style="color:#e6db74">&#34;SecretAccessKey&#34;</span>: <span style="color:#e6db74">&#34;[secret access key id]&#34;</span>,
+        <span style="color:#f92672">&#34;SessionToken&#34;</span>: <span style="color:#e6db74">&#34;[token id]&#34;</span>,
+        <span style="color:#f92672">&#34;Expiration&#34;</span>: <span style="color:#e6db74">&#34;2021-09-20T15:08:00Z&#34;</span>
+    }
+}
+</code></pre></div><p> </p>
+<p>上記を環境変数にセットする。Windowsの場合はexportをsetに変更する。</p>
+<pre><code>$ export AWS_ACCESS_KEY_ID=[access key id]
+$ export  AWS_SECRET_ACCESS_KEY=[secret access key id]
+$ export  AWS_SESSION_TOKEN=[token id]
+</code></pre><p> </p>
+<p>これでセッション保持期間の間（expireの時刻)は②アカウントのロールAの権限で作業が可能となる。セッション時間はデフォルトで1時間だが、伸ばしたい場合は&ndash;duration-secondsオプションを使う。（ロールAの最大セッション期間がそれに応じた時間に設定されている前提）2時間なら7200、3時間なら10800と指定する。</p>
+<p> </p>
+<ol start="5">
+<li>デプロイ実行</li>
+</ol>
+<p>最初にやる時はデプロイ前にaws s3 cpを実行して、対象S3バケットへ読み書き可能かチェックしておくとよい。</p>
+<p>CLIでpush [オプション]を実行し、S3に資材を格納する。この時 3.で作成したアプリケーション名を指定する。（これによりただ単にS3に資材を配置するのではなく、資材をアプリケーションのリビジョンと関連付けることになる）sourceはここではCodeCommitのローカルリポジトリパスを指定しているが、指定するのはappspec.ymlを配置したディレクトリとなる。</p>
+<pre><code>$ aws deploy push ¥
+  --application-name [aplication-name] ¥
+  --s3-location s3://[staging-app]/[staging-app-key] ¥
+  --ignore-hidden-files ¥
+  --source /path/to/source
+</code></pre><p> </p>
+<p>pushが成功すると資材がzip形式で格納される。ターミナル上ではE-Tagを含む実行コマンド情報が標準出力される。詳細は割愛するがこれを元にcreate-deploymentにてデプロイを実行する。この時 3.で作成したデプロイメントグループを指定する。成功すれば②配布先となるec2にS3から資材が配置される。ちなみにpushはコンソールから実行できないが、デプロイは可能である。しかしそのために実行画面を切り替えるのも面倒なので（コンソールでもassumeする）、ここは引き続きCLIでやる方が自然かと。</p>
+<p> </p>
+<p>(注1) 配布元①アカウントにバケットを作成してもよいが、また追加の設定が必要となる。今回は配布先②に作成した。</p>
+<p> </p>
+<h3 id="その他ポイント">その他ポイント<a hidden class="anchor" aria-hidden="true" href="#その他ポイント">#</a></h3>
+<p>最初deployのコマンドは通ったがその先で失敗した。この時コンソール上では以下のエラーが表示されていた。</p>
+<blockquote>
+<p>The overall deployment failed because too many individual instances failed deployment, too few healthy instances are available for deployment, or some instances in your deployment group are experiencing problems.</p>
+</blockquote>
+<p> </p>
+<p>これだけではわからないのでログを確認してみたところ、こんなエラーが繰り返し吐かれていた。</p>
+<p>/var/log/aws/codedeploy-agent/codedeploy-agent.log</p>
+<blockquote>
+<p>InstanceAgent::Plugins::CodeDeployPlugin::CommandPoller: Missing credentials - please check if this instance was started with an IAM instance profile</p>
+</blockquote>
+<p> </p>
+<p>確かに配布先ec2にはIAMロールをアタッチしていなかったため、インスタンスプロファイルが存在しない。するとcodedepoloyエージェントが上記のログを吐くわけだ。配布先のec2にインスタンスプロファイルを割り当てるため、別途IAMロールを作成してIAMロールをアタッチしたところ成功した。</p>
+<p>IAMをアタッチしても同じエラーが出る場合、エージェントを再起動してみる。候補が表示されなかったりエラーになったりしてIAMのアタッチ自体が不可能な場合は、インスタンスを一旦停止して再試行してみる。</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/codedeploy/">CodeDeploy</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/iam/">IAM</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Firefox/Chromeでアドオンなし全画面キャプチャ</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

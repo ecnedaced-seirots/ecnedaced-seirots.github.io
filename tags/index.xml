@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 23 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Sep 2021 13:28:51 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sat, 25 Sep 2021 13:28:51 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CodeDeploy</title>
+      <link>https://ecnedaced-seirots.github.io/tags/codedeploy/</link>
+      <pubDate>Sat, 25 Sep 2021 13:28:51 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/codedeploy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IAM</title>
+      <link>https://ecnedaced-seirots.github.io/tags/iam/</link>
+      <pubDate>Sat, 25 Sep 2021 13:28:51 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/iam/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>memo</title>
       <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
@@ -31,15 +58,6 @@
       <pubDate>Wed, 15 Sep 2021 23:53:34 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/%E5%90%89%E7%A5%A5%E5%AF%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
