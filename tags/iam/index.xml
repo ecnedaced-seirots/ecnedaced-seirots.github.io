@@ -6,7 +6,41 @@
     <description>Recent content in IAM on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 25 Sep 2021 13:28:51 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/iam/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Oct 2021 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/iam/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</link>
+      <pubDate>Sun, 03 Oct 2021 10:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</guid>
+      <description>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
+ やりたいこと
+AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&amp;hellip;）
+ 主な参考ページ
+他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
+ 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
+クロスアカウントCodeBuild + パイプライン例
+CodePipelineでアカウントをまたいだパイプラインを作成してみる
+ 制約事項
+ クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+1-資材配布元（アカウントA）
+① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
+② KMSキー (両方のアカウントにアクセス許可する)
+③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
+④ CodePipelineが使用するサービスロール
+⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
+JSON取得コマンド
+$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json  2-資材配布先（アカウントB）
+① CodeDeploy定義（アプリケーション/デプロイメントグループ）
+② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
+③ ②のIAMロールをアタッチしたデプロイ先ec2
+④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
+ 作業概要 上記各リソースを作成済として、以下の作業を行う。
+アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].</description>
+    </item>
+    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/</link>
