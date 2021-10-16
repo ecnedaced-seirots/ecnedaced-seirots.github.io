@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aws cli</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws-cli/</link>
+      <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws-cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memo</title>
+      <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
+      <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/memo/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>amazon cloudwatch</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-cloudwatch/</link>
@@ -22,15 +49,6 @@
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
@@ -76,15 +94,6 @@
       <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/iam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>memo</title>
-      <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
-      <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/memo/</guid>
       <description></description>
     </item>
     

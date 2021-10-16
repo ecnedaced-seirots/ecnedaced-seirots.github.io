@@ -6,7 +6,19 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS CLIのページャを無効化する</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
+      <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
+      <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
+ configで設定  ~/.aws/configに以下記載する。
+[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&amp;quot;&amp;quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
+ </description>
+    </item>
+    
     <item>
       <title>CloudWatchアラーム作成時のメモ（過去事例）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</link>

@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Tips | Go Buddy Go</title>
+<title>AWS | Go Buddy Go</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/categories/tips/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/aws/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,14 +19,14 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/categories/tips/index.xml">
-<meta property="og:title" content="Tips" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/aws/index.xml">
+<meta property="og:title" content="AWS" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/categories/tips/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/aws/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tips"/>
+<meta name="twitter:title" content="AWS"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -128,67 +128,37 @@
 </header>
 <main class="main"> 
 <header class="page-header">
-  <h1>Tips</h1>
+  <h1>AWS</h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>AWS CLIのページャを無効化する</h2>
+    <h2>EKS Container InsightsのFluent Bit設定</h2>
   </header>
   <section class="entry-content">
-    <p>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&#34;&#34;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </p>
+    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。しかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。
+ 参照
+Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）
+Fluent Bit Documentation
+Container Insights全般
+Amazon EKS と Kubernetes での Container Insights のセットアップ
+Fluent Bit on Container Insights
+CloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する
+サンプルマニフェスト
+fluent-bit-compatible.yaml
+※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。
+ 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。
+fluentbit-cluster.yaml
+apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &#34;On&#34; read.tail: &#34;Off&#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac....</p>
   </section>
-  <footer class="entry-footer">October 16, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
+  <footer class="entry-footer">September 12, 2021</footer>
+  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Firefox/Chromeでアドオンなし全画面キャプチャ</h2>
-  </header>
-  <section class="entry-content">
-    <p>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
-Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
-…が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
-Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
-しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</p>
-  </section>
-  <footer class="entry-footer">September 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to Firefox/Chromeでアドオンなし全画面キャプチャ" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>サクラエディタで半角スペースを可視化</h2>
-  </header>
-  <section class="entry-content">
-    <p>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
-メニューから[設定] 〜 [タイプ別設定] を選択。
- 「カラー」タブ 半角空白 「色分け/表示」にチェック  </p>
-  </section>
-  <footer class="entry-footer">September 16, 2021</footer>
-  <a class="entry-link" aria-label="post link to サクラエディタで半角スペースを可視化" href="https://ecnedaced-seirots.github.io/post/a/sakura/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>マークダウン記法</h2>
-  </header>
-  <section class="entry-content">
-    <p>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  </p>
-  </section>
-  <footer class="entry-footer">September 5, 2021</footer>
-  <a class="entry-link" aria-label="post link to マークダウン記法" href="https://ecnedaced-seirots.github.io/post/a/markdown/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://ecnedaced-seirots.github.io/tags/aws/">« Prev Page</a>
+  </nav>
+</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
