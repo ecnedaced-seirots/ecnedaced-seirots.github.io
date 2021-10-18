@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Mac on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/mac/</link>
-    <description>Recent content in Mac on Go Buddy Go</description>
+    <title>homebrew on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/homebrew/</link>
+    <description>Recent content in homebrew on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 18 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/mac/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/homebrew/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MacにGNU版dateをインストール</title>
       <link>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</link>
@@ -22,22 +22,6 @@ $ date -d &#39;2018/5/17 00:00:00&#39; +&#39;%s&#39; 1526482800  参考
 Macでdateコマンドが違う件について
 UNIX時間に変換・UNIX時間を取得する方法
  (RWC2019, Tokyo Stadium)</description>
-    </item>
-    
-    <item>
-      <title>Macで必須のショートカット3選</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</link>
-      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</guid>
-      <description> 私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
-  フルスクリーン解除 control+ command + F
-  アプリケーションの強制終了 command + option + esc
-  スクリーンショット command + shift + 3
-   それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない&amp;hellip;
- 追記
-もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command + D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command + Shift + D。3選といいつつ、思い出したらまた書くかもな&amp;hellip;
- </description>
     </item>
     
   </channel>

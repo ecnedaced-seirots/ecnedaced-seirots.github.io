@@ -133,6 +133,25 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>MacにGNU版dateをインストール</h2>
+  </header>
+  <section class="entry-content">
+    <p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
+ Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+このままだとコマンドがgdateなので、gdateを&#34;date&#34;で実行できるようにする。以下エイリアスを.bashrcに追記。
+alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
+Macでdateコマンドが違う件について
+UNIX時間に変換・UNIX時間を取得する方法
+ (RWC2019, Tokyo Stadium)</p>
+  </section>
+  <footer class="entry-footer">October 18, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにGNU版dateをインストール" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWS CLIのページャを無効化する</h2>
   </header>
   <section class="entry-content">

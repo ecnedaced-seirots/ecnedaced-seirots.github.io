@@ -6,7 +6,24 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 16 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacにGNU版dateをインストール</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</link>
+      <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</guid>
+      <description>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
+ Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+このままだとコマンドがgdateなので、gdateを&amp;quot;date&amp;quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
+alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; +&#39;%s&#39; 1526482800  参考
+Macでdateコマンドが違う件について
+UNIX時間に変換・UNIX時間を取得する方法
+ (RWC2019, Tokyo Stadium)</description>
+    </item>
+    
     <item>
       <title>AWS CLIのページャを無効化する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
