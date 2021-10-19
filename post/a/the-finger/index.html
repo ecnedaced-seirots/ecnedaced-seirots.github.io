@@ -5,19 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>MacにGNU版dateをインストール | Go Buddy Go</title>
-<meta name="keywords" content="memo, homebrew" />
-<meta name="description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)">
+<title>middle finger周辺の表現など | Go Buddy Go</title>
+<meta name="keywords" content="english, the finger, Lifelog" />
+<meta name="description" content="そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
+ &ldquo;middle finger&quot;って言ったらあれです、特別な意味を持つ「中指」。
+以下はすべて同じ意味。&ldquo;the finger&quot;でも同じ意味になるとは知らなかった。
+ middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+ give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+ flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/the-finger/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -29,32 +26,26 @@ UNIX時間に変換・UNIX時間を取得する方法
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="MacにGNU版dateをインストール" />
-<meta property="og:description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)" />
+<meta property="og:title" content="middle finger周辺の表現など" />
+<meta property="og:description" content="そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
+ &ldquo;middle finger&quot;って言ったらあれです、特別な意味を持つ「中指」。
+以下はすべて同じ意味。&ldquo;the finger&quot;でも同じ意味になるとは知らなかった。
+ middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+ give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+ flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-10-18T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-10-18T00:00:00&#43;00:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/the-finger/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-19T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-10-19T00:00:00&#43;00:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="MacにGNU版dateをインストール"/>
-<meta name="twitter:description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)"/>
+<meta name="twitter:title" content="middle finger周辺の表現など"/>
+<meta name="twitter:description" content="そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
+ &ldquo;middle finger&quot;って言ったらあれです、特別な意味を持つ「中指」。
+以下はすべて同じ意味。&ldquo;the finger&quot;でも同じ意味になるとは知らなかった。
+ middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+ give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+ flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。"/>
 
 
 <script type="application/ld+json">
@@ -71,8 +62,8 @@ UNIX時間に変換・UNIX時間を取得する方法
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "MacにGNU版dateをインストール",
-      "item": "https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"
+      "name": "middle finger周辺の表現など",
+      "item": "https://ecnedaced-seirots.github.io/post/a/the-finger/"
     }
   ]
 }
@@ -81,20 +72,20 @@ UNIX時間に変換・UNIX時間を取得する方法
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "MacにGNU版dateをインストール",
-  "name": "MacにGNU版dateをインストール",
-  "description": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\u0026quot;date\u0026quot;で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n (RWC2019, Tokyo Stadium)",
+  "headline": "middle finger周辺の表現など",
+  "name": "middle finger周辺の表現など",
+  "description": "そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。\n \u0026ldquo;middle finger\u0026quot;って言ったらあれです、特別な意味を持つ「中指」。\n以下はすべて同じ意味。\u0026ldquo;the finger\u0026quot;でも同じ意味になるとは知らなかった。\n middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。\n give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？\n flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。",
   "keywords": [
-    "memo", "homebrew"
+    "english", "the finger", "Lifelog"
   ],
-  "articleBody": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\"date\"で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n (RWC2019, Tokyo Stadium)\n",
+  "articleBody": "そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。\n “middle finger\"って言ったらあれです、特別な意味を持つ「中指」。\n以下はすべて同じ意味。“the finger\"でも同じ意味になるとは知らなかった。\n middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。\n give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？\n flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。\n",
   "wordCount" : "27",
   "inLanguage": "en",
-  "datePublished": "2021-10-18T00:00:00Z",
-  "dateModified": "2021-10-18T00:00:00Z",
+  "datePublished": "2021-10-19T00:00:00Z",
+  "dateModified": "2021-10-19T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"
+    "@id": "https://ecnedaced-seirots.github.io/post/a/the-finger/"
   },
   "publisher": {
     "@type": "Organization",
@@ -209,50 +200,51 @@ UNIX時間に変換・UNIX時間を取得する方法
   <header class="post-header">
     
     <h1 class="post-title">
-      MacにGNU版dateをインストール
+      middle finger周辺の表現など
     </h1>
-    <div class="post-meta">October 18, 2021
+    <div class="post-meta">October 19, 2021
 </div>
   </header> 
-  <div class="post-content"><p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。</p>
+  <div class="post-content"><p>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。</p>
 <p> </p>
-<p>Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）</p>
-<pre><code>$ brew install coreutils
-</code></pre><p> </p>
-<p>/usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）</p>
-<p>このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。</p>
-<pre><code>alias date='/usr/local/bin/gdate'
-</code></pre><p> </p>
-<p>やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。</p>
-<pre><code>$ date -d '2018/5/17 00:00:00' +'%s'
-1526482800
-</code></pre><p> </p>
-<p>参考<br>
-<a href="https://tatsuno-system.co.jp/2016/06/27/mac%E3%81%A7date%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%8C%E9%81%95%E3%81%86%E4%BB%B6%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/">Macでdateコマンドが違う件について</a></p>
-<p><a href="https://linux.just4fun.biz/?%E9%80%86%E5%BC%95%E3%81%8DUNIX%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89/UNIX%E6%99%82%E9%96%93%E3%81%AB%E5%A4%89%E6%8F%9B%E3%83%BBUNIX%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95#x52e4b20">UNIX時間に変換・UNIX時間を取得する方法</a></p>
-<p> 
- </p>
-<p><img loading="lazy" src="/img/rwc2019_1031.JPG" alt="RWC2019"  />
-
-(RWC2019, Tokyo Stadium)</p>
+<p>&ldquo;middle finger&quot;って言ったらあれです、特別な意味を持つ「中指」。<br>
+以下はすべて同じ意味。&ldquo;the finger&quot;でも同じ意味になるとは知らなかった。</p>
+<ul>
+<li>middle finger</li>
+<li>second finger</li>
+<li>the finger</li>
+</ul>
+<p> </p>
+<p>侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。</p>
+<ul>
+<li>give the middle finger</li>
+<li>give the finger</li>
+</ul>
+<p> </p>
+<p>以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？</p>
+<ul>
+<li>flip the bird</li>
+<li>fly the bird</li>
+</ul>
+<p> </p>
+<p><img loading="lazy" src="/img/middle_finger_guy.png" alt="中指"  />
+</p>
+<p> </p>
+<p>しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</p>
 
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/homebrew/">homebrew</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/english/">english</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/the-finger/">the finger</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lifelog/">Lifelog</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/the-finger/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>middle finger周辺の表現など</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/">
     <span class="title">Next Page »</span>
     <br>
-    <span>AWS CLIのページャを無効化する</span>
+    <span>MacにGNU版dateをインストール</span>
   </a>
 </nav>
 

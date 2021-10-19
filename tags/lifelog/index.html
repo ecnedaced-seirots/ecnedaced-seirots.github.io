@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Go Buddy Go</title>
-
+<title>Lifelog | Go Buddy Go</title>
+<meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/lifelog/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,30 +19,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/index.xml">
-<link rel="alternate" type="application/json" href="https://ecnedaced-seirots.github.io/index.json">
-<meta property="og:title" content="" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/lifelog/index.xml">
+<meta property="og:title" content="Lifelog" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/lifelog/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
+<meta name="twitter:title" content="Lifelog"/>
 <meta name="twitter:description" content=""/>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Go Buddy Go",
-  "url": "https://ecnedaced-seirots.github.io/",
-  "description": "",
-  "thumbnailUrl": "https://ecnedaced-seirots.github.io/favicon.ico",
-  "sameAs": [
-      
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -141,8 +127,11 @@
     </nav>
 </header>
 <main class="main"> 
+<header class="page-header">
+  <h1>Lifelog</h1>
+</header>
 
-<article class="first-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>middle finger周辺の表現など</h2>
   </header>
@@ -158,63 +147,7 @@
   <a class="entry-link" aria-label="post link to middle finger周辺の表現など" href="https://ecnedaced-seirots.github.io/post/a/the-finger/"></a>
 </article>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>MacにGNU版dateをインストール</h2>
-  </header>
-  <section class="entry-content">
-    <p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&#34;date&#34;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)</p>
-  </section>
-  <footer class="entry-footer">October 18, 2021</footer>
-  <a class="entry-link" aria-label="post link to MacにGNU版dateをインストール" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>AWS CLIのページャを無効化する</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&#34;&#34;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </p>
-  </section>
-  <footer class="entry-footer">October 16, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
-数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが…
-CloudFormationでCloudWatchAlermを作成する
- ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
-もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
- ここから。
-オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
-サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
-以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど…、数年前の事例なので。
-スケールアウトポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
-snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&#34; scaleoutpolicy=&#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &#34;test-web-scaleout-alarm&#34; \ --alarm-description &#34;Alarm when CPU exceeds 70%&#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&#34;test-web-asg&#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。...</p>
-  </section>
-  <footer class="entry-footer">October 10, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム作成時のメモ（過去事例）" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/"></a>
-</article>
-
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>Tumblrについて、ひとり言</h2>
   </header>
@@ -241,11 +174,6 @@ TwitterとかFacebookみたいにガチで言葉の応酬をするようなSNS�
   <footer class="entry-footer">October 9, 2021</footer>
   <a class="entry-link" aria-label="post link to Tumblrについて、ひとり言" href="https://ecnedaced-seirots.github.io/post/a/sns-influence/"></a>
 </article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="next" href="https://ecnedaced-seirots.github.io/page/2/">Next Page »</a>
-  </nav>
-</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
