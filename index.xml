@@ -6,7 +6,18 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 19 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Oct 2021 00:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Github Actionsメモ</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/github-actions/</link>
+      <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/github-actions/</guid>
+      <description>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
+Hugo + GitHub Pages + GitHub Actions で独自ドメインのウェブサイトを構築する
+  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
+    </item>
+    
     <item>
       <title>middle finger周辺の表現など</title>
       <link>https://ecnedaced-seirots.github.io/post/a/the-finger/</link>

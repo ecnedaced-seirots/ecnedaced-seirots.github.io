@@ -144,6 +144,19 @@
 
 <article class="first-entry"> 
   <header class="entry-header">
+    <h2>Github Actionsメモ</h2>
+  </header>
+  <section class="entry-content">
+    <p>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
+Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブサイトを構築する
+  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</p>
+  </section>
+  <footer class="entry-footer">October 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to Github Actionsメモ" href="https://ecnedaced-seirots.github.io/post/a/github-actions/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>middle finger周辺の表現など</h2>
   </header>
   <section class="entry-content">
@@ -210,29 +223,6 @@ UNIX時間に変換・UNIX時間を取得する方法
   </section>
   <footer class="entry-footer">October 16, 2021</footer>
   <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
-数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが…
-CloudFormationでCloudWatchAlermを作成する
- ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
-もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
- ここから。
-オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
-サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
-以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど…、数年前の事例なので。
-スケールアウトポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
-snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&#34; scaleoutpolicy=&#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &#34;test-web-scaleout-alarm&#34; \ --alarm-description &#34;Alarm when CPU exceeds 70%&#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&#34;test-web-asg&#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。...</p>
-  </section>
-  <footer class="entry-footer">October 10, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム作成時のメモ（過去事例）" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
