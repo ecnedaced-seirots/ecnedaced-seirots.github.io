@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>cloudwatch on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/cloudwatch/</link>
+    <description>Recent content in cloudwatch on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 25 Oct 2021 20:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
+      <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
+      <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
+Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
+ 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
+SNSトピック作成
+$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+または、以下確認コマンド
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</description>
+    </item>
+    
+  </channel>
+</rss>

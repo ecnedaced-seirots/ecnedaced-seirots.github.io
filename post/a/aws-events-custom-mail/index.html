@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする | Go Buddy Go</title>
+<meta name="keywords" content="AWS, amazon sns, lambda, eventbridge, cloudwatch" />
+<meta name="description" content="表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
+Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
+ 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
+SNSトピック作成
+$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &quot;SubscriptionArn&quot;: &quot;pending confirmation&quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+または、以下確認コマンド
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="AWS EventBridge &#43; SNSからのメール件名をカスタマイズする" />
+<meta property="og:description" content="表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
+Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
+ 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
+SNSトピック作成
+$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &quot;SubscriptionArn&quot;: &quot;pending confirmation&quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+または、以下確認コマンド
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-25T20:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-10-25T20:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS EventBridge &#43; SNSからのメール件名をカスタマイズする"/>
+<meta name="twitter:description" content="表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
+Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
+ 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
+SNSトピック作成
+$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &quot;SubscriptionArn&quot;: &quot;pending confirmation&quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+または、以下確認コマンド
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "AWS EventBridge + SNSからのメール件名をカスタマイズする",
+      "item": "https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AWS EventBridge + SNSからのメール件名をカスタマイズする",
+  "name": "AWS EventBridge \u002b SNSからのメール件名をカスタマイズする",
+  "description": "表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。\nAmazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする\n 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。\n各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。\n   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。\nSNSトピック作成\n$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成\n$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { \u0026quot;SubscriptionArn\u0026quot;: \u0026quot;pending confirmation\u0026quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。\nまたは、以下確認コマンド\n$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。",
+  "keywords": [
+    "AWS", "amazon sns", "lambda", "eventbridge", "cloudwatch"
+  ],
+  "articleBody": "表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。\nAmazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする\n 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。\n各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。\n   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。\nSNSトピック作成\n$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成\n$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { \"SubscriptionArn\": \"pending confirmation\" }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。\nまたは、以下確認コマンド\n$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。\ntrust-policy.json\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"lambda.amazonaws.com\" }, \"Action\": \"sts:AssumeRole\" } ] }  $ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy.json  ロールにAWSマネージドポリシーをアタッチ。\n$ aws iam attach-role-policy --role-name custom-event-mail-role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole $ aws iam attach-role-policy --role-name custom-event-mail-role --policy-arn arn:aws:iam::aws:policy/AmazonSNSFullAccess  ここまでで、IAMロール完成。次に、以下内容のLambda関数のコードを用意する。\ncustom-mail.py\nimport boto3 import json import os sns_arn = os.environ['SNS_TOPIC_ARN'] custom_subject = os.environ['CUSTOM_SUBJECT'] def lambda_handler(event, context): print(sns_arn) client = boto3.client(\"sns\") resp = client.publish(TargetArn=sns_arn, Message=json.dumps(event), Subject=custom_subject)  これをzipにする。\n$ zip custom-mail.zip custom-mail.py  IAMロールとzipファイルを指定してLambda関数を作成。\n$ aws lambda create-function --function-name custom-mail-function --role arn:aws:iam::my-account-id:role/custom-event-mail-role --runtime python3.8 --handler custom-mail.lambda_handler --zip-file fileb://custom-mail.zip  環境変数をセット。ここでSNSトピックARNと、送信したいメール件名を定義している。\n$ aws lambda update-function-configuration --function-name custom-mail-function --environment Variables='{SNS_TOPIC_ARN=\"arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification\",CUSTOM_SUBJECT=\"カスタムメールタイトル送信テスト\"}'     変数名 値     SNS_TOPIC_ARN arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification   CUSTOM_SUBJECT カスタムメールタイトル送信テスト     トリガーとなるイベントルールを作成。本当はec2のCPU使用率のアラームでメール飛ばしたいがここは参考ページの通りにする。\nevent-pattern.json\n{ \"source\": [ \"aws.s3\" ], \"detail-type\": [ \"AWS API Call via CloudTrail\" ], \"detail\": { \"eventSource\": [ \"s3.amazonaws.com\" ], \"eventName\": [ \"CreateBucket\", \"DeleteBucket\" ] } }  eventsのルールを作成する。\n$ aws events put-rule --name custom-mail-rule --event-pattern file://event-pattern.json { \"RuleArn\": \"arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule\" }  Lambdaにルールの実行権限を追加。\n$ aws lambda add-permission --function-name custom-mail-function --statement-id 1 --principal events.amazonaws.com --action 'lambda:InvokeFunction' --source-arn arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule { \"Statement\": \"{\\\"Sid\\\":\\\"1\\\",\\\"Effect\\\":\\\"Allow\\\",\\\"Principal\\\":{\\\"Service\\\":\\\"events.amazonaws.com\\\"},\\\"Action\\\":\\\"lambda:InvokeFunction\\\",\\\"Resource\\\":\\\"arn:aws:lambda:ap-northeast-1:my-account-id:function:custom-mail-function\\\",\\\"Condition\\\":{\\\"ArnLike\\\":{\\\"AWS:SourceArn\\\":\\\"arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule\\\"}}}\" }  Lambda関数をルールのターゲットとしてセットする。\n$ aws events put-targets --rule custom-mail-rule --targets \"Id\"=\"Target1\",\"Arn\"=\"arn:aws:lambda:ap-northeast-1:my-account-id:function:custom-mail-function\" { \"FailedEntryCount\": 0, \"FailedEntries\": [] }  バケットを作成して通知テスト\n$ aws s3 mb s3://custom-mail-sending-test-xxxx  …しかしメール届かない。て、CloudTrailが無効になっているんだから当然である。で、CloudTrailを有効にしてから先ほど作成したバケットを消してみる。したら、…設定した件名「カスタムメールタイトル送信テスト」で通知メールが届いた！\nLambda関数の画面ではトリガーがEventBridgeになっているが、移行期間中はカッコでCloudWatche Eventsも併記されるっぽい。\n Events側でもルールとLambda関数が紐付いていることがわかる。ちなみにこれはCloudWatche Eventsの画面から見ているが、同じルールがEventBridgeの画面にも存在するはずである。\n メール本文。JSONの生データそのまんま。「人間」の感覚としてはこんなん送られてもなぁ…としか思えないが、“DeleteBucket\"の記録があることは一応わかる。\n CloudTrailはもういらんので削除。…で、SNSからのメールは件名カスタマイズできるのはわかったが、アラームと組み合わせるとなるとまた別の調整が必要。その辺がわからん。次回の課題。\n 本文のカスタマイズ例。これはLambda使ってないけど、今回のコードをアレンジすればできるっぽいからそっちに寄せたい感じ。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\nEventBridgeって結局元CloudWatchEventsのことなんだが、まだよくわかっていないのでこの辺も調べておく。\nAmazon EventBridgeとは何か\n ",
+  "wordCount" : "254",
+  "inLanguage": "en",
+  "datePublished": "2021-10-25T20:00:00+09:00",
+  "dateModified": "2021-10-25T20:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      AWS EventBridge &#43; SNSからのメール件名をカスタマイズする
+    </h1>
+    <div class="post-meta">October 25, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。</p>
+<p><a href="https://qiita.com/kooohei/items/b3c8c99f7f6521324662">Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする</a></p>
+<p> </p>
+<p>上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。</p>
+<p>各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。</p>
+<table>
+<thead>
+<tr>
+<th>アイテム</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SNSトピック</td>
+<td>custom-event-notification</td>
+</tr>
+<tr>
+<td>Lambda用IAMロール</td>
+<td>custom-event-mail-role</td>
+</tr>
+<tr>
+<td>Lambda関数</td>
+<td>custom-mail-function</td>
+</tr>
+<tr>
+<td>evetnsルール</td>
+<td>custom-mail-rule</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p>ではここから作業内容の記録に入る。</p>
+<p>SNSトピック作成</p>
+<pre><code>$ aws sns create-topic --name custom-event-notification
+</code></pre><p> </p>
+<p>サブスク（サブスクリプション）作成</p>
+<pre><code>$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address]
+
+{
+    &quot;SubscriptionArn&quot;: &quot;pending confirmation&quot;
+}
+</code></pre><p> </p>
+<p>指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。</p>
+<p>または、以下確認コマンド</p>
+<pre><code>$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification
+</code></pre><p> </p>
+<p>ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</p>
+<p>trust-policy.json</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
+  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+    {
+      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+        <span style="color:#f92672">&#34;Service&#34;</span>: <span style="color:#e6db74">&#34;lambda.amazonaws.com&#34;</span>
+      },
+      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>
+    }
+  ]
+}
+</code></pre></div><p> </p>
+<pre><code>$ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy.json
+</code></pre><p> </p>
+<p>ロールにAWSマネージドポリシーをアタッチ。</p>
+<pre><code>$ aws iam attach-role-policy --role-name custom-event-mail-role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+$ aws iam attach-role-policy --role-name custom-event-mail-role --policy-arn arn:aws:iam::aws:policy/AmazonSNSFullAccess
+</code></pre><p> </p>
+<p>ここまでで、IAMロール完成。次に、以下内容のLambda関数のコードを用意する。</p>
+<p>custom-mail.py</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PYTHON" data-lang="PYTHON"><span style="color:#f92672">import</span> boto3
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> os
+
+sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
+custom_subject <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;CUSTOM_SUBJECT&#39;</span>]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+    print(sns_arn)
+    client <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#34;sns&#34;</span>)
+    resp <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>publish(TargetArn<span style="color:#f92672">=</span>sns_arn, Message<span style="color:#f92672">=</span>json<span style="color:#f92672">.</span>dumps(event), Subject<span style="color:#f92672">=</span>custom_subject)
+</code></pre></div><p> </p>
+<p>これをzipにする。</p>
+<pre><code>$ zip custom-mail.zip custom-mail.py
+</code></pre><p> </p>
+<p>IAMロールとzipファイルを指定してLambda関数を作成。</p>
+<pre><code>$ aws lambda create-function --function-name custom-mail-function --role arn:aws:iam::my-account-id:role/custom-event-mail-role --runtime python3.8 --handler custom-mail.lambda_handler --zip-file fileb://custom-mail.zip
+</code></pre><p> </p>
+<p>環境変数をセット。ここでSNSトピックARNと、送信したいメール件名を定義している。</p>
+<pre><code>$ aws lambda update-function-configuration --function-name custom-mail-function --environment Variables='{SNS_TOPIC_ARN=&quot;arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification&quot;,CUSTOM_SUBJECT=&quot;カスタムメールタイトル送信テスト&quot;}'
+</code></pre><p> </p>
+<table>
+<thead>
+<tr>
+<th>変数名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SNS_TOPIC_ARN</td>
+<td>arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification</td>
+</tr>
+<tr>
+<td>CUSTOM_SUBJECT</td>
+<td>カスタムメールタイトル送信テスト</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p>トリガーとなるイベントルールを作成。本当はec2のCPU使用率のアラームでメール飛ばしたいがここは参考ページの通りにする。</p>
+<p>event-pattern.json</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
+  <span style="color:#f92672">&#34;source&#34;</span>: [
+    <span style="color:#e6db74">&#34;aws.s3&#34;</span>
+  ],
+  <span style="color:#f92672">&#34;detail-type&#34;</span>: [
+    <span style="color:#e6db74">&#34;AWS API Call via CloudTrail&#34;</span>
+  ],
+  <span style="color:#f92672">&#34;detail&#34;</span>: {
+    <span style="color:#f92672">&#34;eventSource&#34;</span>: [
+      <span style="color:#e6db74">&#34;s3.amazonaws.com&#34;</span>
+    ],
+    <span style="color:#f92672">&#34;eventName&#34;</span>: [
+      <span style="color:#e6db74">&#34;CreateBucket&#34;</span>,
+      <span style="color:#e6db74">&#34;DeleteBucket&#34;</span>
+    ]
+  }
+}
+</code></pre></div><p> </p>
+<p>eventsのルールを作成する。</p>
+<pre><code>$ aws events put-rule --name custom-mail-rule --event-pattern file://event-pattern.json
+{
+    &quot;RuleArn&quot;: &quot;arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule&quot;
+}
+</code></pre><p> </p>
+<p>Lambdaにルールの実行権限を追加。</p>
+<pre><code>$ aws lambda add-permission --function-name custom-mail-function --statement-id 1 --principal events.amazonaws.com --action 'lambda:InvokeFunction' --source-arn arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule
+
+{
+    &quot;Statement&quot;: &quot;{\&quot;Sid\&quot;:\&quot;1\&quot;,\&quot;Effect\&quot;:\&quot;Allow\&quot;,\&quot;Principal\&quot;:{\&quot;Service\&quot;:\&quot;events.amazonaws.com\&quot;},\&quot;Action\&quot;:\&quot;lambda:InvokeFunction\&quot;,\&quot;Resource\&quot;:\&quot;arn:aws:lambda:ap-northeast-1:my-account-id:function:custom-mail-function\&quot;,\&quot;Condition\&quot;:{\&quot;ArnLike\&quot;:{\&quot;AWS:SourceArn\&quot;:\&quot;arn:aws:events:ap-northeast-1:my-account-id:rule/custom-mail-rule\&quot;}}}&quot;
+}
+</code></pre><p> </p>
+<p>Lambda関数をルールのターゲットとしてセットする。</p>
+<pre><code>$ aws events put-targets --rule custom-mail-rule --targets &quot;Id&quot;=&quot;Target1&quot;,&quot;Arn&quot;=&quot;arn:aws:lambda:ap-northeast-1:my-account-id:function:custom-mail-function&quot;
+{
+    &quot;FailedEntryCount&quot;: 0,
+    &quot;FailedEntries&quot;: []
+}
+</code></pre><p> </p>
+<p>バケットを作成して通知テスト</p>
+<pre><code>$ aws s3 mb s3://custom-mail-sending-test-xxxx
+</code></pre><p> </p>
+<p>&hellip;しかしメール届かない。て、CloudTrailが無効になっているんだから当然である。で、CloudTrailを有効にしてから先ほど作成したバケットを消してみる。したら、&hellip;設定した件名「カスタムメールタイトル送信テスト」で通知メールが届いた！</p>
+<p>Lambda関数の画面ではトリガーがEventBridgeになっているが、移行期間中はカッコでCloudWatche Eventsも併記されるっぽい。</p>
+<p><img loading="lazy" src="/img/custom-mail-function.jpg" alt="Lambda関数画面"  />
+
+<img loading="lazy" src="/img/custom-mail-trigger-eventbridge.jpg" alt="Lambda関数トリガー"  />
+</p>
+<p> </p>
+<p>Events側でもルールとLambda関数が紐付いていることがわかる。ちなみにこれはCloudWatche Eventsの画面から見ているが、同じルールがEventBridgeの画面にも存在するはずである。</p>
+<p><img loading="lazy" src="/img/custom_mail_rule.jpg" alt="Eventsルール画面"  />
+</p>
+<p> </p>
+<p>メール本文。JSONの生データそのまんま。「人間」の感覚としてはこんなん送られてもなぁ&hellip;としか思えないが、&ldquo;DeleteBucket&quot;の記録があることは一応わかる。</p>
+<p><img loading="lazy" src="/img/custom-title-mail.jpg" alt="カスタム件名メール"  />
+</p>
+<p> </p>
+<p>CloudTrailはもういらんので削除。&hellip;で、SNSからのメールは件名カスタマイズできるのはわかったが、アラームと組み合わせるとなるとまた別の調整が必要。その辺がわからん。次回の課題。</p>
+<p> </p>
+<p>本文のカスタマイズ例。これはLambda使ってないけど、今回のコードをアレンジすればできるっぽいからそっちに寄せたい感じ。<br>
+<a href="https://dev.classmethod.jp/articles/human-readable-mail-from-cloudwatch/">CloudWatch アラームの通知メールを少しでも読みやすくしたい</a></p>
+<p>EventBridgeって結局元CloudWatchEventsのことなんだが、まだよくわかっていないのでこの辺も調べておく。<br>
+<a href="https://qiita.com/ishibashi-futoshi/items/586ebe17b174a478eb6a">Amazon EventBridgeとは何か</a></p>
+<p> </p>
+<p><img loading="lazy" src="/img/tokyo_bay_2018.JPG" alt="東京湾"  />
+</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>CloudWatchLogsからS3へログをエクスポートする</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
