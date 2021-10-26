@@ -3,7 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2021-10-25T20:00:00+09:00</lastmod>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/eye-candy/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/a/life-1025/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/life/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/lifelog/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2021-10-26T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/amazon-sns/</loc>
     <lastmod>2021-10-25T20:00:00+09:00</lastmod>
@@ -12,9 +33,6 @@
     <lastmod>2021-10-25T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</loc>
-    <lastmod>2021-10-25T20:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
     <lastmod>2021-10-25T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/cloudwatch/</loc>
@@ -27,12 +45,6 @@
     <lastmod>2021-10-25T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/lambda/</loc>
-    <lastmod>2021-10-25T20:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2021-10-25T20:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2021-10-25T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/cloudwatch/</loc>
@@ -63,9 +75,6 @@
     <lastmod>2021-10-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/english/</loc>
-    <lastmod>2021-10-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/lifelog/</loc>
     <lastmod>2021-10-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
@@ -103,9 +112,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/life/</loc>
-    <lastmod>2021-10-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/mind-hacks/</loc>
     <lastmod>2021-10-09T00:00:00+00:00</lastmod>
