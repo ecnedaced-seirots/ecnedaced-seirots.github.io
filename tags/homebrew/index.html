@@ -133,6 +133,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>MacにPython3を再インストール</h2>
+  </header>
+  <section class="entry-content">
+    <p>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
+$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &#34;/usr/local/lib/python3.9/site-packages:&#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software....</p>
+  </section>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>MacにGNU版dateをインストール</h2>
   </header>
   <section class="entry-content">

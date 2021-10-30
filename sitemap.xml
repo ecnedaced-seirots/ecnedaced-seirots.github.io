@@ -3,21 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2021-10-27T23:00:00+09:00</lastmod>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2021-10-27T23:00:00+09:00</lastmod>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/homebrew/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/mac/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/mac/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/life/</loc>
     <lastmod>2021-10-27T23:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/lifelog/</loc>
-    <lastmod>2021-10-27T23:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2021-10-27T23:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2021-10-27T23:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/life-1027/</loc>
@@ -71,9 +89,6 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/github-actions/</loc>
     <lastmod>2021-10-23T00:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
-    <lastmod>2021-10-23T00:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/english/</loc>
     <lastmod>2021-10-19T00:00:00+00:00</lastmod>
   </url><url>
@@ -91,12 +106,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/dylan-thomas/</loc>
     <lastmod>2021-10-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/homebrew/</loc>
-    <lastmod>2021-10-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/mac/</loc>
-    <lastmod>2021-10-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</loc>
     <lastmod>2021-10-18T00:00:00+00:00</lastmod>

@@ -148,6 +148,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>MacにPython3を再インストール</h2>
+  </header>
+  <section class="entry-content">
+    <p>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
+$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &#34;/usr/local/lib/python3.9/site-packages:&#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software....</p>
+  </section>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>ひとり言 - 10月27日</h2>
   </header>
   <section class="entry-content">
@@ -211,19 +225,6 @@ $ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-
   </section>
   <footer class="entry-footer">October 23, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Github Actionsメモ</h2>
-  </header>
-  <section class="entry-content">
-    <p>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
-Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブサイトを構築する
-  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</p>
-  </section>
-  <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to Github Actionsメモ" href="https://ecnedaced-seirots.github.io/post/a/github-actions/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
