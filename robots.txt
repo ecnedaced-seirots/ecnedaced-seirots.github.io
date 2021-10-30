@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://ecnedaced-seirots.github.io/sitemap.xml
