@@ -101,5 +101,19 @@ Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + S
  「カラー」タブ 半角空白 「色分け/表示」にチェック  </description>
     </item>
     
+    <item>
+      <title>マークダウン記法</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
+      <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
+      <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
+  Markdown 早見表 &amp;amp; 詳細
+  かんたんMarkdownの記法
+  Markdown記法 チートシート
+  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
+  </description>
+    </item>
+    
   </channel>
 </rss>
