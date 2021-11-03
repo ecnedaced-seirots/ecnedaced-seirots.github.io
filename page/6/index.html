@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>eventbridge | Go Buddy Go</title>
-<meta name="keywords" content="" />
+<title>Go Buddy Go</title>
+
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/eventbridge/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,16 +19,30 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/eventbridge/index.xml">
-<meta property="og:title" content="eventbridge" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/index.xml">
+<link rel="alternate" type="application/json" href="https://ecnedaced-seirots.github.io/index.json">
+<meta property="og:title" content="" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/eventbridge/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="eventbridge"/>
+<meta name="twitter:title" content=""/>
 <meta name="twitter:description" content=""/>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Go Buddy Go",
+  "url": "https://ecnedaced-seirots.github.io/",
+  "description": "",
+  "thumbnailUrl": "https://ecnedaced-seirots.github.io/favicon.ico",
+  "sameAs": [
+      
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -132,45 +146,23 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header">
-  <h1>eventbridge</h1>
-</header>
 
-<article class="post-entry tag-entry"> 
+<article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
+    <h2>最初の投稿</h2>
   </header>
   <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
+    <p>とりあえず最初の投稿。
+ </p>
   </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
+  <footer class="entry-footer">September 4, 2021</footer>
+  <a class="entry-link" aria-label="post link to 最初の投稿" href="https://ecnedaced-seirots.github.io/post/a/first/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
-  </section>
-  <footer class="entry-footer">October 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS EventBridge &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://ecnedaced-seirots.github.io/page/5/">« Prev Page</a>
+  </nav>
+</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>

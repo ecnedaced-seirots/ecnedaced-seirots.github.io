@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする | Go Buddy Go</title>
+<meta name="keywords" content="cloudwatch, monitoring, lambda, amazon sns, eventbridge" />
+<meta name="description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" />
+<meta property="og:description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-03T21:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-11-03T21:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする"/>
+<meta name="twitter:description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "CloudWatchアラーム + SNSからのメール件名をカスタマイズする",
+      "item": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CloudWatchアラーム + SNSからのメール件名をカスタマイズする",
+  "name": "CloudWatchアラーム \u002b SNSからのメール件名をカスタマイズする",
+  "description": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\n ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \u0026quot;CPU_Utilization_Test\u0026quot; \\ --metric-name \u0026quot;CPUUtilization\u0026quot; \\ --namespace \u0026quot;AWS/EC2\u0026quot; \\ --statistic \u0026quot;Maximum\u0026quot; \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \u0026quot;GreaterThanThreshold\u0026quot; \\ --dimensions \u0026quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9\u0026quot;  EventBridgeルールの作成。以下の場合、\u0026ldquo;CPU_Utilization_\u0026ldquo;を含むアラームと関連付けられる",
+  "keywords": [
+    "cloudwatch", "monitoring", "lambda", "amazon sns", "eventbridge"
+  ],
+  "articleBody": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\n ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \"CPU_Utilization_Test\" \\ --metric-name \"CPUUtilization\" \\ --namespace \"AWS/EC2\" \\ --statistic \"Maximum\" \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \"GreaterThanThreshold\" \\ --dimensions \"Name=InstanceId,Value=i-0xxxxxxxxxxx9\"  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる\n$ AWSREGION=ap-northeast-1 $ AWSACCOUNT=my-account-id $ aws events put-rule --name \"cw-alarm-rule\" \\ --event-pattern \"{\\\"source\\\": [\\\"aws.cloudwatch\\\"],\\\"detail-type\\\": [\\\"CloudWatch Alarm State Change\\\"],\\\"resources\\\": [{\\\"prefix\\\": \\\"arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\\\"}],\\\"detail\\\": {\\\"state\\\": {\\\"value\\\": [\\\"ALARM\\\"]}}}\"  以下の様にルールが作成された。\n しかしこの段階ではまだターゲットが存在しない。前回はコマンドでターゲット指定したが、今回はマネコンからやった。対象のルールを選択して「Edit」ー＞ 「Select targets」で作成済みのLambda関数を指定して、「Update」\n すると、以下の様にLambda側のトリガーとして、セットしたルールが設定される。\n ここまでやったら、以下の流れでメール通知される、はず。\n① EC2インスタンスのCPU使用率を上げてアラーム発行させる ② EventBridgeルールでターゲットに指定したLambdaに渡される ③ Lambdaで設定したSNSに渡される\nちなみにCPU使用率UP時はこんなのをshellにしてバックグラウンドで複数実行させた。アラームの設定で閾値10%にしたが、これをt3.microマシン上で3回くらい同時に回せば軽く90%くらいになる。\nCNT=0; while [ $CNT -lt 100000 ]; do CNT=$(( CNT + 1 ));done\n 少し経つとアラームのステータスが変わって、カスタム件名のメールが届いた！しかし本文がひどい…\n サンプルコードではMessage=json.dumps(event) としているから、JSONデータをそのまま吐き出しているだけ。本文をカスタマイズする場合はこのeventをいじる必要がある。冒頭のクラメソさんの事例もはっきりいって面倒くさそうだったが、コードでやるのも面倒だなぁ、何せサンデープログラマだから。\nと、ここで別途最近実施した、特別カスタマイズをしないアラーム + SNS送信検証時のメールを見たら、英語のみとはいえこっちの方がまだ全然見やすい。そりゃわかりにくいけど、JSON生データよりマシ。もう本文はこれでいいんじゃね？という気もするんだが。件名も、アラーム名が件名に入るんだから識別・フィルタしやすいアラーム名にすればどうにかなりそうな気もする。…と、減速気味になってきた。\n …が！以下の補足事項を思い出した。アラーム単体では無効化・有効化の制御ができない。となると、やはりEventBridgに組み込む方がいいんだよな。うーむ…。頭痛いから明日考えよう。明後日かもしれない。\n 補足 アラームを一時無効化したい場合は、Rule側で制御する。マネコンで対象のルールを選択して、「Distable/無効にする」ボタンを押下。（アラーム単体ではこの機能がない）\n ",
+  "wordCount" : "130",
+  "inLanguage": "en",
+  "datePublished": "2021-11-03T21:00:00+09:00",
+  "dateModified": "2021-11-03T21:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+    </h1>
+    <div class="post-meta">November 3, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 <a href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/">AWS EventBridge + SNSからのメール件名をカスタマイズする</a> でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。</p>
+<p> </p>
+<p>ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。<br>
+<a href="https://dev.classmethod.jp/articles/human-readable-mail-from-cloudwatch/">CloudWatch アラームの通知メールを少しでも読みやすくしたい</a></p>
+<p> </p>
+<h3 id="処理概要">処理概要<a hidden class="anchor" aria-hidden="true" href="#処理概要">#</a></h3>
+<ol>
+<li>CloudWatchアラームのステータスがALARMに変わる。</li>
+<li>Lambda関数起動</li>
+<li>SNSに連携される</li>
+<li>メール通知</li>
+</ol>
+<p> </p>
+<h3 id="作業概要">作業概要<a hidden class="anchor" aria-hidden="true" href="#作業概要">#</a></h3>
+<ol>
+<li>SNSトピック作成〜サブスクライブ</li>
+<li>CloudWatchアラーム作成</li>
+<li>Lambda関数作成（Lambda用IAMロールは既存流用）</li>
+<li>EventBridgeルール作成</li>
+<li>EventBridgeルールのターゲットに3.のLambda関数を設定する</li>
+<li>対象EC2インスタンスのCPU負荷を上げてアラームステータスにする</li>
+<li>メール通知確認</li>
+</ol>
+<p> </p>
+<h3 id="検証に使用したアイテム">検証に使用したアイテム<a hidden class="anchor" aria-hidden="true" href="#検証に使用したアイテム">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>アイテム</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SNSトピック</td>
+<td>alarm-notification-topic</td>
+</tr>
+<tr>
+<td>CloudWatchアラーム</td>
+<td>CPU_Utilization_Test</td>
+</tr>
+<tr>
+<td>Lambda関数</td>
+<td>cw-alarm-sns-function</td>
+</tr>
+<tr>
+<td>EventBridgeルール</td>
+<td>cw-alarm-rule</td>
+</tr>
+</tbody>
+</table>
+<h3 id="やったこと">やったこと<a hidden class="anchor" aria-hidden="true" href="#やったこと">#</a></h3>
+<p>SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。</p>
+<p>CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。</p>
+<pre><code>$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \
+  --metric-name &quot;CPUUtilization&quot; \
+  --namespace &quot;AWS/EC2&quot; \
+  --statistic &quot;Maximum&quot; \
+  --period 60 \
+  --evaluation-periods 1 \
+  --datapoints-to-alarm 1 \
+  --threshold 10 \
+  --comparison-operator &quot;GreaterThanThreshold&quot; \
+  --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;
+</code></pre><p> </p>
+<p>EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる</p>
+<pre><code>$ AWSREGION=ap-northeast-1
+$ AWSACCOUNT=my-account-id
+
+$ aws events put-rule --name &quot;cw-alarm-rule&quot; \
+  --event-pattern &quot;{\&quot;source\&quot;: [\&quot;aws.cloudwatch\&quot;],\&quot;detail-type\&quot;: [\&quot;CloudWatch Alarm State Change\&quot;],\&quot;resources\&quot;: [{\&quot;prefix\&quot;: \&quot;arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\&quot;}],\&quot;detail\&quot;: {\&quot;state\&quot;: {\&quot;value\&quot;: [\&quot;ALARM\&quot;]}}}&quot;
+</code></pre><p> </p>
+<p>以下の様にルールが作成された。</p>
+<p><img loading="lazy" src="/img/a/alarm-rule_1.jpg" alt="EventBridgeルール"  />
+
+<img loading="lazy" src="/img/a/alarm-rule_2.jpg" alt="EventBridgeルール"  />
+</p>
+<p> </p>
+<p>しかしこの段階ではまだターゲットが存在しない。前回はコマンドでターゲット指定したが、今回はマネコンからやった。対象のルールを選択して「Edit」ー＞ 「Select targets」で作成済みのLambda関数を指定して、「Update」</p>
+<p><img loading="lazy" src="/img/a/alarm-rule_3.png" alt="EventBridgeルールターゲット"  />
+</p>
+<p> </p>
+<p>すると、以下の様にLambda側のトリガーとして、セットしたルールが設定される。</p>
+<p><img loading="lazy" src="/img/a/alarm-lambda.jpg" alt="Lambda"  />
+</p>
+<p> </p>
+<p>ここまでやったら、以下の流れでメール通知される、はず。</p>
+<p>① EC2インスタンスのCPU使用率を上げてアラーム発行させる
+② EventBridgeルールでターゲットに指定したLambdaに渡される
+③ Lambdaで設定したSNSに渡される</p>
+<p>ちなみにCPU使用率UP時はこんなのをshellにしてバックグラウンドで複数実行させた。アラームの設定で閾値10%にしたが、これをt3.microマシン上で3回くらい同時に回せば軽く90%くらいになる。</p>
+<p><code>CNT=0; while [ $CNT -lt 100000 ]; do CNT=$(( CNT + 1 ));done</code></p>
+<p> </p>
+<p>少し経つとアラームのステータスが変わって、カスタム件名のメールが届いた！しかし本文がひどい&hellip;</p>
+<p><img loading="lazy" src="/img/a/alarm-mail1.jpg" alt="アラームメール"  />
+</p>
+<p> </p>
+<p>サンプルコードでは<code>Message=json.dumps(event) </code>としているから、JSONデータをそのまま吐き出しているだけ。本文をカスタマイズする場合はこのeventをいじる必要がある。冒頭のクラメソさんの事例もはっきりいって面倒くさそうだったが、コードでやるのも面倒だなぁ、何せサンデープログラマだから。</p>
+<p>と、ここで別途最近実施した、特別カスタマイズをしないアラーム + SNS送信検証時のメールを見たら、英語のみとはいえこっちの方がまだ全然見やすい。そりゃわかりにくいけど、JSON生データよりマシ。もう本文はこれでいいんじゃね？という気もするんだが。件名も、アラーム名が件名に入るんだから識別・フィルタしやすいアラーム名にすればどうにかなりそうな気もする。&hellip;と、減速気味になってきた。</p>
+<p><img loading="lazy" src="/img/a/alarm-mail2.jpg" alt="アラームメール"  />
+
+<img loading="lazy" src="/img/a/alarm-mail3.jpg" alt="アラームメール"  />
+</p>
+<p> </p>
+<p>&hellip;が！以下の補足事項を思い出した。アラーム単体では無効化・有効化の制御ができない。となると、やはりEventBridgに組み込む方がいいんだよな。うーむ&hellip;。頭痛いから明日考えよう。明後日かもしれない。</p>
+<p> </p>
+<p><strong>補足</strong>
+アラームを一時無効化したい場合は、Rule側で制御する。マネコンで対象のルールを選択して、「Distable/無効にする」ボタンを押下。（アラーム単体ではこの機能がない）</p>
+<p> </p>
+<p><img loading="lazy" src="/img/a/tokyo_shop.JPG" alt="shop"  />
+</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>「いてくれるだけでいい人」の理由</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

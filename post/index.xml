@@ -6,7 +6,21 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 03 Nov 2021 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 03 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
+      <pubDate>Wed, 03 Nov 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</guid>
+      <description>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&amp;quot; \ --metric-name &amp;quot;CPUUtilization&amp;quot; \ --namespace &amp;quot;AWS/EC2&amp;quot; \ --statistic &amp;quot;Maximum&amp;quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;quot;GreaterThanThreshold&amp;quot; \ --dimensions &amp;quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;quot;  EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
+    </item>
+    
     <item>
       <title>「いてくれるだけでいい人」の理由</title>
       <link>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</link>

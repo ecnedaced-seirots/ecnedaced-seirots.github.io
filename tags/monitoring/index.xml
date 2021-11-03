@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>eventbridge on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
-    <description>Recent content in eventbridge on Go Buddy Go</description>
+    <title>monitoring on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/monitoring/</link>
+    <description>Recent content in monitoring on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 03 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/eventbridge/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 03 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/monitoring/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
@@ -19,24 +19,6 @@ CloudWatch アラームの通知メールを少しでも読みやすくしたい
  処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
 $ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&amp;quot; \ --metric-name &amp;quot;CPUUtilization&amp;quot; \ --namespace &amp;quot;AWS/EC2&amp;quot; \ --statistic &amp;quot;Maximum&amp;quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;quot;GreaterThanThreshold&amp;quot; \ --dimensions &amp;quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;quot;  EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
-    </item>
-    
-    <item>
-      <title>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
-      <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
-      <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</description>
     </item>
     
   </channel>
