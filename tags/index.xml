@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 03 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>brain hacks</title>
+      <link>https://ecnedaced-seirots.github.io/tags/brain-hacks/</link>
+      <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/brain-hacks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>health hacks</title>
+      <link>https://ecnedaced-seirots.github.io/tags/health-hacks/</link>
+      <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/health-hacks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>supplement</title>
+      <link>https://ecnedaced-seirots.github.io/tags/supplement/</link>
+      <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/supplement/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>amazon sns</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
@@ -136,7 +163,7 @@
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
+      <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
@@ -202,15 +229,6 @@
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws-cli/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>amazon cloudwatch</title>
-      <link>https://ecnedaced-seirots.github.io/tags/amazon-cloudwatch/</link>
-      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/amazon-cloudwatch/</guid>
       <description></description>
     </item>
     
