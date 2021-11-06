@@ -138,6 +138,101 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
+数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが…
+CloudFormationでCloudWatchAlermを作成する
+ ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
+もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
+ ここから。
+オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
+サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
+以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど…、数年前の事例なので。
+スケールアウトポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
+snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&#34; scaleoutpolicy=&#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &#34;test-web-scaleout-alarm&#34; \ --alarm-description &#34;Alarm when CPU exceeds 70%&#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&#34;test-web-asg&#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。...</p>
+  </section>
+  <footer class="entry-footer">October 10, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム作成時のメモ（過去事例）" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</h2>
+  </header>
+  <section class="entry-content">
+    <p>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
+前回投稿
+AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）
+繰り返しになるけれども、前提条件をおさらいとして記載。
+やりたいこと
+AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
+他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
+ 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
+1-資材配布元（アカウントA）
+① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
+② KMSキー (両方のアカウントにアクセス許可する)
+③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
+④ CodePipelineが使用するサービスロール
+⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
+ 2-資材配布先（アカウントB）
+① CodeDeploy定義（アプリケーション/デプロイメントグループ）
+② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
+③ ②のIAMロールをアタッチしたデプロイ先ec2
+④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
+ 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
+2-① CodeDeploy定義
+アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
+2-② ec2用のIAMロール
+KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
+KMS用インラインポリシー
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;kms:DescribeKey&#34;, &#34;kms:GenerateDataKey*&#34;, &#34;kms:Encrypt&#34;, &#34;kms:ReEncrypt*&#34;, &#34;kms:Decrypt&#34; ], &#34;Resource&#34;: [ &#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&#34; #KMSのARN ] } ] }  S3用インラインポリシー...</p>
+  </section>
+  <footer class="entry-footer">October 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</h2>
+  </header>
+  <section class="entry-content">
+    <p>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
+ やりたいこと
+AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい…）
+ 主な参考ページ
+他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
+ 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
+クロスアカウントCodeBuild &#43; パイプライン例
+CodePipelineでアカウントをまたいだパイプラインを作成してみる
+ 制約事項
+ クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+1-資材配布元（アカウントA）
+① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
+② KMSキー (両方のアカウントにアクセス許可する)
+③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
+④ CodePipelineが使用するサービスロール
+⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
+JSON取得コマンド
+$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json  2-資材配布先（アカウントB）
+① CodeDeploy定義（アプリケーション/デプロイメントグループ）
+② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
+③ ②のIAMロールをアタッチしたデプロイ先ec2
+④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
+ 作業概要 上記各リソースを作成済として、以下の作業を行う。
+アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名]....</p>
+  </section>
+  <footer class="entry-footer">October 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</h2>
   </header>
   <section class="entry-content">
