@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 07 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>english</title>
+      <link>https://ecnedaced-seirots.github.io/tags/english/</link>
+      <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/english/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>eye candy</title>
+      <link>https://ecnedaced-seirots.github.io/tags/eye-candy/</link>
+      <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/eye-candy/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
@@ -170,15 +188,6 @@
     </item>
     
     <item>
-      <title>eye candy</title>
-      <link>https://ecnedaced-seirots.github.io/tags/eye-candy/</link>
-      <pubDate>Tue, 26 Oct 2021 20:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/eye-candy/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>cloudwatchlogs</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
       <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
@@ -202,15 +211,6 @@
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/github/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>english</title>
-      <link>https://ecnedaced-seirots.github.io/tags/english/</link>
-      <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/english/</guid>
       <description></description>
     </item>
     
