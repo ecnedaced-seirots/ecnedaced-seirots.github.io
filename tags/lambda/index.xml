@@ -6,7 +6,20 @@
     <description>Recent content in lambda on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 03 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Nov 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>
+      <pubDate>Sun, 14 Nov 2021 12:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</guid>
+      <description>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
+CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信
+ 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+変更前：lambda_function.py(1)
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&amp;#39;awslogs&amp;#39;][&amp;#39;data&amp;#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;][i], ensure_ascii=False)) try: sns = boto3.client(&amp;#39;sns&amp;#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;], Message = log_json[&amp;#39;message&amp;#39;], Subject = os.</description>
+    </item>
+    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
@@ -22,7 +35,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&am
     </item>
     
     <item>
-      <title>CloudWatchlogsからサブスクリプションフィルタ &#43; Lambdaでメール送信</title>
+      <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</link>
       <pubDate>Sun, 31 Oct 2021 14:00:00 +0900</pubDate>
       

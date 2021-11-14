@@ -149,6 +149,21 @@
 
 <article class="first-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
+CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
+ 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+変更前：lambda_function.py(1)
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os....</p>
+  </section>
+  <footer class="entry-footer">November 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>英単語メモ - elaborate</h2>
   </header>
   <section class="entry-content">
@@ -232,28 +247,6 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   </section>
   <footer class="entry-footer">November 3, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>「いてくれるだけでいい人」の理由</h2>
-  </header>
-  <section class="entry-content">
-    <p>職場とか、いろんなチーム・グループの中で、「この人がいてくれると安心」「いてくれるだけでいい」と思える人が稀にいる。本当に、稀に、だが。そういう人と、その他の人々の違いは一体何なのか、とモヤっと不思議に思っていた。若干解明できそうなのが、以下の記事。ここに書かれている要因だけではないと思うが、理由の一部としては納得できる。
-「いるだけでチームの雰囲気をよくする人」の口癖4つ。“ど” から始まるあの言葉がかなり使える
- （以降軽くNSFW画像あり。閲覧注意）
- 記事では「いるだけでチームの雰囲気をよくする人」の4つの要素を述べている。
- 「ちょうどよかった」悪い状況にある時でもポジティブに捉える 「ありがとう」を言う時に別途感謝の言葉を添える どの、どのように、どちらか、等「ど」ではじまる質問で相手の話を引き出す 「教えてください」で相手へのリスペクトの気持ちを表す   上記のうち、1.と2.は他の自己啓発系コンテンツでもよく目にする話なので割愛する。まぁ「感謝の言葉を出し惜しみしない」、これは確かに大事だよ、俺も実践してる。相手によるけどね。
-3.は、俺はこれは実践する気ないけど、要するに聞き上手になって相手の気分をよくしてやれ、つうことだ。
-  ハーバード大学の研究論文（2012年）によると、自分の話をしているとき、おいしい食事をするときや収入を得るときと同じように脳の報酬系という部位が活性化したことが、 約300人の脳をfMRIでスキャンした結果からわかったのだそう。私たちが聞き上手な人に好感を抱くのは、「自分の話をするのが好き！」という人間の本能を満たしてくれるからなのかもしれません。
-  「上手に質問をすれば共感力が上がり、相手に好感を抱かせることができる」につながる、と。俺は「聞き上手ボランティア」をやる気はさらさらないが、興味深いのは先の引用にある「自分の話をするのが好き！という人間の本能」だ。よくいるよな、人の話は全然聞かないで、延々と自分のことを話したがるやつ。（ま、経験上女に多いという傾向は、ある）
-俺は今までそういうやつのことを、ただ自己愛が強くて、その自己愛を充足させるために他人に自分話を押売りして聞かせているもんだと思っていた。しかし上記引用で、「自分の話をしているときに脳の報酬系が活性化する」というのを読んで「そうか！」とひらめいた。脳の報酬系とはドーパミンのことである。ドーパミンは快楽を司る神経伝達物質だ。つまり自分のことを話すのは、人類共通の快感だったのだ！
-まぁ確かに、自分だってそういう面があるのは認めるよ。よく「話を聞いてもらってスッキリした」って言うもんな。何で話すだけでスッキリするのかって、ちゃんと理由があったんだな。しかしこれも度がすぎると聞かされる相手が迷惑だし、みっともないという自覚はある。自分のことを延々と話す人は、その制御が効かなくて、自らの快感原則に従って暴走しているんだろう。プラス自己愛もあるだろうけどね、どっちにしろこの手の人間とは遠い距離を置きたいものである。相手だけ満足して、自分はエネルギー吸い取られるだけだからな…
-  話が大分脱線した、本来の主旨に戻る。うまい質問の仕方。「ど」で始まる疑問符がキーらしいが、具体的には記事の引用を俺なりにアレンジすると以下のようになる。（仕事関連の想定じゃないとピンと来ないもんで…）
-   キーワード 質問例     What ー＞「どう、どんな」 どんな理由でこの仕事を始めたんですか？   Who ー＞「どの人、どんな人」 どんな人と仕事してみたいですか？   When ー＞「どんなとき、どのタイミング」 どんなときに達成感を感じますか？   Where ー＞「どこに、どこで」 どこでその分野を学んだのですか？   Why ー＞「どうして」 どうしてその製品に人気が集中するんでしょうね？   Which ー＞「どれ、どっち」 どちらのアイデアが気に入りましたか？   How ー＞「どうやって、どのように」 どのようにしてその課題を解決したんですか？     自己愛満々野郎の自分話を聞かされるのはゴメンだが、まともな相手とのコミュニケーション手法としては頭の片隅においておこう。...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to 「いてくれるだけでいい人」の理由" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
