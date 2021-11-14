@@ -6,7 +6,20 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 14 Nov 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Nov 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
+      <pubDate>Sun, 14 Nov 2021 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</guid>
+      <description>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
+類似の過去記事
+CloudWatchアラーム + SNSからのメール件名をカスタマイズする
+ lambda_function.py
+import boto3 import json import os import re from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s1 = json.dumps(data) e = json.loads(s1) print(e) # eventから項目を抽出 t = e[&amp;#39;time&amp;#39;] trig = e[&amp;#39;detail-type&amp;#39;] alarm = e[&amp;#39;resources&amp;#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&amp;#39;detail&amp;#39;][&amp;#39;state&amp;#39;][&amp;#39;reason&amp;#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&amp;#39;detail&amp;#39;][&amp;#39;configuration&amp;#39;][&amp;#39;metrics&amp;#39;][0][&amp;#39;metricStat&amp;#39;][&amp;#39;metric&amp;#39;][&amp;#39;dimensions&amp;#39;] res_str = json.dumps(resource) res = re.sub(r&amp;#34;[{}\&amp;#34;]&amp;#34;, &amp;#34;&amp;#34;, res_str) # 件名整形 subject_str = &amp;#34;本番環境 - アラーム &amp;#34; + trig + res # メッセージ本文整形 fix_msg = &amp;#34;以下のアラームが発生しました&amp;#34; + &amp;#34;\n&amp;#34; trig_msg = &amp;#34;発生契機:&amp;#34; + &amp;#34;\n&amp;#34; + trig time_msg = &amp;#34;発生時刻:&amp;#34; + &amp;#34;\n&amp;#34; + t alm_msg = &amp;#34;アラーム:&amp;#34; + &amp;#34;\n&amp;#34; + alarm[0] res_msg =&amp;#34;対象リソース:&amp;#34; &amp;#34;\n&amp;#34; + res dtl_msg =&amp;#34;理由:&amp;#34; &amp;#34;\n&amp;#34; + reason msg = fix_msg + &amp;#34;\n\n&amp;#34; + trig_msg + &amp;#34;\n\n&amp;#34; + time_msg + &amp;#34;\n\n&amp;#34; + alm_msg + &amp;#34;\n\n&amp;#34; + res_msg + &amp;#34;\n\n&amp;#34; + dtl_msg try: sns = boto3.</description>
+    </item>
+    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>
