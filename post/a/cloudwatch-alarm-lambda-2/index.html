@@ -75,8 +75,8 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   "keywords": [
     "cloudwatch", "cloudwatchalarm", "monitoring", "lambda", "AWS"
   ],
-  "articleBody": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n lambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e['time'] trig = e['detail-type'] alarm = e['resources'] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e['detail']['state']['reason'] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e['detail']['configuration']['metrics'][0]['metricStat']['metric']['dimensions'] res_str = json.dumps(resource) res = re.sub(r\"[{}\\\"]\", \"\", res_str) # 件名整形 subject_str = \"本番環境 - アラーム \" + trig + \" - \" + res # メッセージ本文整形 fix_msg = \"以下のアラームが発生しました\" + \"\\n\" trig_msg = \"発生契機:\" + \"\\n\" + trig time_msg = \"発生時刻:\" + \"\\n\" + t alm_msg = \"アラーム:\" + \"\\n\" + alarm[0] res_msg =\"対象リソース:\" \"\\n\" + res dtl_msg =\"理由:\" \"\\n\" + reason msg = fix_msg + \"\\n\\n\" + trig_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + alm_msg + \"\\n\\n\" + res_msg + \"\\n\\n\" + dtl_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  マネコン上でテストしたらいくつかエラー出たので対処して、エラー出ないところまでもってきた。で、ec2インスタンスに負荷をかけてアラームステータスにしたが…メールが届かない。あぁ。\n明日以降考えよ。\n 追記\n翌日Lambdaの画面からなんとなくEventBridgeルールのリンクを辿ったら、なんとルールがdisableになっていた！そりゃ何も起こらないわけだ。enableに変更して、改めてインスタンスで負荷をかけたところ、カスタムメールが届いた！大したことじゃないけど、こういうのはいつまでたっても嬉しいもんだ。\n  しかしよく見ると日付が変だ。Lambdaテスト用に使った過去データの値みたいだ。な、なんでこうなるんだ。でももう遅いから寝る…\n ",
-  "wordCount" : "172",
+  "articleBody": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n lambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e['time'] trig = e['detail-type'] alarm = e['resources'] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e['detail']['state']['reason'] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e['detail']['configuration']['metrics'][0]['metricStat']['metric']['dimensions'] res_str = json.dumps(resource) res = re.sub(r\"[{}\\\"]\", \"\", res_str) # 件名整形 subject_str = \"本番環境 - アラーム \" + trig + \" - \" + res # メッセージ本文整形 fix_msg = \"以下のアラームが発生しました\" + \"\\n\" trig_msg = \"発生契機:\" + \"\\n\" + trig time_msg = \"発生時刻:\" + \"\\n\" + t alm_msg = \"アラーム:\" + \"\\n\" + alarm[0] res_msg =\"対象リソース:\" \"\\n\" + res dtl_msg =\"理由:\" \"\\n\" + reason msg = fix_msg + \"\\n\\n\" + trig_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + alm_msg + \"\\n\\n\" + res_msg + \"\\n\\n\" + dtl_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  マネコン上でテストしたらいくつかエラー出たので対処して、エラー出ないところまでもってきた。で、ec2インスタンスに負荷をかけてアラームステータスにしたが…メールが届かない。あぁ。\n明日以降考えよ。\n 追記\n翌日Lambdaの画面からなんとなくEventBridgeルールのリンクを辿ったら、なんとルールがdisableになっていた！そりゃ何も起こらないわけだ。enableに変更して、改めてインスタンスで負荷をかけたところ、カスタムメールが届いた！大したことじゃないけど、こういうのはいつまでたっても嬉しいもんだ。\n  しかしよく見ると日付が変だ。Lambdaテスト用に使った過去データの値みたいだ。な、なんでこうなるんだ。でももう遅いから寝る…\n 追記2\nさらにその翌日、テストデータ削除して再試行してみたところ、期待値となるまともなメールが届いた。\n 時間はUTC表記。これどうするかな。ま、ここまできたら後はどうにでもなるさ。\n ",
+  "wordCount" : "175",
   "inLanguage": "en",
   "datePublished": "2021-11-14T23:00:00+09:00",
   "dateModified": "2021-11-14T23:00:00+09:00",
@@ -276,6 +276,13 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
 </p>
 <p> </p>
 <p>しかしよく見ると日付が変だ。Lambdaテスト用に使った過去データの値みたいだ。な、なんでこうなるんだ。でももう遅いから寝る&hellip;</p>
+<p> </p>
+<p>追記2<br>
+さらにその翌日、テストデータ削除して再試行してみたところ、期待値となるまともなメールが届いた。</p>
+<p><img loading="lazy" src="/img/a/cwa_mail_sample_2.jpg" alt="カスタムメールサンプル"  />
+</p>
+<p> </p>
+<p>時間はUTC表記。これどうするかな。ま、ここまできたら後はどうにでもなるさ。</p>
 <p> </p>
 <p><img loading="lazy" src="/img/a/mishima_2932.JPG" alt="Park"  />
 </p>
