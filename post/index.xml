@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 14 Nov 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 19 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>英語メモ - into the bargain</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</link>
+      <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</guid>
+      <description>into the bargain = in addition
+&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より
+ </description>
+    </item>
+    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
@@ -34,7 +45,7 @@ import base64 import json import zlib import datetime import os import boto3 fro
     </item>
     
     <item>
-      <title>英単語メモ - elaborate</title>
+      <title>英語メモ - elaborate</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-elaborate/</link>
       <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
       
