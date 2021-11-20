@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>lambda | Go Buddy Go</title>
+<title>amazon sns | Go Buddy Go</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/lambda/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/amazon-sns/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,14 +19,14 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml">
-<meta property="og:title" content="lambda" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/amazon-sns/index.xml">
+<meta property="og:title" content="amazon sns" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/lambda/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/amazon-sns/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="lambda"/>
+<meta name="twitter:title" content="amazon sns"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -133,47 +133,34 @@
 </header>
 <main class="main"> 
 <header class="page-header">
-  <h1>lambda</h1>
+  <h1>amazon sns</h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</h2>
+    <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
   </header>
   <section class="entry-content">
-    <p>AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
-今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ...</p>
+    <p>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
+数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが…
+CloudFormationでCloudWatchAlermを作成する
+ ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
+もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
+ ここから。
+オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
+サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
+以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど…、数年前の事例なので。
+スケールアウトポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
+snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&#34; scaleoutpolicy=&#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &#34;test-web-scaleout-alarm&#34; \ --alarm-description &#34;Alarm when CPU exceeds 70%&#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&#34;test-web-asg&#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。...</p>
   </section>
-  <footer class="entry-footer">October 31, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
-  </section>
-  <footer class="entry-footer">October 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS EventBridge &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
+  <footer class="entry-footer">October 10, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム作成時のメモ（過去事例）" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="https://ecnedaced-seirots.github.io/tags/lambda/">« Prev Page</a>
+    <a class="prev" href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">« Prev Page</a>
   </nav>
 </footer>
     </main>

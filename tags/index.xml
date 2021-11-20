@@ -6,13 +6,49 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 20 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Nov 2021 00:30:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>amazon sns</title>
+      <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
+      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
+      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>eventbridge</title>
+      <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
+      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lambda</title>
+      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
+      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>monitoring</title>
+      <link>https://ecnedaced-seirots.github.io/tags/monitoring/</link>
+      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/monitoring/</guid>
       <description></description>
     </item>
     
@@ -35,24 +71,6 @@
     </item>
     
     <item>
-      <title>lambda</title>
-      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
-      <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>monitoring</title>
-      <link>https://ecnedaced-seirots.github.io/tags/monitoring/</link>
-      <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/monitoring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>english</title>
       <link>https://ecnedaced-seirots.github.io/tags/english/</link>
       <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
@@ -67,15 +85,6 @@
       <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/literature/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>amazon sns</title>
-      <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
-      <pubDate>Sun, 14 Nov 2021 12:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
       <description></description>
     </item>
     
@@ -103,15 +112,6 @@
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws-systems-manager/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>eventbridge</title>
-      <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
-      <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
       <description></description>
     </item>
     
