@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする | Go Buddy Go</title>
+<title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2) | Go Buddy Go</title>
 <meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, AWS" />
 <meta name="description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
@@ -25,7 +25,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする" />
+<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" />
 <meta property="og:description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
@@ -37,7 +37,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <meta property="article:modified_time" content="2021-11-14T23:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする"/>
+<meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)"/>
 <meta name="twitter:description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
@@ -59,7 +59,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする",
+      "name": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)",
       "item": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"
     }
   ]
@@ -69,8 +69,8 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする",
-  "name": "CloudWatchアラーム \u002b SNSからのメール本文をカスタマイズする",
+  "headline": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)",
+  "name": "CloudWatchアラーム \u002b SNSからのメール本文をカスタマイズする(2)",
   "description": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n lambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print(\u0026#39;Loading function\u0026#39;) sns_arn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[\u0026#39;time\u0026#39;] trig = e[\u0026#39;detail-type\u0026#39;] alarm = e[\u0026#39;resources\u0026#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[\u0026#39;detail\u0026#39;][\u0026#39;state\u0026#39;][\u0026#39;reason\u0026#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[\u0026#39;detail\u0026#39;][\u0026#39;configuration\u0026#39;][\u0026#39;metrics\u0026#39;][0][\u0026#39;metricStat\u0026#39;][\u0026#39;metric\u0026#39;][\u0026#39;dimensions\u0026#39;] res_str = json.dumps(resource) res = re.sub(r\u0026#34;[{}\\\u0026#34;]\u0026#34;, \u0026#34;\u0026#34;, res_str) # 件名整形 subject_str = \u0026#34;本番環境 - アラーム \u0026#34; + trig + \u0026#34; - \u0026#34; + res # メッセージ本文整形 fix_msg = \u0026#34;以下のアラームが発生しました\u0026#34; + \u0026#34;\\n\u0026#34; trig_msg = \u0026#34;発生契機:\u0026#34; + \u0026#34;\\n\u0026#34; + trig time_msg = \u0026#34;発生時刻:\u0026#34; + \u0026#34;\\n\u0026#34; + t alm_msg = \u0026#34;アラーム:\u0026#34; + \u0026#34;\\n\u0026#34; + alarm[0] res_msg =\u0026#34;対象リソース:\u0026#34; \u0026#34;\\n\u0026#34; + res dtl_msg =\u0026#34;理由:\u0026#34; \u0026#34;\\n\u0026#34; + reason msg = fix_msg + \u0026#34;\\n\\n\u0026#34; + trig_msg + \u0026#34;\\n\\n\u0026#34; + time_msg + \u0026#34;\\n\\n\u0026#34; + alm_msg + \u0026#34;\\n\\n\u0026#34; + res_msg + \u0026#34;\\n\\n\u0026#34; + dtl_msg try: sns = boto3.",
   "keywords": [
     "cloudwatch", "cloudwatchalarm", "monitoring", "lambda", "AWS"
@@ -202,7 +202,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   <header class="post-header">
     
     <h1 class="post-title">
-      CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする
+      CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
     </h1>
     <div class="post-meta">November 14, 2021
 </div>

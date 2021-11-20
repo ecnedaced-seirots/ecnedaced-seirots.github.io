@@ -6,9 +6,27 @@
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 14 Nov 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする</title>
+      <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</link>
+      <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</guid>
+      <description>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム + SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&amp;rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00  当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.</description>
+    </item>
+    
+    <item>
+      <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
       <pubDate>Sun, 14 Nov 2021 23:00:00 +0900</pubDate>
       

@@ -153,6 +153,26 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
+  </section>
+  <footer class="entry-footer">November 20, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>英語メモ - into the bargain</h2>
   </header>
   <section class="entry-content">
@@ -166,7 +186,7 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする</h2>
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
   </header>
   <section class="entry-content">
     <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
@@ -176,7 +196,7 @@ CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズす
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
   </section>
   <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -205,35 +225,6 @@ import base64 import json import zlib import datetime import os import boto3 fro
   </section>
   <footer class="entry-footer">November 13, 2021</footer>
   <a class="entry-link" aria-label="post link to 英語メモ - elaborate" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>AWS監視の方式を整理したい</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
-監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
-閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
-ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
-プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
-EC2上のプロセスを監視し自動復旧する
-CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
-AWSでプロセス監視を実装したい
-CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
-EC2のプロセス監視と自動再起動
- procstat事例
-以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
-CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
-  </section>
-  <footer class="entry-footer">November 7, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

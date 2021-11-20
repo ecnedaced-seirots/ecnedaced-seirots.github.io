@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3) | Go Buddy Go</title>
+<meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, AWS" />
+<meta name="description" content="表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" />
+<meta property="og:description" content="表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-20T15:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-11-20T15:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)"/>
+<meta name="twitter:description" content="表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする(3)",
+      "item": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする(3)",
+  "name": "CloudWatchアラーム \u002b SNSからのメール本文をカスタマイズする(3)",
+  "description": "表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。\n 過去記事\nCloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば'2021-10-24T09:35:10Z\u0026rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。\nで、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。\nfrom datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), 'JST') utcstr = '2021-10-24T09:35:10Z' utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00  当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？\nともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。\n lambda_function.py （時刻表示JSTバージョン）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(\u0026#39;Loading function\u0026#39;) sns_arn = os.",
+  "keywords": [
+    "cloudwatch", "cloudwatchalarm", "monitoring", "lambda", "AWS"
+  ],
+  "articleBody": "表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。\n 過去記事\nCloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば'2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。\nで、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。\nfrom datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), 'JST') utcstr = '2021-10-24T09:35:10Z' utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00  当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？\nともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。\n lambda_function.py （時刻表示JSTバージョン）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e['time'] trig = e['detail-type'] alarm = e['resources'] # 時刻変換 JST = timezone(timedelta(hours=+9), 'JST') utcstr_parsed = parser.parse(t) ux_time = utcstr_parsed.timestamp() epoch = int(ux_time) # unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) # dtを整形 dt_str = dt.strftime('%Y-%m-%d%H:%M:%S') # 件名に投入するアラーム名を抽出 alm_list = alarm[0].split(':') alm_name = alm_list[-1] # 「理由」となる詳細抽出 reason = e['detail']['state']['reason'] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e['detail']['configuration']['metrics'][0]['metricStat']['metric']['dimensions'] res_str = json.dumps(resource) res = re.sub(r\"[{}\\\"]\", \"\", res_str) # 件名整形 subject_str = \"本番環境アラーム \" + alm_name + \" - \" + res # メッセージ本文整形 fix_msg = \"以下のアラームが発生しました\" + \"\\n\" trig_msg = \"発生契機:\" + \"\\n\" + trig time_msg = \"発生時刻(JST):\" + \"\\n\" + dt_str alm_msg = \"アラームARN:\" + \"\\n\" + alarm[0] res_msg =\"対象リソース:\" \"\\n\" + res dtl_msg =\"理由:\" \"\\n\" + reason msg = fix_msg + \"\\n\\n\" + trig_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + alm_msg + \"\\n\\n\" + res_msg + \"\\n\\n\" + dtl_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  上記コードにてLambdaを再デプロイしてec2インスタンスでCPU負荷発生させたところ、一応期待値となるメールが届いた。画面下の「理由」に記載の時刻はUTCとなっているが、「発生時刻(JST)」は日本時刻表記である。（ほぼ実際にCPU負荷をかけた時間）\n  参考\n[Python]UNIX秒(UTC)をISO8601(JST)に変換する\nPythonで日付をunixtimeに変換する方法【初心者向け】\n まぁこんなことやったところで誰も感謝もしてくれないがね。映画\"Taxi Driver\"のトラヴィスの気持ちも分かるってもんだ。（…若干くされ気分）\n ",
+  "wordCount" : "260",
+  "inLanguage": "en",
+  "datePublished": "2021-11-20T15:00:00+09:00",
+  "dateModified": "2021-11-20T15:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)
+    </h1>
+    <div class="post-meta">November 20, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。</p>
+<p> </p>
+<p>過去記事<br>
+<a href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2">CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)</a><br>
+<a href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">CloudWatchアラーム + SNSからのメール件名をカスタマイズする</a></p>
+<p> </p>
+<p>CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば'2021-10-24T09:35:10Z&rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。</p>
+<p>で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。</p>
+<pre><code>from datetime import datetime, timezone, timedelta
+from dateutil import parser
+JST = timezone(timedelta(hours=+9), 'JST')
+
+utcstr = '2021-10-24T09:35:10Z'
+utcstr_parsed = parser.parse(utcstr)
+
+#UNIXタイムスタンプに変換
+ux_time = utcstr_parsed.timestamp()
+
+#int型にする
+epoch = int(ux_time)
+
+#JSTに変換
+dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST)
+
+print(dt)
+2021-10-25 03:35:10+09:00
+</code></pre><p> </p>
+<p>当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？</p>
+<p>ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。</p>
+<p> </p>
+<p>lambda_function.py （時刻表示JSTバージョン）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> boto3
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+<span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timezone, timedelta
+<span style="color:#f92672">from</span> dateutil <span style="color:#f92672">import</span> parser
+
+print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+
+sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+    data <span style="color:#f92672">=</span> event
+    s <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(data)
+    e <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(s)
+    print(e)
+    
+    <span style="color:#75715e"># eventから項目を抽出</span>
+    t <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;time&#39;</span>]
+    trig <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail-type&#39;</span>]
+    alarm <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;resources&#39;</span>]
+    
+    <span style="color:#75715e"># 時刻変換</span>
+    JST <span style="color:#f92672">=</span> timezone(timedelta(hours<span style="color:#f92672">=+</span><span style="color:#ae81ff">9</span>), <span style="color:#e6db74">&#39;JST&#39;</span>)
+    utcstr_parsed <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse(t)
+    ux_time <span style="color:#f92672">=</span> utcstr_parsed<span style="color:#f92672">.</span>timestamp()
+    epoch <span style="color:#f92672">=</span> int(ux_time)
+    <span style="color:#75715e"># unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型</span>
+    dt <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromtimestamp(epoch)<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)<span style="color:#f92672">.</span>astimezone(tz<span style="color:#f92672">=</span>JST)
+    <span style="color:#75715e"># dtを整形</span>
+    dt_str <span style="color:#f92672">=</span> dt<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
+    
+    <span style="color:#75715e"># 件名に投入するアラーム名を抽出</span>
+    alm_list <span style="color:#f92672">=</span> alarm[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+    alm_name <span style="color:#f92672">=</span> alm_list[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+    
+    <span style="color:#75715e"># 「理由」となる詳細抽出</span>
+    reason <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;state&#39;</span>][<span style="color:#e6db74">&#39;reason&#39;</span>]
+    
+    <span style="color:#75715e"># リソース（ここではインスタンスID)を抽出し、文字列整形</span>
+    resource <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;configuration&#39;</span>][<span style="color:#e6db74">&#39;metrics&#39;</span>][<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;metricStat&#39;</span>][<span style="color:#e6db74">&#39;metric&#39;</span>][<span style="color:#e6db74">&#39;dimensions&#39;</span>]
+    res_str <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(resource)
+    res <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, res_str)
+    
+    <span style="color:#75715e"># 件名整形</span>
+    subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境アラーム &#34;</span> <span style="color:#f92672">+</span> alm_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> res
+    
+    <span style="color:#75715e"># メッセージ本文整形</span>
+    fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のアラームが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+    trig_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生契機:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig
+    time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻(JST):&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dt_str
+    alm_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;アラームARN:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alarm[<span style="color:#ae81ff">0</span>]
+    res_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;対象リソース:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res
+    dtl_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;理由:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> reason
+    msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alm_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dtl_msg
+    
+    <span style="color:#66d9ef">try</span>:
+        sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+        
+        <span style="color:#75715e">#SNS Publish</span>
+        publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+            TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+            Message <span style="color:#f92672">=</span> msg,
+            Subject <span style="color:#f92672">=</span> subject_str
+        )
+    
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+        print(e)
+</code></pre></div><p> </p>
+<p>上記コードにてLambdaを再デプロイしてec2インスタンスでCPU負荷発生させたところ、一応期待値となるメールが届いた。画面下の「理由」に記載の時刻はUTCとなっているが、「発生時刻(JST)」は日本時刻表記である。（ほぼ実際にCPU負荷をかけた時間）</p>
+<p> </p>
+<p><img loading="lazy" src="/img/a/alarm_mail_1120.jpg" alt="CWアラーム"  />
+</p>
+<p> </p>
+<p>参考<br>
+<a href="https://qiita.com/taumu/items/e723aba65ee6996d81cb">[Python]UNIX秒(UTC)をISO8601(JST)に変換する</a><br>
+<a href="https://techacademy.jp/magazine/18811">Pythonで日付をunixtimeに変換する方法【初心者向け】</a></p>
+<p> </p>
+<p>まぁこんなことやったところで誰も感謝もしてくれないがね。映画&quot;Taxi Driver&quot;のトラヴィスの気持ちも分かるってもんだ。（&hellip;若干くされ気分）</p>
+<p> </p>
+<p><img loading="lazy" src="/img/a/bcn_0031.JPG" alt="BCN"  />
+</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">cloudwatchalarm</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>英語メモ - into the bargain</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
