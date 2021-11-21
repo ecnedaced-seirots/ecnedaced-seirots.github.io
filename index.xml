@@ -6,7 +6,21 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 21 Nov 2021 00:30:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraformループ処理のリンク集</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</link>
+      <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</guid>
+      <description>Terraformでループ処理ってどうするんだっけ&amp;hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
+  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
+  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
+ Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
+ Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
+ 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   </description>
+    </item>
+    
     <item>
       <title>AWS EventBridge &#43; SNSからのメール本文をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</link>
