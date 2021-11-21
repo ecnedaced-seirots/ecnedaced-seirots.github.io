@@ -146,7 +146,9 @@
   Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   </p>
+ 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+ Terraform職人再入門2020   </p>
   </section>
   <footer class="entry-footer">November 21, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraformループ処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
