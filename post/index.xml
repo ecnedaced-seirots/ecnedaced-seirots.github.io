@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Nov 2021 00:10:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python - Jinja2テンプレートで連続データを処理したい</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
+      <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
+      <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
+とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
+  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の超シンプルな例</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
