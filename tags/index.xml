@@ -6,11 +6,20 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 21 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>IaC</title>
       <link>https://ecnedaced-seirots.github.io/tags/iac/</link>
-      <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
+      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/iac/</guid>
       <description></description>
@@ -19,7 +28,7 @@
     <item>
       <title>terraform</title>
       <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
-      <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
+      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
       <description></description>
@@ -31,15 +40,6 @@
       <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     

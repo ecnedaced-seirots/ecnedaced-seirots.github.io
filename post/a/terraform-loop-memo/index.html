@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Terraformループ処理のリンク集 | Go Buddy Go</title>
+<title>Terraform loop処理のリンク集 | Go Buddy Go</title>
 <meta name="keywords" content="terraform, IaC" />
 <meta name="description" content="Terraformでループ処理ってどうするんだっけ&hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
   for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
@@ -13,7 +13,7 @@
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
  新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
  Terraform職人再入門2020   ">
 <meta name="author" content="">
 <link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/" />
@@ -28,14 +28,14 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Terraformループ処理のリンク集" />
+<meta property="og:title" content="Terraform loop処理のリンク集" />
 <meta property="og:description" content="Terraformでループ処理ってどうするんだっけ&hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
   for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
   Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
  新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
  Terraform職人再入門2020   " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/" /><meta property="article:section" content="post" />
@@ -43,14 +43,14 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
 <meta property="article:modified_time" content="2021-11-21T21:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Terraformループ処理のリンク集"/>
+<meta name="twitter:title" content="Terraform loop処理のリンク集"/>
 <meta name="twitter:description" content="Terraformでループ処理ってどうするんだっけ&hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
   for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
   Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
  新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; version = &quot;3.66.0&quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
  Terraform職人再入門2020   "/>
 
 
@@ -68,7 +68,7 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Terraformループ処理のリンク集",
+      "name": "Terraform loop処理のリンク集",
       "item": "https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"
     }
   ]
@@ -78,13 +78,13 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Terraformループ処理のリンク集",
-  "name": "Terraformループ処理のリンク集",
-  "description": "Terraformでループ処理ってどうするんだっけ\u0026hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。\n  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。\n  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。\n Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。\n Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。\n 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。\nterraform { required_providers { aws = { source = \u0026quot;hashicorp/aws\u0026quot; version = \u0026quot;3.66.0\u0026quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。\n Terraform職人再入門2020   ",
+  "headline": "Terraform loop処理のリンク集",
+  "name": "Terraform loop処理のリンク集",
+  "description": "Terraformでループ処理ってどうするんだっけ\u0026hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。\n  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。\n  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。\n Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。\n Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。\n 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。\nterraform { required_providers { aws = { source = \u0026quot;hashicorp/aws\u0026quot; version = \u0026quot;3.66.0\u0026quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。\u0026hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。\n Terraform職人再入門2020   ",
   "keywords": [
     "terraform", "IaC"
   ],
-  "articleBody": "Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。\n  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。\n  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。\n Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。\n Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。\n 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。\nterraform { required_providers { aws = { source = \"hashicorp/aws\" version = \"3.66.0\" } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。\n Terraform職人再入門2020   ",
+  "articleBody": "Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。\n  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。\n  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。\n Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。\n Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。\n 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。\nterraform { required_providers { aws = { source = \"hashicorp/aws\" version = \"3.66.0\" } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。\n Terraform職人再入門2020   ",
   "wordCount" : "34",
   "inLanguage": "en",
   "datePublished": "2021-11-21T21:00:00+09:00",
@@ -211,7 +211,7 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
   <header class="post-header">
     
     <h1 class="post-title">
-      Terraformループ処理のリンク集
+      Terraform loop処理のリンク集
     </h1>
     <div class="post-meta">November 21, 2021
 </div>
@@ -252,7 +252,7 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
   }
 }
 </code></pre><p> </p>
-<p>以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。</p>
+<p>以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。</p>
 <ul>
 <li><a href="https://qiita.com/minamijoyo/items/3a7467f70d145ac03324">Terraform職人再入門2020</a></li>
 </ul>
@@ -268,6 +268,11 @@ terraform { required_providers { aws = { source = &quot;hashicorp/aws&quot; vers
       <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>Terraform loop処理の超シンプルな例</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">
     <span class="title">Next Page »</span>
     <br>

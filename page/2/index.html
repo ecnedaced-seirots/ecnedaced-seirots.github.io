@@ -149,6 +149,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
+類似の過去記事
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ lambda_function.py
+import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
+  </section>
+  <footer class="entry-footer">November 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
   </header>
   <section class="entry-content">
@@ -231,22 +246,6 @@ iHerb独自ブランドのタウリンサプリが安価で嬉しいけど、数
   </section>
   <footer class="entry-footer">November 6, 2021</footer>
   <a class="entry-link" aria-label="post link to タウリン(taurine)の効能いろいろ" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

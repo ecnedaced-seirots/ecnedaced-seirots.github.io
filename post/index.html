@@ -153,7 +153,28 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Terraformループ処理のリンク集</h2>
+    <h2>Terraform loop処理の超シンプルな例</h2>
+  </header>
+  <section class="entry-content">
+    <p>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
+前回投稿
+Terraform loop処理のリンク集
+参考記事
+Terraformで配列をloopする時はfor_eachを使った方がいい
+ やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+init.tf
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } terraform { required_version = &#34;1.0.11&#34; backend &#34;s3&#34; { bucket = &#34;my-terraform-poc-repository&#34; key = &#34;poc/poc.tfstate&#34; region = &#34;ap-northeast-1&#34; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+variable.tf
+variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { param1 = { repository_name = &#34;repo001&#34; description = &#34;desciption for repo001&#34; } param2 = { repository_name = &#34;repo002&#34; description = &#34;desciption for repo002&#34; } param3 = { repository_name = &#34;repo003&#34; description = &#34;desciption for repo003&#34; } } }  codecommit....</p>
+  </section>
+  <footer class="entry-footer">November 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Terraform loop処理のリンク集</h2>
   </header>
   <section class="entry-content">
     <p>Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
@@ -162,11 +183,11 @@
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
  新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。
  Terraform職人再入門2020   </p>
   </section>
   <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraformループ処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
+  <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -215,21 +236,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </section>
   <footer class="entry-footer">November 19, 2021</footer>
   <a class="entry-link" aria-label="post link to 英語メモ - into the bargain" href="https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
-  </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Terraform | Go Buddy Go</title>
+<title>Posts | Go Buddy Go</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/categories/terraform/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,16 +19,31 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml">
-<meta property="og:title" content="Terraform" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/post/index.xml">
+<meta property="og:title" content="Posts" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/categories/terraform/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Terraform"/>
+<meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -133,47 +148,25 @@
 </header>
 <main class="main"> 
 <header class="page-header">
-  <h1>Terraform</h1>
+  <h1>Posts</h1>
 </header>
 
-<article class="post-entry tag-entry"> 
+<article class="post-entry"> 
   <header class="entry-header">
-    <h2>Terraform loop処理の超シンプルな例</h2>
+    <h2>最初の投稿</h2>
   </header>
   <section class="entry-content">
-    <p>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
-前回投稿
-Terraform loop処理のリンク集
-参考記事
-Terraformで配列をloopする時はfor_eachを使った方がいい
- やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
-work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
-init.tf
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } terraform { required_version = &#34;1.0.11&#34; backend &#34;s3&#34; { bucket = &#34;my-terraform-poc-repository&#34; key = &#34;poc/poc.tfstate&#34; region = &#34;ap-northeast-1&#34; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
-variable.tf
-variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { param1 = { repository_name = &#34;repo001&#34; description = &#34;desciption for repo001&#34; } param2 = { repository_name = &#34;repo002&#34; description = &#34;desciption for repo002&#34; } param3 = { repository_name = &#34;repo003&#34; description = &#34;desciption for repo003&#34; } } }  codecommit....</p>
+    <p>とりあえず最初の投稿。
+ </p>
   </section>
-  <footer class="entry-footer">November 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
+  <footer class="entry-footer">September 4, 2021</footer>
+  <a class="entry-link" aria-label="post link to 最初の投稿" href="https://ecnedaced-seirots.github.io/post/a/first/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理のリンク集</h2>
-  </header>
-  <section class="entry-content">
-    <p>Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
-  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
-  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
- Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
- Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。
- Terraform職人再入門2020   </p>
-  </section>
-  <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://ecnedaced-seirots.github.io/post/page/7/">« Prev Page</a>
+  </nav>
+</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>

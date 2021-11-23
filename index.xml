@@ -6,9 +6,28 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 21 Nov 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Terraformループ処理のリンク集</title>
+      <title>Terraform loop処理の超シンプルな例</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
+      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</guid>
+      <description>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
+前回投稿
+Terraform loop処理のリンク集
+参考記事
+Terraformで配列をloopする時はfor_eachを使った方がいい
+ やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+init.tf
+terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } } terraform { required_version = &amp;quot;1.0.11&amp;quot; backend &amp;quot;s3&amp;quot; { bucket = &amp;quot;my-terraform-poc-repository&amp;quot; key = &amp;quot;poc/poc.tfstate&amp;quot; region = &amp;quot;ap-northeast-1&amp;quot; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+variable.tf
+variable &amp;quot;codecommit_param_list&amp;quot; { type = map(map(string)) default = { param1 = { repository_name = &amp;quot;repo001&amp;quot; description = &amp;quot;desciption for repo001&amp;quot; } param2 = { repository_name = &amp;quot;repo002&amp;quot; description = &amp;quot;desciption for repo002&amp;quot; } param3 = { repository_name = &amp;quot;repo003&amp;quot; description = &amp;quot;desciption for repo003&amp;quot; } } }  codecommit.</description>
+    </item>
+    
+    <item>
+      <title>Terraform loop処理のリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</link>
       <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
       
@@ -19,7 +38,7 @@
  Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
  Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
  新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。
+terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&amp;hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
  Terraform職人再入門2020   </description>
     </item>
     
