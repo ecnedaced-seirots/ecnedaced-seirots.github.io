@@ -93,8 +93,8 @@ variable &quot;codecommit_param_list&quot; { type = map(map(string)) default = {
   "keywords": [
     "terraform", "IaC", "AWS"
   ],
-  "articleBody": "前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。\n前回投稿\nTerraform loop処理のリンク集\n参考記事\nTerraformで配列をloopする時はfor_eachを使った方がいい\n やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。\nwork_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。\ninit.tf\nterraform { required_providers { aws = { source = \"hashicorp/aws\" version = \"3.66.0\" } } } terraform { required_version = \"1.0.11\" backend \"s3\" { bucket = \"my-terraform-poc-repository\" key = \"poc/poc.tfstate\" region = \"ap-northeast-1\" } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。\nvariable.tf\nvariable \"codecommit_param_list\" { type = map(map(string)) default = { param1 = { repository_name = \"repo001\" description = \"desciption for repo001\" } param2 = { repository_name = \"repo002\" description = \"desciption for repo002\" } param3 = { repository_name = \"repo003\" description = \"desciption for repo003\" } } }  codecommit.tf\nresource \"aws_codecommit_repository\" \"codecommit_repos\" { for_each = var.codecommit_param_list repository_name = lookup(each.value, \"repository_name\") description = lookup(each.value, \"description\")  codecommit.tfの\"codecommit_repos\"は任意の名称。2行目、for_eachでvariables.tfのcodecommit_param_listを呼び出している。今回の場合はリポジトリ名がrepo001, repo002…となる。この状態でplanを実行すると以下の出力になる。\n: Terraform will perform the following actions: # aws_codecommit_repository.codecommit_repos[\"param1\"] will be created + resource \"aws_codecommit_repository\" \"codecommit_repos\" { + arn = (known after apply) + clone_url_http = (known after apply) + clone_url_ssh = (known after apply) + description = \"desciption for repo001\" + id = (known after apply) + repository_id = (known after apply) + repository_name = \"repo001\" + tags_all = (known after apply) } # aws_codecommit_repository.codecommit_repos[\"param2\"] will be created + resource \"aws_codecommit_repository\" \"codecommit_repos\" { + arn = (known after apply) + clone_url_http = (known after apply) + clone_url_ssh = (known after apply) + description = \"desciption for repo002\" + id = (known after apply) + repository_id = (known after apply) + repository_name = \"repo002\" + tags_all = (known after apply) } (repo003も同様） Plan: 3 to add, 0 to change, 0 to destroy.  terraform applyを実行。期待値になった。（repo003だけ時間がずれているのは、1点間違いがあってやり直したから）\n やれることはわかったのでこいつ達は削除する。\nリポジトリを削除する。しかしいきなりdestroyすると別途作ったvpcまで消えてしまう。同じ階層にvpc.tfがあるのでそれはそのまま、codecommit.tfを作業ディレクトリから退避。この状態でapplyするとcodecommitリポジトリは消えてvpcは残る。以下でやっていることはapplyでもdestroyなので注意。\n$ terraform apply : aws_codecommit_repository.codecommit_repos[\"param3\"]: Destroying... [id=repo003] aws_codecommit_repository.codecommit_repos[\"param1\"]: Destroying... [id=repo001] aws_codecommit_repository.codecommit_repos[\"param2\"]: Destroying... [id=repo002] aws_codecommit_repository.codecommit_repos[\"param1\"]: Destruction complete after 0s aws_codecommit_repository.codecommit_repos[\"param3\"]: Destruction complete after 0s aws_codecommit_repository.codecommit_repos[\"param2\"]: Destruction complete after 0s Apply complete! Resources: 0 added, 0 changed, 3 destroyed.  課題 コツは掴めたけど、コード本体に書く値がvariablesに移動しただけという気もする。パラメータが増えるほど、結局variablesが肥大化することになる。コード本体が肥大化するよりはまだいいし、メンテナンス性を考えれば当然こうした方がいいのはわかるが…\n懸念しているのは、数個程度のパラメータならvariablesに直書きしてもいいが、数十個とかに増えたらそれもやっていられないってこと。となると、variables.tf自体を自動生成したくなる。なんか上手い方法ないかな。きっとあるだろう。\n ",
-  "wordCount" : "299",
+  "articleBody": "前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。\n前回投稿\nTerraform loop処理のリンク集\n参考記事\nTerraformで配列をloopする時はfor_eachを使った方がいい\n やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。\nwork_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。\ninit.tf\nterraform { required_providers { aws = { source = \"hashicorp/aws\" version = \"3.66.0\" } } } terraform { required_version = \"1.0.11\" backend \"s3\" { bucket = \"my-terraform-poc-repository\" key = \"poc/poc.tfstate\" region = \"ap-northeast-1\" } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。\nvariable.tf\nvariable \"codecommit_param_list\" { type = map(map(string)) default = { param1 = { repository_name = \"repo001\" description = \"desciption for repo001\" } param2 = { repository_name = \"repo002\" description = \"desciption for repo002\" } param3 = { repository_name = \"repo003\" description = \"desciption for repo003\" } } }  codecommit.tf\nresource \"aws_codecommit_repository\" \"codecommit_repos\" { for_each = var.codecommit_param_list repository_name = lookup(each.value, \"repository_name\") description = lookup(each.value, \"description\")  codecommit.tfの\"codecommit_repos\"は任意の名称。2行目、for_eachでvariables.tfのcodecommit_param_listを呼び出している。今回の場合はリポジトリ名がrepo001, repo002…となる。この状態でplanを実行すると以下の出力になる。\n: Terraform will perform the following actions: # aws_codecommit_repository.codecommit_repos[\"param1\"] will be created + resource \"aws_codecommit_repository\" \"codecommit_repos\" { + arn = (known after apply) + clone_url_http = (known after apply) + clone_url_ssh = (known after apply) + description = \"desciption for repo001\" + id = (known after apply) + repository_id = (known after apply) + repository_name = \"repo001\" + tags_all = (known after apply) } # aws_codecommit_repository.codecommit_repos[\"param2\"] will be created + resource \"aws_codecommit_repository\" \"codecommit_repos\" { + arn = (known after apply) + clone_url_http = (known after apply) + clone_url_ssh = (known after apply) + description = \"desciption for repo002\" + id = (known after apply) + repository_id = (known after apply) + repository_name = \"repo002\" + tags_all = (known after apply) } (repo003も同様） Plan: 3 to add, 0 to change, 0 to destroy.  terraform applyを実行。期待値になった。（repo003だけ時間がずれているのは、1点間違いがあってやり直したから）\n やれることはわかったのでこいつ達は削除する。\nリポジトリを削除する。しかしいきなりdestroyすると別途作ったvpcまで消えてしまう。同じ階層にvpc.tfがあるのでそれはそのまま、codecommit.tfを作業ディレクトリから退避。この状態でapplyするとcodecommitリポジトリは消えてvpcは残る。以下でやっていることはapplyでもdestroyなので注意。\n$ terraform apply : aws_codecommit_repository.codecommit_repos[\"param3\"]: Destroying... [id=repo003] aws_codecommit_repository.codecommit_repos[\"param1\"]: Destroying... [id=repo001] aws_codecommit_repository.codecommit_repos[\"param2\"]: Destroying... [id=repo002] aws_codecommit_repository.codecommit_repos[\"param1\"]: Destruction complete after 0s aws_codecommit_repository.codecommit_repos[\"param3\"]: Destruction complete after 0s aws_codecommit_repository.codecommit_repos[\"param2\"]: Destruction complete after 0s Apply complete! Resources: 0 added, 0 changed, 3 destroyed.  課題 コツは掴めたけど、コード本体に書く値がvariablesに移動しただけという気もする。パラメータが増えるほど、結局variablesが肥大化することになる。変数定義を分割できないか？\n この課題については、変数定義をさらにtfvarsに外出しすることで解決可能。変数定義ファイルが増えることにはなるが、1ファイルが肥大化するよりいい。今回やった分だけでいうと、以下の構成になる。\nwork_dir/ ├── codecommit.auto.tfvars ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  xxxxx.auto.tfvarsに個別に分割した要素の値を記述すると、apply実行時に自動で呼び出される。\ncodecommit.tfはこれまでと同じ。\nvariables.tfには値は記述せず、宣言だけ記述する。\nterraform.tfvarsにはリージョンなど全てに共通の値、IAMなど他のリソースから共通で参照されるリソースの値を記述。\nvariables.tf\n# main variable \"region\" { type = string description = \"\" } # codecommit variable \"codecommit_param_list\" { type = map(map(string)) description = \"\" }  codecommit.auto.tfvars\n# codecommit repos definition codecommit_param_list = { param1 = { repository_name = \"repo004\" description = \"desciption for repo004\" } param2 = { repository_name = \"repo005\" description = \"desciption for repo005\" } param3 = { repository_name = \"repo006\" description = \"desciption for repo006\" } }  terraform.tfvars\nregion = \"ap-northeast-1\"  codecommit.auto.tfvarsは例なのでこれだけだが、例えばネットワーク周り、アプリ系リソース、監視、ジョブ等の大枠に分割して、その枠毎にtfvarsを用意すれば小回りが効く構成になるんじゃないかと。て、なんかloop処理のことを書くつもりが変数周りのネタメインになった気がする。ま、いいか。\n ",
+  "wordCount" : "391",
   "inLanguage": "en",
   "datePublished": "2021-11-23T15:00:00+09:00",
   "dateModified": "2021-11-23T15:00:00+09:00",
@@ -338,8 +338,58 @@ aws_codecommit_repository.codecommit_repos[&quot;param2&quot;]: Destruction comp
 Apply complete! Resources: 0 added, 0 changed, 3 destroyed.
 </code></pre><p> </p>
 <h3 id="課題">課題<a hidden class="anchor" aria-hidden="true" href="#課題">#</a></h3>
-<p>コツは掴めたけど、コード本体に書く値がvariablesに移動しただけという気もする。パラメータが増えるほど、結局variablesが肥大化することになる。コード本体が肥大化するよりはまだいいし、メンテナンス性を考えれば当然こうした方がいいのはわかるが&hellip;</p>
-<p>懸念しているのは、数個程度のパラメータならvariablesに直書きしてもいいが、数十個とかに増えたらそれもやっていられないってこと。となると、variables.tf自体を自動生成したくなる。なんか上手い方法ないかな。きっとあるだろう。</p>
+<p>コツは掴めたけど、コード本体に書く値がvariablesに移動しただけという気もする。パラメータが増えるほど、結局variablesが肥大化することになる。変数定義を分割できないか？</p>
+<p> </p>
+<p>この課題については、変数定義をさらにtfvarsに外出しすることで解決可能。変数定義ファイルが増えることにはなるが、1ファイルが肥大化するよりいい。今回やった分だけでいうと、以下の構成になる。</p>
+<pre><code>work_dir/
+├── codecommit.auto.tfvars
+├── codecommit.tf
+├── config.tf
+├── terraform.tfvars
+├── variables.tf
+└── vpc.tf
+</code></pre><p> </p>
+<p>xxxxx.auto.tfvarsに個別に分割した要素の値を記述すると、apply実行時に自動で呼び出される。</p>
+<p>codecommit.tfはこれまでと同じ。<br>
+variables.tfには値は記述せず、宣言だけ記述する。<br>
+terraform.tfvarsにはリージョンなど全てに共通の値、IAMなど他のリソースから共通で参照されるリソースの値を記述。</p>
+<p>variables.tf</p>
+<pre><code># main
+
+variable &quot;region&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+# codecommit
+
+variable &quot;codecommit_param_list&quot; {
+  type = map(map(string))
+  description = &quot;&quot;
+}
+</code></pre><p> </p>
+<p>codecommit.auto.tfvars</p>
+<pre><code># codecommit repos definition
+
+codecommit_param_list = {
+      param1 = {
+        repository_name = &quot;repo004&quot;
+        description = &quot;desciption for repo004&quot;
+      }
+      param2 = {
+        repository_name = &quot;repo005&quot;
+        description = &quot;desciption for repo005&quot;
+      }
+      param3 = {
+        repository_name = &quot;repo006&quot;
+        description = &quot;desciption for repo006&quot;
+      }
+}
+</code></pre><p> </p>
+<p>terraform.tfvars</p>
+<pre><code>region = &quot;ap-northeast-1&quot;
+</code></pre><p> </p>
+<p>codecommit.auto.tfvarsは例なのでこれだけだが、例えばネットワーク周り、アプリ系リソース、監視、ジョブ等の大枠に分割して、その枠毎にtfvarsを用意すれば小回りが効く構成になるんじゃないかと。て、なんかloop処理のことを書くつもりが変数周りのネタメインになった気がする。ま、いいか。</p>
 <p> </p>
 <p><img loading="lazy" src="/img/a/lake_3745.JPG" alt="Lake"  />
 </p>
