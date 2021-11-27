@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Posts | Go Buddy Go</title>
+<title>quotes | Go Buddy Go</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/quotes/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,31 +19,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/post/index.xml">
-<meta property="og:title" content="Posts" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/quotes/index.xml">
+<meta property="og:title" content="quotes" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/quotes/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:title" content="quotes"/>
 <meta name="twitter:description" content=""/>
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://ecnedaced-seirots.github.io/post/"
-    }
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -148,65 +133,23 @@
 </header>
 <main class="main"> 
 <header class="page-header">
-  <h1>Posts</h1>
+  <h1>quotes</h1>
 </header>
 
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>EKS Container InsightsのFluent Bit設定</h2>
+    <h2>Quotes - タランティーノ小説より(1)</h2>
   </header>
   <section class="entry-content">
-    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。しかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。
- 参照
-Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）
-Fluent Bit Documentation
-Container Insights全般
-Amazon EKS と Kubernetes での Container Insights のセットアップ
-Fluent Bit on Container Insights
-CloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する
-サンプルマニフェスト
-fluent-bit-compatible.yaml
-※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。
- 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。
-fluentbit-cluster.yaml
-apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &#34;On&#34; read.tail: &#34;Off&#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac....</p>
+    <p> Some say luck is when preparation meets opportunity.
+ - Once Upon a Time in Hollywood&#34;の小説版 (Quentin Tarantino) より。
+ わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど…
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？
+   </p>
   </section>
-  <footer class="entry-footer">September 12, 2021</footer>
-  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit/"></a>
+  <footer class="entry-footer">November 27, 2021</footer>
+  <a class="entry-link" aria-label="post link to Quotes - タランティーノ小説より(1)" href="https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>マークダウン記法</h2>
-  </header>
-  <section class="entry-content">
-    <p>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
-  </p>
-  </section>
-  <footer class="entry-footer">September 5, 2021</footer>
-  <a class="entry-link" aria-label="post link to マークダウン記法" href="https://ecnedaced-seirots.github.io/post/a/markdown/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>最初の投稿</h2>
-  </header>
-  <section class="entry-content">
-    <p>とりあえず最初の投稿。
- </p>
-  </section>
-  <footer class="entry-footer">September 4, 2021</footer>
-  <a class="entry-link" aria-label="post link to 最初の投稿" href="https://ecnedaced-seirots.github.io/post/a/first/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="prev" href="https://ecnedaced-seirots.github.io/post/page/7/">« Prev Page</a>
-  </nav>
-</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>

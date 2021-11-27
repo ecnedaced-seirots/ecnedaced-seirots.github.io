@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 24 Nov 2021 00:10:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>english</title>
+      <link>https://ecnedaced-seirots.github.io/tags/english/</link>
+      <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/english/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Quentin Tarantino</title>
+      <link>https://ecnedaced-seirots.github.io/tags/quentin-tarantino/</link>
+      <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/quentin-tarantino/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>quotes</title>
+      <link>https://ecnedaced-seirots.github.io/tags/quotes/</link>
+      <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/quotes/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>jinja2</title>
       <link>https://ecnedaced-seirots.github.io/tags/jinja2/</link>
@@ -103,15 +130,6 @@
       <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>english</title>
-      <link>https://ecnedaced-seirots.github.io/tags/english/</link>
-      <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/english/</guid>
       <description></description>
     </item>
     

@@ -3,15 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2021-11-24T00:10:00+09:00</lastmod>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2021-11-24T00:10:00+09:00</lastmod>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/jinja2/</loc>
-    <lastmod>2021-11-24T00:10:00+09:00</lastmod>
+    <loc>https://ecnedaced-seirots.github.io/categories/english/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/english/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/quentin-tarantino/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/quotes/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2021-11-27T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/jinja2/</loc>
     <lastmod>2021-11-24T00:10:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/python/</loc>
@@ -21,9 +39,6 @@
     <lastmod>2021-11-24T00:10:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</loc>
-    <lastmod>2021-11-24T00:10:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2021-11-24T00:10:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
@@ -70,12 +85,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</loc>
     <lastmod>2021-11-20T15:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/english/</loc>
-    <lastmod>2021-11-19T21:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/english/</loc>
-    <lastmod>2021-11-19T21:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
     <lastmod>2021-11-19T21:00:00+09:00</lastmod>

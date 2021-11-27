@@ -149,6 +149,35 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
+ 参考
+異なる AWS アカウントでアプリケーションをデプロイする
+（上記ページにリンクあり。assumeロールの設定は以下参考）
+IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
+ 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+① 配布元(Dev)
+② 配布先(Stg)
+概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
+基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
+ 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+  配布先②アカウントにて、①がassumeするためのロールAを作成する。
+  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
+IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
+ インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ –&gt; [アクセス許可の追加] –&gt; [インラインポリシーの作成] [JSON] タブ選択
+以下の内容を設定する。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。...</p>
+  </section>
+  <footer class="entry-footer">September 25, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Firefox/Chromeでアドオンなし全画面キャプチャ</h2>
   </header>
   <section class="entry-content">
@@ -205,30 +234,6 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
   </section>
   <footer class="entry-footer">September 15, 2021</footer>
   <a class="entry-link" aria-label="post link to 井の頭公園 - 2018年4月" href="https://ecnedaced-seirots.github.io/post/a/inokashira-park/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>EKS Container InsightsのFluent Bit設定</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。しかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。
- 参照
-Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）
-Fluent Bit Documentation
-Container Insights全般
-Amazon EKS と Kubernetes での Container Insights のセットアップ
-Fluent Bit on Container Insights
-CloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する
-サンプルマニフェスト
-fluent-bit-compatible.yaml
-※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。
- 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。
-fluentbit-cluster.yaml
-apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &#34;On&#34; read.tail: &#34;Off&#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac....</p>
-  </section>
-  <footer class="entry-footer">September 12, 2021</footer>
-  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

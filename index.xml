@@ -6,7 +6,20 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 24 Nov 2021 00:10:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Quotes - タランティーノ小説より(1)</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</link>
+      <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</guid>
+      <description> Some say luck is when preparation meets opportunity.
+ - Once Upon a Time in Hollywood&amp;quot;の小説版 (Quentin Tarantino) より。
+ わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど&amp;hellip;
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？
+   </description>
+    </item>
+    
     <item>
       <title>Python - Jinja2テンプレートで連続データを処理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
