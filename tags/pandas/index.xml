@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>jinja2 on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/jinja2/</link>
-    <description>Recent content in jinja2 on Go Buddy Go</description>
+    <title>pandas on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/pandas/</link>
+    <description>Recent content in pandas on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/jinja2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/pandas/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
@@ -22,17 +22,6 @@ script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.cs
  param{{ num }} = { repository_name = &amp;quot;{{ repo_name }}&amp;quot; description = &amp;quot;{{ des }}&amp;quot; }  data.csv （今回の例ではヘッダーありの前提）
 num,repo_name,des 1,&amp;quot;my-repo001&amp;quot;,&amp;quot;my-repo001の説明&amp;quot; 2,&amp;quot;my-repo002&amp;quot;,&amp;quot;my-repo002の説明&amp;quot; 3,&amp;quot;my-repo003&amp;quot;,&amp;quot;my-repo003の説明&amp;quot;  create_vars.py
 import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&amp;#39;.</description>
-    </item>
-    
-    <item>
-      <title>Python - Jinja2テンプレートで連続データを処理したい</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
-      <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
-      <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
-とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
-  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </description>
     </item>
     
   </channel>

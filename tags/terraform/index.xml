@@ -6,7 +6,24 @@
     <description>Recent content in terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Nov 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraformのtfvarsファイルを自動生成する</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
+      <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
+      <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
+Terraform loop処理の超シンプルな例 
+Python - Jinja2テンプレートで連続データを処理したい
+ 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
+work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
+script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv  codecommit.tmpl
+ param{{ num }} = { repository_name = &amp;quot;{{ repo_name }}&amp;quot; description = &amp;quot;{{ des }}&amp;quot; }  data.csv （今回の例ではヘッダーありの前提）
+num,repo_name,des 1,&amp;quot;my-repo001&amp;quot;,&amp;quot;my-repo001の説明&amp;quot; 2,&amp;quot;my-repo002&amp;quot;,&amp;quot;my-repo002の説明&amp;quot; 3,&amp;quot;my-repo003&amp;quot;,&amp;quot;my-repo003の説明&amp;quot;  create_vars.py
+import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&amp;#39;.</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の超シンプルな例</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
