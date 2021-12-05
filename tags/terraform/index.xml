@@ -6,7 +6,18 @@
     <description>Recent content in terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 05 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Dec 2021 00:20:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraform loop処理の応用編(2)</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
+      <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</guid>
+      <description>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
+ cicd.tf
+#################################### # CodeCommit #################################### resource &amp;quot;aws_codecommit_repository&amp;quot; &amp;quot;codecommit_repos&amp;quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;quot;repository_name&amp;quot;) description = lookup(each.value, &amp;quot;description&amp;quot;) } #################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の応用編</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</link>

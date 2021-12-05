@@ -149,6 +149,19 @@
 
 <article class="first-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
+ cicd.tf
+#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var....</p>
+  </section>
+  <footer class="entry-footer">December 6, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編</h2>
   </header>
   <section class="entry-content">
@@ -207,27 +220,6 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
   </section>
   <footer class="entry-footer">November 24, 2021</footer>
   <a class="entry-link" aria-label="post link to Python - Jinja2テンプレートで連続データを処理したい" href="https://ecnedaced-seirots.github.io/post/a/jinja2-python/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の超シンプルな例</h2>
-  </header>
-  <section class="entry-content">
-    <p>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
-前回投稿
-Terraform loop処理のリンク集
-参考記事
-Terraformで配列をloopする時はfor_eachを使った方がいい
- やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
-work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
-init.tf
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } terraform { required_version = &#34;1.0.11&#34; backend &#34;s3&#34; { bucket = &#34;my-terraform-poc-repository&#34; key = &#34;poc/poc.tfstate&#34; region = &#34;ap-northeast-1&#34; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
-variable.tf
-variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { param1 = { repository_name = &#34;repo001&#34; description = &#34;desciption for repo001&#34; } param2 = { repository_name = &#34;repo002&#34; description = &#34;desciption for repo002&#34; } param3 = { repository_name = &#34;repo003&#34; description = &#34;desciption for repo003&#34; } } }  codecommit....</p>
-  </section>
-  <footer class="entry-footer">November 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
