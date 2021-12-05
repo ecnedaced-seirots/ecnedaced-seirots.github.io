@@ -6,7 +6,20 @@
     <description>Recent content in terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraform loop処理の応用編</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</link>
+      <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</guid>
+      <description>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) service_role_arn = var.deploy_role deployment_config_name = &amp;quot;CodeDeployDefault.AllAtOnce&amp;quot; ec2_tag_set { ec2_tag_filter { key = &amp;quot;Name&amp;quot; type = &amp;quot;KEY_AND_VALUE&amp;quot; value = lookup(each.</description>
+    </item>
+    
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>

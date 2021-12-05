@@ -6,7 +6,43 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CodeDeploy</title>
+      <link>https://ecnedaced-seirots.github.io/tags/codedeploy/</link>
+      <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/codedeploy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IaC</title>
+      <link>https://ecnedaced-seirots.github.io/tags/iac/</link>
+      <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/iac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
+      <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>jinja2</title>
       <link>https://ecnedaced-seirots.github.io/tags/jinja2/</link>
@@ -35,15 +71,6 @@
     </item>
     
     <item>
-      <title>terraform</title>
-      <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
-      <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>english</title>
       <link>https://ecnedaced-seirots.github.io/tags/english/</link>
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
@@ -67,24 +94,6 @@
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/quotes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IaC</title>
-      <link>https://ecnedaced-seirots.github.io/tags/iac/</link>
-      <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/iac/</guid>
       <description></description>
     </item>
     
@@ -301,15 +310,6 @@
       <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/sns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CodeDeploy</title>
-      <link>https://ecnedaced-seirots.github.io/tags/codedeploy/</link>
-      <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/codedeploy/</guid>
       <description></description>
     </item>
     

@@ -153,6 +153,27 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>単語rageを覚えたきっかけはディラン・トーマスの詩だった</h2>
+  </header>
+  <section class="entry-content">
+    <p>“rage&#34;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
+ Do not go gentle into that good night.
+Rage, rage against the dying of the light.
+  パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。“rage&#34;という単語を初めて見たので調べたところ、意味は先述の通り。
+これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
+それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
+  Do not go gentle into that good night,
+Old age should burn and rage at close of day;
+Rage, rage against the dying of the light.
+Though wise men at their end know dark is right,
+Because their words had forked no lightning they...</p>
+  </section>
+  <footer class="entry-footer">October 19, 2021</footer>
+  <a class="entry-link" aria-label="post link to 単語rageを覚えたきっかけはディラン・トーマスの詩だった" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>MacにGNU版dateをインストール</h2>
   </header>
   <section class="entry-content">
@@ -233,42 +254,6 @@ TwitterとかFacebookみたいにガチで言葉の応酬をするようなSNS�
   </section>
   <footer class="entry-footer">October 9, 2021</footer>
   <a class="entry-link" aria-label="post link to Tumblrについて、ひとり言" href="https://ecnedaced-seirots.github.io/post/a/sns-influence/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</h2>
-  </header>
-  <section class="entry-content">
-    <p>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
-前回投稿
-AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）
-繰り返しになるけれども、前提条件をおさらいとして記載。
-やりたいこと
-AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
-他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
-1-資材配布元（アカウントA）
-① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
-② KMSキー (両方のアカウントにアクセス許可する)
-③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
-④ CodePipelineが使用するサービスロール
-⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
- 2-資材配布先（アカウントB）
-① CodeDeploy定義（アプリケーション/デプロイメントグループ）
-② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
-③ ②のIAMロールをアタッチしたデプロイ先ec2
-④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
-2-① CodeDeploy定義
-アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
-2-② ec2用のIAMロール
-KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
-KMS用インラインポリシー
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;kms:DescribeKey&#34;, &#34;kms:GenerateDataKey*&#34;, &#34;kms:Encrypt&#34;, &#34;kms:ReEncrypt*&#34;, &#34;kms:Decrypt&#34; ], &#34;Resource&#34;: [ &#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&#34; #KMSのARN ] } ] }  S3用インラインポリシー...</p>
-  </section>
-  <footer class="entry-footer">October 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

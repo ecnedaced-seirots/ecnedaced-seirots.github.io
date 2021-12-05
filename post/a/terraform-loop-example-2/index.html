@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Terraform loop処理の応用編 | Go Buddy Go</title>
+<meta name="keywords" content="terraform, AWS, IaC, CodeDeploy" />
+<meta name="description" content="過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) service_role_arn = var.deploy_role deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot; ec2_tag_set { ec2_tag_filter { key = &quot;Name&quot; type = &quot;KEY_AND_VALUE&quot; value = lookup(each.">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="Terraform loop処理の応用編" />
+<meta property="og:description" content="過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) service_role_arn = var.deploy_role deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot; ec2_tag_set { ec2_tag_filter { key = &quot;Name&quot; type = &quot;KEY_AND_VALUE&quot; value = lookup(each." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-05T16:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-12-05T16:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Terraform loop処理の応用編"/>
+<meta name="twitter:description" content="過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) service_role_arn = var.deploy_role deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot; ec2_tag_set { ec2_tag_filter { key = &quot;Name&quot; type = &quot;KEY_AND_VALUE&quot; value = lookup(each."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Terraform loop処理の応用編",
+      "item": "https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Terraform loop処理の応用編",
+  "name": "Terraform loop処理の応用編",
+  "description": "過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。\n前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。\n作業ディレクトリ構成\nwork_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）\n#################################### # CodeDeploy Application #################################### resource \u0026quot;aws_codedeploy_app\u0026quot; \u0026quot;codedeploy\u0026quot; { for_each = var.deploy_param_list name = lookup(each.value, \u0026quot;name\u0026quot;) compute_platform = \u0026quot;Server\u0026quot; } #################################### # CodeDeploy Deployment Group #################################### resource \u0026quot;aws_codedeploy_deployment_group\u0026quot; \u0026quot;codedeploy_grp\u0026quot; { for_each = var.deploy_param_list app_name = lookup(each.value, \u0026quot;name\u0026quot;) deployment_group_name = lookup(each.value, \u0026quot;deployment_group_name\u0026quot;) service_role_arn = var.deploy_role deployment_config_name = \u0026quot;CodeDeployDefault.AllAtOnce\u0026quot; ec2_tag_set { ec2_tag_filter { key = \u0026quot;Name\u0026quot; type = \u0026quot;KEY_AND_VALUE\u0026quot; value = lookup(each.",
+  "keywords": [
+    "terraform", "AWS", "IaC", "CodeDeploy"
+  ],
+  "articleBody": "過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。\n前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。\n作業ディレクトリ構成\nwork_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）\n#################################### # CodeDeploy Application #################################### resource \"aws_codedeploy_app\" \"codedeploy\" { for_each = var.deploy_param_list name = lookup(each.value, \"name\") compute_platform = \"Server\" } #################################### # CodeDeploy Deployment Group #################################### resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\" { for_each = var.deploy_param_list app_name = lookup(each.value, \"name\") deployment_group_name = lookup(each.value, \"deployment_group_name\") service_role_arn = var.deploy_role deployment_config_name = \"CodeDeployDefault.AllAtOnce\" ec2_tag_set { ec2_tag_filter { key = \"Name\" type = \"KEY_AND_VALUE\" value = lookup(each.value, \"value\") } } deployment_style { deployment_option = \"WITHOUT_TRAFFIC_CONTROL\" deployment_type = \"IN_PLACE\" } auto_rollback_configuration { enabled = true events = [\"DEPLOYMENT_FAILURE\"] } } cicd.auto.tfvars（cicd.tfが参照する変数）\n######################################## # codedeploy vars ######################################## deploy_param_list = { param1 = { name = \"deploy_app001\" deployment_group_name = \"deploy_grp001\" value = \"ec2-tag001\" } param2 = { name = \"deploy_app002\" deployment_group_name = \"deploy_grp002\" value = \"ec2-tag002\" } param3 = { name = \"deploy_app003\" deployment_group_name = \"deploy_grp003\" value = \"ec2-tag003\" } } ######################################## # CodeDeploy IAM role ######################################## deploy_role = \"arn:aws:iam::[my-account-id]:role/CodeDeployRole\"  variables.tf （宣言のみ行う）\n################# # main ################# variable \"region\" { type = string description = \"\" } ################# # IAM ################# variable \"deploy_role\" { type = string description = \"\" } ################# # codedeploy ################# variable \"deploy_param_list\" { type = map(map(string)) description = \"\" }  この状態で、plan実行時はエラーなし。しかしapplyしたところ、以下のエラーになった。参照するアプリケーション\"deploy_app001\"がないよ、と。\n No application found for name: deploy_app001\n  この時点でマネコンから確認すると、アプリケーションは出来ているが配下のデプロイメントグループが存在しない状態。実際にはdeploy_app00*は作成されているのだが、terraform実行時にうまく参照できていないらしい。当初、特別な記述をしなくてもTerraformがよしなにやってくれるもんだと思っていたんだけどなぁ。\n│ Error: Error creating CodeDeploy deployment group: ApplicationDoesNotExistException: No application found for name: deploy_app001 │ │ with aws_codedeploy_deployment_group.codedeploy_grp[\"param1\"], │ on cicd.tf line 16, in resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\": │ 16: resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\" { │   この後でもう一回applyすると、今度はデプロイメントグループ（eploy_app00*）が作成された。しかし初回にエラーになるのはよろしくない。ありがちな事象だから何らかのソリューションはあるだろう、と調べる。\n 以下はツールGraphvizにより出力した、この時点におけるTerraformリソースの依存関係を表したグラフ。aws_codedeploy_appとaws_codedeploy_deployment_groupが並列になっていて、互いに関連を持たないように見える。（記事では削っているが実はCodeCommitの記述も含まれているため、グラフに表現されている）\n Terraformの依存関係の定義には「暗黙的な依存関係定義」と「明示的な依存関係定義」の2種類がある。後者は、前者が利用できないケースで使用するべき、とのこと。\n暗黙的な依存関係定義は、公式ドキュメントにもよく登場する role_arn = aws_iam_role.role001.arnといった記述で、意識せずとも普段から書いているやつ。今回のケースだと aws_codedeploy_app.codedeploy[\"param1\"].idのような記述になるが、参照する側もloopだからこの方式では書けない。\n 一方、明示的な依存関係はdepends_onを利用する。\ndepends_on = [aws_iam_role.role001]  以下の記事を読むとloop処理の場合は別の記述方法が要るようなこと書いてあった。面倒くさそうだなぁ〜、と引いてしまう。（こちらはloop処理をcountで実行）\nTerraformリソース間の依存関係を確認する\nしかし以下フォーラムによれば、for_eachの場合これだけでいけそうではある。\nFor_each depends_on\nと、いうことでやってみる。一旦destroyしてクリーンにしてから、cicd.tfにdepends_on = [aws_codedeploy_app.codedeploy] 1行を追記。\nこの時点で、グラフを出力すると以下の通りに変化した。一応参照関係が描かれているように見える。\n 再びapplyしたところ成功。loop処理でも、for_eachはdepends_on記述だけでOKと判明した。やれやれ。\n 更新版のcicd.tf\n#################################### # CodeDeploy Application #################################### resource \"aws_codedeploy_app\" \"codedeploy\" { for_each = var.deploy_param_list name = lookup(each.value, \"name\") compute_platform = \"Server\" } #################################### # CodeDeploy Deployment Group #################################### resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\" { for_each = var.deploy_param_list app_name = lookup(each.value, \"name\") deployment_group_name = lookup(each.value, \"deployment_group_name\") depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.deploy_role deployment_config_name = \"CodeDeployDefault.AllAtOnce\" ec2_tag_set { ec2_tag_filter { key = \"Name\" type = \"KEY_AND_VALUE\" value = lookup(each.value, \"value\") } } deployment_style { deployment_option = \"WITHOUT_TRAFFIC_CONTROL\" deployment_type = \"IN_PLACE\" } auto_rollback_configuration { enabled = true events = [\"DEPLOYMENT_FAILURE\"] } }  ちなみにec2_tag_filterは、apply実行時に指定したタグを持つEC2インスタンスが存在しなくても成功する。あとはこれに、前半にCodeCommit, 後半にCodePipelineを追加して、一気にCI/CDリソース作成目指したい。\n 余談：Graphvizインストール 参照した記事に記載があって気になったので入れてみた。本来はdot言語で記述したテキストデータをグラフで表現してくれるもので、terraform以外でも使える。現状深掘りしてる余裕はないけど別の機会に遊んでみよう。\nテキストデータをグラフ画像に変換するツール「Graphviz」ことはじめ\nGraphvizとdot言語でグラフを描く方法のまとめ\n $ brew install graphviz （すっげぇ膨大な依存関係ライブラリが一緒に入ってくる...） $ dot -V dot - graphviz version 2.49.3 (20211023.0002)  Terraform作業ディレクトリ内で、以下のようなコマンドを実行してグラフを出力する。\n$ terraform graph | dot -Tpng  cicd_graph.png  ",
+  "wordCount" : "385",
+  "inLanguage": "en",
+  "datePublished": "2021-12-05T16:00:00+09:00",
+  "dateModified": "2021-12-05T16:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Terraform loop処理の応用編
+    </h1>
+    <div class="post-meta">December 5, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>過去記事<a href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/">Terraform loop処理の超シンプルな例 </a>の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。</p>
+<p>前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。</p>
+<p>作業ディレクトリ構成</p>
+<pre><code>work_dir
+├── cicd.auto.tfvars
+├── cicd.tf
+├── config.tf           #初期化用config
+├── terraform.tfvars    #regionのみ定義
+└── variables.tf
+</code></pre><p> </p>
+<p>cicd.tf （リソース作成用コード）</p>
+<pre><code>####################################
+# CodeDeploy Application
+####################################
+
+resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; {
+  for_each = var.deploy_param_list
+  
+  name = lookup(each.value, &quot;name&quot;)
+  compute_platform = &quot;Server&quot;
+}
+
+####################################
+# CodeDeploy Deployment Group
+####################################
+
+resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; {
+  for_each = var.deploy_param_list
+
+  app_name = lookup(each.value, &quot;name&quot;)
+  deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;)
+
+  service_role_arn       = var.deploy_role
+  deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot;
+  ec2_tag_set {
+    ec2_tag_filter {
+      key   = &quot;Name&quot;
+      type  = &quot;KEY_AND_VALUE&quot;
+      value = lookup(each.value, &quot;value&quot;)
+    }
+  }
+  deployment_style {
+    deployment_option = &quot;WITHOUT_TRAFFIC_CONTROL&quot;
+    deployment_type   = &quot;IN_PLACE&quot;
+  }
+  auto_rollback_configuration {
+    enabled = true
+    events  = [&quot;DEPLOYMENT_FAILURE&quot;]
+  }
+}
+
+</code></pre><p>cicd.auto.tfvars（cicd.tfが参照する変数）</p>
+<pre><code>########################################
+# codedeploy vars
+########################################
+
+deploy_param_list = {
+      param1 = {
+        name = &quot;deploy_app001&quot;
+        deployment_group_name = &quot;deploy_grp001&quot;
+        value = &quot;ec2-tag001&quot;
+      }
+      param2 = {
+        name = &quot;deploy_app002&quot;
+        deployment_group_name = &quot;deploy_grp002&quot;
+        value = &quot;ec2-tag002&quot;
+      }
+      param3 = {
+        name = &quot;deploy_app003&quot;
+        deployment_group_name = &quot;deploy_grp003&quot;
+        value = &quot;ec2-tag003&quot;
+      }
+}
+
+########################################
+# CodeDeploy IAM role
+########################################
+
+deploy_role = &quot;arn:aws:iam::[my-account-id]:role/CodeDeployRole&quot;
+
+</code></pre><p> </p>
+<p>variables.tf （宣言のみ行う）</p>
+<pre><code>#################
+# main
+#################
+variable &quot;region&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+#################
+# IAM
+#################
+variable &quot;deploy_role&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+#################
+# codedeploy
+#################
+variable &quot;deploy_param_list&quot; {
+  type = map(map(string))
+  description = &quot;&quot;
+}
+
+</code></pre><p> </p>
+<p>この状態で、plan実行時はエラーなし。しかしapplyしたところ、以下のエラーになった。参照するアプリケーション&quot;deploy_app001&quot;がないよ、と。</p>
+<blockquote>
+<p>No application found for name: deploy_app001</p>
+</blockquote>
+<p> </p>
+<p>この時点でマネコンから確認すると、アプリケーションは出来ているが配下のデプロイメントグループが存在しない状態。実際にはdeploy_app00*は作成されているのだが、terraform実行時にうまく参照できていないらしい。当初、特別な記述をしなくてもTerraformがよしなにやってくれるもんだと思っていたんだけどなぁ。</p>
+<pre><code>│ Error: Error creating CodeDeploy deployment group: ApplicationDoesNotExistException: No application found for name: deploy_app001
+│ 
+│   with aws_codedeploy_deployment_group.codedeploy_grp[&quot;param1&quot;],
+│   on cicd.tf line 16, in resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot;:
+│   16: resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; {
+│ 
+</code></pre>
+<p> </p>
+<p>この後でもう一回applyすると、今度はデプロイメントグループ（eploy_app00*）が作成された。しかし初回にエラーになるのはよろしくない。ありがちな事象だから何らかのソリューションはあるだろう、と調べる。</p>
+<p> </p>
+<p>以下はツールGraphvizにより出力した、この時点におけるTerraformリソースの依存関係を表したグラフ。aws_codedeploy_appとaws_codedeploy_deployment_groupが並列になっていて、互いに関連を持たないように見える。（記事では削っているが実はCodeCommitの記述も含まれているため、グラフに表現されている）</p>
+<p><img loading="lazy" src="/img/a/cicd_graph_1.jpg" alt="Terraform graph"  />
+</p>
+<p> </p>
+<p>Terraformの依存関係の定義には「暗黙的な依存関係定義」と「明示的な依存関係定義」の2種類がある。後者は、前者が利用できないケースで使用するべき、とのこと。</p>
+<p>暗黙的な依存関係定義は、公式ドキュメントにもよく登場する <code>role_arn = aws_iam_role.role001.arn</code>といった記述で、意識せずとも普段から書いているやつ。今回のケースだと <code>aws_codedeploy_app.codedeploy[&quot;param1&quot;].id</code>のような記述になるが、参照する側もloopだからこの方式では書けない。</p>
+<p> </p>
+<p>一方、明示的な依存関係は<code>depends_on</code>を利用する。</p>
+<pre><code>depends_on = [aws_iam_role.role001]
+</code></pre><p> </p>
+<p>以下の記事を読むとloop処理の場合は別の記述方法が要るようなこと書いてあった。面倒くさそうだなぁ〜、と引いてしまう。（こちらはloop処理をcountで実行）<br>
+<a href="https://kazuhira-r.hatenablog.com/entry/2020/06/07/175759">Terraformリソース間の依存関係を確認する</a></p>
+<p>しかし以下フォーラムによれば、for_eachの場合これだけでいけそうではある。<br>
+<a href="https://discuss.hashicorp.com/t/for-each-depends-on/6004/6">For_each depends_on</a></p>
+<p>と、いうことでやってみる。一旦destroyしてクリーンにしてから、cicd.tfに<code>depends_on = [aws_codedeploy_app.codedeploy]</code> 1行を追記。</p>
+<p>この時点で、グラフを出力すると以下の通りに変化した。一応参照関係が描かれているように見える。</p>
+<p><img loading="lazy" src="/img/a/cicd_graph_2.jpg" alt="Terraform graph"  />
+</p>
+<p> </p>
+<p>再びapplyしたところ成功。loop処理でも、for_eachは<code>depends_on</code>記述だけでOKと判明した。やれやれ。</p>
+<p> </p>
+<p>更新版のcicd.tf</p>
+<pre><code>####################################
+# CodeDeploy Application
+####################################
+
+resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; {
+  for_each = var.deploy_param_list
+  
+  name = lookup(each.value, &quot;name&quot;)
+  compute_platform = &quot;Server&quot;
+}
+
+####################################
+# CodeDeploy Deployment Group
+####################################
+
+resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; {
+  for_each = var.deploy_param_list
+
+  app_name = lookup(each.value, &quot;name&quot;)
+  deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;)
+  depends_on = [aws_codedeploy_app.codedeploy]
+
+  service_role_arn       = var.deploy_role
+  deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot;
+  ec2_tag_set {
+    ec2_tag_filter {
+      key   = &quot;Name&quot;
+      type  = &quot;KEY_AND_VALUE&quot;
+      value = lookup(each.value, &quot;value&quot;)
+    }
+  }
+  deployment_style {
+    deployment_option = &quot;WITHOUT_TRAFFIC_CONTROL&quot;
+    deployment_type   = &quot;IN_PLACE&quot;
+  }
+  auto_rollback_configuration {
+    enabled = true
+    events  = [&quot;DEPLOYMENT_FAILURE&quot;]
+  }
+}
+
+</code></pre><p> </p>
+<p>ちなみにec2_tag_filterは、apply実行時に指定したタグを持つEC2インスタンスが存在しなくても成功する。あとはこれに、前半にCodeCommit, 後半にCodePipelineを追加して、一気にCI/CDリソース作成目指したい。</p>
+<p> </p>
+<h3 id="余談graphvizインストール">余談：Graphvizインストール<a hidden class="anchor" aria-hidden="true" href="#余談graphvizインストール">#</a></h3>
+<p>参照した記事に記載があって気になったので入れてみた。本来はdot言語で記述したテキストデータをグラフで表現してくれるもので、terraform以外でも使える。現状深掘りしてる余裕はないけど別の機会に遊んでみよう。</p>
+<p><a href="https://dev.classmethod.jp/articles/graphviz-beginner/">テキストデータをグラフ画像に変換するツール「Graphviz」ことはじめ</a><br>
+<a href="https://qiita.com/rubytomato@github/items/51779135bc4b77c8c20d">Graphvizとdot言語でグラフを描く方法のまとめ</a></p>
+<p> </p>
+<pre><code>$ brew install graphviz
+（すっげぇ膨大な依存関係ライブラリが一緒に入ってくる...）
+
+$ dot -V
+dot - graphviz version 2.49.3 (20211023.0002)
+
+</code></pre><p> </p>
+<p>Terraform作業ディレクトリ内で、以下のようなコマンドを実行してグラフを出力する。</p>
+<pre><code>$ terraform graph | dot -Tpng &gt; cicd_graph.png
+</code></pre><p> </p>
+<p><img loading="lazy" src="/img/a/otaru_001.jpg" alt="Otaru"  />
+
+<img loading="lazy" src="/img/a/otaru_002.jpg" alt="Otaru"  />
+</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/codedeploy/">CodeDeploy</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Terraformのtfvarsファイルを自動生成する</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
