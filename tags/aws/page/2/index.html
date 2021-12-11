@@ -138,6 +138,26 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
+  </section>
+  <footer class="entry-footer">November 20, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
   </header>
   <section class="entry-content">
@@ -209,22 +229,6 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   </section>
   <footer class="entry-footer">November 3, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
-今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ...</p>
-  </section>
-  <footer class="entry-footer">October 31, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

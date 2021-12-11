@@ -138,6 +138,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編(3) - Event rule</h2>
+  </header>
+  <section class="entry-content">
+    <p>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
+以下tfコード本体に、ルールとターゲットを作成する処理を書く。
+event_rule.tf
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var....</p>
+  </section>
+  <footer class="entry-footer">December 11, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(3) - Event rule" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編(2)</h2>
   </header>
   <section class="entry-content">
@@ -198,26 +212,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </section>
   <footer class="entry-footer">November 21, 2021</footer>
   <a class="entry-link" aria-label="post link to AWS EventBridge &#43; SNSからのメール本文をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
- 過去記事
-CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
-で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
-from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
-ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
- lambda_function.py （時刻表示JSTバージョン）
-import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
-  </section>
-  <footer class="entry-footer">November 20, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

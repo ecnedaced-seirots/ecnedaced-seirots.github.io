@@ -138,6 +138,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編(3) - Event rule</h2>
+  </header>
+  <section class="entry-content">
+    <p>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
+以下tfコード本体に、ルールとターゲットを作成する処理を書く。
+event_rule.tf
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var....</p>
+  </section>
+  <footer class="entry-footer">December 11, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(3) - Event rule" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編(2)</h2>
   </header>
   <section class="entry-content">
@@ -203,24 +217,11 @@ variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { p
   <footer class="entry-footer">November 23, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理のリンク集</h2>
-  </header>
-  <section class="entry-content">
-    <p>Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
-  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
-  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
- Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
- Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。
- Terraform職人再入門2020   </p>
-  </section>
-  <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://ecnedaced-seirots.github.io/tags/terraform/page/2/">Next Page »</a>
+  </nav>
+</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
