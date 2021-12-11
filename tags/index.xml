@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 06 Dec 2021 00:20:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Dec 2021 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lifelog</title>
+      <link>https://ecnedaced-seirots.github.io/tags/lifelog/</link>
+      <pubDate>Sat, 11 Dec 2021 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/lifelog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SNS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/sns/</link>
+      <pubDate>Sat, 11 Dec 2021 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/sns/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
@@ -260,15 +278,6 @@
     </item>
     
     <item>
-      <title>Lifelog</title>
-      <link>https://ecnedaced-seirots.github.io/tags/lifelog/</link>
-      <pubDate>Wed, 27 Oct 2021 23:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/lifelog/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>S3</title>
       <link>https://ecnedaced-seirots.github.io/tags/s3/</link>
       <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
@@ -301,15 +310,6 @@
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws-cli/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>SNS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/sns/</link>
-      <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/sns/</guid>
       <description></description>
     </item>
     
