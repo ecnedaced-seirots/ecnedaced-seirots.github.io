@@ -153,6 +153,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>英語メモ - elaborate</h2>
+  </header>
+  <section class="entry-content">
+    <p>elaborate   複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の  他動詞としては「〜を詳しく調べる」
+ Irvine Welshの&#34;Trainspotting&#34;読書中に登場した単語だと思うが、何ページかはもう覚えていない。
+  </p>
+  </section>
+  <footer class="entry-footer">November 13, 2021</footer>
+  <a class="entry-link" aria-label="post link to 英語メモ - elaborate" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>AWS監視の方式を整理したい</h2>
   </header>
   <section class="entry-content">
@@ -245,22 +258,6 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   </section>
   <footer class="entry-footer">November 3, 2021</footer>
   <a class="entry-link" aria-label="post link to 「いてくれるだけでいい人」の理由" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
-今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ...</p>
-  </section>
-  <footer class="entry-footer">October 31, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

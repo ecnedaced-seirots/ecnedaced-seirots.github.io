@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Terraform loop処理の応用編(4) - Lambda | Go Buddy Go</title>
+<meta name="keywords" content="terraform, AWS, IaC, lambda, cloudwatchlogs" />
+<meta name="description" content="今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &quot;archive_file&quot; &quot;data-lambda-func001&quot; { type = &quot;zip&quot; source_dir = &quot;lambda/code/func001&quot; output_path = &quot;lambda/upload/lambda-func001.">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="Terraform loop処理の応用編(4) - Lambda" />
+<meta property="og:description" content="今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &quot;archive_file&quot; &quot;data-lambda-func001&quot; { type = &quot;zip&quot; source_dir = &quot;lambda/code/func001&quot; output_path = &quot;lambda/upload/lambda-func001." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-12T22:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-12-12T22:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Terraform loop処理の応用編(4) - Lambda"/>
+<meta name="twitter:description" content="今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &quot;archive_file&quot; &quot;data-lambda-func001&quot; { type = &quot;zip&quot; source_dir = &quot;lambda/code/func001&quot; output_path = &quot;lambda/upload/lambda-func001."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Terraform loop処理の応用編(4) - Lambda",
+      "item": "https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Terraform loop処理の応用編(4) - Lambda",
+  "name": "Terraform loop処理の応用編(4) - Lambda",
+  "description": "今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。\nこの例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。\nwork_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。\nlambda_logs.tf（定数バージョン）\n################################################# # Lambda archive data ################################################# data \u0026quot;archive_file\u0026quot; \u0026quot;data-lambda-func001\u0026quot; { type = \u0026quot;zip\u0026quot; source_dir = \u0026quot;lambda/code/func001\u0026quot; output_path = \u0026quot;lambda/upload/lambda-func001.",
+  "keywords": [
+    "terraform", "AWS", "IaC", "lambda", "cloudwatchlogs"
+  ],
+  "articleBody": "今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。\nこの例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。\nwork_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。\nlambda_logs.tf（定数バージョン）\n################################################# # Lambda archive data ################################################# data \"archive_file\" \"data-lambda-func001\" { type = \"zip\" source_dir = \"lambda/code/func001\" output_path = \"lambda/upload/lambda-func001.zip\" } ################################################# # Lambda function ################################################# resource \"aws_lambda_function\" \"lambda-func001\" { filename = data.archive_file.data-lambda-func001.output_path function_name = \"lambda-func001\" role = \"arn:aws:iam::012345678910:role/send-log-filter-role\" handler = \"lambda-func001.lambda_handler\" source_code_hash = base64sha256(\"lambda/upload/lambda-func001.zip\") timeout = 60 runtime = \"python3.9\" environment { variables = { \"SNS_TOPIC_ARN\" = \"arn:aws:sns:ap-northeast-1:012345678910:log-monitor-topic\" } } } ################################################# # Lambda Permission ################################################# resource \"aws_lambda_permission\" \"func-perm001\" { action = \"lambda:InvokeFunction\" function_name = aws_lambda_function.lambda-func001.arn principal = \"logs.ap-northeast-1.amazonaws.com\" source_arn = \"arn:aws:logs:ap-northeast-1:012345678910:log-group:*:*\" } ################################################# # CloudWatchLogs group ################################################# resource \"aws_cloudwatch_log_group\" \"cwl-group001\" { name = \"log-group001\" retention_in_days = \"7\" } ################################################# # CloudWatchLogs subscription filter ################################################# resource \"aws_cloudwatch_log_subscription_filter\" \"cwl-subscription001\" { name = \"cwl-filter001\" log_group_name = aws_cloudwatch_log_group.cwl-group001.name filter_pattern = \"[( msg=\\\"*error*\\\" || msg=\\\"*Error*\\\" ) \u0026\u0026 ( msg!=\\\"*test*\\\" \u0026\u0026 msg!=\\\"*Test*\\\" \u0026\u0026 msg!=\\\"*TEST*\\\" )]\" destination_arn = aws_lambda_function.lambda-func001.arn }  これをapplyするとそれぞれ単体でリソースが作成される。次にloop処理の例。\nlambda_logs.tf（loopバージョン）\n################################################# # Lambda archive data ################################################# data \"archive_file\" \"data-lambda-func\" { for_each = var.lambda_param_list source_dir = lookup(each.value, \"src_dir\") output_path = lookup(each.value, \"out_path\") type = \"zip\" } ################################################# # Lambda function ################################################# resource \"aws_lambda_function\" \"lambda-func\" { for_each = var.lambda_param_list filename = lookup(each.value, \"out_path\") function_name = lookup(each.value, \"func_name\") role = var.lambda_role handler = \"${lookup(each.value, \"func_name\")}.lambda_handler\" source_code_hash = base64sha256(\"${lookup(each.value, \"out_path\")}\") timeout = 60 runtime = \"python3.9\" environment { variables = { \"SNS_TOPIC_ARN\" = var.topic_arn } } } ################################################# # Lambda Permission ################################################# resource \"aws_lambda_permission\" \"my-func-perm\" { for_each = var.lambda_param_list action = \"lambda:InvokeFunction\" function_name = \"arn:aws:lambda:ap-northeast-1:012345678910:function:${lookup(each.value, \"func_name\")}\" principal = \"logs.ap-northeast-1.amazonaws.com\" source_arn = var.src_arn } ################################################# # CloudWatchLogs group ################################################# resource \"aws_cloudwatch_log_group\" \"cwl-group\" { for_each = var.logs_param_list name = lookup(each.value, \"log_grp\") retention_in_days = \"7\" } ################################################# # CloudWatchLogs subscription filter ################################################# resource \"aws_cloudwatch_log_subscription_filter\" \"cwl-subscription\" { for_each = var.logs_param_list name = lookup(each.value, \"filter\") log_group_name = lookup(each.value, \"log_grp\") filter_pattern = lookup(each.value, \"pattern\") destination_arn = aws_lambda_function.lambda-func[\"param1\"].arn }  archive_fileによりTerraformがLambda用のzipファイルを生成してくれる。source_code_hashがzipのハッシュ値の差分をチェックして変更があればデプロイする。と、いうことだがこの記述だとコードを変更しなくても都度zipファイルが生成されてタイムスタンプが更新され、変更していなくても変更したと判断されてデプロイされる。デプロイされてもコードは同じだから害はないんだが、どうも納得がいかん。変更扱いにしたくなければarchive_fileのブロックを全部コメントしておくか、source_code_hashをコメントするか。どういう運用がいいんだろう？\nちなみに最初のapplyは比較対象のzipファイルがなくてエラーになるため、source_code_hashは初回のみコメントアウトしておく。\nlambda.auto.tfvars（tfコードが参照する変数）\n################################################# # Lambda function loop vars ################################################# lambda_param_list = { param1 = { src_dir = \"lambda/code/func001\" out_path = \"lambda/upload/lambda-func001.zip\" func_name = \"lambda-func001\" } param2 = { src_dir = \"lambda/code/func002\" out_path = \"lambda/upload/lambda-func002.zip\" func_name = \"lambda-func002\" } param3 = { src_dir = \"lambda/code/func003\" out_path = \"lambda/upload/lambda-func003.zip\" func_name = \"lambda-func003\" } } ################################################# # Lambda function vars ################################################# lambda_role = \"arn:aws:iam::012345678910:role/send-log-filter-role\" topic_arn = \"arn:aws:sns:ap-northeast-1:012345678910:log-monitor-topic\" ################################################# # Lambda Permission vars ################################################# src_arn = \"arn:aws:logs:ap-northeast-1:012345678910:log-group:*:*\" ################################################# # CloudWatchLogs group \u0026 filter loop vars ################################################# logs_param_list = { param1 = { log_grp = \"log-group001\" filter = \"logs-filter001\" pattern = \"[( msg=\\\"*error*\\\" || msg=\\\"*Error*\\\" ) \u0026\u0026 ( msg!=\\\"*test*\\\" \u0026\u0026 msg!=\\\"*Test*\\\" \u0026\u0026 msg!=\\\"*TEST*\\\" )]\" } param2 = { log_grp = \"log-group002\" filter = \"logs-filter002\" pattern = \"[( msg=\\\"*error*\\\" || msg=\\\"*ERROR*\\\" ) \u0026\u0026 ( msg!=\\\"*test*\\\" \u0026\u0026 msg!=\\\"*Test*\\\" \u0026\u0026 msg!=\\\"*TEST*\\\" )]\" } param3 = { log_grp = \"log-group003\" filter = \"logs-filter003\" pattern = \"[( msg=\\\"*FAIL*\\\" || msg=\\\"*fail*\\\" || msg=\\\"*Fail*\\\" ) \u0026\u0026 ( msg!=\\\"*test*\\\" \u0026\u0026 msg!=\\\"*Test*\\\" \u0026\u0026 msg!=\\\"*TEST*\\\" )]\" } }  フィルタパターンが汚なくて見るに耐えないがこればかりはどうしようもない…\nvariables.tf（宣言のみ）\n################################## # main ################################## variable \"region\" { type = string description = \"\" } ################################## # lambda loop ################################## variable \"lambda_param_list\" { type = map(map(string)) description = \"\" } ################################## # lambda role ################################## variable \"lambda_role\" { type = string description = \"\" } ################################## # topic ################################## variable \"topic_arn\" { type = string description = \"\" } ################################## # lambda parmission ################################## variable \"src_arn\" { type = string description = \"\" } ################################## # logs loop ################################## variable \"logs_param_list\" { type = map(map(string)) description = \"\" }  これによりログ監視に必要なリソースが一気に作成される。最初にコード書くのは面倒だけど、やっぱり自動化の仕組み作っておくと楽だな。\n ",
+  "wordCount" : "600",
+  "inLanguage": "en",
+  "datePublished": "2021-12-12T22:00:00+09:00",
+  "dateModified": "2021-12-12T22:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Terraform loop処理の応用編(4) - Lambda
+    </h1>
+    <div class="post-meta">December 12, 2021
+</div>
+  </header> 
+  <div class="post-content"><p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。</p>
+<p>この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。</p>
+<pre><code>work_dir
+├── config.tf        #初期化ファイル
+├── lambda
+│   ├── code
+│   │   ├── func001
+│   │   │   └── lambda-func001.py
+│   │   ├── func002
+│   │   │   └── lambda-func002.py
+│   │   └── func003
+│   │       └── lambda-func003.py
+│   └── upload
+│       ├── lambda-func001.zip
+│       ├── lambda-func002.zip
+│       └── lambda-func003.zip
+├── lambda.auto.tfvars
+├── lambda_cwl.tf
+├── terraform.tfvars #regionのみ定義
+└── variables.tf
+</code></pre><p> </p>
+<p>最初に、すべて定数で記述したパターン。</p>
+<p>lambda_logs.tf（定数バージョン）</p>
+<pre><code>#################################################
+# Lambda archive data
+#################################################
+
+data &quot;archive_file&quot; &quot;data-lambda-func001&quot; {
+  type        = &quot;zip&quot;
+  source_dir  = &quot;lambda/code/func001&quot;
+  output_path = &quot;lambda/upload/lambda-func001.zip&quot;
+}
+
+#################################################
+# Lambda function
+#################################################
+
+resource &quot;aws_lambda_function&quot; &quot;lambda-func001&quot; {
+  filename         = data.archive_file.data-lambda-func001.output_path
+  function_name    = &quot;lambda-func001&quot;
+  role             = &quot;arn:aws:iam::012345678910:role/send-log-filter-role&quot;
+  handler          = &quot;lambda-func001.lambda_handler&quot;
+  source_code_hash = base64sha256(&quot;lambda/upload/lambda-func001.zip&quot;)
+  timeout          = 60
+  runtime          = &quot;python3.9&quot;
+  environment {
+    variables = {
+      &quot;SNS_TOPIC_ARN&quot; = &quot;arn:aws:sns:ap-northeast-1:012345678910:log-monitor-topic&quot;
+    }
+  }
+}
+
+#################################################
+# Lambda Permission
+#################################################
+
+resource &quot;aws_lambda_permission&quot; &quot;func-perm001&quot; {
+  action        = &quot;lambda:InvokeFunction&quot;
+  function_name = aws_lambda_function.lambda-func001.arn
+  principal     = &quot;logs.ap-northeast-1.amazonaws.com&quot;
+  source_arn    = &quot;arn:aws:logs:ap-northeast-1:012345678910:log-group:*:*&quot;
+}
+
+#################################################
+# CloudWatchLogs group
+#################################################
+
+resource &quot;aws_cloudwatch_log_group&quot; &quot;cwl-group001&quot; {
+  name              = &quot;log-group001&quot;
+  retention_in_days = &quot;7&quot;
+}
+
+#################################################
+# CloudWatchLogs subscription filter
+#################################################
+
+resource &quot;aws_cloudwatch_log_subscription_filter&quot; &quot;cwl-subscription001&quot; {
+  name            = &quot;cwl-filter001&quot;
+  log_group_name  = aws_cloudwatch_log_group.cwl-group001.name
+  filter_pattern  = &quot;[( msg=\&quot;*error*\&quot; || msg=\&quot;*Error*\&quot; ) &amp;&amp; ( msg!=\&quot;*test*\&quot; &amp;&amp; msg!=\&quot;*Test*\&quot; &amp;&amp; msg!=\&quot;*TEST*\&quot; )]&quot;
+  destination_arn = aws_lambda_function.lambda-func001.arn
+}
+</code></pre><p> </p>
+<p>これをapplyするとそれぞれ単体でリソースが作成される。次にloop処理の例。</p>
+<p>lambda_logs.tf（loopバージョン）</p>
+<pre><code>#################################################
+# Lambda archive data
+#################################################
+
+data &quot;archive_file&quot; &quot;data-lambda-func&quot; {
+  for_each = var.lambda_param_list
+
+  source_dir  = lookup(each.value, &quot;src_dir&quot;)
+  output_path = lookup(each.value, &quot;out_path&quot;)
+  type        = &quot;zip&quot;
+}
+
+#################################################
+# Lambda function
+#################################################
+
+resource &quot;aws_lambda_function&quot; &quot;lambda-func&quot; {
+  for_each = var.lambda_param_list
+  
+  filename         = lookup(each.value, &quot;out_path&quot;)
+  function_name    = lookup(each.value, &quot;func_name&quot;)
+  role             = var.lambda_role
+  handler          = &quot;${lookup(each.value, &quot;func_name&quot;)}.lambda_handler&quot;
+  source_code_hash = base64sha256(&quot;${lookup(each.value, &quot;out_path&quot;)}&quot;)
+  timeout          = 60
+  runtime          = &quot;python3.9&quot;
+  environment {
+    variables = {
+      &quot;SNS_TOPIC_ARN&quot; = var.topic_arn
+    }
+  }
+}
+
+#################################################
+# Lambda Permission
+#################################################
+
+resource &quot;aws_lambda_permission&quot; &quot;my-func-perm&quot; {
+  for_each = var.lambda_param_list
+
+  action        = &quot;lambda:InvokeFunction&quot;
+  function_name = &quot;arn:aws:lambda:ap-northeast-1:012345678910:function:${lookup(each.value, &quot;func_name&quot;)}&quot;
+  principal     = &quot;logs.ap-northeast-1.amazonaws.com&quot;
+  source_arn    = var.src_arn
+}
+
+#################################################
+# CloudWatchLogs group
+#################################################
+
+resource &quot;aws_cloudwatch_log_group&quot; &quot;cwl-group&quot; {
+  for_each = var.logs_param_list
+
+  name              = lookup(each.value, &quot;log_grp&quot;)
+  retention_in_days = &quot;7&quot;
+}
+
+#################################################
+# CloudWatchLogs subscription filter
+#################################################
+
+resource &quot;aws_cloudwatch_log_subscription_filter&quot; &quot;cwl-subscription&quot; {
+  for_each = var.logs_param_list
+
+  name            = lookup(each.value, &quot;filter&quot;)
+  log_group_name  = lookup(each.value, &quot;log_grp&quot;)
+  filter_pattern  = lookup(each.value, &quot;pattern&quot;)
+  destination_arn = aws_lambda_function.lambda-func[&quot;param1&quot;].arn
+}
+</code></pre><p> </p>
+<p>archive_fileによりTerraformがLambda用のzipファイルを生成してくれる。source_code_hashがzipのハッシュ値の差分をチェックして変更があればデプロイする。と、いうことだがこの記述だとコードを変更しなくても都度zipファイルが生成されてタイムスタンプが更新され、変更していなくても変更したと判断されてデプロイされる。デプロイされてもコードは同じだから害はないんだが、どうも納得がいかん。変更扱いにしたくなければarchive_fileのブロックを全部コメントしておくか、source_code_hashをコメントするか。どういう運用がいいんだろう？</p>
+<p>ちなみに最初のapplyは比較対象のzipファイルがなくてエラーになるため、source_code_hashは初回のみコメントアウトしておく。</p>
+<p>lambda.auto.tfvars（tfコードが参照する変数）</p>
+<pre><code>#################################################
+# Lambda function loop vars
+#################################################
+
+lambda_param_list = {
+      param1 = {
+        src_dir   = &quot;lambda/code/func001&quot;
+        out_path  = &quot;lambda/upload/lambda-func001.zip&quot;
+        func_name = &quot;lambda-func001&quot;
+      }
+      param2 = {
+        src_dir   = &quot;lambda/code/func002&quot;
+        out_path  = &quot;lambda/upload/lambda-func002.zip&quot;
+        func_name = &quot;lambda-func002&quot;
+      }
+      param3 = {
+        src_dir   = &quot;lambda/code/func003&quot;
+        out_path  = &quot;lambda/upload/lambda-func003.zip&quot;
+        func_name = &quot;lambda-func003&quot;
+      }
+}
+
+#################################################
+# Lambda function vars
+#################################################
+
+lambda_role = &quot;arn:aws:iam::012345678910:role/send-log-filter-role&quot;
+topic_arn   = &quot;arn:aws:sns:ap-northeast-1:012345678910:log-monitor-topic&quot;
+
+#################################################
+# Lambda Permission vars
+#################################################
+
+src_arn = &quot;arn:aws:logs:ap-northeast-1:012345678910:log-group:*:*&quot;
+
+#################################################
+# CloudWatchLogs group &amp; filter loop vars
+#################################################
+
+logs_param_list = {
+      param1 = {
+        log_grp   = &quot;log-group001&quot;
+        filter    = &quot;logs-filter001&quot;
+        pattern   = &quot;[( msg=\&quot;*error*\&quot; || msg=\&quot;*Error*\&quot; ) &amp;&amp; ( msg!=\&quot;*test*\&quot; &amp;&amp; msg!=\&quot;*Test*\&quot; &amp;&amp; msg!=\&quot;*TEST*\&quot; )]&quot;
+      }
+      param2 = {
+        log_grp   = &quot;log-group002&quot;
+        filter    = &quot;logs-filter002&quot;
+        pattern   = &quot;[( msg=\&quot;*error*\&quot; || msg=\&quot;*ERROR*\&quot; ) &amp;&amp; ( msg!=\&quot;*test*\&quot; &amp;&amp; msg!=\&quot;*Test*\&quot; &amp;&amp; msg!=\&quot;*TEST*\&quot; )]&quot;
+      }
+      param3 = {
+        log_grp   = &quot;log-group003&quot;
+        filter    = &quot;logs-filter003&quot;
+        pattern   = &quot;[( msg=\&quot;*FAIL*\&quot; || msg=\&quot;*fail*\&quot; || msg=\&quot;*Fail*\&quot; ) &amp;&amp; ( msg!=\&quot;*test*\&quot; &amp;&amp; msg!=\&quot;*Test*\&quot; &amp;&amp; msg!=\&quot;*TEST*\&quot; )]&quot;
+      }
+}
+</code></pre><p> </p>
+<p>フィルタパターンが汚なくて見るに耐えないがこればかりはどうしようもない&hellip;</p>
+<p>variables.tf（宣言のみ）</p>
+<pre><code>##################################
+# main
+##################################
+variable &quot;region&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+##################################
+# lambda loop
+##################################
+variable &quot;lambda_param_list&quot; {
+  type = map(map(string))
+  description = &quot;&quot;
+}
+
+##################################
+# lambda role
+##################################
+variable &quot;lambda_role&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+##################################
+# topic
+##################################
+variable &quot;topic_arn&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+##################################
+# lambda parmission
+##################################
+variable &quot;src_arn&quot; {
+  type = string
+  description = &quot;&quot;
+}
+
+##################################
+# logs loop
+##################################
+variable &quot;logs_param_list&quot; {
+  type = map(map(string))
+  description = &quot;&quot;
+}
+</code></pre><p> </p>
+<p>これによりログ監視に必要なリソースが一気に作成される。最初にコード書くのは面倒だけど、やっぱり自動化の仕組み作っておくと楽だな。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/a/spain_001.jpg" alt="Spain"  />
+</p>
+
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Terraform loop処理の応用編(3) - Event rule</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

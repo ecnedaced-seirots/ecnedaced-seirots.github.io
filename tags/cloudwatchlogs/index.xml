@@ -6,7 +6,20 @@
     <description>Recent content in cloudwatchlogs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 14 Nov 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Dec 2021 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraform loop処理の応用編(4) - Lambda</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
+      <pubDate>Sun, 12 Dec 2021 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</guid>
+      <description>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &amp;quot;archive_file&amp;quot; &amp;quot;data-lambda-func001&amp;quot; { type = &amp;quot;zip&amp;quot; source_dir = &amp;quot;lambda/code/func001&amp;quot; output_path = &amp;quot;lambda/upload/lambda-func001.</description>
+    </item>
+    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>

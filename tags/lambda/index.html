@@ -138,6 +138,21 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編(4) - Lambda</h2>
+  </header>
+  <section class="entry-content">
+    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
+  </section>
+  <footer class="entry-footer">December 12, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWS EventBridge &#43; SNSからのメール本文をカスタマイズする</h2>
   </header>
   <section class="entry-content">
@@ -199,22 +214,6 @@ import base64 import json import zlib import datetime import os import boto3 fro
   </section>
   <footer class="entry-footer">November 14, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
