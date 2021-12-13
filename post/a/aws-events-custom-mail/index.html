@@ -377,17 +377,17 @@ custom_subject <span style="color:#f92672">=</span> os<span style="color:#f92672
 </code></pre><p> </p>
 <p>&hellip;しかしメール届かない。て、CloudTrailが無効になっているんだから当然である。で、CloudTrailを有効にしてから先ほど作成したバケットを消してみる。したら、&hellip;設定した件名「カスタムメールタイトル送信テスト」で通知メールが届いた！</p>
 <p>Lambda関数の画面ではトリガーがEventBridgeになっているが、移行期間中はカッコでCloudWatche Eventsも併記されるっぽい。</p>
-<p><img loading="lazy" src="/img/custom-mail-function.jpg" alt="Lambda関数画面"  />
+<p><img loading="lazy" src="/img/a/custom-mail-function.jpg" alt="Lambda関数画面"  />
 
-<img loading="lazy" src="/img/custom-mail-trigger-eventbridge.jpg" alt="Lambda関数トリガー"  />
+<img loading="lazy" src="/img/a/custom-mail-trigger-eventbridge.jpg" alt="Lambda関数トリガー"  />
 </p>
 <p> </p>
 <p>Events側でもルールとLambda関数が紐付いていることがわかる。ちなみにこれはCloudWatche Eventsの画面から見ているが、同じルールがEventBridgeの画面にも存在するはずである。</p>
-<p><img loading="lazy" src="/img/custom_mail_rule.jpg" alt="Eventsルール画面"  />
+<p><img loading="lazy" src="/img/a/custom_mail_rule.jpg" alt="Eventsルール画面"  />
 </p>
 <p> </p>
 <p>メール本文。JSONの生データそのまんま。「人間」の感覚としてはこんなん送られてもなぁ&hellip;としか思えないが、&ldquo;DeleteBucket&quot;の記録があることは一応わかる。</p>
-<p><img loading="lazy" src="/img/custom-title-mail.jpg" alt="カスタム件名メール"  />
+<p><img loading="lazy" src="/img/a/custom-title-mail.jpg" alt="カスタム件名メール"  />
 </p>
 <p> </p>
 <p>CloudTrailはもういらんので削除。&hellip;で、SNSからのメールは件名カスタマイズできるのはわかったが、アラームと組み合わせるとなるとまた別の調整が必要。その辺がわからん。次回の課題。</p>
@@ -399,7 +399,7 @@ custom_subject <span style="color:#f92672">=</span> os<span style="color:#f92672
 <p>EventBridgeって結局元CloudWatchEventsのことなんだが、まだよくわかっていないのでこの辺も調べておく。<br>
 <a href="https://qiita.com/ishibashi-futoshi/items/586ebe17b174a478eb6a">Amazon EventBridgeとは何か</a></p>
 <p> </p>
-<p><img loading="lazy" src="/img/tokyo_bay_2018.JPG" alt="東京湾"  />
+<p><img loading="lazy" src="/img/a/tokyo_bay_2018.JPG" alt="東京湾"  />
 </p>
 
 
