@@ -6,7 +6,18 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 12 Dec 2021 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 Dec 2021 00:45:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Non title</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/life-1214/</link>
+      <pubDate>Tue, 14 Dec 2021 00:45:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/life-1214/</guid>
+      <description>あーあ、今日も、疲れた。気がついたら20時なんだもん、ひっでぇな。
+そして本来やるべきことの、半分もできていない。雑用の波が押し寄せる。言いたいことは多々あるが、ぶちまけ大会するわけにはいかない。このモヤモヤを一体どうしたらいいのか。
+  ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
