@@ -6,7 +6,22 @@
     <description>Recent content in lambda on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 12 Dec 2021 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Dec 2021 12:19:37 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</link>
+      <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</guid>
+      <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。
+参考
+boto3 API Reference
+LambdaよりCloudWatchログをS3に保存方法紹介
+ 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。
+ S3バケットポリシー（log-export-xxxxxxxx）
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] }  Lambdaコード(Python3.</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>

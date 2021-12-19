@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>aws cli on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/aws-cli/</link>
-    <description>Recent content in aws cli on Go Buddy Go</description>
+    <title>CloudWatchLogs on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/cloudwatchlogs/</link>
+    <description>Recent content in CloudWatchLogs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 19 Dec 2021 12:19:37 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws-cli/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Dec 2021 12:19:37 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</link>
@@ -20,18 +20,6 @@ LambdaよりCloudWatchログをS3に保存方法紹介
  今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。
  S3バケットポリシー（log-export-xxxxxxxx）
 { &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] }  Lambdaコード(Python3.</description>
-    </item>
-    
-    <item>
-      <title>AWS CLIのページャを無効化する</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
-      <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
-      <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&amp;quot;&amp;quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </description>
     </item>
     
   </channel>
