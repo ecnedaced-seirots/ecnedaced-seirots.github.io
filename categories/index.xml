@@ -6,16 +6,7 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 22 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Music</title>
-      <link>https://ecnedaced-seirots.github.io/categories/music/</link>
-      <pubDate>Wed, 22 Dec 2021 21:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/music/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Sun, 19 Dec 2021 12:19:37 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CloudWatchLogs</title>
       <link>https://ecnedaced-seirots.github.io/categories/cloudwatchlogs/</link>
