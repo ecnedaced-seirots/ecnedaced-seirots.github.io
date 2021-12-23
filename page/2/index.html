@@ -149,6 +149,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Non title</h2>
+  </header>
+  <section class="entry-content">
+    <p>あーあ、今日も、疲れた。気がついたら20時なんだもん、ひっでぇな。
+そして本来やるべきことの、半分もできていない。雑用の波が押し寄せる。言いたいことは多々あるが、ぶちまけ大会するわけにはいかない。このモヤモヤを一体どうしたらいいのか。
+  ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</p>
+  </section>
+  <footer class="entry-footer">December 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to Non title" href="https://ecnedaced-seirots.github.io/post/a/life-1214/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編(4) - Lambda</h2>
   </header>
   <section class="entry-content">
@@ -204,21 +217,6 @@ event_rule.tf
   </section>
   <footer class="entry-footer">December 6, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
-前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
-作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) service_role_arn = var.deploy_role deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34; ec2_tag_set { ec2_tag_filter { key = &#34;Name&#34; type = &#34;KEY_AND_VALUE&#34; value = lookup(each....</p>
-  </section>
-  <footer class="entry-footer">December 5, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
