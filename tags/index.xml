@@ -6,22 +6,31 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lambda</title>
+      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
+      <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>amazon sns</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
@@ -40,15 +49,6 @@
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lambda</title>
-      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
-      <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
       <description></description>
     </item>
     

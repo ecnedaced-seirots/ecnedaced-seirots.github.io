@@ -138,6 +138,27 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>AWS Lambda関数をダウンロードする</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。
+ 日本語
+ Lambda 関数「xxxxxx-function」のデプロイパッケージが大きすぎて、インラインコード編集を有効にできません。ただし、関数を呼び出すことはできます。
+  英語
+ The deployment package of your Lambda function “xxxxxx-function” is too large to enable inline code editing. However, you can still invoke your function.
+  この時アップロードしたのは、関数自体は空ファイルなのだが（アップロードしてからインラインで記述するつもりだった）モジュールが相当重かったようだ。こういうのは、Lambdaで処理すべきじゃないんだな。EC2上じゃなくてLambdaでサクッと実行できればいいな〜て処理があったのだが、頓挫…
+それはしょうがないとして、大分過去に検証した関数をまた見たくなって覗いたら上記のメッセージが出てコードが見れないという事例があったからメモ。って、以下記事にある通りマネコン画面から簡単にエクスポートできるんだけど。
+コンソールで確認できないLambda関数のコードを確認する
+ 画面右上のActionプルダウンから、“Export function&#34;選択。（日本語「関数のエクスポート」）
+ CLIだったらaws lambda get-functionでエクスポート可能。でもマネコンからの方が簡単だな。
+   </p>
+  </section>
+  <footer class="entry-footer">December 26, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS Lambda関数をダウンロードする" href="https://ecnedaced-seirots.github.io/post/a/lambda-function-export/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
   </header>
   <section class="entry-content">
@@ -197,19 +218,6 @@ event_rule.tf
   </section>
   <footer class="entry-footer">December 11, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(3) - Event rule" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var....</p>
-  </section>
-  <footer class="entry-footer">December 6, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

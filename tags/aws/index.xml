@@ -6,7 +6,26 @@
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS Lambda関数をダウンロードする</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
+      <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
+      <description>AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。
+ 日本語
+ Lambda 関数「xxxxxx-function」のデプロイパッケージが大きすぎて、インラインコード編集を有効にできません。ただし、関数を呼び出すことはできます。
+  英語
+ The deployment package of your Lambda function &amp;ldquo;xxxxxx-function&amp;rdquo; is too large to enable inline code editing. However, you can still invoke your function.
+  この時アップロードしたのは、関数自体は空ファイルなのだが（アップロードしてからインラインで記述するつもりだった）モジュールが相当重かったようだ。こういうのは、Lambdaで処理すべきじゃないんだな。EC2上じゃなくてLambdaでサクッと実行できればいいな〜て処理があったのだが、頓挫&amp;hellip;
+それはしょうがないとして、大分過去に検証した関数をまた見たくなって覗いたら上記のメッセージが出てコードが見れないという事例があったからメモ。って、以下記事にある通りマネコン画面から簡単にエクスポートできるんだけど。
+コンソールで確認できないLambda関数のコードを確認する
+ 画面右上のActionプルダウンから、&amp;ldquo;Export function&amp;quot;選択。（日本語「関数のエクスポート」）
+ CLIだったらaws lambda get-functionでエクスポート可能。でもマネコンからの方が簡単だな。
+   </description>
+    </item>
+    
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>
@@ -227,7 +246,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&am
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
  上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
 各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   evetnsルール custom-mail-rule     ではここから作業内容の記録に入る。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
 SNSトピック作成
 $ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
 $ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
