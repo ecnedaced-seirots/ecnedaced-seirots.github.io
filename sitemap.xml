@@ -3,24 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2021-12-25T09:00:00+09:00</lastmod>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/aviation/</loc>
-    <lastmod>2021-12-25T09:00:00+09:00</lastmod>
+    <loc>https://ecnedaced-seirots.github.io/tags/amazon-sns/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/aws-config/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/eventbridge/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/lambda/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/monitoring/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/monitoring/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2021-12-26T16:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/aviation/</loc>
     <lastmod>2021-12-25T09:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/life/</loc>
     <lastmod>2021-12-25T09:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/lifelog/</loc>
-    <lastmod>2021-12-25T09:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2021-12-25T09:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2021-12-25T09:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/tumblr/</loc>
@@ -50,9 +74,6 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/</loc>
     <lastmod>2021-12-23T01:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
-    <lastmod>2021-12-19T12:19:37+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/aws-cli/</loc>
     <lastmod>2021-12-19T12:19:37+09:00</lastmod>
   </url><url>
@@ -63,9 +84,6 @@
     <lastmod>2021-12-19T12:19:37+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</loc>
-    <lastmod>2021-12-19T12:19:37+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/lambda/</loc>
     <lastmod>2021-12-19T12:19:37+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/s3/</loc>
@@ -93,9 +111,6 @@
     <lastmod>2021-12-12T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/codepipeline/</loc>
-    <lastmod>2021-12-11T21:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/eventbridge/</loc>
     <lastmod>2021-12-11T21:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</loc>
@@ -149,16 +164,7 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</loc>
     <lastmod>2021-11-21T21:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/amazon-sns/</loc>
-    <lastmod>2021-11-21T00:30:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</loc>
-    <lastmod>2021-11-21T00:30:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/monitoring/</loc>
-    <lastmod>2021-11-21T00:30:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/monitoring/</loc>
     <lastmod>2021-11-21T00:30:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/cloudwatch/</loc>

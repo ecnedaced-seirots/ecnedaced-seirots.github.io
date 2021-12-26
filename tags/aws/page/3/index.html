@@ -138,6 +138,21 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
+CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
+ 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+変更前：lambda_function.py(1)
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os....</p>
+  </section>
+  <footer class="entry-footer">November 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWS監視の方式を整理したい</h2>
   </header>
   <section class="entry-content">
@@ -199,7 +214,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>AWS EventBridge &#43; SNSからのメール件名をカスタマイズする</h2>
+    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
   </header>
   <section class="entry-content">
     <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
@@ -214,26 +229,7 @@ $ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-
 $ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
   </section>
   <footer class="entry-footer">October 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS EventBridge &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchLogsからS3へログをエクスポートする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる…
-コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。
- バケットポリシーサンプル
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } }, { &#34;Action&#34;: &#34;s3:PutObject&#34; , &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } }, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
- 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
-ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するのが普通だろう。しかしね、たかがログエクスポートだろ？て舐めちゃいけないよ、作り込みがいけてないせいで、処理に24時間以上かかる例があったんだから。（もちろん作ったのはオレじゃない）
- </p>
-  </section>
-  <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
+  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

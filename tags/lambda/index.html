@@ -138,6 +138,23 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
+  </header>
+  <section class="entry-content">
+    <p>10月頃から金太郎飴のように同じような検証を重ね重ねやってきて、脳内パズル状態甚だしい。しかし書かないことには整理ができない。過去に類似のテーマで、CloudTrailによるイベント監視 &#43; 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
+AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
+ EventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。
+ 今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 config-event-function   eventルール config-change-notify-rule     eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。
+{ &#34;source&#34;: [&#34;aws.config&#34;], &#34;detail-type&#34;: [&#34;Config Configuration Item Change&#34;] }  イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。
+import json import boto3 import os print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): type = event[&#39;detail-type&#39;] Msg = json....</p>
+  </section>
+  <footer class="entry-footer">December 26, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>CloudWatch LogsからS3にエクスポート(Lambda/Python)</h2>
   </header>
   <section class="entry-content">
@@ -170,17 +187,17 @@ lambda_logs.tf（定数バージョン）
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>AWS EventBridge &#43; SNSからのメール本文をカスタマイズする</h2>
+    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</h2>
   </header>
   <section class="entry-content">
     <p>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
-AWS EventBridge &#43; SNSからのメール件名をカスタマイズする
+AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
  とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
  lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3....</p>
   </section>
   <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS EventBridge &#43; SNSからのメール本文をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
+  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -201,21 +218,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </section>
   <footer class="entry-footer">November 20, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
-  </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

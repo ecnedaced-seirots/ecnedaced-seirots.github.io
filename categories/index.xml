@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 25 Dec 2021 09:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Monitoring</title>
+      <link>https://ecnedaced-seirots.github.io/categories/monitoring/</link>
+      <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/monitoring/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Life</title>
       <link>https://ecnedaced-seirots.github.io/categories/life/</link>
@@ -58,15 +67,6 @@
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Monitoring</title>
-      <link>https://ecnedaced-seirots.github.io/categories/monitoring/</link>
-      <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/monitoring/</guid>
       <description></description>
     </item>
     

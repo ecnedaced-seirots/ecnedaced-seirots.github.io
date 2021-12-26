@@ -138,6 +138,23 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
+  </header>
+  <section class="entry-content">
+    <p>10月頃から金太郎飴のように同じような検証を重ね重ねやってきて、脳内パズル状態甚だしい。しかし書かないことには整理ができない。過去に類似のテーマで、CloudTrailによるイベント監視 &#43; 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
+AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
+ EventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。
+ 今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 config-event-function   eventルール config-change-notify-rule     eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。
+{ &#34;source&#34;: [&#34;aws.config&#34;], &#34;detail-type&#34;: [&#34;Config Configuration Item Change&#34;] }  イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。
+import json import boto3 import os print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): type = event[&#39;detail-type&#39;] Msg = json....</p>
+  </section>
+  <footer class="entry-footer">December 26, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>CloudWatch LogsからS3にエクスポート(Lambda/Python)</h2>
   </header>
   <section class="entry-content">
@@ -193,21 +210,6 @@ event_rule.tf
   </section>
   <footer class="entry-footer">December 6, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
-前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
-作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) service_role_arn = var.deploy_role deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34; ec2_tag_set { ec2_tag_filter { key = &#34;Name&#34; type = &#34;KEY_AND_VALUE&#34; value = lookup(each....</p>
-  </section>
-  <footer class="entry-footer">December 5, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
