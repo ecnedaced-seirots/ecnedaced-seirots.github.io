@@ -149,83 +149,159 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Terraform loop処理のリンク集</h2>
+    <h2>AWS監視の方式を整理したい</h2>
   </header>
   <section class="entry-content">
-    <p>Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
-  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
-  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
- Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
- Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。
- Terraform職人再入門2020   </p>
+    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
+監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
+  監視方式大枠  ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+閾値監視
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+ログ監視
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+プロセス監視
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
+EC2上のプロセスを監視し自動復旧する
+CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
+AWSでプロセス監視を実装したい
+CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
+EC2のプロセス監視と自動再起動
+ procstat事例
+以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
+CloudWatch Agent でProcstatプラグインの利用が可能になりました
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
   </section>
-  <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
+  <footer class="entry-footer">November 7, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</h2>
+    <h2>タウリン(taurine)の効能いろいろ</h2>
   </header>
   <section class="entry-content">
-    <p>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
-AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
-import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3....</p>
+    <p>タウリンの効果。過去に見つけたネタをバラバラにメモっていたのをまとめておく。
+ タウリンとは、一言で言うと。
+タウリンは分子量124の含硫アミノ酸。タンパク質の構成成分にはならないが、細胞内の遊離アミノ酸としてはグルタミンと並んでもっとも高濃度に存在し、かつグルタミンに類似する成分。またタウリンは脳内のアミノ酸の中では2番目に多く存在する。
+タウリンは疲れが溜まっていると多く消費される、年齢を重ねると減少、男性より女性が不足しがち、とも言われている。
+タウリンの効果としてはアセトアルデヒトの代謝促進による肝機能サポートがよく知られているが、記憶力や認知能力の改善、目の網膜の保護、便通の改善等、意外な効能もある様子。
+そんなタウリンの効果について、とりあえず箇条書きで。
+  神経伝達、海馬の増強や安定化をサポート。 記憶力に関与するグリア細胞の活性化を促進する。(注1) アルコールや有害物質から発生するアセトアルデヒトの代謝を促進する。 心筋を強くして疲労回復を促す。（ただし即効性はないらしい？） 心臓のポンプ作用を高めて筋肉により多くの血液を送り込み、持久力を高める。（ドイツの研究より） 細胞のミトコンドリアの数を増やす（ミトコンドリアのタンパク質合成に必須）(注2) 目の網膜や角膜を保護する。 腸管の抗炎症作用 血圧や血糖値のバランスをサポート。 肝臓・心臓の機能強化 胆汁を生成し、コレステロールや中性脂肪の代謝をコントロール インスリン分泌促進 便の水分を増やし、便秘を改善する。 ニューロンのカリウム除去をサポートし、ニューロンが過度に活発化することを防ぐ。 タウリンはレシチンと併用することで細胞の細胞膜を丈夫にし、細胞が正常な形状を保つようにサポートをする。 髪の毛の成長にも不可欠なタンパク質IGF-1(インスリン様成長因子)を増やす   (注1) 記憶を司ると言われる海馬にはグリア細胞が多く存在する。
+また以下のように認知機能の改善を示す研究がある。
+ 迷路試験（Y-maze test）と受動的回避試験（passive avoidance test）で、タウリンを摂取したマウスの認知機能が正常な状態に回復することが確認された。さらに、アルツハイマー病の症状である大脳皮質の炎症が抑えられたほか、脳の海馬から分泌されるアミロイドベータの量も減り、記憶力に深く関与するグリア細胞の活性化が促進されることが確認された。
+注目すべき特徴は、タウリンの脳機能改善効果がアルツハイマー病において選択的に表れるということだ。従来の治療薬物が正常のマウスでは脳機能の異常を来たしたのに対し、タウリンは正常のマウスで脳機能の異常を来たすことはなかった。タウリンの持つもう一つの特性は、タウリンが脳の血管壁を透過しやすいため、口から摂取しても脳にうまく吸収されることだ。別途の複雑な投与過程を経る必要がなく、飲料水などの食物からタウリンを摂っても効果が高い。
+ タウリンがアルツハイマー病治療に有効だと判明
+(注2) 「ただしタウリンが細胞内のエネルギー生産組織であるミトコンドリアの数を増やすのは、タウリン サプリを継続的に数か月～半年ほど摂取した場合に限られます。」（参照リンクは消滅）
+ タウリンを多く含む食材
+ 貝・甲殻類（サザエ、牡蠣、帆立、蛤、あさり、しじみ、タコ、イカ、カニ等） ブリやカツオの血合い 鯵や鯖などの近海魚  タウリンを多く含む食材としてはタコ・イカのイメージが強かったのだが、ダントツで多いのは牡蠣だった。100g中1180mg。サザエの方が100g1500mgで含有量としては多いが、摂取量・摂取回数は一般的に考えて少ない。
+余談だが牡蠣は亜鉛も多く含んでいて、その亜鉛はグルタミン酸興奮毒性（神経細胞死の一因）から脳を守る機能を果たす。また、記憶を司る海馬には最高濃度の亜鉛が存在する。脳の海馬をサポートするタウリンと亜鉛を両方含む牡蠣は、最強ブレインフードだった！
+タウリンを多く含む食品一覧 ポイントは魚介類と血合肉
+ タウリン摂取時の注意
+ 食間・空腹時の摂取が有効。 アスピリンと併用しないこと。（薬理作用を増強させてしまうため余計な負担がかかる。バファリンは原材料としてアスピリンを含む）   …と、万能選手的なタウリンではあるが、日本国内ではタウリン単体のサプリメントは販売されていない。このためタウリンのサプリはiHerbで時々購入しているが、在庫切れのことが多く割と入手困難ではある。日本の薬事法に規制があって、一回で購入可能な量・個数が制限されているから、まとめ買いもできないのだ。（おそらく鷲のマークの製薬会社の圧力）
+iHerb独自ブランドのタウリンサプリが安価で嬉しいけど、数ヶ月前から在庫切れ状態が続いている。しょうがないから、今日別の高いやつをポチってしまった。</p>
   </section>
-  <footer class="entry-footer">November 21, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
+  <footer class="entry-footer">November 6, 2021</footer>
+  <a class="entry-link" aria-label="post link to タウリン(taurine)の効能いろいろ" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
+    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
   </header>
   <section class="entry-content">
-    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
- 過去記事
-CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
-で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
-from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
-ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
- lambda_function.py （時刻表示JSTバージョン）
-import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
+    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
   </section>
-  <footer class="entry-footer">November 20, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
+  <footer class="entry-footer">November 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>英語メモ - into the bargain</h2>
+    <h2>「いてくれるだけでいい人」の理由</h2>
   </header>
   <section class="entry-content">
-    <p>into the bargain = in addition
-“Zazie in the Metro”(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より
- </p>
+    <p>職場とか、いろんなチーム・グループの中で、「この人がいてくれると安心」「いてくれるだけでいい」と思える人が稀にいる。本当に、稀に、だが。そういう人と、その他の人々の違いは一体何なのか、とモヤっと不思議に思っていた。若干解明できそうなのが、以下の記事。ここに書かれている要因だけではないと思うが、理由の一部としては納得できる。
+「いるだけでチームの雰囲気をよくする人」の口癖4つ。“ど” から始まるあの言葉がかなり使える
+ （以降軽くNSFW画像あり。閲覧注意）
+ 記事では「いるだけでチームの雰囲気をよくする人」の4つの要素を述べている。
+ 「ちょうどよかった」悪い状況にある時でもポジティブに捉える 「ありがとう」を言う時に別途感謝の言葉を添える どの、どのように、どちらか、等「ど」ではじまる質問で相手の話を引き出す 「教えてください」で相手へのリスペクトの気持ちを表す   上記のうち、1.と2.は他の自己啓発系コンテンツでもよく目にする話なので割愛する。まぁ「感謝の言葉を出し惜しみしない」、これは確かに大事だよ、俺も実践してる。相手によるけどね。
+3.は、俺はこれは実践する気ないけど、要するに聞き上手になって相手の気分をよくしてやれ、つうことだ。
+  ハーバード大学の研究論文（2012年）によると、自分の話をしているとき、おいしい食事をするときや収入を得るときと同じように脳の報酬系という部位が活性化したことが、 約300人の脳をfMRIでスキャンした結果からわかったのだそう。私たちが聞き上手な人に好感を抱くのは、「自分の話をするのが好き！」という人間の本能を満たしてくれるからなのかもしれません。
+  「上手に質問をすれば共感力が上がり、相手に好感を抱かせることができる」につながる、と。俺は「聞き上手ボランティア」をやる気はさらさらないが、興味深いのは先の引用にある「自分の話をするのが好き！という人間の本能」だ。よくいるよな、人の話は全然聞かないで、延々と自分のことを話したがるやつ。（ま、経験上女に多いという傾向は、ある）
+俺は今までそういうやつのことを、ただ自己愛が強くて、その自己愛を充足させるために他人に自分話を押売りして聞かせているもんだと思っていた。しかし上記引用で、「自分の話をしているときに脳の報酬系が活性化する」というのを読んで「そうか！」とひらめいた。脳の報酬系とはドーパミンのことである。ドーパミンは快楽を司る神経伝達物質だ。つまり自分のことを話すのは、人類共通の快感だったのだ！
+まぁ確かに、自分だってそういう面があるのは認めるよ。よく「話を聞いてもらってスッキリした」って言うもんな。何で話すだけでスッキリするのかって、ちゃんと理由があったんだな。しかしこれも度がすぎると聞かされる相手が迷惑だし、みっともないという自覚はある。自分のことを延々と話す人は、その制御が効かなくて、自らの快感原則に従って暴走しているんだろう。プラス自己愛もあるだろうけどね、どっちにしろこの手の人間とは遠い距離を置きたいものである。相手だけ満足して、自分はエネルギー吸い取られるだけだからな…
+  話が大分脱線した、本来の主旨に戻る。うまい質問の仕方。「ど」で始まる疑問符がキーらしいが、具体的には記事の引用を俺なりにアレンジすると以下のようになる。（仕事関連の想定じゃないとピンと来ないもんで…）
+   キーワード 質問例     What ー＞「どう、どんな」 どんな理由でこの仕事を始めたんですか？   Who ー＞「どの人、どんな人」 どんな人と仕事してみたいですか？   When ー＞「どんなとき、どのタイミング」 どんなときに達成感を感じますか？   Where ー＞「どこに、どこで」 どこでその分野を学んだのですか？   Why ー＞「どうして」 どうしてその製品に人気が集中するんでしょうね？   Which ー＞「どれ、どっち」 どちらのアイデアが気に入りましたか？   How ー＞「どうやって、どのように」 どのようにしてその課題を解決したんですか？     自己愛満々野郎の自分話を聞かされるのはゴメンだが、まともな相手とのコミュニケーション手法としては頭の片隅においておこう。...</p>
   </section>
-  <footer class="entry-footer">November 19, 2021</footer>
-  <a class="entry-link" aria-label="post link to 英語メモ - into the bargain" href="https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/"></a>
+  <footer class="entry-footer">November 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to 「いてくれるだけでいい人」の理由" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
+    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</h2>
   </header>
   <section class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
+    <p>AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
+今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
+ 参考
+ CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
+ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
+ 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ...</p>
   </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
+  <footer class="entry-footer">October 31, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>「ストックホルム症候群」の心理はヒトのデフォルト機能だった</h2>
+  </header>
+  <section class="entry-content">
+    <p>昨年の過去ツイのスレッドでちょっと気になるのを見つけたので、若干手を入れてここにまとめて書いておく。
+  暴力の加害者に対して被害者が好意を抱く「ストックホルム症候群」と567脳、マスク厨の心理は似てないか？側から見ると、あの人たちは自由や人権を奪われている今の状況を愛しているように見える。
+その裏では「認知的不協和の解消」が発生している可能性がある。これは、自分の内部の矛盾に一貫性を持たせようとする機能。「新しい生活様式」だの、自粛しろマスクつけろだの、不自由で不本意な状況を強いられているが、それを受け入れている自分に葛藤が生じているはずなのだ。
+だからマナーだの何だの言って正当化している。または無意識に自分を麻痺させている。どちらにしても認知に修正を加えて不協和（矛盾）を解消しようとしているわけで、つまり認知に歪みが発生している。だから苦痛さえ感じなくなっているのではないかと想像する。
+それから、「沖縄から貧困がなくならない本当の理由」（樋口耕太郎著）からの引用なのだが、こういった自己防衛の心理も働いているかとも。
+ 人間は激しい痛みを感じると、自分の感覚を鈍らせて自己防衛を図る性質があるが、それは絶望の耐え難い痛みを和らげるために、自分自身に打つ麻酔のようなものだ。
+  自分に麻酔を打って思考や身体感覚を麻痺させたり、自ら認知を歪ませれば、見かけ上は苦痛が和らぐ。しかし同時に生きる上でのあらゆる喜びもまた、感じることができなくなる。そして本来あるべき自分の自由と権利を、忘却の彼方に押しやっている。それは虚構の世界を生きているだけなのだ。
+  …と、まぁ当時はこんなことを思いつくままに呟いてみたが、大半の世間のコロナ恐怖脳はここまで複雑な心理の綾などなく、自分で調べたり考察することもなくひたすら垂れ流される情報を鵜呑みにして怖いね怖いねと決まり文句を言ってるだけのように見える、それが世間の掟だから。
+もちろん、マスク・アルコール消毒・検温や在宅勤務を強制または半強制されることに疑問を抱くこともない。一切の疑問も抱かずに、受け入れているのだ。昼の外食時に周りから聞こえてくる会話を聞いていると呆れる、それなりに一流と呼ばれる企業に勤めていてある程度の地位についていそうな人たちが、そんな具合なのである。
+まぁ何にせよ、認知の歪みが生じていることは確か、40度近い真夏日に病気でもないのにマスクとか異常でしかないよ。
+ それから「家庭内ストックホルム症候群」という言葉もある。児童虐待やDVを受けている被害者が、自分を虐待・無視などで苦しめる親や配偶者（多くの場合夫）に不満や憎しみを抱きつつも、見捨てられたらどうしようと、過剰な不安や恐怖心が芽生える。そこで無意識の内に親や配偶者が気に入られるように「良い子」「良い妻」を演じてしまう…ということらしい。
+いやでもこれって別に、ストックホルム症候群という名称を持ち出すまでもなく、より普遍的な事象だと思うな、人間が暴力・抑圧・嫌がらせに対して自分の心を麻痺させて適応を試みる心理が働くのは、きっと人間のデフォルト機能なんだよ、悲しい機能だけど。
+DVの他に大学内の教授と生徒の間に発生する「アカハラ」、職場のパワハラでも同様の状態になるよね、理不尽なハラスメントを受けているのに、それを客観視できない状態にあると、相手に気に入られようとして相手に従い、相手の意に沿うように行動してしまうんだ。
+これには2つの要因がある、生き延びるための生存本能と、他者に愛されたい、承認されたいという、ヒトとしての社会的本能。しかしそれで相手がハラスメントを辞めるかと言ったら逆だ、「こいつはいじめれば何でも言うことをきく」と思われてエスカレートするだけだ、全く本質的な解決にはならず、状況が悪化するだけなんだよ。
+  ここまでの文章は、今年2021年の1月に別のブログに投稿した内容を編集・加筆したものだ。そこに置いておいても塩漬けになるだけだからこっちに持ってきた。文章中に登場するツイは、とうにアカウント削除したので今は存在しない。「家庭内ストックホルム症候群」から先は今回追記したもの。主旨が途中からずれている気がするが、まぁ気にしない。
+Twitterなんか最低のクソメディアだと思うが、ふと思いついて書いたことでも後でこうして振り返って考察することもあるから、そういう意味では少しはやる価値あったかな。
+結局何が言いたいのかってね、多くの人間は、ハラスメントを受けている最中は、状況を客観視できないんだよ、かつ、生存本能と社会的本能のためにその状況に適応しようとして、自分を押し殺してハラスメントをする相手や周囲に従ったり、意に沿わない行動をとったりしがちなんだ。これは自覚しないといけないし、あらゆるハラスメントには声をあげ、全力で抵抗しなけりゃいけないんだ、それこそ、羊や奴隷ではなく、主権を持った人間として生きるために。
+  過去記事にも書いたDylan Thomasの詩の一部。本来の詩の主旨は違うけど、今のこの世界に対して、全く同じことを言いたいね。
+ Do not go gentle into that good night,
+Rage, rage against the dying of the light.
+  あぁまったく、俺はやっぱりこのまま死ぬわけにはいかねぇ、大人しく従ってちゃダメなんだ、激怒して、憤怒して、死にもの狂いで抵抗しなくちゃいけないんだ。</p>
+  </section>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to 「ストックホルム症候群」の心理はヒトのデフォルト機能だった" href="https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>MacにPython3を再インストール</h2>
+  </header>
+  <section class="entry-content">
+    <p>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
+$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &#34;/usr/local/lib/python3.9/site-packages:&#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software....</p>
+  </section>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

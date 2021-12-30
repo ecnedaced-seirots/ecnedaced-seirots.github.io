@@ -138,34 +138,6 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Terraform loop処理の応用編(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var....</p>
-  </section>
-  <footer class="entry-footer">December 6, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
-前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
-作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) service_role_arn = var.deploy_role deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34; ec2_tag_set { ec2_tag_filter { key = &#34;Name&#34; type = &#34;KEY_AND_VALUE&#34; value = lookup(each....</p>
-  </section>
-  <footer class="entry-footer">December 5, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
     <h2>Terraform loop処理の超シンプルな例</h2>
   </header>
   <section class="entry-content">
@@ -218,6 +190,81 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </section>
   <footer class="entry-footer">November 20, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
+類似の過去記事
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ lambda_function.py
+import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
+  </section>
+  <footer class="entry-footer">November 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
+CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
+ 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+変更前：lambda_function.py(1)
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os....</p>
+  </section>
+  <footer class="entry-footer">November 14, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AWS監視の方式を整理したい</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
+監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
+  監視方式大枠  ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+閾値監視
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+ログ監視
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+プロセス監視
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
+EC2上のプロセスを監視し自動復旧する
+CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
+AWSでプロセス監視を実装したい
+CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
+EC2のプロセス監視と自動再起動
+ procstat事例
+以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
+CloudWatch Agent でProcstatプラグインの利用が可能になりました
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
+  </section>
+  <footer class="entry-footer">November 7, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
+  </header>
+  <section class="entry-content">
+    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
+ ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+CloudWatch アラームの通知メールを少しでも読みやすくしたい
+ 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
+$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
+  </section>
+  <footer class="entry-footer">November 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

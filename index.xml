@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 30 Dec 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 31 Dec 2021 06:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Non Title</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/lgs/</link>
+      <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/lgs/</guid>
+      <description>&lt;p&gt;過去LGS（リーキーガット症候群:Leaky gut syndrome) に罹ったことがあるから、腸内の日和見菌が凶暴化するとどれほど身体と脳が破壊されるか身に染みてわかる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
       <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</link>

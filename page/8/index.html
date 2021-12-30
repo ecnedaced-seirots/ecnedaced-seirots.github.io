@@ -149,88 +149,106 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Eye Candyがいるんだ</h2>
+    <h2>Firefox/Chromeでアドオンなし全画面キャプチャ</h2>
   </header>
   <section class="entry-content">
-    <p>10月25日の明け方に見た夢。コンサート会場みたいなところ。そこはロンドンである。観客が大勢いて賑わっている。そしてノーマスク。「あぁ、マスク圧解禁されたのか！」と嬉しい。よく見ると数人はマスクしている、でもほぼノーマスク。あぁ。
- もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ….
+    <p>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
+Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
+…が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
+Chromeの場合 Chromeでやる場合は一手間増える。
+Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</p>
+  </section>
+  <footer class="entry-footer">September 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to Firefox/Chromeでアドオンなし全画面キャプチャ" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Macで必須のショートカット3選</h2>
+  </header>
+  <section class="entry-content">
+    <p> 私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
+  フルスクリーン解除 control&#43; command &#43; F
+  アプリケーションの強制終了 command &#43; option &#43; esc
+  スクリーンショット command &#43; shift &#43; 3
+   それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない…
+ 追記
+もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command &#43; D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command &#43; Shift &#43; D。3選といいつつ、思い出したらまた書くかもな…
  </p>
   </section>
-  <footer class="entry-footer">October 26, 2021</footer>
-  <a class="entry-link" aria-label="post link to Eye Candyがいるんだ" href="https://ecnedaced-seirots.github.io/post/a/life-1025/"></a>
+  <footer class="entry-footer">September 18, 2021</footer>
+  <a class="entry-link" aria-label="post link to Macで必須のショートカット3選" href="https://ecnedaced-seirots.github.io/post/a/mac-shortcut/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
+    <h2>サクラエディタで半角スペースを可視化</h2>
   </header>
   <section class="entry-content">
-    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
+    <p>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
+メニューから[設定] 〜 [タイプ別設定] を選択。
+ 「カラー」タブ 半角空白 「色分け/表示」にチェック  </p>
   </section>
-  <footer class="entry-footer">October 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
+  <footer class="entry-footer">September 16, 2021</footer>
+  <a class="entry-link" aria-label="post link to サクラエディタで半角スペースを可視化" href="https://ecnedaced-seirots.github.io/post/a/sakura/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchLogsからS3へログをエクスポートする</h2>
+    <h2>井の頭公園 - 2018年4月</h2>
   </header>
   <section class="entry-content">
-    <p>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる…
-コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。
- バケットポリシーサンプル
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } }, { &#34;Action&#34;: &#34;s3:PutObject&#34; , &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } }, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
- 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
-ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するのが普通だろう。しかしね、たかがログエクスポートだろ？て舐めちゃいけないよ、作り込みがいけてないせいで、処理に24時間以上かかる例があったんだから。（もちろん作ったのはオレじゃない）
+    <p>小ネタでもいいからどんどんポストしたいと思っているけどそれもなかなかできないもんだな。写真だけ。2018年4月の東京・井の頭公園。
  </p>
   </section>
-  <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
+  <footer class="entry-footer">September 15, 2021</footer>
+  <a class="entry-link" aria-label="post link to 井の頭公園 - 2018年4月" href="https://ecnedaced-seirots.github.io/post/a/inokashira-park/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Github Actionsメモ</h2>
+    <h2>EKS Container InsightsのFluent Bit設定</h2>
   </header>
   <section class="entry-content">
-    <p>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
-Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブサイトを構築する
-  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</p>
+    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。
+...</p>
   </section>
-  <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to Github Actionsメモ" href="https://ecnedaced-seirots.github.io/post/a/github-actions/"></a>
+  <footer class="entry-footer">September 12, 2021</footer>
+  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>middle finger周辺の表現など</h2>
+    <h2>マークダウン記法</h2>
   </header>
   <section class="entry-content">
-    <p>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
- “middle finger&#34;って言ったらあれです、特別な意味を持つ「中指」。
-以下はすべて同じ意味。“the finger&#34;でも同じ意味になるとは知らなかった。
- middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
- give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
- flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</p>
+    <p>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
+  Markdown 早見表 &amp; 詳細
+  かんたんMarkdownの記法
+  Markdown記法 チートシート
+  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
+   </p>
   </section>
-  <footer class="entry-footer">October 19, 2021</footer>
-  <a class="entry-link" aria-label="post link to middle finger周辺の表現など" href="https://ecnedaced-seirots.github.io/post/a/the-finger/"></a>
+  <footer class="entry-footer">September 5, 2021</footer>
+  <a class="entry-link" aria-label="post link to マークダウン記法" href="https://ecnedaced-seirots.github.io/post/a/markdown/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>最初の投稿</h2>
+  </header>
+  <section class="entry-content">
+    <p>とりあえず最初の投稿。
+ </p>
+  </section>
+  <footer class="entry-footer">September 4, 2021</footer>
+  <a class="entry-link" aria-label="post link to 最初の投稿" href="https://ecnedaced-seirots.github.io/post/a/first/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://ecnedaced-seirots.github.io/page/7/">« Prev Page</a>
-    <a class="next" href="https://ecnedaced-seirots.github.io/page/9/">Next Page »</a>
   </nav>
 </footer>
     </main>

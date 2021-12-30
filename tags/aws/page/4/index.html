@@ -138,119 +138,47 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
+    <h2>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</h2>
   </header>
   <section class="entry-content">
-    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
+    <p>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
+ 参考
+異なる AWS アカウントでアプリケーションをデプロイする
+（上記ページにリンクあり。assumeロールの設定は以下参考）
+IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
+ 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+① 配布元(Dev)
+② 配布先(Stg)
+概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
+基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
+ 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+  配布先②アカウントにて、①がassumeするためのロールAを作成する。
+  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
+IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
+ インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ –&gt; [アクセス許可の追加] –&gt; [インラインポリシーの作成] [JSON] タブ選択
+以下の内容を設定する。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。...</p>
   </section>
-  <footer class="entry-footer">October 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
+  <footer class="entry-footer">September 25, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchLogsからS3へログをエクスポートする</h2>
+    <h2>EKS Container InsightsのFluent Bit設定</h2>
   </header>
   <section class="entry-content">
-    <p>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる…
-コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。
- バケットポリシーサンプル
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } }, { &#34;Action&#34;: &#34;s3:PutObject&#34; , &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } }, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
- 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
-ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するのが普通だろう。しかしね、たかがログエクスポートだろ？て舐めちゃいけないよ、作り込みがいけてないせいで、処理に24時間以上かかる例があったんだから。（もちろん作ったのはオレじゃない）
- </p>
+    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。
+...</p>
   </section>
-  <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>AWS CLIのページャを無効化する</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&#34;&#34;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </p>
-  </section>
-  <footer class="entry-footer">October 16, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
-数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが…
-CloudFormationでCloudWatchAlermを作成する
- ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
-もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
- ここから。
-オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
-サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
-以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど…、数年前の事例なので。
-スケールアウトポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
-snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&#34; scaleoutpolicy=&#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &#34;test-web-scaleout-alarm&#34; \ --alarm-description &#34;Alarm when CPU exceeds 70%&#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&#34;test-web-asg&#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。...</p>
-  </section>
-  <footer class="entry-footer">October 10, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム作成時のメモ（過去事例）" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</h2>
-  </header>
-  <section class="entry-content">
-    <p>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
-前回投稿
-AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）
-繰り返しになるけれども、前提条件をおさらいとして記載。
-やりたいこと
-AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
-他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
-1-資材配布元（アカウントA）
-① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
-② KMSキー (両方のアカウントにアクセス許可する)
-③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
-④ CodePipelineが使用するサービスロール
-⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
- 2-資材配布先（アカウントB）
-① CodeDeploy定義（アプリケーション/デプロイメントグループ）
-② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
-③ ②のIAMロールをアタッチしたデプロイ先ec2
-④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
-2-① CodeDeploy定義
-アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
-2-② ec2用のIAMロール
-KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
-KMS用インラインポリシー
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;kms:DescribeKey&#34;, &#34;kms:GenerateDataKey*&#34;, &#34;kms:Encrypt&#34;, &#34;kms:ReEncrypt*&#34;, &#34;kms:Decrypt&#34; ], &#34;Resource&#34;: [ &#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&#34; #KMSのARN ] } ] }  S3用インラインポリシー...</p>
-  </section>
-  <footer class="entry-footer">October 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/"></a>
+  <footer class="entry-footer">September 12, 2021</footer>
+  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://ecnedaced-seirots.github.io/tags/aws/page/3/">« Prev Page</a>
-    <a class="next" href="https://ecnedaced-seirots.github.io/tags/aws/page/5/">Next Page »</a>
   </nav>
 </footer>
     </main>

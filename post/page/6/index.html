@@ -153,104 +153,119 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
+    <h2>ひとり言 - 10月27日</h2>
   </header>
   <section class="entry-content">
-    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
-CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
-変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os....</p>
+    <p>あー、マジやべぇ、息が詰まりそうだ、いろいろと、勘弁してくれよもう的な動きが多くてさ、めっちゃやり辛い。まじで、10月入ってからすげえやり辛くなった。鬱屈がたまってどうしようもねぇ。
+しばらく前から通勤時に英文小説読む余力もないし、Tumblrやり過ぎるとDVT症候群で頭痛と目眩がするし、イヤホンで大音量で音楽聴きすぎて耳がイカレそうだし、もう何を支えにしていいかわからないな、オレは生き延びることができるんだろうか？
+そりゃ仕事があるだけありがたい立場だってことは忘れちゃいけないけどね、もし今「戦争」状態じゃなかったらいつでも出ていけるんだからな、なにせ俺様能力高いからな。
+ うん、そのつもりでやっていくしかねぇ。
+ </p>
   </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
+  <footer class="entry-footer">October 27, 2021</footer>
+  <a class="entry-link" aria-label="post link to ひとり言 - 10月27日" href="https://ecnedaced-seirots.github.io/post/a/life-1027/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>英語メモ - elaborate</h2>
+    <h2>Eye Candyがいるんだ</h2>
   </header>
   <section class="entry-content">
-    <p>elaborate   複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の  他動詞としては「〜を詳しく調べる」
- Irvine Welshの&#34;Trainspotting&#34;読書中に登場した単語だと思うが、何ページかはもう覚えていない。
-  </p>
+    <p>10月25日の明け方に見た夢。コンサート会場みたいなところ。そこはロンドンである。観客が大勢いて賑わっている。そしてノーマスク。「あぁ、マスク圧解禁されたのか！」と嬉しい。よく見ると数人はマスクしている、でもほぼノーマスク。あぁ。
+ もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ….
+ </p>
   </section>
-  <footer class="entry-footer">November 13, 2021</footer>
-  <a class="entry-link" aria-label="post link to 英語メモ - elaborate" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/"></a>
+  <footer class="entry-footer">October 26, 2021</footer>
+  <a class="entry-link" aria-label="post link to Eye Candyがいるんだ" href="https://ecnedaced-seirots.github.io/post/a/life-1025/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>AWS監視の方式を整理したい</h2>
+    <h2>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
   </header>
   <section class="entry-content">
-    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
-監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
-閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
-ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
-プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
-EC2上のプロセスを監視し自動復旧する
-CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
-AWSでプロセス監視を実装したい
-CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
-EC2のプロセス監視と自動再起動
- procstat事例
-以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
-CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
+    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
+Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
+ 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
+   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
+SNSトピック作成
+$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+または、以下確認コマンド
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。...</p>
   </section>
-  <footer class="entry-footer">November 7, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
+  <footer class="entry-footer">October 25, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>タウリン(taurine)の効能いろいろ</h2>
+    <h2>CloudWatchLogsからS3へログをエクスポートする</h2>
   </header>
   <section class="entry-content">
-    <p>タウリンの効果。過去に見つけたネタをバラバラにメモっていたのをまとめておく。
- タウリンとは、一言で言うと。
-タウリンは分子量124の含硫アミノ酸。タンパク質の構成成分にはならないが、細胞内の遊離アミノ酸としてはグルタミンと並んでもっとも高濃度に存在し、かつグルタミンに類似する成分。またタウリンは脳内のアミノ酸の中では2番目に多く存在する。
-タウリンは疲れが溜まっていると多く消費される、年齢を重ねると減少、男性より女性が不足しがち、とも言われている。
-タウリンの効果としてはアセトアルデヒトの代謝促進による肝機能サポートがよく知られているが、記憶力や認知能力の改善、目の網膜の保護、便通の改善等、意外な効能もある様子。
-そんなタウリンの効果について、とりあえず箇条書きで。
-  神経伝達、海馬の増強や安定化をサポート。 記憶力に関与するグリア細胞の活性化を促進する。(注1) アルコールや有害物質から発生するアセトアルデヒトの代謝を促進する。 心筋を強くして疲労回復を促す。（ただし即効性はないらしい？） 心臓のポンプ作用を高めて筋肉により多くの血液を送り込み、持久力を高める。（ドイツの研究より） 細胞のミトコンドリアの数を増やす（ミトコンドリアのタンパク質合成に必須）(注2) 目の網膜や角膜を保護する。 腸管の抗炎症作用 血圧や血糖値のバランスをサポート。 肝臓・心臓の機能強化 胆汁を生成し、コレステロールや中性脂肪の代謝をコントロール インスリン分泌促進 便の水分を増やし、便秘を改善する。 ニューロンのカリウム除去をサポートし、ニューロンが過度に活発化することを防ぐ。 タウリンはレシチンと併用することで細胞の細胞膜を丈夫にし、細胞が正常な形状を保つようにサポートをする。 髪の毛の成長にも不可欠なタンパク質IGF-1(インスリン様成長因子)を増やす   (注1) 記憶を司ると言われる海馬にはグリア細胞が多く存在する。
-また以下のように認知機能の改善を示す研究がある。
- 迷路試験（Y-maze test）と受動的回避試験（passive avoidance test）で、タウリンを摂取したマウスの認知機能が正常な状態に回復することが確認された。さらに、アルツハイマー病の症状である大脳皮質の炎症が抑えられたほか、脳の海馬から分泌されるアミロイドベータの量も減り、記憶力に深く関与するグリア細胞の活性化が促進されることが確認された。
-注目すべき特徴は、タウリンの脳機能改善効果がアルツハイマー病において選択的に表れるということだ。従来の治療薬物が正常のマウスでは脳機能の異常を来たしたのに対し、タウリンは正常のマウスで脳機能の異常を来たすことはなかった。タウリンの持つもう一つの特性は、タウリンが脳の血管壁を透過しやすいため、口から摂取しても脳にうまく吸収されることだ。別途の複雑な投与過程を経る必要がなく、飲料水などの食物からタウリンを摂っても効果が高い。
- タウリンがアルツハイマー病治療に有効だと判明
-(注2) 「ただしタウリンが細胞内のエネルギー生産組織であるミトコンドリアの数を増やすのは、タウリン サプリを継続的に数か月～半年ほど摂取した場合に限られます。」（参照リンクは消滅）
- タウリンを多く含む食材
- 貝・甲殻類（サザエ、牡蠣、帆立、蛤、あさり、しじみ、タコ、イカ、カニ等） ブリやカツオの血合い 鯵や鯖などの近海魚  タウリンを多く含む食材としてはタコ・イカのイメージが強かったのだが、ダントツで多いのは牡蠣だった。100g中1180mg。サザエの方が100g1500mgで含有量としては多いが、摂取量・摂取回数は一般的に考えて少ない。
-余談だが牡蠣は亜鉛も多く含んでいて、その亜鉛はグルタミン酸興奮毒性（神経細胞死の一因）から脳を守る機能を果たす。また、記憶を司る海馬には最高濃度の亜鉛が存在する。脳の海馬をサポートするタウリンと亜鉛を両方含む牡蠣は、最強ブレインフードだった！
-タウリンを多く含む食品一覧 ポイントは魚介類と血合肉
- タウリン摂取時の注意
- 食間・空腹時の摂取が有効。 アスピリンと併用しないこと。（薬理作用を増強させてしまうため余計な負担がかかる。バファリンは原材料としてアスピリンを含む）   …と、万能選手的なタウリンではあるが、日本国内ではタウリン単体のサプリメントは販売されていない。このためタウリンのサプリはiHerbで時々購入しているが、在庫切れのことが多く割と入手困難ではある。日本の薬事法に規制があって、一回で購入可能な量・個数が制限されているから、まとめ買いもできないのだ。（おそらく鷲のマークの製薬会社の圧力）
-iHerb独自ブランドのタウリンサプリが安価で嬉しいけど、数ヶ月前から在庫切れ状態が続いている。しょうがないから、今日別の高いやつをポチってしまった。</p>
+    <p>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる…
+コンソールを使用してログデータを Amazon S3 にエクスポートする
+ 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。
+ バケットポリシーサンプル
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } }, { &#34;Action&#34;: &#34;s3:PutObject&#34; , &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } }, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
+ 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
+ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
+ 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するのが普通だろう。しかしね、たかがログエクスポートだろ？て舐めちゃいけないよ、作り込みがいけてないせいで、処理に24時間以上かかる例があったんだから。（もちろん作ったのはオレじゃない）
+ </p>
   </section>
-  <footer class="entry-footer">November 6, 2021</footer>
-  <a class="entry-link" aria-label="post link to タウリン(taurine)の効能いろいろ" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/"></a>
+  <footer class="entry-footer">October 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
+    <h2>Github Actionsメモ</h2>
   </header>
   <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
+    <p>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
+Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブサイトを構築する
+  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</p>
   </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
+  <footer class="entry-footer">October 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to Github Actionsメモ" href="https://ecnedaced-seirots.github.io/post/a/github-actions/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>middle finger周辺の表現など</h2>
+  </header>
+  <section class="entry-content">
+    <p>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
+ “middle finger&#34;って言ったらあれです、特別な意味を持つ「中指」。
+以下はすべて同じ意味。“the finger&#34;でも同じ意味になるとは知らなかった。
+ middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+ give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+ flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</p>
+  </section>
+  <footer class="entry-footer">October 19, 2021</footer>
+  <a class="entry-link" aria-label="post link to middle finger周辺の表現など" href="https://ecnedaced-seirots.github.io/post/a/the-finger/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>単語rageを覚えたきっかけはディラン・トーマスの詩だった</h2>
+  </header>
+  <section class="entry-content">
+    <p>“rage&#34;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
+ Do not go gentle into that good night.
+Rage, rage against the dying of the light.
+  パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。“rage&#34;という単語を初めて見たので調べたところ、意味は先述の通り。
+これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
+それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
+  Do not go gentle into that good night,
+Old age should burn and rage at close of day;
+Rage, rage against the dying of the light.
+Though wise men at their end know dark is right,
+Because their words had forked no lightning they...</p>
+  </section>
+  <footer class="entry-footer">October 19, 2021</footer>
+  <a class="entry-link" aria-label="post link to 単語rageを覚えたきっかけはディラン・トーマスの詩だった" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

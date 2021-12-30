@@ -153,48 +153,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Non title</h2>
-  </header>
-  <section class="entry-content">
-    <p>あーあ、今日も、疲れた。気がついたら20時なんだもん、ひっでぇな。
-そして本来やるべきことの、半分もできていない。雑用の波が押し寄せる。言いたいことは多々あるが、ぶちまけ大会するわけにはいかない。このモヤモヤを一体どうしたらいいのか。
-  ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</p>
-  </section>
-  <footer class="entry-footer">December 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to Non title" href="https://ecnedaced-seirots.github.io/post/a/life-1214/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編(4) - Lambda</h2>
-  </header>
-  <section class="entry-content">
-    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
-この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
-work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
-lambda_logs.tf（定数バージョン）
-################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
-  </section>
-  <footer class="entry-footer">December 12, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編(3) - Event rule</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
-以下tfコード本体に、ルールとターゲットを作成する処理を書く。
-event_rule.tf
-######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var....</p>
-  </section>
-  <footer class="entry-footer">December 11, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(3) - Event rule" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2>ソーシャルな反応に対する反応とか</h2>
   </header>
   <section class="entry-content">
@@ -221,6 +179,89 @@ event_rule.tf
   </section>
   <footer class="entry-footer">December 6, 2021</footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2)" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Terraform loop処理の応用編</h2>
+  </header>
+  <section class="entry-content">
+    <p>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) service_role_arn = var.deploy_role deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34; ec2_tag_set { ec2_tag_filter { key = &#34;Name&#34; type = &#34;KEY_AND_VALUE&#34; value = lookup(each....</p>
+  </section>
+  <footer class="entry-footer">December 5, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Terraformのtfvarsファイルを自動生成する</h2>
+  </header>
+  <section class="entry-content">
+    <p>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
+Terraform loop処理の超シンプルな例 
+Python - Jinja2テンプレートで連続データを処理したい
+ 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
+work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
+script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv  codecommit.tmpl
+ param{{ num }} = { repository_name = &#34;{{ repo_name }}&#34; description = &#34;{{ des }}&#34; }  data.csv （今回の例ではヘッダーありの前提）
+num,repo_name,des 1,&#34;my-repo001&#34;,&#34;my-repo001の説明&#34; 2,&#34;my-repo002&#34;,&#34;my-repo002の説明&#34; 3,&#34;my-repo003&#34;,&#34;my-repo003の説明&#34;  create_vars.py
+import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&#39;....</p>
+  </section>
+  <footer class="entry-footer">November 28, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraformのtfvarsファイルを自動生成する" href="https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Quotes - タランティーノ小説より(1)</h2>
+  </header>
+  <section class="entry-content">
+    <p> Some say luck is when preparation meets opportunity.
+ - Once Upon a Time in Hollywood&#34;の小説版 (Quentin Tarantino) より。
+ わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど…
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？
+   </p>
+  </section>
+  <footer class="entry-footer">November 27, 2021</footer>
+  <a class="entry-link" aria-label="post link to Quotes - タランティーノ小説より(1)" href="https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Python - Jinja2テンプレートで連続データを処理したい</h2>
+  </header>
+  <section class="entry-content">
+    <p>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな…
+とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
+  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </p>
+  </section>
+  <footer class="entry-footer">November 24, 2021</footer>
+  <a class="entry-link" aria-label="post link to Python - Jinja2テンプレートで連続データを処理したい" href="https://ecnedaced-seirots.github.io/post/a/jinja2-python/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Terraform loop処理の超シンプルな例</h2>
+  </header>
+  <section class="entry-content">
+    <p>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
+前回投稿
+Terraform loop処理のリンク集
+参考記事
+Terraformで配列をloopする時はfor_eachを使った方がいい
+ やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+init.tf
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } terraform { required_version = &#34;1.0.11&#34; backend &#34;s3&#34; { bucket = &#34;my-terraform-poc-repository&#34; key = &#34;poc/poc.tfstate&#34; region = &#34;ap-northeast-1&#34; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+variable.tf
+variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { param1 = { repository_name = &#34;repo001&#34; description = &#34;desciption for repo001&#34; } param2 = { repository_name = &#34;repo002&#34; description = &#34;desciption for repo002&#34; } param3 = { repository_name = &#34;repo003&#34; description = &#34;desciption for repo003&#34; } } }  codecommit....</p>
+  </section>
+  <footer class="entry-footer">November 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
