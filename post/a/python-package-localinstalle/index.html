@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>「愛と幻想のファシズム」より(4) | Go Buddy Go</title>
-<meta name="keywords" content="literature, ryu murakami" />
-<meta name="description" content="村上龍著「愛と幻想のファシズム」より
- 
-
-「危機が生じると、弱者がくっきりと浮かび上がるもんだ」
-">
+<title>Pythonライブラリのローカルインストール方法 | Go Buddy Go</title>
+<meta name="keywords" content="python, tips" />
+<meta name="description" content="Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -25,24 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="「愛と幻想のファシズム」より(4)" />
-<meta property="og:description" content="村上龍著「愛と幻想のファシズム」より
- 
-
-「危機が生じると、弱者がくっきりと浮かび上がるもんだ」
-" />
+<meta property="og:title" content="Pythonライブラリのローカルインストール方法" />
+<meta property="og:description" content="Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-30T10:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-12-30T10:00:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-30T17:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2021-12-30T17:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="「愛と幻想のファシズム」より(4)"/>
-<meta name="twitter:description" content="村上龍著「愛と幻想のファシズム」より
- 
-
-「危機が生じると、弱者がくっきりと浮かび上がるもんだ」
-"/>
+<meta name="twitter:title" content="Pythonライブラリのローカルインストール方法"/>
+<meta name="twitter:description" content="Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。"/>
 
 
 <script type="application/ld+json">
@@ -59,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "「愛と幻想のファシズム」より(4)",
-      "item": "https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/"
+      "name": "Pythonライブラリのローカルインストール方法",
+      "item": "https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/"
     }
   ]
 }
@@ -69,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "「愛と幻想のファシズム」より(4)",
-  "name": "「愛と幻想のファシズム」より(4)",
-  "description": "村上龍著「愛と幻想のファシズム」より\n  「危機が生じると、弱者がくっきりと浮かび上がるもんだ」\n",
+  "headline": "Pythonライブラリのローカルインストール方法",
+  "name": "Pythonライブラリのローカルインストール方法",
+  "description": "Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。\n",
   "keywords": [
-    "literature", "ryu murakami"
+    "python", "tips"
   ],
-  "articleBody": "村上龍著「愛と幻想のファシズム」より\n  「危機が生じると、弱者がくっきりと浮かび上がるもんだ」\n   本当は人間には何の欲望もない。対象があるために欲望が発生するだけだ。もし、欲望の充足、つまり自らの欲望の消去、または消去の過程を、快楽と呼ぶのならば、グリズリーは、永遠の快楽と共に在るということになる。\n   俺は結局撃たなかった。そのグリズリーを中心とした完璧な世界の中で、自分のことを余計なものだと感じた。そんなことは初めてだった。ライフルを下げている自分をみじめだと思った。ライフルがなぜ必要かがわかった。人間はあまりにも不完全で、快楽の森林からはっきりと拒絶されているために、ライフルが必要なのだ。\n   ",
-  "wordCount" : "4",
+  "articleBody": "Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。\n pypi.orgにアクセスし、ライブラリ名で検索。対象のwhlファイルをダウンロードし、実行環境に配置する。tar.gz形式の場合もあるが、それもWindowsにインストール可能。\npypi.org\n 複数の参考記事によれば以下のようなコマンドが紹介されている。（pipのパスが通っていない場合はpy -m pip ...とする）\n pip install [Pythonパッケージのパス]  しかしそのまま実行すると、pip freeze実行時の出力がおかしい。\n pip install ./six-1.16.0-py2.py3-none-any.whl  pip freeze six @ file:///C:/Users/xxxxx/six-1.16.0-py2.py3-none-any.whl  一旦アンインストールして、--find-linksオプションを指定して再度インストール。\n pip install --no-index --find-links=./six-1.16.0-py2.py3-none-any.whl six  上記コマンドにした場合、期待値になる。\n pip freeze six==1.16.0  ",
+  "wordCount" : "35",
   "inLanguage": "en",
-  "datePublished": "2021-12-30T10:00:00+09:00",
-  "dateModified": "2021-12-30T10:00:00+09:00",
+  "datePublished": "2021-12-30T17:00:00+09:00",
+  "dateModified": "2021-12-30T17:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/"
+    "@id": "https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/"
   },
   "publisher": {
     "@type": "Organization",
@@ -202,27 +190,41 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      「愛と幻想のファシズム」より(4)
+      Pythonライブラリのローカルインストール方法
     </h1>
     <div class="post-meta">December 30, 2021
 </div>
   </header> 
-  <div class="post-content"><p>村上龍著「愛と幻想のファシズム」より</p>
+  <div class="post-content"><p>Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。</p>
 <p> </p>
-<blockquote>
-<p>「危機が生じると、弱者がくっきりと浮かび上がるもんだ」</p>
-</blockquote>
+<p>pypi.orgにアクセスし、ライブラリ名で検索。対象のwhlファイルをダウンロードし、実行環境に配置する。tar.gz形式の場合もあるが、それもWindowsにインストール可能。<br>
+<a href="https://pypi.org/">pypi.org</a></p>
 <p> </p>
-<blockquote>
-<p>本当は人間には何の欲望もない。対象があるために欲望が発生するだけだ。もし、欲望の充足、つまり自らの欲望の消去、または消去の過程を、快楽と呼ぶのならば、グリズリーは、永遠の快楽と共に在るということになる。</p>
-</blockquote>
-<p> </p>
-<blockquote>
-<p>俺は結局撃たなかった。そのグリズリーを中心とした完璧な世界の中で、自分のことを余計なものだと感じた。そんなことは初めてだった。ライフルを下げている自分をみじめだと思った。ライフルがなぜ必要かがわかった。人間はあまりにも不完全で、快楽の森林からはっきりと拒絶されているために、ライフルが必要なのだ。</p>
-</blockquote>
-<p> </p>
-<p> </p>
-<p><img loading="lazy" src="/img/a/female_0005.jpg" alt="female"  />
+<p>複数の参考記事によれば以下のようなコマンドが紹介されている。（pipのパスが通っていない場合は<code>py -m pip ...</code>とする）</p>
+<pre><code>&gt; pip install [Pythonパッケージのパス]
+</code></pre><p> </p>
+<p>しかしそのまま実行すると、<code>pip freeze</code>実行時の出力がおかしい。</p>
+<pre><code>&gt; pip install ./six-1.16.0-py2.py3-none-any.whl
+
+&gt; pip freeze
+six @ file:///C:/Users/xxxxx/six-1.16.0-py2.py3-none-any.whl
+</code></pre><p> </p>
+<p>一旦アンインストールして、<code>--find-links</code>オプションを指定して再度インストール。</p>
+<pre><code>&gt; pip install --no-index --find-links=./six-1.16.0-py2.py3-none-any.whl six
+</code></pre><p> </p>
+<p>上記コマンドにした場合、期待値になる。</p>
+<pre><code>&gt; pip freeze
+six==1.16.0
+</code></pre><p> </p>
+<p><img loading="lazy" src="/img/a/mishima_0001.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/a/mishima_0002.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/a/mishima_0003.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/a/mishima_0004.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/a/mishima_0005.JPG" alt="Travel"  />
 </p>
 
     
@@ -231,34 +233,25 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/a/ryu-quotes-3/">「愛と幻想のファシズム」より(3)</a></li>
+      <li><a href="/post/a/terraform_auto_create_tfvars/">Terraformのtfvarsファイルを自動生成する</a></li>
     
-      <li><a href="/post/a/ryu-quotes-2/">「愛と幻想のファシズム」より(2)</a></li>
+      <li><a href="/post/a/jinja2-python/">Python - Jinja2テンプレートで連続データを処理したい</a></li>
     
-      <li><a href="/post/a/ryu-quotes-1/">「愛と幻想のファシズム」より(1)</a></li>
-    
-      <li><a href="/post/a/english-murmur/">英語メモ - murmur</a></li>
-    
-      <li><a href="/post/a/english-into-the-bargain/">英語メモ - into the bargain</a></li>
+      <li><a href="/post/a/mac-python3-re-install/">MacにPython3を再インストール</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/literature/">literature</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/ryu-murakami/">ryu murakami</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/tips/">tips</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Pythonライブラリのローカルインストール方法</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/lambda-function-export/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/">
     <span class="title">Next Page »</span>
     <br>
-    <span>AWS Lambda関数をダウンロードする</span>
+    <span>「愛と幻想のファシズム」より(4)</span>
   </a>
 </nav>
 

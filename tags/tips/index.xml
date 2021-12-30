@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>tips on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
+    <description>Recent content in tips on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Thu, 30 Dec 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pythonライブラリのローカルインストール方法</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</link>
+      <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</guid>
+      <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

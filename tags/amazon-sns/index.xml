@@ -13,13 +13,7 @@
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</guid>
-      <description>10月頃から金太郎飴のように同じような検証を重ね重ねやってきて、脳内パズル状態甚だしい。しかし書かないことには整理ができない。過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
-AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)
- EventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。
- 今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 config-event-function   eventルール config-change-notify-rule     eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。
-{ &amp;#34;source&amp;#34;: [&amp;#34;aws.config&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;Config Configuration Item Change&amp;#34;] }  イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。
-import json import boto3 import os print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): type = event[&amp;#39;detail-type&amp;#39;] Msg = json.</description>
+      <description>&lt;p&gt;過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -149,6 +149,18 @@
 
 <article class="first-entry"> 
   <header class="entry-header">
+    <h2>Pythonライブラリのローカルインストール方法</h2>
+  </header>
+  <section class="entry-content">
+    <p>Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。
+...</p>
+  </section>
+  <footer class="entry-footer">December 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to Pythonライブラリのローカルインストール方法" href="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>「愛と幻想のファシズム」より(4)</h2>
   </header>
   <section class="entry-content">
@@ -177,13 +189,8 @@
     <h2>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
   </header>
   <section class="entry-content">
-    <p>10月頃から金太郎飴のように同じような検証を重ね重ねやってきて、脳内パズル状態甚だしい。しかし書かないことには整理ができない。過去に類似のテーマで、CloudTrailによるイベント監視 &#43; 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
-AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
- EventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。
- 今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 config-event-function   eventルール config-change-notify-rule     eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。
-{ &#34;source&#34;: [&#34;aws.config&#34;], &#34;detail-type&#34;: [&#34;Config Configuration Item Change&#34;] }  イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。
-import json import boto3 import os print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): type = event[&#39;detail-type&#39;] Msg = json....</p>
+    <p>過去に類似のテーマで、CloudTrailによるイベント監視 &#43; 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
+...</p>
   </section>
   <footer class="entry-footer">December 26, 2021</footer>
   <a class="entry-link" aria-label="post link to AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/"></a>
@@ -199,20 +206,6 @@ import json import boto3 import os print(&#39;Loading function&#39;) sns_arn = o
   </section>
   <footer class="entry-footer">December 25, 2021</footer>
   <a class="entry-link" aria-label="post link to 飛行機画像ブログのリンク集" href="https://ecnedaced-seirots.github.io/post/a/aviation-blog/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>英語メモ - murmur</h2>
-  </header>
-  <section class="entry-content">
-    <p>murmur：ぶつぶつ言う、不満をつぶやく
-類：grumble
-“Zazie in the Metro”(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。
- </p>
-  </section>
-  <footer class="entry-footer">December 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to 英語メモ - murmur" href="https://ecnedaced-seirots.github.io/post/a/english-murmur/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

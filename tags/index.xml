@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 30 Dec 2021 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Dec 2021 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python</title>
+      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
+      <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tips</title>
+      <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
+      <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/tips/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>literature</title>
       <link>https://ecnedaced-seirots.github.io/tags/literature/</link>
@@ -202,15 +220,6 @@
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/pandas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>python</title>
-      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
-      <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
       <description></description>
     </item>
     
