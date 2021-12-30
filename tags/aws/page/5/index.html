@@ -206,23 +206,11 @@ IAMに設定した場合は、①アカウントでデプロイを実行するec
     <h2>EKS Container InsightsのFluent Bit設定</h2>
   </header>
   <section class="entry-content">
-    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。しかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。
- 参照
-Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）
-Fluent Bit Documentation
-Container Insights全般
-Amazon EKS と Kubernetes での Container Insights のセットアップ
-Fluent Bit on Container Insights
-CloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する
-サンプルマニフェスト
-fluent-bit-compatible.yaml
-※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。
- 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。
-fluentbit-cluster.yaml
-apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &#34;On&#34; read.tail: &#34;Off&#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac....</p>
+    <p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。
+...</p>
   </section>
   <footer class="entry-footer">September 12, 2021</footer>
-  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit/"></a>
+  <a class="entry-link" aria-label="post link to EKS Container InsightsのFluent Bit設定" href="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -13,17 +13,7 @@
       <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
-      <description>AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。
- 日本語
- Lambda 関数「xxxxxx-function」のデプロイパッケージが大きすぎて、インラインコード編集を有効にできません。ただし、関数を呼び出すことはできます。
-  英語
- The deployment package of your Lambda function &amp;ldquo;xxxxxx-function&amp;rdquo; is too large to enable inline code editing. However, you can still invoke your function.
-  この時アップロードしたのは、関数自体は空ファイルなのだが（アップロードしてからインラインで記述するつもりだった）モジュールが相当重かったようだ。こういうのは、Lambdaで処理すべきじゃないんだな。EC2上じゃなくてLambdaでサクッと実行できればいいな〜て処理があったのだが、頓挫&amp;hellip;
-それはしょうがないとして、大分過去に検証した関数をまた見たくなって覗いたら上記のメッセージが出てコードが見れないという事例があったからメモ。って、以下記事にある通りマネコン画面から簡単にエクスポートできるんだけど。
-コンソールで確認できないLambda関数のコードを確認する
- 画面右上のActionプルダウンから、&amp;ldquo;Export function&amp;quot;選択。（日本語「関数のエクスポート」）
- CLIだったらaws lambda get-functionでエクスポート可能。でもマネコンからの方が簡単だな。
-   </description>
+      <description>&lt;p&gt;AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -13,11 +13,11 @@
       <pubDate>Thu, 30 Dec 2021 10:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/</guid>
-      <description>村上龍著「愛と幻想のファシズム」より
-  「危機が生じると、弱者がくっきりと浮かび上がるもんだ」
-   本当は人間には何の欲望もない。対象があるために欲望が発生するだけだ。もし、欲望の充足、つまり自らの欲望の消去、または消去の過程を、快楽と呼ぶのならば、グリズリーは、永遠の快楽と共に在るということになる。
-   俺は結局撃たなかった。そのグリズリーを中心とした完璧な世界の中で、自分のことを余計なものだと感じた。そんなことは初めてだった。ライフルを下げている自分をみじめだと思った。ライフルがなぜ必要かがわかった。人間はあまりにも不完全で、快楽の森林からはっきりと拒絶されているために、ライフルが必要なのだ。
-  </description>
+      <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;「危機が生じると、弱者がくっきりと浮かび上がるもんだ」&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -26,17 +26,7 @@
       <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
-      <description>AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。
- 日本語
- Lambda 関数「xxxxxx-function」のデプロイパッケージが大きすぎて、インラインコード編集を有効にできません。ただし、関数を呼び出すことはできます。
-  英語
- The deployment package of your Lambda function &amp;ldquo;xxxxxx-function&amp;rdquo; is too large to enable inline code editing. However, you can still invoke your function.
-  この時アップロードしたのは、関数自体は空ファイルなのだが（アップロードしてからインラインで記述するつもりだった）モジュールが相当重かったようだ。こういうのは、Lambdaで処理すべきじゃないんだな。EC2上じゃなくてLambdaでサクッと実行できればいいな〜て処理があったのだが、頓挫&amp;hellip;
-それはしょうがないとして、大分過去に検証した関数をまた見たくなって覗いたら上記のメッセージが出てコードが見れないという事例があったからメモ。って、以下記事にある通りマネコン画面から簡単にエクスポートできるんだけど。
-コンソールで確認できないLambda関数のコードを確認する
- 画面右上のActionプルダウンから、&amp;ldquo;Export function&amp;quot;選択。（日本語「関数のエクスポート」）
- CLIだったらaws lambda get-functionでエクスポート可能。でもマネコンからの方が簡単だな。
-   </description>
+      <description>&lt;p&gt;AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -60,12 +50,7 @@ import json import boto3 import os print(&amp;#39;Loading function&amp;#39;) sns
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</guid>
-      <description>I miss the aiport and airplane vibes.
- &amp;hellip;ということで飛行機専門（＋乗り物系）のTumblrブログのリンク並べてみた。
- 以下は2021年暮れ時点でactive。微妙なのもあるが。
- take flight. So Nice Cars airviation Aviation Lover   以下はnon active。
- StopDreaming.StartFlying Airbus A380 L-AEROPORT Wan Arief Lmran on Tumblr Fuckyeah Airplaness   Non activeであっても、ブログを消さないでくれているだけでもありがたい。世界の誰かの「めっちゃ好き！」が、誰かの活力になるんだもんな。
- </description>
+      <description>&lt;p&gt;I miss the aiport and airplane vibes.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -86,11 +71,11 @@ import json import boto3 import os print(&amp;#39;Loading function&amp;#39;) sns
       <pubDate>Thu, 23 Dec 2021 01:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/</guid>
-      <description>村上龍著「愛と幻想のファシズム」より
-  俺達は何も知らない。快楽もない。十万人の哀れな日本人が俺を恐れ、あがめるのは、俺が日本人の中では、生態系の情報と快楽を知っているからだ。
-   恐怖に勝てるのは興奮だけなんだよ
-   厳しさを知ってる奴だけが生き残るんだ、動物だって同じだよ、人間の残飯を漁る熊や狐はすぐに撃たれる、世の中が同じようにずっと続くと思ってる奴はすぐにくたばる、
-  </description>
+      <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;俺達は何も知らない。快楽もない。十万人の哀れな日本人が俺を恐れ、あがめるのは、俺が日本人の中では、生態系の情報と快楽を知っているからだ。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -114,11 +99,11 @@ LambdaよりCloudWatchログをS3に保存方法紹介
       <pubDate>Sat, 18 Dec 2021 08:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-2/</guid>
-      <description>村上龍著「愛と幻想のファシズム」より
-  強者は嫌われない。ゴミのような人間達は、強者と同化したがるのだ。
-   馬の臓物も、猪の肉も、からだを腹の底から暖める。野生の肉は血管を拡げるのだ。俺達は湧き出すように汗をかく。
-   「その婆さんは、よく晴れた日に、二人の孫を連れて、山菜を採りに行ったんだ、そして虎に襲われた、ばあさんは棘のついた木の枝で虎の注意をそらしながら、飛びかかって、虎の耳を食いちぎったんだそうだ、そのばあさんのコメントは中国でも有名になった、圧倒的に強い敵にギリギリまで追いつめられた時、残された唯一の手段、それは戦うことだ、ばあさんは、そう言ったんだとさ」
-   「圧倒的に強い敵にギリギリまで追いつめられた時、残された唯一の手段、それは戦うことだ」</description>
+      <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;強者は嫌われない。ゴミのような人間達は、強者と同化したがるのだ。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -127,22 +112,11 @@ LambdaよりCloudWatchログをS3に保存方法紹介
       <pubDate>Thu, 16 Dec 2021 22:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-1/</guid>
-      <description>何日か前に読了した、村上龍著「愛と幻想のファシズム」より。
-  「それで、人間というのは、他の動物でもそうだけど、嫌いなことをやり続けると拒絶反応を起こすんだ、病気になるんだよ、トウジお前IBMのセールスマンになれるか？」
-「止めてくれ、死んじゃうよ」
-「そうだろ、とにかく人間は嫌いなことはできないようになっている、ところがだ、嫌いなことでもやる奴がいる」
-「いるな」
-「いるだろ？」
-「誰だ？」
-「好きなことが何なのか捜すのに疲れた奴、あきらめた連中だ、楽をしたいと思う奴らだよ、そいつらは、奴隷だ」
-「奴隷？」
-「俺は奴隷を信頼しない」
-「どうして？」
-「人を裏切るのは気分が悪いものだ、そうだよな、誰だって人を裏切るのは嫌いなはずだ、だから嫌いなことを普段やってないやつ、つまり奴隷じゃない奴は、とりあえず信頼できるんだ」
-   「（略）&amp;hellip;俺は快楽を知っている、狩猟の快楽は他の何よりもすごい、だが俺はその快楽を必死になって手に入れたんだ、あいつらは黙っていても手に入れることができる、努力して手に入れるものに価値があるのというのは、芸術家とスポーツ選手にだけ言えることで、貧乏人には当てはまらない、嘘なんだ」
-   「そうだ、俺はいやなんだ、俺は快楽主義者だからな、小さな快楽で我慢しろなんて言われて黙っているのがいやなんだ、
-  すっげぇ、いやもうこれ、この年になってもわかるよ、ビンビンくるよ、あぁ、そうなんだよ、本当にそうなんだよ。
- </description>
+      <description>&lt;p&gt;何日か前に読了した、村上龍著「愛と幻想のファシズム」より。&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;「それで、人間というのは、他の動物でもそうだけど、嫌いなことをやり続けると拒絶反応を起こすんだ、病気になるんだよ、トウジお前IBMのセールスマンになれるか？」&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -846,24 +820,11 @@ Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + S
     
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/fluentbit/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit/</guid>
-      <description>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。しかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。
- 参照
-Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）
-Fluent Bit Documentation
-Container Insights全般
-Amazon EKS と Kubernetes での Container Insights のセットアップ
-Fluent Bit on Container Insights
-CloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する
-サンプルマニフェスト
-fluent-bit-compatible.yaml
-※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。
- 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。
-fluentbit-cluster.yaml
-apiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: &amp;#34;On&amp;#34; read.tail: &amp;#34;Off&amp;#34; --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac.</description>
+      <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</guid>
+      <description>&lt;p&gt;AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。&lt;/p&gt;</description>
     </item>
     
     <item>
