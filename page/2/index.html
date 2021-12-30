@@ -149,6 +149,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>「愛と幻想のファシズム」より(3)</h2>
+  </header>
+  <section class="entry-content">
+    <p>村上龍著「愛と幻想のファシズム」より
+  俺達は何も知らない。快楽もない。十万人の哀れな日本人が俺を恐れ、あがめるのは、俺が日本人の中では、生態系の情報と快楽を知っているからだ。
+   恐怖に勝てるのは興奮だけなんだよ
+   厳しさを知ってる奴だけが生き残るんだ、動物だって同じだよ、人間の残飯を漁る熊や狐はすぐに撃たれる、世の中が同じようにずっと続くと思ってる奴はすぐにくたばる、
+  </p>
+  </section>
+  <footer class="entry-footer">December 23, 2021</footer>
+  <a class="entry-link" aria-label="post link to 「愛と幻想のファシズム」より(3)" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>CloudWatch LogsからS3にエクスポート(Lambda/Python)</h2>
   </header>
   <section class="entry-content">
@@ -216,21 +231,6 @@ LambdaよりCloudWatchログをS3に保存方法紹介
   </section>
   <footer class="entry-footer">December 14, 2021</footer>
   <a class="entry-link" aria-label="post link to Non title" href="https://ecnedaced-seirots.github.io/post/a/life-1214/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Terraform loop処理の応用編(4) - Lambda</h2>
-  </header>
-  <section class="entry-content">
-    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
-この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
-work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
-lambda_logs.tf（定数バージョン）
-################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
-  </section>
-  <footer class="entry-footer">December 12, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

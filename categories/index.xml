@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Dec 2021 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reading</title>
+      <link>https://ecnedaced-seirots.github.io/categories/reading/</link>
+      <pubDate>Thu, 30 Dec 2021 10:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/reading/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS Lambda</title>
       <link>https://ecnedaced-seirots.github.io/categories/aws-lambda/</link>
@@ -40,15 +49,6 @@
       <pubDate>Thu, 23 Dec 2021 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/english/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reading</title>
-      <link>https://ecnedaced-seirots.github.io/categories/reading/</link>
-      <pubDate>Thu, 23 Dec 2021 01:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/reading/</guid>
       <description></description>
     </item>
     
