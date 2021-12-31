@@ -20,7 +20,7 @@ event_rule.tf
     </item>
     
     <item>
-      <title>Terraform loop処理の応用編(2)</title>
+      <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
       

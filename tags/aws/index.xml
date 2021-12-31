@@ -6,7 +6,16 @@
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 31 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraform loop処理の応用編(5) - Metric Alarm</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</link>
+      <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</guid>
+      <description>&lt;p&gt;大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWS Lambda関数をダウンロードする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
@@ -66,7 +75,7 @@ event_rule.tf
     </item>
     
     <item>
-      <title>Terraform loop処理の応用編(2)</title>
+      <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
       

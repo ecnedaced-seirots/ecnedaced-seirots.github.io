@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Pythonライブラリのローカルインストール方法 | Go Buddy Go</title>
-<meta name="keywords" content="python, tips" />
+<meta name="keywords" content="python, memo" />
 <meta name="description" content="Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。">
 <meta name="author" content="">
 <link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/" />
@@ -61,7 +61,7 @@
   "name": "Pythonライブラリのローカルインストール方法",
   "description": "Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。\n",
   "keywords": [
-    "python", "tips"
+    "python", "memo"
   ],
   "articleBody": "Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。\n pypi.orgにアクセスし、ライブラリ名で検索。対象のwhlファイルをダウンロードし、実行環境に配置する。tar.gz形式の場合もあるが、それもWindowsにインストール可能。\npypi.org\n 複数の参考記事によれば以下のようなコマンドが紹介されている。（pipのパスが通っていない場合はpy -m pip ...とする）\n pip install [Pythonパッケージのパス]  しかしそのまま実行すると、pip freeze実行時の出力がおかしい。\n pip install ./six-1.16.0-py2.py3-none-any.whl  pip freeze six @ file:///C:/Users/xxxxx/six-1.16.0-py2.py3-none-any.whl  一旦アンインストールして、--find-linksオプションを指定して再度インストール。\n pip install --no-index --find-links=./six-1.16.0-py2.py3-none-any.whl six  上記コマンドにした場合、期待値になる。\n pip freeze six==1.16.0  ",
   "wordCount" : "35",
@@ -233,11 +233,15 @@ six==1.16.0
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/a/mac-python3-re-install/">MacにPython3を再インストール</a></li>
+    
       <li><a href="/post/a/terraform_auto_create_tfvars/">Terraformのtfvarsファイルを自動生成する</a></li>
     
       <li><a href="/post/a/jinja2-python/">Python - Jinja2テンプレートで連続データを処理したい</a></li>
     
-      <li><a href="/post/a/mac-python3-re-install/">MacにPython3を再インストール</a></li>
+      <li><a href="/post/a/github-actions/">Github Actionsメモ</a></li>
+    
+      <li><a href="/post/a/mac-installe-gdate/">MacにGNU版dateをインストール</a></li>
     
   </ul>
 
@@ -245,7 +249,7 @@ six==1.16.0
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/tips/">tips</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/lgs/">

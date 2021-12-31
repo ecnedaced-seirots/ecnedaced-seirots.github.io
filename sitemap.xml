@@ -3,10 +3,34 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2021-12-31T06:00:00+09:00</lastmod>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2021-12-31T06:00:00+09:00</lastmod>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/iac/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/terraform/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/terraform/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</loc>
+    <lastmod>2021-12-31T21:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/lgs/</loc>
     <lastmod>2021-12-31T06:00:00+09:00</lastmod>
@@ -20,11 +44,8 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/lgs/</loc>
     <lastmod>2021-12-31T06:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2021-12-31T06:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
-    <lastmod>2021-12-31T06:00:00+09:00</lastmod>
+    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
+    <lastmod>2021-12-30T17:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/python/</loc>
     <lastmod>2021-12-30T17:00:00+09:00</lastmod>
@@ -33,9 +54,6 @@
     <lastmod>2021-12-30T17:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</loc>
-    <lastmod>2021-12-30T17:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/tips/</loc>
     <lastmod>2021-12-30T17:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
@@ -49,9 +67,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/</loc>
     <lastmod>2021-12-30T10:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
-    <lastmod>2021-12-26T21:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/aws-lambda/</loc>
     <lastmod>2021-12-26T21:00:00+09:00</lastmod>
@@ -125,15 +140,6 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/life-1214/</loc>
     <lastmod>2021-12-14T00:45:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/iac/</loc>
-    <lastmod>2021-12-12T22:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/terraform/</loc>
-    <lastmod>2021-12-12T22:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/terraform/</loc>
-    <lastmod>2021-12-12T22:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</loc>
     <lastmod>2021-12-12T22:00:00+09:00</lastmod>
   </url><url>
@@ -189,9 +195,6 @@
     <lastmod>2021-11-21T00:30:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/cloudwatch/</loc>
-    <lastmod>2021-11-20T15:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/</loc>
     <lastmod>2021-11-20T15:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</loc>
@@ -264,9 +267,6 @@
     <lastmod>2021-10-30T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</loc>
-    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
     <lastmod>2021-10-30T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/life-1027/</loc>
