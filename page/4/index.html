@@ -149,6 +149,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Python - Jinja2テンプレートで連続データを処理したい</h2>
+  </header>
+  <section class="entry-content">
+    <p>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな…
+とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
+  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </p>
+  </section>
+  <footer class="entry-footer">November 24, 2021</footer>
+  <a class="entry-link" aria-label="post link to Python - Jinja2テンプレートで連続データを処理したい" href="https://ecnedaced-seirots.github.io/post/a/jinja2-python/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の超シンプルな例</h2>
   </header>
   <section class="entry-content">
@@ -248,21 +261,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   <footer class="entry-footer">November 14, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
-CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
-変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os....</p>
-  </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://ecnedaced-seirots.github.io/page/3/">« Prev Page</a>
@@ -271,7 +269,7 @@ import base64 import json import zlib import datetime import os import boto3 fro
 </footer>
     </main>
     <footer class="footer">
-    <span>&copy; 2021 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
