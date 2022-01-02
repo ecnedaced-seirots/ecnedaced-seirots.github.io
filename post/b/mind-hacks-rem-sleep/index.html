@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>レム睡眠と夢と記憶 | Go Buddy Go</title>
+<meta name="keywords" content="mind hacks, brain hacks" />
+<meta name="description" content="今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="レム睡眠と夢と記憶" />
+<meta property="og:description" content="今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-02T12:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-02T12:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="レム睡眠と夢と記憶"/>
+<meta name="twitter:description" content="今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "レム睡眠と夢と記憶",
+      "item": "https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "レム睡眠と夢と記憶",
+  "name": "レム睡眠と夢と記憶",
+  "description": "今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。\n",
+  "keywords": [
+    "mind hacks", "brain hacks"
+  ],
+  "articleBody": "今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。\n31日の目覚め前にもTerraformコードが夢に登場した。（確かに気になっていた部分だったので31日はそのままPoCして記事に書いた）\n 夢に仕事関係のネタが登場することはたまにある、過去にもその時気になっているコードなどがフラッシュバック状態で登場することはあった。昔は「うわ、夢の中でまで…やめてくれ！」と嫌な気分になったものだが、これは記憶を定着させたり整理させたりしているんだな、とわかってからあまり嫌な気分はしなくなった。\nしかし今現在仕事でREST APIに関わる対応はしていないのに何故これが夢に現れたんだろう、と不思議に思った。それに関連して過去の同僚のことが思い浮かんだりしたので、本来の目的はその同僚を思い出すことだったのかもしれない。それでも意味不明だが、まぁいいや。\n 通常、朝方の目覚めの前は数十分程度のレム睡眠状態にあり、この時間帯に夢を見ているらしい。この時は「手続き記憶」の定着を行なっていると聞いた。手続き記憶とは、楽器の演奏やスポーツなどの身体的な動作の記憶を示す、と。ではプログラムのコードや仕事関連の事柄が朝方の夢に現れるのは、それも手続き記憶に種類に入るのだろうか、と思って軽く調べたところ、別の意味も判明した。\nレム睡眠時に見る夢は、前日（直近）に経験した出来事と過去の出来事の関連性を整理したり、記憶の定着や索引付けを行なっているらしい。それを知って納得した。\n また，記憶と睡眠の関係において，ノンレム睡眠－レム睡眠は異なる働きをもっています。ノンレム睡眠は，深いノンレム睡眠（一晩の睡眠の前半に多い）では，「いやな記憶」を消去する働きがあります。一方，浅いノンレム睡眠（一晩の睡眠の後半：朝方に多い）は，手続き記憶を固定する働きがあります。手続き記憶とは，自転車の乗り方や，習字，スポーツの技術などを身につけることと理解してください。また，浅いノンレム睡眠には，昼間記憶したことと過去の記憶を結合する働きもあります。これは色々な記憶を相互に関連づけることです。\n  さらに。以下重要。\n  基本的な睡眠として，７時間半寝るとすると，前半では深いノンレム睡眠が出現し，後半で浅いノンレム睡眠が出現することを思い出してください。就床後，間も無い時にしっかり寝ないと，昼間に経験した恐怖などの「嫌な記憶（嫌な感覚）」が消えず，心が癒されません。また，３時間や４時間の短時間睡眠では，浅いノンレム睡眠が無くなり，昼間一生懸命練習したことが身につかず，また，色々な出来事の関連情報が記憶されません。更に，短時間睡眠では，朝方の長いレム睡眠がないので，記憶の定着や記憶の索引付けが出来なくなります。\n 第１回 「睡眠と記憶について／基本的な睡眠とは」\n 不快な記憶を忘却させ、生きていくために必要な情報は整理して記憶の定着に導く。睡眠のメカニズム、人間の脳の働き…すげぇ！！\n ところで夢に過去（または現在）の同僚が登場するのは、その時どんな気分だったかにより意味合いが変わってくるそうだが、個人的には、爽快というわけでもないが不快な気分ではなく、どちらかと言えばプラス方向の気分であることが多い。その場合、自分の理想像として登場している意味があるとかないとか。\nま、今朝思い出した元同僚は確かにできる奴だった。しばらく前にも別の、過去に一緒に仕事をした相当キレる人物が夢に登場したことがあった。これは何を象徴しているのか…。それにしても、一緒に仕事をした時期は数ヶ月程度で、しかも数えてみると約8年くらい昔なのだ。\nこういう事柄が夢に現れるということは、やはり自分にとって記憶に残しておくべき意味があると解釈すべき、なんだろうか。\n ",
+  "wordCount" : "17",
+  "inLanguage": "en",
+  "datePublished": "2022-01-02T12:00:00+09:00",
+  "dateModified": "2022-01-02T12:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      レム睡眠と夢と記憶
+    </h1>
+    <div class="post-meta">January 2, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。</p>
+<p>31日の目覚め前にもTerraformコードが夢に登場した。（確かに気になっていた部分だったので31日はそのままPoCして記事に書いた）</p>
+<p> </p>
+<p>夢に仕事関係のネタが登場することはたまにある、過去にもその時気になっているコードなどがフラッシュバック状態で登場することはあった。昔は「うわ、夢の中でまで&hellip;やめてくれ！」と嫌な気分になったものだが、これは記憶を定着させたり整理させたりしているんだな、とわかってからあまり嫌な気分はしなくなった。</p>
+<p>しかし今現在仕事でREST APIに関わる対応はしていないのに何故これが夢に現れたんだろう、と不思議に思った。それに関連して過去の同僚のことが思い浮かんだりしたので、本来の目的はその同僚を思い出すことだったのかもしれない。それでも意味不明だが、まぁいいや。</p>
+<p> </p>
+<p>通常、朝方の目覚めの前は数十分程度のレム睡眠状態にあり、この時間帯に夢を見ているらしい。この時は「手続き記憶」の定着を行なっていると聞いた。手続き記憶とは、楽器の演奏やスポーツなどの身体的な動作の記憶を示す、と。ではプログラムのコードや仕事関連の事柄が朝方の夢に現れるのは、それも手続き記憶に種類に入るのだろうか、と思って軽く調べたところ、別の意味も判明した。</p>
+<p>レム睡眠時に見る夢は、前日（直近）に経験した出来事と過去の出来事の関連性を整理したり、記憶の定着や索引付けを行なっているらしい。それを知って納得した。</p>
+<blockquote>
+<p>また，記憶と睡眠の関係において，ノンレム睡眠－レム睡眠は異なる働きをもっています。ノンレム睡眠は，深いノンレム睡眠（一晩の睡眠の前半に多い）では，「いやな記憶」を消去する働きがあります。一方，浅いノンレム睡眠（一晩の睡眠の後半：朝方に多い）は，手続き記憶を固定する働きがあります。手続き記憶とは，自転車の乗り方や，習字，スポーツの技術などを身につけることと理解してください。また，浅いノンレム睡眠には，昼間記憶したことと過去の記憶を結合する働きもあります。これは色々な記憶を相互に関連づけることです。</p>
+</blockquote>
+<p> </p>
+<p>さらに。以下重要。</p>
+<p> </p>
+<blockquote>
+<p>基本的な睡眠として，７時間半寝るとすると，前半では深いノンレム睡眠が出現し，後半で浅いノンレム睡眠が出現することを思い出してください。就床後，間も無い時にしっかり寝ないと，昼間に経験した恐怖などの「嫌な記憶（嫌な感覚）」が消えず，心が癒されません。また，３時間や４時間の短時間睡眠では，浅いノンレム睡眠が無くなり，昼間一生懸命練習したことが身につかず，また，色々な出来事の関連情報が記憶されません。更に，短時間睡眠では，朝方の長いレム睡眠がないので，記憶の定着や記憶の索引付けが出来なくなります。</p>
+</blockquote>
+<p><a href="https://www.konan-u.ac.jp/special/vol_1.html">第１回 「睡眠と記憶について／基本的な睡眠とは」</a></p>
+<p> </p>
+<p>不快な記憶を忘却させ、生きていくために必要な情報は整理して記憶の定着に導く。睡眠のメカニズム、人間の脳の働き&hellip;すげぇ！！</p>
+<p> </p>
+<p>ところで夢に過去（または現在）の同僚が登場するのは、その時どんな気分だったかにより意味合いが変わってくるそうだが、個人的には、爽快というわけでもないが不快な気分ではなく、どちらかと言えばプラス方向の気分であることが多い。その場合、自分の理想像として登場している意味があるとかないとか。</p>
+<p>ま、今朝思い出した元同僚は確かにできる奴だった。しばらく前にも別の、過去に一緒に仕事をした相当キレる人物が夢に登場したことがあった。これは何を象徴しているのか&hellip;。それにしても、一緒に仕事をした時期は数ヶ月程度で、しかも数えてみると約8年くらい昔なのだ。</p>
+<p>こういう事柄が夢に現れるということは、やはり自分にとって記憶に残しておくべき意味があると解釈すべき、なんだろうか。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/bcn_102.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/b/bcn_101.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/b/bcn_100.JPG" alt="Travel"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/a/healthcare-taurine/">タウリン(taurine)の効能いろいろ</a></li>
+    
+      <li><a href="/post/a/skill-in-communication/">「いてくれるだけでいい人」の理由</a></li>
+    
+      <li><a href="/post/a/stockholm-syndrome/">「ストックホルム症候群」の心理はヒトのデフォルト機能だった</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/mind-hacks/">mind hacks</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/brain-hacks/">brain hacks</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/delete-aws-config/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>AWS ConfigをCLIから削除する</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
