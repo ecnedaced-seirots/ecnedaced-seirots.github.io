@@ -6,7 +6,52 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 02 Jan 2022 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Jan 2022 14:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EKS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/eks/</link>
+      <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/eks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fargate</title>
+      <link>https://ecnedaced-seirots.github.io/tags/fargate/</link>
+      <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/fargate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://ecnedaced-seirots.github.io/tags/kubernetes/</link>
+      <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
+      <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>brain hacks</title>
       <link>https://ecnedaced-seirots.github.io/tags/brain-hacks/</link>
@@ -22,15 +67,6 @@
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/mind-hacks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
@@ -67,15 +103,6 @@
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/iac/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>terraform</title>
-      <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
-      <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
       <description></description>
     </item>
     
@@ -404,29 +431,11 @@
     </item>
     
     <item>
-      <title>EKS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/eks/</link>
-      <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/eks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>fluentbit</title>
       <link>https://ecnedaced-seirots.github.io/tags/fluentbit/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/fluentbit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kubernetes</title>
-      <link>https://ecnedaced-seirots.github.io/tags/kubernetes/</link>
-      <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     

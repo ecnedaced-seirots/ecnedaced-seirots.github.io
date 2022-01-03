@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>EKS FargateクラスタをTerraformで作成する(1) | Go Buddy Go</title>
+<meta name="keywords" content="terraform, EKS, fargate, kubernetes, AWS" />
+<meta name="description" content="一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS&#43;FargateプロファイルをTerraformから作成する。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="EKS FargateクラスタをTerraformで作成する(1)" />
+<meta property="og:description" content="一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS&#43;FargateプロファイルをTerraformから作成する。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-03T14:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-03T14:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="EKS FargateクラスタをTerraformで作成する(1)"/>
+<meta name="twitter:description" content="一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS&#43;FargateプロファイルをTerraformから作成する。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "EKS FargateクラスタをTerraformで作成する(1)",
+      "item": "https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "EKS FargateクラスタをTerraformで作成する(1)",
+  "name": "EKS FargateクラスタをTerraformで作成する(1)",
+  "description": "一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。\n",
+  "keywords": [
+    "terraform", "EKS", "fargate", "kubernetes", "AWS"
+  ],
+  "articleBody": "一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。\n他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）\n その前に Fargateのことをよく分かっていなかったので基本項目をあげておく。以下は2022年1月現在の仕様・制約事項。\n 「面倒なEC2の管理が不要！」と大っぴらに言われているが、Fargateでも最低限のノードグループは必要。 Fargate Pod用のノードが起動するサブネットはプライベートサブネットであること。 2.のPodがコントロールプレーンと通信するためVPC外へ出る必要がある。NATゲートウェイ/プロキシ/VPCエンドポイントいずれかの方式で外部への通信経路を確保する。 Fargateプロファイルを設定する。（大雑把に言うとここでFargateが動作する環境を定義する） FargateにおけるPodとノードの関係は常に1:1となる。（1ノードに複数のPodは起動できない） Fargate Pod専用のIAMロールが必要。（4.で指定）   実は 1.については知らなかったので、EKSクラスタ起動してFargateプロファイル設定すればPodが起動できるもんだと思っていた。EC2がいらないってウソやんけ…。当初その辺りで躓いたのだが、余計な失敗ネタは置いといて成功パターンを書いておく。\n で、Terraformのコード載せる前に基本前提について。上記の制約があることから、最小限以下の構成を用意しておく。それらもTerraformで作るのであればそれでもいいが、自分はさすがに面倒見切れないので既存のアイテムを流用した。VPCはすでにある想定で：\n AZにまたがったパブリックサブネット AZにまたがったプライベートサブネット NATゲートウェイ（2.のサブネットが外部と通信するため） ①EKSクラスタ ②ノードグループ ③Fargate Pod用の各IAMロール ノードグループリモートアクセス用のセキュリティグループ EKSクラスタ用のセキュリティグループ ノードグループ用のssh key   Fargateだろうが何だろうが、これらの前提アイテムは別途構築しなければならないのである。「eksctlならよしなに作ってくれるから楽！」とか言ってても、PoCならともかく実運用時にeksctlでお任せ構築なんてあり得ないのである。夢は見させてくれないのである。\n IAMロールについて ①クラスタ②ノード用ロールは既存のを使用した。ちなみにそれぞれ必要なポリシーは、①はAmazonEKSClusterPolicy、②はAmazonEKSWorkerNodePolicy、AmazonEC2ContainerRegistryReadOnlyとなる。②については、PoC時は最小限の権限でよいが本来Podが必要とするサービスの権限をすべてポリシーに追加する。\n参考\nAmazon EKS クラスター の IAM ロール Amazon EKS ノード の IAM ロール\nFargate Pod用ロールはCLIから新規作成した。信頼ポリシー用JSONを用意してコマンド実行。\n eks-fargate-pods-policy.json（信頼ポリシー用JSON）\n{ \"Version\": \"2012-10-17\", \"Statement\": { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"eks-fargate-pods.amazonaws.com\" }, \"Action\": \"sts:AssumeRole\" } }  # ロール作成 $ aws iam create-role \\ --role-name AmazonEKSFargatePodExecutionRole \\ --assume-role-policy-document file://eks-fargate-pods-policy.json # ロールにポリシーをアタッチ aws iam attach-role-policy \\ --role-name AmazonEKSFargatePodExecutionRole\\ --policy-arn \"arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy\"  Teraraformコード 以降、Terraformコード。今回、前提条件となるネットワーク環境、IAMロール等はTerraform外で作成済みのアイテムを指定している。\neks.tf\n############################################# # EKS Cluster ############################################# resource \"aws_eks_cluster\" \"eks-cluster\" { name = \"eks-test-cluster\" role_arn = var.cluster-role vpc_config { subnet_ids = [var.public-a, var.public-c] security_group_ids = [var.cluster-sg] } } output \"endpoint\" { value = aws_eks_cluster.eks-cluster.endpoint } output \"kubeconfig-certificate-authority-data\" { value = aws_eks_cluster.eks-cluster.certificate_authority[0].data } ############################################# # EKS Node Group ############################################# resource \"aws_eks_node_group\" \"eks-node\" { cluster_name = aws_eks_cluster.eks-cluster.name node_group_name = \"eks-test-node\" node_role_arn = var.node-role subnet_ids = [var.private-a, var.private-c] ami_type = \"AL2_x86_64\" instance_types = [\"t3.small\"] labels = { type = \"fargate-test\" } remote_access { ec2_ssh_key = var.keyname source_security_group_ids = [var.remote-sg] } scaling_config { desired_size = 2 max_size = 2 min_size = 2 } } ############################################# # EKS Fargate Profile ############################################# resource \"aws_eks_fargate_profile\" \"fargate-test\" { cluster_name = aws_eks_cluster.eks-cluster.name fargate_profile_name = \"test-profile\" pod_execution_role_arn = var.pod-role subnet_ids = [var.private-a, var.private-c] selector { namespace = \"fargate-test\" } }  以下、変数参照先のvariables.tf。最近のTerraform PoCではtfvarsを使っていたが、今回は単純なケースなのでこれ一本で行く。\nvariables.tf\n############################# # public subnet-a ############################# variable \"public-a\" { default = \"subnet-xxxxxxxxxxxxxxxxx\" } ############################# # public subnet-c ############################# variable \"public-c\" { default = \"subnet-yyyyyyyyyyyyyyyyy\" } ############################# # private subnet-a ############################# variable \"private-a\" { default = \"subnet-wwwwwwwwwwwwwwwww\" } ############################# # private subnet-c ############################# variable \"private-c\" { default = \"subnet-zzzzzzzzzzzzzzzzz\" } ############################# # cluster security group ############################# variable \"cluster-sg\" { default = \"sg-xxxxxxxxxxxxxxxxx\" } ############################# # eks node security group ############################# variable \"remote-sg\" { default = \"sg-xxxxxxxxxxxxxxxxx\" } ############################# # cluster IAM role ############################# variable \"cluster-role\" { default = \"arn:aws:iam::012345678910:role/eks-cluster-role\" } ############################# # node IAM role ############################# variable \"node-role\" { default = \"arn:aws:iam::012345678910:role/eks-node-group-role\" } ############################# # pod IAM role ############################# variable \"pod-role\" { default = \"arn:aws:iam::012345678910:role/AmazonEKSFargatePodExecutionRole\" } ############################# # eks node key ############################# variable \"keyname\" { default = \"eks-workeernode-key\" }  この状態で terraform apply したところ、十数分後にEKSクラスタ/ノードグループ/Fargateプロファイルの作成が完了した。\n 最後の[Pod selectors]は、Fargate上で実行させたいPodの条件が設定されている。上記の場合Namespaceに[fargate-test]を指定しているため、Kubernetes上のfargate-testネームスペースにおいてFarget Podが実行されるようになる。\n ではようやく、Fargate Podを起動してみる。…といきたいが、長くなるので次回に持ち越し。\n 参考\nGetting started with AWS Fargate using Amazon EKS\n【AWS】 EKS on Fargate のクラスタを構築してみる\nEKS on Fargateの特徴、通常のEKSとの違いは何か？（第1回）\nAmazon Fargate for Amazon EKSを試してみた #reinvent\nなんとなく「Fargate for EKS」が分かった気になる？ ～ いろいろなギモンを調べてみた ～ #reinvent\n ",
+  "wordCount" : "383",
+  "inLanguage": "en",
+  "datePublished": "2022-01-03T14:00:00+09:00",
+  "dateModified": "2022-01-03T14:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      EKS FargateクラスタをTerraformで作成する(1)
+    </h1>
+    <div class="post-meta">January 3, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。</p>
+<p>他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）</p>
+<p> </p>
+<p>その前に Fargateのことをよく分かっていなかったので基本項目をあげておく。以下は2022年1月現在の仕様・制約事項。</p>
+<ol>
+<li>「面倒なEC2の管理が不要！」と大っぴらに言われているが、Fargateでも最低限のノードグループは必要。</li>
+<li>Fargate Pod用のノードが起動するサブネットはプライベートサブネットであること。</li>
+<li>2.のPodがコントロールプレーンと通信するためVPC外へ出る必要がある。NATゲートウェイ/プロキシ/VPCエンドポイントいずれかの方式で外部への通信経路を確保する。</li>
+<li>Fargateプロファイルを設定する。（大雑把に言うとここでFargateが動作する環境を定義する）</li>
+<li>FargateにおけるPodとノードの関係は常に1:1となる。（1ノードに複数のPodは起動できない）</li>
+<li>Fargate Pod専用のIAMロールが必要。（4.で指定）</li>
+</ol>
+<p> </p>
+<p>実は 1.については知らなかったので、EKSクラスタ起動してFargateプロファイル設定すればPodが起動できるもんだと思っていた。EC2がいらないってウソやんけ&hellip;。当初その辺りで躓いたのだが、余計な失敗ネタは置いといて成功パターンを書いておく。</p>
+<p> </p>
+<p>で、Terraformのコード載せる前に基本前提について。上記の制約があることから、最小限以下の構成を用意しておく。それらもTerraformで作るのであればそれでもいいが、自分はさすがに面倒見切れないので既存のアイテムを流用した。VPCはすでにある想定で：</p>
+<ol>
+<li>AZにまたがったパブリックサブネット</li>
+<li>AZにまたがったプライベートサブネット</li>
+<li>NATゲートウェイ（2.のサブネットが外部と通信するため）</li>
+<li>①EKSクラスタ ②ノードグループ ③Fargate Pod用の各IAMロール</li>
+<li>ノードグループリモートアクセス用のセキュリティグループ</li>
+<li>EKSクラスタ用のセキュリティグループ</li>
+<li>ノードグループ用のssh key</li>
+</ol>
+<p> </p>
+<p>Fargateだろうが何だろうが、これらの前提アイテムは別途構築しなければならないのである。「eksctlならよしなに作ってくれるから楽！」とか言ってても、PoCならともかく実運用時にeksctlでお任せ構築なんてあり得ないのである。夢は見させてくれないのである。</p>
+<p> </p>
+<h3 id="iamロールについて">IAMロールについて<a hidden class="anchor" aria-hidden="true" href="#iamロールについて">#</a></h3>
+<p>①クラスタ②ノード用ロールは既存のを使用した。ちなみにそれぞれ必要なポリシーは、①はAmazonEKSClusterPolicy、②はAmazonEKSWorkerNodePolicy、AmazonEC2ContainerRegistryReadOnlyとなる。②については、PoC時は最小限の権限でよいが本来Podが必要とするサービスの権限をすべてポリシーに追加する。</p>
+<p>参考<br>
+<a href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/service_IAM_role.html">Amazon EKS クラスター の IAM ロール</a>
+<a href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/create-node-role.html">Amazon EKS ノード の IAM ロール</a></p>
+<p>Fargate Pod用ロールはCLIから新規作成した。信頼ポリシー用JSONを用意してコマンド実行。</p>
+<p> </p>
+<p>eks-fargate-pods-policy.json（信頼ポリシー用JSON）</p>
+<pre><code>{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: {
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Principal&quot;: {
+      &quot;Service&quot;: &quot;eks-fargate-pods.amazonaws.com&quot;
+    },
+    &quot;Action&quot;: &quot;sts:AssumeRole&quot;
+  }
+}
+
+</code></pre><p> </p>
+<pre><code># ロール作成
+$ aws iam create-role \
+     --role-name AmazonEKSFargatePodExecutionRole \
+     --assume-role-policy-document file://eks-fargate-pods-policy.json
+
+# ロールにポリシーをアタッチ
+aws iam attach-role-policy \
+    --role-name AmazonEKSFargatePodExecutionRole\
+    --policy-arn &quot;arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy&quot;
+</code></pre><p> </p>
+<h3 id="teraraformコード">Teraraformコード<a hidden class="anchor" aria-hidden="true" href="#teraraformコード">#</a></h3>
+<p>以降、Terraformコード。今回、前提条件となるネットワーク環境、IAMロール等はTerraform外で作成済みのアイテムを指定している。</p>
+<p>eks.tf</p>
+<pre><code>#############################################
+# EKS Cluster
+#############################################
+
+resource &quot;aws_eks_cluster&quot; &quot;eks-cluster&quot; {
+  name     = &quot;eks-test-cluster&quot;
+  role_arn = var.cluster-role
+
+  vpc_config {
+    subnet_ids         = [var.public-a, var.public-c]
+    security_group_ids = [var.cluster-sg]
+  }
+}
+
+output &quot;endpoint&quot; {
+  value = aws_eks_cluster.eks-cluster.endpoint
+}
+
+output &quot;kubeconfig-certificate-authority-data&quot; {
+  value = aws_eks_cluster.eks-cluster.certificate_authority[0].data
+}
+
+#############################################
+# EKS Node Group
+#############################################
+
+resource &quot;aws_eks_node_group&quot; &quot;eks-node&quot; {
+  cluster_name    = aws_eks_cluster.eks-cluster.name
+  node_group_name = &quot;eks-test-node&quot;
+  node_role_arn   = var.node-role
+  subnet_ids      = [var.private-a, var.private-c]
+  ami_type        = &quot;AL2_x86_64&quot;
+  instance_types  = [&quot;t3.small&quot;]
+
+  labels  = {
+    type  = &quot;fargate-test&quot;
+  }
+
+  remote_access {
+    ec2_ssh_key               = var.keyname
+    source_security_group_ids = [var.remote-sg]
+  }
+
+  scaling_config {
+    desired_size = 2
+    max_size     = 2
+    min_size     = 2
+  }
+}
+
+#############################################
+# EKS Fargate Profile
+#############################################
+
+resource &quot;aws_eks_fargate_profile&quot; &quot;fargate-test&quot; {
+  cluster_name           = aws_eks_cluster.eks-cluster.name
+  fargate_profile_name   = &quot;test-profile&quot;
+  pod_execution_role_arn = var.pod-role
+  subnet_ids             = [var.private-a, var.private-c]
+
+  selector {
+    namespace = &quot;fargate-test&quot;
+  }
+}
+
+</code></pre><p> </p>
+<p>以下、変数参照先のvariables.tf。最近のTerraform PoCではtfvarsを使っていたが、今回は単純なケースなのでこれ一本で行く。</p>
+<p>variables.tf</p>
+<pre><code>#############################
+# public subnet-a
+#############################
+variable &quot;public-a&quot; {
+  default = &quot;subnet-xxxxxxxxxxxxxxxxx&quot;
+}
+
+#############################
+# public subnet-c
+#############################
+variable &quot;public-c&quot; {
+  default = &quot;subnet-yyyyyyyyyyyyyyyyy&quot;
+}
+
+#############################
+# private subnet-a
+#############################
+variable &quot;private-a&quot; {
+  default = &quot;subnet-wwwwwwwwwwwwwwwww&quot;
+}
+
+#############################
+# private subnet-c
+#############################
+variable &quot;private-c&quot; {
+  default = &quot;subnet-zzzzzzzzzzzzzzzzz&quot;
+}
+
+#############################
+# cluster security group
+#############################
+variable &quot;cluster-sg&quot; {
+  default = &quot;sg-xxxxxxxxxxxxxxxxx&quot;
+}
+
+#############################
+# eks node security group
+#############################
+variable &quot;remote-sg&quot; {
+  default = &quot;sg-xxxxxxxxxxxxxxxxx&quot;
+}
+
+#############################
+# cluster IAM role
+#############################
+variable &quot;cluster-role&quot; {
+  default = &quot;arn:aws:iam::012345678910:role/eks-cluster-role&quot;
+}
+
+#############################
+# node IAM role
+#############################
+variable &quot;node-role&quot; {
+  default = &quot;arn:aws:iam::012345678910:role/eks-node-group-role&quot;
+}
+
+#############################
+# pod IAM role
+#############################
+variable &quot;pod-role&quot; {
+  default = &quot;arn:aws:iam::012345678910:role/AmazonEKSFargatePodExecutionRole&quot;
+}
+
+#############################
+# eks node key
+#############################
+variable &quot;keyname&quot; {
+  default = &quot;eks-workeernode-key&quot;
+}
+</code></pre><p> </p>
+<p>この状態で terraform apply したところ、十数分後にEKSクラスタ/ノードグループ/Fargateプロファイルの作成が完了した。</p>
+<p><img loading="lazy" src="/img/b/eks_001.jpg" alt="EKS"  />
+
+<img loading="lazy" src="/img/b/eks_002.jpg" alt="EKS"  />
+
+<img loading="lazy" src="/img/b/eks_003.jpg" alt="EKS"  />
+</p>
+<p> </p>
+<p>最後の[Pod selectors]は、Fargate上で実行させたいPodの条件が設定されている。上記の場合Namespaceに[fargate-test]を指定しているため、Kubernetes上のfargate-testネームスペースにおいてFarget Podが実行されるようになる。</p>
+<p> </p>
+<p>ではようやく、Fargate Podを起動してみる。&hellip;といきたいが、長くなるので次回に持ち越し。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html">Getting started with AWS Fargate using Amazon EKS</a><br>
+<a href="https://qiita.com/nabeatsu/items/8ec9895bfe90c18b13af">【AWS】 EKS on Fargate のクラスタを構築してみる</a><br>
+<a href="https://www.sunnycloud.jp/column/20210315-01/">EKS on Fargateの特徴、通常のEKSとの違いは何か？（第1回）</a><br>
+<a href="https://dev.classmethod.jp/articles/try-amazon-fargate-for-amazon-eks/">Amazon Fargate for Amazon EKSを試してみた #reinvent</a><br>
+<a href="https://dev.classmethod.jp/articles/outline-about-fargate-for-eks/">なんとなく「Fargate for EKS」が分かった気になる？ ～ いろいろなギモンを調べてみた ～ #reinvent</a></p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/mishima_0006.JPG" alt="三島"  />
+
+<img loading="lazy" src="/img/b/mishima_0007.JPG" alt="三島"  />
+
+<img loading="lazy" src="/img/b/mishima_0008.JPG" alt="三島"  />
+
+<img loading="lazy" src="/img/b/mishima_0009.JPG" alt="三島"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/a/fluentbit-eks-setting/">EKS Container InsightsのFluent Bit設定</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-6/">Terraform loop処理の応用編(5) - Metric Alarm</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-5/">Terraform loop処理の応用編(4) - Lambda</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-4/">Terraform loop処理の応用編(3) - Event rule</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eks/">EKS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/fargate/">fargate</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/kubernetes/">kubernetes</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>レム睡眠と夢と記憶</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
