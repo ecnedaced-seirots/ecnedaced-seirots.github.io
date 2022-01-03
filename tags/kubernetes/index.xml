@@ -6,14 +6,23 @@
     <description>Recent content in kubernetes on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 03 Jan 2022 14:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Jan 2022 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EKS FargateクラスタをTerraformで作成する(2)</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</link>
+      <pubDate>Mon, 03 Jan 2022 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</guid>
+      <description>&lt;p&gt;前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</link>
       <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</guid>
-      <description>&lt;p&gt;一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。&lt;/p&gt;</description>
+      <description>&lt;p&gt;一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）&lt;/p&gt;</description>
     </item>
     
     <item>

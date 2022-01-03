@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>EKS FargateクラスタをTerraformで作成する(2) | Go Buddy Go</title>
+<meta name="keywords" content="terraform, EKS, fargate, kubernetes, AWS" />
+<meta name="description" content="前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="EKS FargateクラスタをTerraformで作成する(2)" />
+<meta property="og:description" content="前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-03T17:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-03T17:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="EKS FargateクラスタをTerraformで作成する(2)"/>
+<meta name="twitter:description" content="前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "EKS FargateクラスタをTerraformで作成する(2)",
+      "item": "https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "EKS FargateクラスタをTerraformで作成する(2)",
+  "name": "EKS FargateクラスタをTerraformで作成する(2)",
+  "description": "前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。\n",
+  "keywords": [
+    "terraform", "EKS", "fargate", "kubernetes", "AWS"
+  ],
+  "articleBody": "前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。\nEKS FargateクラスタをTerraformで作成する(1)\n この時点ではノードグループ、Fargateプロファイルを含めてEKSクラスタが構築完了した状態である。まずはupdate-kubeconfig実行して状態を確認。（kubectlのセットアップは割愛。前からあったv1.19で今回のクラスタのバージョンv1.21に対応していないが、一応動作した）\n $ aws eks update-kubeconfig --name eks-test-cluster $ kubectl get no NAME STATUS ROLES AGE VERSION ip-10-0-2-99.ap-northeast-1.compute.internal Ready  19m v1.21.5-eks-bc4871b ip-10-0-3-18.ap-northeast-1.compute.internal Ready  19m v1.21.5-eks-bc4871b $ kubectl get po -A NAMESPACE NAME READY STATUS RESTARTS AGE kube-system aws-node-6fp74 1/1 Running 0 19m kube-system aws-node-ncjhh 1/1 Running 0 19m kube-system coredns-76f4967988-7pr2d 1/1 Running 0 48m kube-system coredns-76f4967988-t4lmc 1/1 Running 0 48m kube-system kube-proxy-58kvx 1/1 Running 0 19m kube-system kube-proxy-pfw7j 1/1 Running 0 19m  ここまではいつもと同じ。最小限のノードに、システム系のPodが起動している。ではFargate Podを起動！…の前に、前回の構築時にSelectorとしてNamespace[fargate-test]を指定しているため、fargate-testネームスペースが必要である。この時点では対象ネームスペースが存在しないため新規作成する。\n# 作業前のネームスペース確認 $ kubectl get namespace NAME STATUS AGE default Active 54m kube-node-lease Active 54m kube-public Active 54m kube-system Active 54m # ネームスペース fargate-testを作成 $ kubectl create namespace fargate-test namespace/fargate-test created # 確認 $ kubectl get namespace | grep fargate fargate-test Active 53s  ネームスペースが作成されたので、これを指定してFargate Podを起動する。マニフェストは何も用意していないからこんなんで。\n$ kubectl create deployment test-app --namespace fargate-test --image=nginx deployment.apps/test-app created  やっとRunningになった。\n$ kubectl get po -n fargate-test NAME READY STATUS RESTARTS AGE test-app-f8c9656cd-ph7vg 1/1 Running 0 96s  get noしてみると、Fargage専用ノードが起動しているのが確認できた。\n$ kubectl get no NAME STATUS ROLES AGE VERSION fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Ready  103s v1.21.2-eks-06eac09 ip-10-0-2-99.ap-northeast-1.compute.internal Ready  31m v1.21.5-eks-bc4871b ip-10-0-3-18.ap-northeast-1.compute.internal Ready  31m v1.21.5-eks-bc4871b  そういえば、get pods に-o wideつければ一回で確認可能だった。\n$ kubectl get po -n fargate-test -o wide NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES test-app-f8c9656cd-ph7vg 1/1 Running 0 5m7s 10.0.2.10 fargate-ip-10-0-2-10.ap-northeast-1.compute.internal    最後にPodのdescribe結果を載せておく。リソース割り当てらしき箇所、[CapacityProvisioned: 0.25vCPU 0.5GB]となっている。これがデフォルト値なんだろう。当然実運用に向けては適宜サイジングすることになる。\n$ kubectl describe po -n fargate-test test-app-f8c9656cd-ph7vg Name: test-app-f8c9656cd-ph7vg Namespace: fargate-test Priority: 2000001000 Priority Class Name: system-node-critical Node: fargate-ip-10-0-2-10.ap-northeast-1.compute.internal/10.0.2.10 Start Time: Mon, 03 Jan 2022 12:31:21 +0900 Labels: app=test-app eks.amazonaws.com/fargate-profile=test-profile pod-template-hash=f8c9656cd Annotations: CapacityProvisioned: 0.25vCPU 0.5GB Logging: LoggingDisabled: LOGGING_CONFIGMAP_NOT_FOUND kubernetes.io/psp: eks.privileged Status: Running IP: 10.0.2.10 IPs: IP: 10.0.2.10 Controlled By: ReplicaSet/test-app-f8c9656cd Containers: nginx: Container ID: containerd://30f18fbf447144fec406634651e8e7ba0651a285a814419b77bf8c4d1d317f44 Image: nginx Image ID: docker.io/library/nginx@sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31 Port:  Host Port:  State: Running Started: Mon, 03 Jan 2022 12:31:30 +0900 Ready: True Restart Count: 0 Environment:  Mounts: /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-9c7kb (ro) Conditions: Type Status Initialized True Ready True ContainersReady True PodScheduled True Volumes: kube-api-access-9c7kb: Type: Projected (a volume that contains injected data from multiple sources) TokenExpirationSeconds: 3607 ConfigMapName: kube-root-ca.crt ConfigMapOptional:  DownwardAPI: true QoS Class: BestEffort Node-Selectors:  Tolerations: node.kubernetes.io/not-ready:NoExecute op=Exists for 300s node.kubernetes.io/unreachable:NoExecute op=Exists for 300s Events: Type Reason Age From Message ---- ------ ---- ---- ------- Warning LoggingDisabled 14m fargate-scheduler Disabled logging because aws-logging configmap was not found. configmap \"aws-logging\" not found Normal Scheduled 13m fargate-scheduler Successfully assigned fargate-test/test-app-f8c9656cd-ph7vg to fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Normal Pulling 13m kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Pulling image \"nginx\" Normal Pulled 13m kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Successfully pulled image \"nginx\" in 7.409339398s Normal Created 13m kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Created container nginx Normal Started 13m kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal Started container nginx  ここまで確認できたのでPodを削除\n$ kubectl delete deployment test-app --namespace fargate-test  eksクラスタはterraform destroyで一気に削除した。\n$ time terraform destroy : : aws_eks_fargate_profile.fargate-test: Destroying... [id=eks-test-cluster:test-profile] aws_eks_node_group.eks-node: Destroying... [id=eks-test-cluster:eks-test-node] 6m6.166s  次回からは再びterraform applyでお気軽に検証できるもんな！…と言いつつ、正直Fargateの有り難みってよくわからんな。…ということがわかった検証であった。Podとノードは1:1と決まっていて処理が終わったらノードも消滅するとなれば、バッチ処理に向いていることくらいは想像がつくが。\n通常のEKSとFargateは共存可能なため、アプリの処理の特性によってそれぞれどちらを選択するのか、または1クラスタにおいて片方のみで運用するのか、その検討のために頭を使うことになる。やはり夢は見ちゃいけないのである。\n ",
+  "wordCount" : "441",
+  "inLanguage": "en",
+  "datePublished": "2022-01-03T17:00:00+09:00",
+  "dateModified": "2022-01-03T17:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      EKS FargateクラスタをTerraformで作成する(2)
+    </h1>
+    <div class="post-meta">January 3, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。</p>
+<p><a href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/">EKS FargateクラスタをTerraformで作成する(1)</a></p>
+<p> </p>
+<p>この時点ではノードグループ、Fargateプロファイルを含めてEKSクラスタが構築完了した状態である。まずはupdate-kubeconfig実行して状態を確認。（kubectlのセットアップは割愛。前からあったv1.19で今回のクラスタのバージョンv1.21に対応していないが、一応動作した）</p>
+<p> </p>
+<pre><code>$ aws eks update-kubeconfig --name eks-test-cluster
+
+$ kubectl get no
+NAME                                           STATUS   ROLES    AGE   VERSION
+ip-10-0-2-99.ap-northeast-1.compute.internal   Ready    &lt;none&gt;   19m   v1.21.5-eks-bc4871b
+ip-10-0-3-18.ap-northeast-1.compute.internal   Ready    &lt;none&gt;   19m   v1.21.5-eks-bc4871b
+
+$ kubectl get po -A
+NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE
+kube-system   aws-node-6fp74             1/1     Running   0          19m
+kube-system   aws-node-ncjhh             1/1     Running   0          19m
+kube-system   coredns-76f4967988-7pr2d   1/1     Running   0          48m
+kube-system   coredns-76f4967988-t4lmc   1/1     Running   0          48m
+kube-system   kube-proxy-58kvx           1/1     Running   0          19m
+kube-system   kube-proxy-pfw7j           1/1     Running   0          19m
+</code></pre><p> </p>
+<p>ここまではいつもと同じ。最小限のノードに、システム系のPodが起動している。ではFargate Podを起動！&hellip;の前に、前回の構築時にSelectorとしてNamespace[fargate-test]を指定しているため、fargate-testネームスペースが必要である。この時点では対象ネームスペースが存在しないため新規作成する。</p>
+<pre><code># 作業前のネームスペース確認
+$ kubectl get namespace
+NAME              STATUS   AGE
+default           Active   54m
+kube-node-lease   Active   54m
+kube-public       Active   54m
+kube-system       Active   54m
+
+# ネームスペース fargate-testを作成
+$ kubectl create namespace fargate-test
+namespace/fargate-test created
+
+# 確認
+$ kubectl get namespace | grep fargate
+fargate-test      Active   53s
+</code></pre><p> </p>
+<p>ネームスペースが作成されたので、これを指定してFargate Podを起動する。マニフェストは何も用意していないからこんなんで。</p>
+<pre><code>$ kubectl create deployment test-app --namespace fargate-test --image=nginx
+deployment.apps/test-app created
+</code></pre><p> </p>
+<p>やっとRunningになった。</p>
+<pre><code>$ kubectl get po -n fargate-test
+NAME                       READY   STATUS    RESTARTS   AGE
+test-app-f8c9656cd-ph7vg   1/1     Running   0          96s
+</code></pre><p> </p>
+<p>get noしてみると、Fargage専用ノードが起動しているのが確認できた。</p>
+<pre><code>$ kubectl get no
+NAME                                                   STATUS   ROLES    AGE    VERSION
+fargate-ip-10-0-2-10.ap-northeast-1.compute.internal   Ready    &lt;none&gt;   103s   v1.21.2-eks-06eac09
+ip-10-0-2-99.ap-northeast-1.compute.internal           Ready    &lt;none&gt;   31m    v1.21.5-eks-bc4871b
+ip-10-0-3-18.ap-northeast-1.compute.internal           Ready    &lt;none&gt;   31m    v1.21.5-eks-bc4871b
+</code></pre><p> </p>
+<p>そういえば、get pods に<code>-o wide</code>つければ一回で確認可能だった。</p>
+<pre><code>$ kubectl get po -n fargate-test -o wide
+NAME                       READY   STATUS    RESTARTS   AGE    IP          NODE                                                   NOMINATED NODE   READINESS GATES
+test-app-f8c9656cd-ph7vg   1/1     Running   0          5m7s   10.0.2.10   fargate-ip-10-0-2-10.ap-northeast-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+</code></pre><p> </p>
+<p>最後にPodのdescribe結果を載せておく。リソース割り当てらしき箇所、[CapacityProvisioned: 0.25vCPU 0.5GB]となっている。これがデフォルト値なんだろう。当然実運用に向けては適宜サイジングすることになる。</p>
+<pre><code>$ kubectl describe po -n fargate-test test-app-f8c9656cd-ph7vg
+Name:                 test-app-f8c9656cd-ph7vg
+Namespace:            fargate-test
+Priority:             2000001000
+Priority Class Name:  system-node-critical
+Node:                 fargate-ip-10-0-2-10.ap-northeast-1.compute.internal/10.0.2.10
+Start Time:           Mon, 03 Jan 2022 12:31:21 +0900
+Labels:               app=test-app
+                      eks.amazonaws.com/fargate-profile=test-profile
+                      pod-template-hash=f8c9656cd
+Annotations:          CapacityProvisioned: 0.25vCPU 0.5GB
+                      Logging: LoggingDisabled: LOGGING_CONFIGMAP_NOT_FOUND
+                      kubernetes.io/psp: eks.privileged
+Status:               Running
+IP:                   10.0.2.10
+IPs:
+  IP:           10.0.2.10
+Controlled By:  ReplicaSet/test-app-f8c9656cd
+Containers:
+  nginx:
+    Container ID:   containerd://30f18fbf447144fec406634651e8e7ba0651a285a814419b77bf8c4d1d317f44
+    Image:          nginx
+    Image ID:       docker.io/library/nginx@sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31
+    Port:           &lt;none&gt;
+    Host Port:      &lt;none&gt;
+    State:          Running
+      Started:      Mon, 03 Jan 2022 12:31:30 +0900
+    Ready:          True
+    Restart Count:  0
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-9c7kb (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-9c7kb:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       &lt;nil&gt;
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              &lt;none&gt;
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason           Age   From                                                           Message
+  ----     ------           ----  ----                                                           -------
+  Warning  LoggingDisabled  14m   fargate-scheduler                                              Disabled logging because aws-logging configmap was not found. configmap &quot;aws-logging&quot; not found
+  Normal   Scheduled        13m   fargate-scheduler                                              Successfully assigned fargate-test/test-app-f8c9656cd-ph7vg to fargate-ip-10-0-2-10.ap-northeast-1.compute.internal
+  Normal   Pulling          13m   kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal  Pulling image &quot;nginx&quot;
+  Normal   Pulled           13m   kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal  Successfully pulled image &quot;nginx&quot; in 7.409339398s
+  Normal   Created          13m   kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal  Created container nginx
+  Normal   Started          13m   kubelet, fargate-ip-10-0-2-10.ap-northeast-1.compute.internal  Started container nginx
+</code></pre><p> </p>
+<p>ここまで確認できたのでPodを削除</p>
+<pre><code>$ kubectl delete deployment test-app --namespace fargate-test
+</code></pre><p> </p>
+<p>eksクラスタはterraform destroyで一気に削除した。</p>
+<pre><code>$ time terraform destroy
+:
+:
+aws_eks_fargate_profile.fargate-test: Destroying... [id=eks-test-cluster:test-profile]
+aws_eks_node_group.eks-node: Destroying... [id=eks-test-cluster:eks-test-node]
+
+6m6.166s
+</code></pre><p> </p>
+<p>次回からは再び<code>terraform apply</code>でお気軽に検証できるもんな！&hellip;と言いつつ、正直Fargateの有り難みってよくわからんな。&hellip;ということがわかった検証であった。Podとノードは1:1と決まっていて処理が終わったらノードも消滅するとなれば、バッチ処理に向いていることくらいは想像がつくが。</p>
+<p>通常のEKSとFargateは共存可能なため、アプリの処理の特性によってそれぞれどちらを選択するのか、または1クラスタにおいて片方のみで運用するのか、その検討のために頭を使うことになる。やはり夢は見ちゃいけないのである。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/mishima_010.JPG" alt="三島"  />
+
+<img loading="lazy" src="/img/b/mishima_011.JPG" alt="三島"  />
+
+<img loading="lazy" src="/img/b/mishima_012.JPG" alt="三島"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/eks-fargate-by-terraform/">EKS FargateクラスタをTerraformで作成する(1)</a></li>
+    
+      <li><a href="/post/a/fluentbit-eks-setting/">EKS Container InsightsのFluent Bit設定</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-6/">Terraform loop処理の応用編(5) - Metric Alarm</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-5/">Terraform loop処理の応用編(4) - Lambda</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-4/">Terraform loop処理の応用編(3) - Event rule</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eks/">EKS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/fargate/">fargate</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/kubernetes/">kubernetes</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>EKS FargateクラスタをTerraformで作成する(1)</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
