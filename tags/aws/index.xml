@@ -6,7 +6,16 @@
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 03 Jan 2022 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 08 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
+      <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</guid>
+      <description>&lt;p&gt;Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</link>

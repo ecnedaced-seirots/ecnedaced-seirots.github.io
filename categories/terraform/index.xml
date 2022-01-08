@@ -6,7 +6,16 @@
     <description>Recent content in Terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 31 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 08 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
+      <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</guid>
+      <description>&lt;p&gt;Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の応用編(5) - Metric Alarm</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</link>
