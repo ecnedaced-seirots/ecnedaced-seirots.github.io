@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>TerraformのSNSサブスクリプションで複数メールアドレス指定 | Go Buddy Go</title>
-<meta name="keywords" content="terraform, amazon sns, AWS" />
-<meta name="description" content="Terraformで、「AWS SNSトピックのサブスク &#43; エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。">
+<title>AWS NATゲートウェイの作成と設定 | Go Buddy Go</title>
+<meta name="keywords" content="memo, AWS, network" />
+<meta name="description" content="小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="TerraformのSNSサブスクリプションで複数メールアドレス指定" />
-<meta property="og:description" content="Terraformで、「AWS SNSトピックのサブスク &#43; エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。" />
+<meta property="og:title" content="AWS NATゲートウェイの作成と設定" />
+<meta property="og:description" content="小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-08T11:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-08T11:00:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-09T23:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-09T23:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="TerraformのSNSサブスクリプションで複数メールアドレス指定"/>
-<meta name="twitter:description" content="Terraformで、「AWS SNSトピックのサブスク &#43; エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。"/>
+<meta name="twitter:title" content="AWS NATゲートウェイの作成と設定"/>
+<meta name="twitter:description" content="小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "TerraformのSNSサブスクリプションで複数メールアドレス指定",
-      "item": "https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/"
+      "name": "AWS NATゲートウェイの作成と設定",
+      "item": "https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "TerraformのSNSサブスクリプションで複数メールアドレス指定",
-  "name": "TerraformのSNSサブスクリプションで複数メールアドレス指定",
-  "description": "Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。\n",
+  "headline": "AWS NATゲートウェイの作成と設定",
+  "name": "AWS NATゲートウェイの作成と設定",
+  "description": "小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。\n",
   "keywords": [
-    "terraform", "amazon sns", "AWS"
+    "memo", "AWS", "network"
   ],
-  "articleBody": "Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。\nそれで調べてみたんだが、ほぼ情報が見当たらない。結論から言うと、以下記事参考にしたらできた。この例ではcountで繰り返し処理をしている。\nHow to add email subscribers to an AWS SNS topic with Terraform\n 参考記事によると、TerraformでSNSサブスクリプションのエンドポイントとしてメールがサポートされたのが、2021年初頭らしい。そのため、それまではこれまたトリッキーな記述をする必要があった模様。ちなみにアドレスが単体であればcoount処理をせずに通常の記述方法で作成可能である。\n以下、ほぼパクリだがコード例。delivery_policyはデフォルトでよければ設定必要なしと想定する。\n ################################################## # E-mail address definition ################################################## locals { emails = [\"foo@example.com\",\"bar@example.com\"] } ################################################## # SNS topic ################################################## resource \"aws_sns_topic\" \"sns_topic\" { name = \"sns-test-topic\" display_name = \"Notification Mail\" # メールの差出人として表示される delivery_policy = jsonencode({ \"http\" : { \"defaultHealthyRetryPolicy\" : { \"minDelayTarget\" : 20, \"maxDelayTarget\" : 20, \"numRetries\" : 3, \"numMaxDelayRetries\" : 0, \"numNoDelayRetries\" : 0, \"numMinDelayRetries\" : 0, \"backoffFunction\" : \"linear\" }, \"disableSubscriptionOverrides\" : false, \"defaultThrottlePolicy\" : { \"maxReceivesPerSecond\" : 1 } } }) } ################################################## # SNS topic subscription(for multi e-mail address) ################################################## resource \"aws_sns_topic_subscription\" \"sns_topic_subs\" { count = length(local.emails) topic_arn = aws_sns_topic.sns_topic.arn protocol = \"email\" endpoint = local.emails[count.index] #ここでlocal変数のメールアドレスを参照 }  上記、endpoint = [\"foo@example.com\",\"bar@example.com\"] でいいじゃないかと思ってそう書くと失敗する。「何でこれでダメなんだ！」となるが仕方ない。簡単そうに見える場所にも何かと罠が潜んでいるTerraformである。\n ",
-  "wordCount" : "124",
+  "articleBody": "小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。\nというのは、Fargate-EKSクラスタを作成する際、FargateのPodが起動するノードはプライベートサブネットに配置する必要があるからだ。外に出る口がないとコントロールプレーンと通信できなくて起動しないんじゃないか？と予想したらやはりその通りだったので、起動途中で詰まっている間にチャチャッとNATゲートウェイを作ったら、サクッとPodが起動した。\n で、NATゲートウェイの作成自体は特に難しいことはなく、業務でやっていた記憶を辿ってなんとなくやったらできた。しかし後で参照できるように記録を残す。\nパブリックサブネットとプライベートサブネットは作成済みとして、大まかには以下の対応となる。\n NATゲートウェイを作成。パブリックサブネットに所属させる。 プライベートサブネットのルートテーブルに1.のNATゲートウェイを関連付ける。    プライベートサブネットのルートテーブルを編集する。\n これで、プライベートサブネット上のPod/インスタンスが外に出ていけるようになる。\n NATゲートウェイは課金対象なので、Fargateの検証が済んだらすかさず削除する。EKSクラスタはTerraformで作ったので、削除時もterraform destroyであっさり削除。楽ちんだな〜！\nではNATゲートウェイの作成も自動化すればいいじゃないかというと、マネコン操作でも1分でできてしまうので、このままでもいいやと思ってしまうんだな。でもせっかくだから次回はNATゲートウェイも一緒にTerraformで作ってしまおうかな？\n ",
+  "wordCount" : "11",
   "inLanguage": "en",
-  "datePublished": "2022-01-08T11:00:00+09:00",
-  "dateModified": "2022-01-08T11:00:00+09:00",
+  "datePublished": "2022-01-09T23:00:00+09:00",
+  "dateModified": "2022-01-09T23:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,70 +190,42 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      TerraformのSNSサブスクリプションで複数メールアドレス指定
+      AWS NATゲートウェイの作成と設定
     </h1>
-    <div class="post-meta">January 8, 2022
+    <div class="post-meta">January 9, 2022
 </div>
   </header> 
-  <div class="post-content"><p>Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。</p>
-<p>それで調べてみたんだが、ほぼ情報が見当たらない。結論から言うと、以下記事参考にしたらできた。この例ではcountで繰り返し処理をしている。</p>
-<p><a href="https://technotrampoline.com/articles/how-to-add-email-subscribers-to-an-aws-sns-topic-with-terraform/">How to add email subscribers to an AWS SNS topic with Terraform</a></p>
+  <div class="post-content"><p>小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。</p>
+<p>というのは、Fargate-EKSクラスタを作成する際、FargateのPodが起動するノードはプライベートサブネットに配置する必要があるからだ。外に出る口がないとコントロールプレーンと通信できなくて起動しないんじゃないか？と予想したらやはりその通りだったので、起動途中で詰まっている間にチャチャッとNATゲートウェイを作ったら、サクッとPodが起動した。</p>
 <p> </p>
-<p>参考記事によると、TerraformでSNSサブスクリプションのエンドポイントとしてメールがサポートされたのが、2021年初頭らしい。そのため、それまではこれまたトリッキーな記述をする必要があった模様。ちなみにアドレスが単体であればcoount処理をせずに通常の記述方法で作成可能である。</p>
-<p>以下、ほぼパクリだがコード例。delivery_policyはデフォルトでよければ設定必要なしと想定する。</p>
+<p>で、NATゲートウェイの作成自体は特に難しいことはなく、業務でやっていた記憶を辿ってなんとなくやったらできた。しかし後で参照できるように記録を残す。</p>
+<p>パブリックサブネットとプライベートサブネットは作成済みとして、大まかには以下の対応となる。</p>
+<ol>
+<li>NATゲートウェイを作成。パブリックサブネットに所属させる。</li>
+<li>プライベートサブネットのルートテーブルに1.のNATゲートウェイを関連付ける。</li>
+</ol>
 <p> </p>
-<pre><code>##################################################
-# E-mail address definition
-##################################################
+<p><img loading="lazy" src="/img/b/nat-gateway01.jpg" alt="NAT Gateway"  />
 
-locals {
-  emails = [&quot;foo@example.com&quot;,&quot;bar@example.com&quot;]
-}
-
-##################################################
-# SNS topic
-##################################################
-
-resource &quot;aws_sns_topic&quot; &quot;sns_topic&quot; {
-  name            = &quot;sns-test-topic&quot;
-  display_name    = &quot;Notification Mail&quot; # メールの差出人として表示される
-  delivery_policy = jsonencode({
-    &quot;http&quot; : {
-      &quot;defaultHealthyRetryPolicy&quot; : {
-        &quot;minDelayTarget&quot; : 20,
-        &quot;maxDelayTarget&quot; : 20,
-        &quot;numRetries&quot; : 3,
-        &quot;numMaxDelayRetries&quot; : 0,
-        &quot;numNoDelayRetries&quot; : 0,
-        &quot;numMinDelayRetries&quot; : 0,
-        &quot;backoffFunction&quot; : &quot;linear&quot;
-      },
-      &quot;disableSubscriptionOverrides&quot; : false,
-      &quot;defaultThrottlePolicy&quot; : {
-        &quot;maxReceivesPerSecond&quot; : 1
-      }
-    }
-  })
-}
-
-##################################################
-# SNS topic subscription(for multi e-mail address)
-##################################################
-
-resource &quot;aws_sns_topic_subscription&quot; &quot;sns_topic_subs&quot; {
-  count     = length(local.emails)
-  topic_arn = aws_sns_topic.sns_topic.arn
-  protocol  = &quot;email&quot;
-  endpoint  = local.emails[count.index]   #ここでlocal変数のメールアドレスを参照
-}
-</code></pre><p> </p>
-<p>上記、<code>endpoint  = [&quot;foo@example.com&quot;,&quot;bar@example.com&quot;]</code> でいいじゃないかと思ってそう書くと失敗する。「何でこれでダメなんだ！」となるが仕方ない。簡単そうに見える場所にも何かと罠が潜んでいるTerraformである。</p>
+<img loading="lazy" src="/img/b/nat-gateway02.jpg" alt="NAT Gateway"  />
+</p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/sapporo_0001.jpg" alt="Park"  />
+<p>プライベートサブネットのルートテーブルを編集する。</p>
+<p><img loading="lazy" src="/img/b/nat-gateway03.jpg" alt="NAT Gateway"  />
 
-<img loading="lazy" src="/img/b/sapporo_0002.jpg" alt="Park"  />
+<img loading="lazy" src="/img/b/nat-gateway04.jpg" alt="NAT Gateway"  />
+</p>
+<p> </p>
+<p>これで、プライベートサブネット上のPod/インスタンスが外に出ていけるようになる。</p>
+<p> </p>
+<p>NATゲートウェイは課金対象なので、Fargateの検証が済んだらすかさず削除する。EKSクラスタはTerraformで作ったので、削除時も<code>terraform destroy</code>であっさり削除。楽ちんだな〜！</p>
+<p>ではNATゲートウェイの作成も自動化すればいいじゃないかというと、マネコン操作でも1分でできてしまうので、このままでもいいやと思ってしまうんだな。でもせっかくだから次回はNATゲートウェイも一緒にTerraformで作ってしまおうかな？</p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/lake_3703.JPG" alt="Lake"  />
 
-<img loading="lazy" src="/img/b/sapporo_0003.jpg" alt="Park"  />
+<img loading="lazy" src="/img/b/lake_3702.JPG" alt="Lake"  />
+
+<img loading="lazy" src="/img/b/lake_3704.JPG" alt="Lake"  />
 </p>
 
     
@@ -262,35 +234,30 @@ resource &quot;aws_sns_topic_subscription&quot; &quot;sns_topic_subs&quot; {
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/a/awscli-pager/">AWS CLIのページャを無効化する</a></li>
+    
+      <li><a href="/post/b/aws-sns-topic-multi-endpoint/">TerraformのSNSサブスクリプションで複数メールアドレス指定</a></li>
+    
       <li><a href="/post/b/eks-fargate-by-terraform-2/">EKS FargateクラスタをTerraformで作成する(2)</a></li>
     
       <li><a href="/post/b/eks-fargate-by-terraform/">EKS FargateクラスタをTerraformで作成する(1)</a></li>
     
-      <li><a href="/post/a/terraform-loop-example-6/">Terraform loop処理の応用編(5) - Metric Alarm</a></li>
-    
-      <li><a href="/post/a/aws-events-custom-mail-3/">AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
-    
-      <li><a href="/post/a/terraform-loop-example-5/">Terraform loop処理の応用編(4) - Lambda</a></li>
+      <li><a href="/post/b/delete-aws-config/">AWS ConfigをCLIから削除する</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/network/">network</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>AWS NATゲートウェイの作成と設定</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/">
     <span class="title">Next Page »</span>
     <br>
-    <span>EKS FargateクラスタをTerraformで作成する(2)</span>
+    <span>TerraformのSNSサブスクリプションで複数メールアドレス指定</span>
   </a>
 </nav>
 

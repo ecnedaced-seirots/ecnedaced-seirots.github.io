@@ -6,22 +6,40 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 08 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memo</title>
+      <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
+      <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/memo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://ecnedaced-seirots.github.io/tags/network/</link>
+      <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/network/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>amazon sns</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
       <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
@@ -130,15 +148,6 @@
       <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/lifelog/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>memo</title>
-      <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
-      <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/memo/</guid>
       <description></description>
     </item>
     

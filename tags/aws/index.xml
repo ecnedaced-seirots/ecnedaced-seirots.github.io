@@ -6,7 +6,16 @@
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 08 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS NATゲートウェイの作成と設定</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
+      <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
+      <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
