@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 09 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Jan 2022 20:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EKS FargateからFluent BitでCloudWatchにログ送信する</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</link>
+      <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</guid>
+      <description>&lt;p&gt;過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>

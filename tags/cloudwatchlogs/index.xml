@@ -6,7 +6,16 @@
     <description>Recent content in cloudwatchlogs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 19 Dec 2021 12:19:37 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Jan 2022 20:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EKS FargateからFluent BitでCloudWatchにログ送信する</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</link>
+      <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</guid>
+      <description>&lt;p&gt;過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</link>
