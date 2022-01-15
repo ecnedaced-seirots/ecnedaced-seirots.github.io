@@ -3,10 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2022-01-14T22:00:00+09:00</lastmod>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2022-01-14T22:00:00+09:00</lastmod>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/go/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/golang/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/homebrew/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/mac/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2022-01-15T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/english/</loc>
     <lastmod>2022-01-14T22:00:00+09:00</lastmod>
@@ -17,13 +38,7 @@
     <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
     <lastmod>2022-01-14T22:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2022-01-14T22:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/ryu-murakami/</loc>
-    <lastmod>2022-01-14T22:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2022-01-14T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/english-boredom/</loc>
@@ -308,13 +323,7 @@
     <loc>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</loc>
     <lastmod>2021-10-30T17:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/homebrew/</loc>
-    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/mac/</loc>
-    <lastmod>2021-10-30T12:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/mac/</loc>
     <lastmod>2021-10-30T12:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</loc>

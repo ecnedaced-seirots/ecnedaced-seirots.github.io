@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 14 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jan 2022 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goインストール〜Hello World</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</link>
+      <pubDate>Sat, 15 Jan 2022 12:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</guid>
+      <description>&lt;p&gt;Go言語の学習を始めることにした。シンプルで学びやすい。セミコロンは使わない。try-catchがサポートされていない。&lt;code&gt;:=&lt;/code&gt;をよく使う、とのことだ。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>英語メモ - boredom</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-boredom/</link>
