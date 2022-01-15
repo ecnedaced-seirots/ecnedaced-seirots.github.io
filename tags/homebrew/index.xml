@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sat, 15 Jan 2022 12:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/homebrew/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Goインストール〜Hello World</title>
+      <title>Go入門(1) - 変数の定義</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</link>
       <pubDate>Sat, 15 Jan 2022 12:00:00 +0900</pubDate>
       
