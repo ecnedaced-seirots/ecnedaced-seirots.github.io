@@ -63,8 +63,8 @@
   "keywords": [
     "golang", "mac", "homebrew"
   ],
-  "articleBody": "Go言語の学習を始めることにした。シンプルで学びやすい。セミコロンは使わない。try-catchがサポートされていない。:=をよく使う、とのことだ。\n Goインストール まずはMacにインストール。\n$ brew install go $ go version go version go1.17.5 darwin/amd64  最初のコード 何はなくともHello World、ということで以下のファイルを作成。\ninitial.go\npackage main import \"fmt\" func main(){ fmt.Println(\"Hello World\") }  プログラムを実行するには、go run /path/to/[ファイル名].go とする。\n$ go run initial.go Hello World  変数の宣言 (1) 変数の型を宣言\nvar msg string  (2) 宣言の後変数を初期化\nvar msg string = \"Hello World\"  (3) 変数の短縮宣言\nこれは関数の内部でのみ使用可能。グローバル変数は(1)(2)の記述で対応する。\nmsg := \"Hello World\"  initila2.go\npackage main import \"fmt\" //(2)の記述 var msg string = \"Hello World\" func main(){ fmt.Println(msg) }  initila3.go\npackage main import \"fmt\" //(3)の短縮型で記述 func main(){ msg := \"Hello World\" fmt.Println(msg) }  どちらも実行すると最初のinitial.goと同じ結果になる。\n 参考\nGolang 入門 #1\n ",
-  "wordCount" : "93",
+  "articleBody": "Go言語の学習を始めることにした。シンプルで学びやすい。セミコロンは使わない。try-catchがサポートされていない。:=をよく使う、とのことだ。\n Goインストール まずはMacにインストール。\n$ brew install go $ go version go version go1.17.5 darwin/amd64  最初のコード 何はなくともHello World、ということで以下のファイルを作成。\ninitial.go\npackage main import \"fmt\" func main(){ fmt.Println(\"Hello World\") }  プログラムを実行するには、go run /path/to/[ファイル名].go とする。\n$ go run initial.go Hello World  変数の宣言 (1) 変数の型を宣言後、関数内で変数の値を定義。\nvar msg string msg = \"Hello World\" #関数内に記述  (2) 変数の型宣言と変数の値定義（初期化）を同時に行う\nvar msg string = \"Hello World\"  (3) 変数の短縮宣言\nこれは関数の内部でのみ使用可能。グローバル変数は(1)(2)の記述で対応する。\nmsg := \"Hello World\" #関数内に記述  initial1.go\npackage main import \"fmt\" //(1)の記述 var msg string func main(){ msg = \"Hello World\" fmt.Println(msg) }  initial2.go\npackage main import \"fmt\" //(2)の記述 var msg string = \"Hello World\" func main(){ fmt.Println(msg) }  initial3.go\npackage main import \"fmt\" //(3)の短縮型で記述 func main(){ msg := \"Hello World\" fmt.Println(msg) }  実行結果はすべて最初のinitial.goと同様となる。\n 参考\nGolang 入門 #1\n ",
+  "wordCount" : "116",
   "inLanguage": "en",
   "datePublished": "2022-01-15T12:00:00+09:00",
   "dateModified": "2022-01-15T12:00:00+09:00",
@@ -220,17 +220,32 @@ go version go1.17.5 darwin/amd64
 Hello World
 </code></pre><p> </p>
 <h3 id="変数の宣言">変数の宣言<a hidden class="anchor" aria-hidden="true" href="#変数の宣言">#</a></h3>
-<p>(1) 変数の型を宣言</p>
+<p>(1) 変数の型を宣言後、関数内で変数の値を定義。</p>
 <pre><code>var msg string
+
+msg  = &quot;Hello World&quot;   #関数内に記述
 </code></pre><p> </p>
-<p>(2) 宣言の後変数を初期化</p>
+<p>(2) 変数の型宣言と変数の値定義（初期化）を同時に行う</p>
 <pre><code>var msg string = &quot;Hello World&quot;
 </code></pre><p> </p>
 <p>(3) 変数の短縮宣言<br>
 これは関数の内部でのみ使用可能。グローバル変数は(1)(2)の記述で対応する。</p>
-<pre><code>msg := &quot;Hello World&quot;
+<pre><code>msg := &quot;Hello World&quot;   #関数内に記述
 </code></pre><p> </p>
-<p>initila2.go</p>
+<p>initial1.go</p>
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+//(1)の記述
+var msg string
+
+func main(){
+msg = &quot;Hello World&quot;
+fmt.Println(msg)
+}
+</code></pre><p> </p>
+<p>initial2.go</p>
 <pre><code>package main
 
 import &quot;fmt&quot;
@@ -242,7 +257,7 @@ func main(){
 fmt.Println(msg)
 }
 </code></pre><p> </p>
-<p>initila3.go</p>
+<p>initial3.go</p>
 <pre><code>package main
 
 import &quot;fmt&quot;
@@ -253,7 +268,7 @@ msg := &quot;Hello World&quot;
 fmt.Println(msg)
 }
 </code></pre><p> </p>
-<p>どちらも実行すると最初のinitial.goと同じ結果になる。</p>
+<p>実行結果はすべて最初のinitial.goと同様となる。</p>
 <p> </p>
 <p>参考<br>
 <a href="https://qiita.com/Sam/items/a1b92e38148688b2fe92">Golang 入門 #1</a></p>

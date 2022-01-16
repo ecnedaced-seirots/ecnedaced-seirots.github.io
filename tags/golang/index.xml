@@ -6,7 +6,16 @@
     <description>Recent content in golang on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 15 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jan 2022 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(3) - スライス(Slice)の扱い</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</link>
+      <pubDate>Sun, 16 Jan 2022 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</guid>
+      <description>&lt;p&gt;Goには配列と似た「スライス(Slice)」というデータ構造の概念がある。要素数の指定が不要で、配列より柔軟にデータを扱うことができる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(2) - 配列の扱い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</link>

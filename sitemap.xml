@@ -3,24 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/go/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/golang/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</loc>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2022-01-15T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2022-01-16T13:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</loc>
     <lastmod>2022-01-15T23:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</loc>
@@ -153,9 +159,6 @@
     <lastmod>2021-12-31T06:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/python/</loc>
-    <lastmod>2021-12-30T17:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
     <lastmod>2021-12-30T17:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</loc>
