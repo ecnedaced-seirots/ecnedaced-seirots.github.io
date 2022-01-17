@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Go入門(4) - 現在時刻の出力 | Go Buddy Go</title>
-<meta name="keywords" content="golang" />
-<meta name="description" content="Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。">
+<title>Go入門(5) - for文の基本 | Go Buddy Go</title>
+<meta name="keywords" content="golang, python" />
+<meta name="description" content="Go言語におけるfor文の基本覚書。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-time/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-for/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Go入門(4) - 現在時刻の出力" />
-<meta property="og:description" content="Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。" />
+<meta property="og:title" content="Go入門(5) - for文の基本" />
+<meta property="og:description" content="Go言語におけるfor文の基本覚書。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-time/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-16T17:08:18&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-16T17:08:18&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-for/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-17T23:51:03&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-17T23:51:03&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Go入門(4) - 現在時刻の出力"/>
-<meta name="twitter:description" content="Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。"/>
+<meta name="twitter:title" content="Go入門(5) - for文の基本"/>
+<meta name="twitter:description" content="Go言語におけるfor文の基本覚書。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Go入門(4) - 現在時刻の出力",
-      "item": "https://ecnedaced-seirots.github.io/post/b/golang-init-time/"
+      "name": "Go入門(5) - for文の基本",
+      "item": "https://ecnedaced-seirots.github.io/post/b/golang-init-for/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Go入門(4) - 現在時刻の出力",
-  "name": "Go入門(4) - 現在時刻の出力",
-  "description": "Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。\n",
+  "headline": "Go入門(5) - for文の基本",
+  "name": "Go入門(5) - for文の基本",
+  "description": "Go言語におけるfor文の基本覚書。\n",
   "keywords": [
-    "golang"
+    "golang", "python"
   ],
-  "articleBody": "Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。\n Goにおいて時刻はロケーション情報を持つtime構造体に格納される。timeで定義済みロケーションはtime.UTCと、time.Localの２つ。それ以外のロケーションを呼び出すには一手間必要で、例えば正式にJSTの時刻を定義するならこうするとかあるけれども、日付時刻の扱いを網羅すると(ry …なので今回はスキップ。\ntime1.go\npackage main import ( \"fmt\" \"time\" ) func main() { //現在時刻をUTCで出力  fmt.Println(\"UTCの現在時刻：\", time.Now().UTC()) //ローカルの現在時刻を出力  fmt.Println(\"JSTの現在時刻：\", time.Now().Local()) }  出力結果\n$ go run time1.go UTCの現在時刻： 2022-01-16 07:49:06.70495 +0000 UTC JSTの現在時刻： 2022-01-16 16:49:06.705033 +0900 JST  次に、UNIXタイムスタンプの値を出力してみる。さらにデータ型を出力させる。\ntime2.go\npackage main import ( \"fmt\" \"time\" ) func main() { //時刻定義を変数に格納 t1 := time.Now().UTC() t2 := time.Now().Local() t3 := time.Now().Unix() //通常の時刻で値と型を出力 fmt.Println(\"UTCの現在時刻:\",t1) fmt.Printf(\"%T\\n\", t1) fmt.Println(\"JSTの現在時刻:\",t2) fmt.Printf(\"%T\\n\", t2) //UNIXタイムスタンプの値と型を出力 fmt.Println(\"UNIXタイムスタンプ:\",t3) fmt.Printf(\"%T\\n\", t3) }  出力結果。UNIXタイムスタンプはint64で、他はtime.Timeであると分かる。\n$ go run time2.go UTCの現在時刻: 2022-01-16 07:55:54.772297 +0000 UTC time.Time JSTの現在時刻: 2022-01-16 16:55:54.772298 +0900 JST time.Time UNIXタイムスタンプ: 1642319754 int64  最後にUNIXタイムスタンプをTime型に変換してみる。\ntime3.go\npackage main import ( \"fmt\" \"time\" ) func main() { //UNIXタイムスタンプをTime型に変換し、値と型を出力。  t := time.Unix(1642319638, 0) fmt.Println(t.Format(\"2006-01-02 15:04:05\")) //2022-01-16 16:53:58  fmt.Printf(\"%T\\n\", t) //time.Time }  時刻出力/変換、タイムゾーンの問題はどの言語でも避けて通れない手強い敵なのだが、こればっかりやってもいられないので、まぁボチボチやっていこう。\n参考\nGo言語の時刻演算パッケージ「time」の使い方メモ\n[Go] Unix タイムスタンプを Time 型のデータに変換する\n【Go入門】型（type）を調べる – %T と Printf() \n ",
-  "wordCount" : "128",
+  "articleBody": "Go言語におけるfor文の基本覚書。\n 細かい話は抜きにして、サンプル構文。\nfor.go\npackage main import \"fmt\" func main() { //初期値をインクリメント  for i := 0; i  10; i++ { fmt.Println(i) } fmt.Println(\"----------\") //配列の値をループ  city := []string{\"NY\", \"London\", \"Bangkok\", \"Tokyo\"} for i := 0; i city); i++ { fmt.Println(city[i]) } }  結果\n$ go run for.go 0 1 2 3 4 5 6 7 8 9 10 ---------- NY London Bangkok Tokyo  Pythonの場合 Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。\ndef main(): for i in range(11): print(i) print('-----------') city = ['NY', 'London', 'Bangkok', 'Tokyo'] for i in city: print(i) if __name__ == \"__main__\": main()  実行結果はGoのコードと同じ。\n 参考\nGo入門】loop処理 – for文の基本 \nGo言語 for文のサンプル(break/continue)\n【Python入門】インクリメント演算子は使えない!?対処法まとめ\n ",
+  "wordCount" : "97",
   "inLanguage": "en",
-  "datePublished": "2022-01-16T17:08:18+09:00",
-  "dateModified": "2022-01-16T17:08:18+09:00",
+  "datePublished": "2022-01-17T23:51:03+09:00",
+  "dateModified": "2022-01-17T23:51:03+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-init-time/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-init-for/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,100 +190,79 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      Go入門(4) - 現在時刻の出力
+      Go入門(5) - for文の基本
     </h1>
-    <div class="post-meta">January 16, 2022
+    <div class="post-meta">January 17, 2022
 </div>
   </header> 
-  <div class="post-content"><p>Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。</p>
+  <div class="post-content"><p>Go言語におけるfor文の基本覚書。</p>
 <p> </p>
-<p>Goにおいて時刻はロケーション情報を持つtime構造体に格納される。timeで定義済みロケーションは<code>time.UTC</code>と、<code>time.Local</code>の２つ。それ以外のロケーションを呼び出すには一手間必要で、例えば正式にJSTの時刻を定義するならこうするとかあるけれども、日付時刻の扱いを網羅すると(ry &hellip;なので今回はスキップ。</p>
-<p>time1.go</p>
+<p>細かい話は抜きにして、サンプル構文。</p>
+<p>for.go</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;time&#34;</span>
-)
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">//現在時刻をUTCで出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;UTCの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UTC</span>())
+    <span style="color:#75715e">//初期値をインクリメント
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>)
+    }
     
-    <span style="color:#75715e">//ローカルの現在時刻を出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;JSTの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Local</span>())
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;----------&#34;</span>)
+    
+    <span style="color:#75715e">//配列の値をループ
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;NY&#34;</span>, <span style="color:#e6db74">&#34;London&#34;</span>, <span style="color:#e6db74">&#34;Bangkok&#34;</span>, <span style="color:#e6db74">&#34;Tokyo&#34;</span>}
 
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">city</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>[<span style="color:#a6e22e">i</span>])
+    }
 }
 </code></pre></div><p> </p>
-<p>出力結果</p>
-<pre><code>$ go run time1.go 
-UTCの現在時刻： 2022-01-16 07:49:06.70495 +0000 UTC
-JSTの現在時刻： 2022-01-16 16:49:06.705033 +0900 JST
+<p>結果</p>
+<pre><code>$ go run for.go 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+----------
+NY
+London
+Bangkok
+Tokyo
 </code></pre><p> </p>
-<p>次に、UNIXタイムスタンプの値を出力してみる。さらにデータ型を出力させる。</p>
-<p>time2.go</p>
-<pre><code>package main
+<h3 id="pythonの場合">Pythonの場合<a hidden class="anchor" aria-hidden="true" href="#pythonの場合">#</a></h3>
+<p>Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。</p>
+<pre><code>def main():
+    for i in range(11):
+        print(i)
+        
+    print('-----------')
+    
+    city = ['NY', 'London', 'Bangkok', 'Tokyo']
+    for i in city:
+      print(i)
 
-import (
-    &quot;fmt&quot;
-    &quot;time&quot;
-)
-
-func main() {
-
-  //時刻定義を変数に格納
-  t1 := time.Now().UTC()
-  t2 := time.Now().Local()
-  t3 := time.Now().Unix()
-
-  //通常の時刻で値と型を出力
-  fmt.Println(&quot;UTCの現在時刻:&quot;,t1)
-  fmt.Printf(&quot;%T\n&quot;, t1)
-  fmt.Println(&quot;JSTの現在時刻:&quot;,t2)
-  fmt.Printf(&quot;%T\n&quot;, t2)
-  
-  //UNIXタイムスタンプの値と型を出力
-  fmt.Println(&quot;UNIXタイムスタンプ:&quot;,t3)
-  fmt.Printf(&quot;%T\n&quot;, t3)
-
-}
+if __name__ == &quot;__main__&quot;:
+    main()
 </code></pre><p> </p>
-<p>出力結果。UNIXタイムスタンプは<code>int64</code>で、他は<code>time.Time</code>であると分かる。</p>
-<pre><code>$ go run time2.go 
-UTCの現在時刻: 2022-01-16 07:55:54.772297 +0000 UTC
-time.Time
-JSTの現在時刻: 2022-01-16 16:55:54.772298 +0900 JST
-time.Time
-UNIXタイムスタンプ: 1642319754
-int64
-</code></pre><p> </p>
-<p>最後にUNIXタイムスタンプをTime型に変換してみる。</p>
-<p>time3.go</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-
-  <span style="color:#75715e">//UNIXタイムスタンプをTime型に変換し、値と型を出力。
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Unix</span>(<span style="color:#ae81ff">1642319638</span>, <span style="color:#ae81ff">0</span>)
-  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006-01-02 15:04:05&#34;</span>))  <span style="color:#75715e">//2022-01-16 16:53:58
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T\n&#34;</span>, <span style="color:#a6e22e">t</span>)                         <span style="color:#75715e">//time.Time
-</span><span style="color:#75715e"></span>}
-
-</code></pre></div><p> </p>
-<p>時刻出力/変換、タイムゾーンの問題はどの言語でも避けて通れない手強い敵なのだが、こればっかりやってもいられないので、まぁボチボチやっていこう。</p>
-<p>参考<br>
-<a href="https://www.kwbtblog.com/entry/2020/05/15/190332">Go言語の時刻演算パッケージ「time」の使い方メモ</a><br>
-<a href="https://documentroot.org/articles/unixtimestamp-to-time-with-go.html">[Go] Unix タイムスタンプを Time 型のデータに変換する</a><br>
-<a href="https://code-graffiti.com/exploring-type-in-go/">【Go入門】型（type）を調べる – %T と Printf() </a></p>
+<p>実行結果はGoのコードと同じ。</p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/rwc2019_1019_010.JPG" alt="RWC2019"  />
+<p>参考<br>
+<a href="https://code-graffiti.com/for-loop-in-golang/">Go入門】loop処理 – for文の基本 </a><br>
+<a href="https://itsakura.com/go-for">Go言語 for文のサンプル(break/continue)</a><br>
+<a href="https://www.sejuku.net/blog/61695">【Python入門】インクリメント演算子は使えない!?対処法まとめ</a></p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/cafe_001.jpg" alt="CoffeeShop"  />
 
-<img loading="lazy" src="/img/b/rwc2019_1019_011.JPG" alt="RWC2019"  />
+<img loading="lazy" src="/img/b/cafe_002.jpg" alt="CoffeeShop"  />
 </p>
 
     
@@ -294,9 +273,13 @@ int64
     
       <li><a href="/post/b/golang-init-slice/">Go入門(3) - スライス(Slice)の扱い</a></li>
     
+      <li><a href="/post/b/golang-init-time/">Go入門(4) - 現在時刻の出力</a></li>
+    
       <li><a href="/post/b/golang-init-array/">Go入門(2) - 配列の扱い</a></li>
     
       <li><a href="/post/b/golang-init-install/">Go入門(1) - 変数の定義</a></li>
+    
+      <li><a href="/post/a/python-package-localinstalle/">Pythonライブラリのローカルインストール方法</a></li>
     
   </ul>
 
@@ -304,17 +287,13 @@ int64
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-for/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Go入門(5) - for文の基本</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-slice/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-time/">
     <span class="title">Next Page »</span>
     <br>
-    <span>Go入門(3) - スライス(Slice)の扱い</span>
+    <span>Go入門(4) - 現在時刻の出力</span>
   </a>
 </nav>
 
