@@ -63,7 +63,7 @@
   "keywords": [
     "golang", "python"
   ],
-  "articleBody": "Go言語におけるfor文の基本覚書。\n 細かい話は抜きにして、サンプル構文。\nfor.go\npackage main import \"fmt\" func main() { //初期値をインクリメント  for i := 0; i  10; i++ { fmt.Println(i) } fmt.Println(\"----------\") //配列の値をループ  city := []string{\"NY\", \"London\", \"Bangkok\", \"Tokyo\"} for i := 0; i city); i++ { fmt.Println(city[i]) } }  結果\n$ go run for.go 0 1 2 3 4 5 6 7 8 9 10 ---------- NY London Bangkok Tokyo  Pythonの場合 Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。\ndef main(): for i in range(11): print(i) print('-----------') city = ['NY', 'London', 'Bangkok', 'Tokyo'] for i in city: print(i) if __name__ == \"__main__\": main()  実行結果はGoのコードと同じ。\n 参考\nGo入門】loop処理 – for文の基本 \nGo言語 for文のサンプル(break/continue)\n【Python入門】インクリメント演算子は使えない!?対処法まとめ\n ",
+  "articleBody": "Go言語におけるfor文の基本覚書。\n 細かい話は抜きにして、サンプル構文。\nfor.go\npackage main import \"fmt\" func main() { //初期値をインクリメント  for i := 0; i  10; i++ { fmt.Println(i) } fmt.Println(\"----------\") //配列の値をループ  city := []string{\"NY\", \"London\", \"Bangkok\", \"Tokyo\"} for i := 0; i city); i++ { fmt.Println(city[i]) } }  結果\n$ go run for.go 0 1 2 3 4 5 6 7 8 9 10 ---------- NY London Bangkok Tokyo  Pythonの場合 Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。一方、Goにはwhile文がない。\ndef main(): for i in range(11): print(i) print('-----------') city = ['NY', 'London', 'Bangkok', 'Tokyo'] for i in city: print(i) if __name__ == \"__main__\": main()  実行結果はGoのコードと同じ。\n 参考\n【Go入門】loop処理 – for文の基本 \nGo言語 for文のサンプル(break/continue)\n【Python入門】インクリメント演算子は使えない!?対処法まとめ\n ",
   "wordCount" : "97",
   "inLanguage": "en",
   "datePublished": "2022-01-17T23:51:03+09:00",
@@ -239,7 +239,7 @@ Bangkok
 Tokyo
 </code></pre><p> </p>
 <h3 id="pythonの場合">Pythonの場合<a hidden class="anchor" aria-hidden="true" href="#pythonの場合">#</a></h3>
-<p>Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。</p>
+<p>Pythonではインクリメント/デクリメント演算子が使用できないため、代替となるコードで記述する。while文なら累算代入で似たような処理ができるが、for文でやるとすればrangeを使うことになる。一方、Goにはwhile文がない。</p>
 <pre><code>def main():
     for i in range(11):
         print(i)
@@ -256,7 +256,7 @@ if __name__ == &quot;__main__&quot;:
 <p>実行結果はGoのコードと同じ。</p>
 <p> </p>
 <p>参考<br>
-<a href="https://code-graffiti.com/for-loop-in-golang/">Go入門】loop処理 – for文の基本 </a><br>
+<a href="https://code-graffiti.com/for-loop-in-golang/">【Go入門】loop処理 – for文の基本 </a><br>
 <a href="https://itsakura.com/go-for">Go言語 for文のサンプル(break/continue)</a><br>
 <a href="https://www.sejuku.net/blog/61695">【Python入門】インクリメント演算子は使えない!?対処法まとめ</a></p>
 <p> </p>
@@ -290,6 +290,11 @@ if __name__ == &quot;__main__&quot;:
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-6/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>Coin Locker Babies-1, Ryu Murakami</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-time/">
     <span class="title">Next Page »</span>
     <br>
