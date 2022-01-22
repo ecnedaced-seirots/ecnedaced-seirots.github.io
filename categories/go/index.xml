@@ -6,7 +6,16 @@
     <description>Recent content in Go on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 17 Jan 2022 23:51:03 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Jan 2022 14:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(6) - mapの基本</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>
+      <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</guid>
+      <description>&lt;p&gt;Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(5) - for文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</link>
