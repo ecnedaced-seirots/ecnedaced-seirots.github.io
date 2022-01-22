@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 19 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mac</title>
+      <link>https://ecnedaced-seirots.github.io/categories/mac/</link>
+      <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/mac/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Reading</title>
       <link>https://ecnedaced-seirots.github.io/categories/reading/</link>
@@ -130,15 +139,6 @@
       <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/healthcare/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Mac</title>
-      <link>https://ecnedaced-seirots.github.io/categories/mac/</link>
-      <pubDate>Sat, 30 Oct 2021 12:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/mac/</guid>
       <description></description>
     </item>
     

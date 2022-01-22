@@ -15,7 +15,7 @@ alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定
 $ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
 Macでdateコマンドが違う件について
 UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)">
+ ">
 <meta name="author" content="">
 <link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
@@ -38,7 +38,7 @@ alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定
 $ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
 Macでdateコマンドが違う件について
 UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)" />
+ " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-10-18T00:00:00&#43;00:00" />
@@ -54,7 +54,7 @@ alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定
 $ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
 Macでdateコマンドが違う件について
 UNIX時間に変換・UNIX時間を取得する方法
- (RWC2019, Tokyo Stadium)"/>
+ "/>
 
 
 <script type="application/ld+json">
@@ -83,12 +83,12 @@ UNIX時間に変換・UNIX時間を取得する方法
   "@type": "BlogPosting",
   "headline": "MacにGNU版dateをインストール",
   "name": "MacにGNU版dateをインストール",
-  "description": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\u0026quot;date\u0026quot;で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n (RWC2019, Tokyo Stadium)",
+  "description": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\u0026quot;date\u0026quot;で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n ",
   "keywords": [
     "memo", "homebrew"
   ],
-  "articleBody": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\"date\"で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n (RWC2019, Tokyo Stadium)\n",
-  "wordCount" : "27",
+  "articleBody": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\"date\"で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n ",
+  "wordCount" : "24",
   "inLanguage": "en",
   "datePublished": "2021-10-18T00:00:00Z",
   "dateModified": "2021-10-18T00:00:00Z",
@@ -238,8 +238,7 @@ UNIX時間に変換・UNIX時間を取得する方法
 <p> 
  </p>
 <p><img loading="lazy" src="/img/a/rwc2019_1031.JPG" alt="RWC2019"  />
-
-(RWC2019, Tokyo Stadium)</p>
+</p>
 
 
     
