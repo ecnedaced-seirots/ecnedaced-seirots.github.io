@@ -6,7 +6,16 @@
     <description>Recent content in lambda on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jan 2022 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS Lambdaのログ監視方法を考えてみる</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</link>
+      <pubDate>Sun, 23 Jan 2022 15:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</guid>
+      <description>&lt;p&gt;AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWS Lambda関数をダウンロードする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
