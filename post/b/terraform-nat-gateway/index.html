@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>TerraformでNATゲートウェイを作成する | Go Buddy Go</title>
+<meta name="keywords" content="terraform, network, AWS" />
+<meta name="description" content="TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="TerraformでNATゲートウェイを作成する" />
+<meta property="og:description" content="TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-23T10:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-23T10:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TerraformでNATゲートウェイを作成する"/>
+<meta name="twitter:description" content="TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "TerraformでNATゲートウェイを作成する",
+      "item": "https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "TerraformでNATゲートウェイを作成する",
+  "name": "TerraformでNATゲートウェイを作成する",
+  "description": "TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。\n",
+  "keywords": [
+    "terraform", "network", "AWS"
+  ],
+  "articleBody": "TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。\n ちなみに手動作成の手順は以下。\nAWS NATゲートウェイの作成と設定\n NATゲートウェイを作るだけなら、以下コードだけでよい。\nnat.tf\n########################################### # EIP ########################################### resource \"aws_eip\" \"poc_eip\" { vpc = true } ########################################### # NAT Gateway ########################################### resource \"aws_nat_gateway\" \"nat_gw\" { allocation_id = aws_eip.poc_eip.id subnet_id = var.public-a tags = { Name = \"NAT-for-PoC\" } # To ensure proper ordering, it is recommended to add an explicit dependency # on the Internet Gateway for the VPC. # depends_on = [aws_internet_gateway.example] }  先にEIPを作ってNATゲートウェイに割り当てている。このEIPはリソースに関連付けている限りは課金対象外だが、関連付けリソースから外れると課金対象になる。このためNATゲートウェイ削除時にはEIPもリリースしないといけないが、忘れがちなので要注意である。Terraformで作成するならTerraform destroy時に一緒にリリースされるはずだから安心だ。（しかし未検証）\n で、上記をapplyするとEIPとNATゲートウェイが作成される。しかし実際に使用できるようにするにはルートテーブルの設定が必要なのである。これが、よくわからなくてハマった。当初はaws_route_table_associationで設定可能か？と思って試してみた。しかしドキュメントを見ると設定可能なのはインターネットゲートウェイかサブネットIDのみで、NATゲートウェイは含まれていない。それでも無理矢理コードを書いてapplyしてみたら、無効なパラメータなんだよボケ！と怒られた。\nError: error creating Route Table (rtb-1234567890123445) Association: InvalidParameterValue: invalid value for parameter gateway-id: nat-02d182b4d52eb6aa7 status code: 400, request id: ae4cb491-23d6-41e8-b7ef-e01983cabef8 (snip)  しばし思いを馳せて、NATゲートウェイの関連付けはaws_route_table_associationではなくroute_tableでやればいいらしいのはなんとなく分かった。しかしドキュメントを読んでも設定項目がわからん…\nTerraform - route_table\n そこで、ルートテーブルの設定をマネコンから手動で実施して、その状態をimportして探ってみた。importするため以下のような最低限のtfコードを用意してimportコマンドを実行する。\nrt-prv.tf\nresource \"aws_route_table\" \"rt_prv\" { }  $ terraform import aws_route_table.rt_prv rtb-1234567890123445  実行後のtfstateを確認する。以下は対象ルートテーブルの辺りだけ抜粋。\n{ \"mode\": \"managed\", \"type\": \"aws_route_table\", \"name\": \"rt_prv\", \"provider\": \"provider[\\\"registry.terraform.io/hashicorp/aws\\\"]\", \"instances\": [ { \"schema_version\": 0, \"attributes\": { \"arn\": \"arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-1234567890123445\", \"id\": \"rtb-1234567890123445\", \"owner_id\": \"0123456789010\", \"propagating_vgws\": [], \"route\": [ { \"carrier_gateway_id\": \"\", \"cidr_block\": \"0.0.0.0/0\", \"destination_prefix_list_id\": \"\", \"egress_only_gateway_id\": \"\", \"gateway_id\": \"\", \"instance_id\": \"\", \"ipv6_cidr_block\": \"\", \"local_gateway_id\": \"\", \"nat_gateway_id\": \"nat-02d182b4d52eb6aa7\", \"network_interface_id\": \"\", \"transit_gateway_id\": \"\", \"vpc_endpoint_id\": \"\", \"vpc_peering_connection_id\": \"\" } ], \"tags\": { \"Name\": \"dev-private-rt\" }, \"tags_all\": { \"Name\": \"dev-private-rt\" }, \"timeouts\": { \"create\": null, \"delete\": null, \"update\": null }, \"vpc_id\": \"vpc-1234567890123445\" }, \"sensitive_attributes\": [], \"private\": (snip)  上記の値を参考にroute_tableでNATゲートウェイの関連付けができそうではある。しかしここで、今更ではあるがふと気がついた。\nもともと今回使っているサブネットやルートテーブルはTerraform外で作成したものである。既存の管理外ルートテーブルを下手にTerraformで操作して干渉させるのはNGじゃないかと。そして、importを実行した時点でTerraform管理下になってしまっているが、確認したかっただけなので管理下に置くつもりはないのである。(なので、今後のTerraform作業はこのtfstateから干渉されないパスで実行する）\n ネットワーク周りもすべてTerraformで作成したものであれば使い終わったらすべてdestroyで問題ないが、そうでないとなかなか厄介だ。かといってそのために今からコード追加したり書き換えるのも面倒だ。\nで、考えた挙句、ルートテーブル関連付けだけは手動でやることにした。本来は全自動でやりたいが、現状はNATゲートウェイ作成とEKSクラスタ作成を2段階で分割する必要がある。なかなか、思い通りにはいかない。まぁこういうジレンマは、TerraformだろうがCFnだろうがついて回る。試行錯誤でやっていくしかない。\n ところで自分はこれまでTerraformインポートは構成の確認のために使っていたが、こういう目的で使うこともあるのか。備忘録。\nTerraform import機能を使って既存のVPCとサブネットをTerraformで管理できるようにする\n ",
+  "wordCount" : "197",
+  "inLanguage": "en",
+  "datePublished": "2022-01-23T10:00:00+09:00",
+  "dateModified": "2022-01-23T10:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      TerraformでNATゲートウェイを作成する
+    </h1>
+    <div class="post-meta">January 23, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。</p>
+<p> </p>
+<p>ちなみに手動作成の手順は以下。<br>
+<a href="https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/">AWS NATゲートウェイの作成と設定</a></p>
+<p> </p>
+<p>NATゲートウェイを作るだけなら、以下コードだけでよい。</p>
+<p>nat.tf</p>
+<pre><code>###########################################
+# EIP
+###########################################
+
+resource &quot;aws_eip&quot; &quot;poc_eip&quot; {
+  vpc              = true
+}
+
+###########################################
+# NAT Gateway
+###########################################
+
+resource &quot;aws_nat_gateway&quot; &quot;nat_gw&quot; {
+  allocation_id = aws_eip.poc_eip.id
+  subnet_id     = var.public-a
+
+  tags = {
+    Name = &quot;NAT-for-PoC&quot;
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  # depends_on = [aws_internet_gateway.example]
+}
+
+</code></pre><p> </p>
+<p>先にEIPを作ってNATゲートウェイに割り当てている。このEIPはリソースに関連付けている限りは課金対象外だが、関連付けリソースから外れると課金対象になる。このためNATゲートウェイ削除時にはEIPもリリースしないといけないが、忘れがちなので要注意である。Terraformで作成するならTerraform destroy時に一緒にリリースされるはずだから安心だ。（しかし未検証）</p>
+<p> </p>
+<p>で、上記をapplyするとEIPとNATゲートウェイが作成される。しかし実際に使用できるようにするにはルートテーブルの設定が必要なのである。これが、よくわからなくてハマった。当初は<code>aws_route_table_association</code>で設定可能か？と思って試してみた。しかしドキュメントを見ると設定可能なのはインターネットゲートウェイかサブネットIDのみで、NATゲートウェイは含まれていない。それでも無理矢理コードを書いてapplyしてみたら、無効なパラメータなんだよボケ！と怒られた。</p>
+<pre><code>Error: error creating Route Table (rtb-1234567890123445) Association: InvalidParameterValue: invalid value for
+  parameter gateway-id: nat-02d182b4d52eb6aa7
+    status code: 400, request id: ae4cb491-23d6-41e8-b7ef-e01983cabef8
+    (snip)
+</code></pre><p> </p>
+<p>しばし思いを馳せて、NATゲートウェイの関連付けは<code>aws_route_table_association</code>ではなく<code>route_table</code>でやればいいらしいのはなんとなく分かった。しかしドキュメントを読んでも設定項目がわからん&hellip;<br>
+<a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table">Terraform - route_table</a></p>
+<p> </p>
+<p>そこで、ルートテーブルの設定をマネコンから手動で実施して、その状態をimportして探ってみた。importするため以下のような最低限のtfコードを用意してimportコマンドを実行する。</p>
+<p>rt-prv.tf</p>
+<pre><code>resource &quot;aws_route_table&quot; &quot;rt_prv&quot; {
+}
+</code></pre><p> </p>
+<pre><code>$ terraform import aws_route_table.rt_prv rtb-1234567890123445
+</code></pre><p> </p>
+<p>実行後のtfstateを確認する。以下は対象ルートテーブルの辺りだけ抜粋。</p>
+<pre><code>{
+      &quot;mode&quot;: &quot;managed&quot;,
+      &quot;type&quot;: &quot;aws_route_table&quot;,
+      &quot;name&quot;: &quot;rt_prv&quot;,
+      &quot;provider&quot;: &quot;provider[\&quot;registry.terraform.io/hashicorp/aws\&quot;]&quot;,
+      &quot;instances&quot;: [
+        {
+          &quot;schema_version&quot;: 0,
+          &quot;attributes&quot;: {
+            &quot;arn&quot;: &quot;arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-1234567890123445&quot;,
+            &quot;id&quot;: &quot;rtb-1234567890123445&quot;,
+            &quot;owner_id&quot;: &quot;0123456789010&quot;,
+            &quot;propagating_vgws&quot;: [],
+            &quot;route&quot;: [
+              {
+                &quot;carrier_gateway_id&quot;: &quot;&quot;,
+                &quot;cidr_block&quot;: &quot;0.0.0.0/0&quot;,
+                &quot;destination_prefix_list_id&quot;: &quot;&quot;,
+                &quot;egress_only_gateway_id&quot;: &quot;&quot;,
+                &quot;gateway_id&quot;: &quot;&quot;,
+                &quot;instance_id&quot;: &quot;&quot;,
+                &quot;ipv6_cidr_block&quot;: &quot;&quot;,
+                &quot;local_gateway_id&quot;: &quot;&quot;,
+                &quot;nat_gateway_id&quot;: &quot;nat-02d182b4d52eb6aa7&quot;,
+                &quot;network_interface_id&quot;: &quot;&quot;,
+                &quot;transit_gateway_id&quot;: &quot;&quot;,
+                &quot;vpc_endpoint_id&quot;: &quot;&quot;,
+                &quot;vpc_peering_connection_id&quot;: &quot;&quot;
+              }
+            ],
+            &quot;tags&quot;: {
+              &quot;Name&quot;: &quot;dev-private-rt&quot;
+            },
+            &quot;tags_all&quot;: {
+              &quot;Name&quot;: &quot;dev-private-rt&quot;
+            },
+            &quot;timeouts&quot;: {
+              &quot;create&quot;: null,
+              &quot;delete&quot;: null,
+              &quot;update&quot;: null
+            },
+            &quot;vpc_id&quot;: &quot;vpc-1234567890123445&quot;
+          },
+          &quot;sensitive_attributes&quot;: [],
+          &quot;private&quot;: 
+          (snip)
+          
+</code></pre><p> </p>
+<p>上記の値を参考に<code>route_table</code>でNATゲートウェイの関連付けができそうではある。しかしここで、今更ではあるがふと気がついた。</p>
+<p>もともと今回使っているサブネットやルートテーブルはTerraform外で作成したものである。既存の管理外ルートテーブルを下手にTerraformで操作して干渉させるのはNGじゃないかと。そして、importを実行した時点でTerraform管理下になってしまっているが、確認したかっただけなので管理下に置くつもりはないのである。(なので、今後のTerraform作業はこのtfstateから干渉されないパスで実行する）</p>
+<p> </p>
+<p>ネットワーク周りもすべてTerraformで作成したものであれば使い終わったらすべてdestroyで問題ないが、そうでないとなかなか厄介だ。かといってそのために今からコード追加したり書き換えるのも面倒だ。</p>
+<p>で、考えた挙句、ルートテーブル関連付けだけは手動でやることにした。本来は全自動でやりたいが、現状はNATゲートウェイ作成とEKSクラスタ作成を2段階で分割する必要がある。なかなか、思い通りにはいかない。まぁこういうジレンマは、TerraformだろうがCFnだろうがついて回る。試行錯誤でやっていくしかない。</p>
+<p> </p>
+<p>ところで自分はこれまでTerraformインポートは構成の確認のために使っていたが、こういう目的で使うこともあるのか。備忘録。<br>
+<a href="https://qiita.com/okubot55/items/0f6fb71524b4eafd5c08">Terraform import機能を使って既存のVPCとサブネットをTerraformで管理できるようにする</a></p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/plane_0001.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/b/plane_0002.JPG" alt="Travel"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/aws-create-nat-gateway/">AWS NATゲートウェイの作成と設定</a></li>
+    
+      <li><a href="/post/b/aws-sns-topic-multi-endpoint/">TerraformのSNSサブスクリプションで複数メールアドレス指定</a></li>
+    
+      <li><a href="/post/b/eks-fargate-by-terraform-2/">EKS FargateクラスタをTerraformで作成する(2)</a></li>
+    
+      <li><a href="/post/b/eks-fargate-by-terraform/">EKS FargateクラスタをTerraformで作成する(1)</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-6/">Terraform loop処理の応用編(5) - Metric Alarm</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/network/">network</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Go入門(6) - mapの基本</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -63,7 +63,7 @@
   "keywords": [
     "golang", "python"
   ],
-  "articleBody": "Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。\n map定義の構文は以下の通り。\nmap[keyの型名]値の型名{key: value, key: value, ..., key: value}  map1.go\npackage main import \"fmt\" func main() { //Mapの基本  city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) }  結果\n出力の順番は保証されない（記述した順番通りに出力されない）。\nmap[Bangkok:400 London:200 NY:100 Tokyo:300]  次にkeyの値を出力、valueの変更、key:valueの追加など。\nmap2.go\npackage main import \"fmt\" func main() { city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) //map[Bangkok:400 London:200 NY:100 Tokyo:300]  //指定したkeyの値を出力  fmt.Println(city[\"Tokyo\"]) //300  //指定したkeyの値を変更  city[\"Tokyo\"] = 500 fmt.Println(city[\"Tokyo\"]) //500  //key:valueを新たに追加 \tcity[\"Buenos Aires\"] = 600 fmt.Println(city) //map[Bangkok:400 Buenos Aires:600 London:200 NY:100 Tokyo:500]  }  空のmapを作成してkey:valueを追加。配列を初期化して値を追加していくとかありがちだからいつか使う、かも。\nmap3.go\npackage main import \"fmt\" func main() { //makeで空のmap作成後、key:valueを追加  city2 := make(map[string]int) city2[\"Paris\"] = 700 fmt.Println(city2) //map[Paris:700]  }  次に、存在しないkey指定時の動作など。\nmap4.go\npackage main import \"fmt\" func main() { city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) //valueがないkeyを指定すると:  fmt.Println(city[\"L.A\"]) //指定したkeyのvalueと、存在有無を出力。値が存在する場合:  v, isOk := city[\"London\"] fmt.Println(v, isOk) //値が存在しない場合:  v2, isOk2 := city[\"L.A\"] fmt.Println(v2, isOk2) }  結果\nmap[Bangkok:400 London:200 NY:100 Tokyo:300] 0 200 true 0 false  最後に、Python置き換えの例。\ndict.py\ndef main(): # 辞書定義 city = {\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} print(city) #{'NY': 100, 'London': 200, 'Tokyo': 300, 'Bangkok': 400} # 指定したkeyの値を出力 print(city[ \"London\"]) #200 # 指定したkeyの値を変更 city[ \"Tokyo\"] = 500 print(city[ \"Tokyo\"]) #500 # key:valueを新たに追加 city[\"Buenos Aires\"] = 600 print(city) #{'NY': 100, 'London': 200, 'Tokyo': 500, 'Bangkok': 400, 'Buenos Aires': 600} # 存在しないkeyを指定 print(city[ \"L.A\"]) #KeyError: 'L.A' if __name__ == \"__main__\": main()  参考\n【Go入門】mapの基本\n  ",
+  "articleBody": "Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。\n map定義の構文は以下の通り。\nmap[keyの型名]値の型名{key: value, key: value, ..., key: value}  map1.go\npackage main import \"fmt\" func main() { //mapの基本  city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) }  結果\n出力の順番は保証されない（記述した順番通りに出力されない）。\nmap[Bangkok:400 London:200 NY:100 Tokyo:300]  次にkeyの値を出力、valueの変更、key:valueの追加など。\nmap2.go\npackage main import \"fmt\" func main() { city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) //map[Bangkok:400 London:200 NY:100 Tokyo:300]  //指定したkeyの値を出力  fmt.Println(city[\"Tokyo\"]) //300  //指定したkeyの値を変更  city[\"Tokyo\"] = 500 fmt.Println(city[\"Tokyo\"]) //500  //key:valueを新たに追加 \tcity[\"Buenos Aires\"] = 600 fmt.Println(city) //map[Bangkok:400 Buenos Aires:600 London:200 NY:100 Tokyo:500]  }  空のmapを作成してkey:valueを追加。配列を初期化して値を追加していくとかありがちだからいつか使う、かも。\nmap3.go\npackage main import \"fmt\" func main() { //makeで空のmap作成後、key:valueを追加  city2 := make(map[string]int) city2[\"Paris\"] = 700 fmt.Println(city2) //map[Paris:700]  }  次に、存在しないkey指定時の動作など。\nmap4.go\npackage main import \"fmt\" func main() { city := map[string]int{\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} fmt.Println(city) //valueがないkeyを指定すると:  fmt.Println(city[\"L.A\"]) //指定したkeyのvalueと、存在有無を出力。値が存在する場合:  v, isOk := city[\"London\"] fmt.Println(v, isOk) //値が存在しない場合:  v2, isOk2 := city[\"L.A\"] fmt.Println(v2, isOk2) }  結果\nmap[Bangkok:400 London:200 NY:100 Tokyo:300] 0 200 true 0 false  最後に、Python置き換えの例。\ndict.py\ndef main(): # 辞書定義 city = {\"NY\": 100, \"London\": 200, \"Tokyo\": 300, \"Bangkok\": 400} print(city) #{'NY': 100, 'London': 200, 'Tokyo': 300, 'Bangkok': 400} # 指定したkeyの値を出力 print(city[ \"London\"]) #200 # 指定したkeyの値を変更 city[ \"Tokyo\"] = 500 print(city[ \"Tokyo\"]) #500 # key:valueを新たに追加 city[\"Buenos Aires\"] = 600 print(city) #{'NY': 100, 'London': 200, 'Tokyo': 500, 'Bangkok': 400, 'Buenos Aires': 600} # 存在しないkeyを指定 print(city[ \"L.A\"]) #KeyError: 'L.A' if __name__ == \"__main__\": main()  参考\n【Go入門】mapの基本\n  ",
   "wordCount" : "218",
   "inLanguage": "en",
   "datePublished": "2022-01-22T14:00:00+09:00",
@@ -207,7 +207,7 @@
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
-    <span style="color:#75715e">//Mapの基本
+    <span style="color:#75715e">//mapの基本
 </span><span style="color:#75715e"></span>    
     <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{<span style="color:#e6db74">&#34;NY&#34;</span>: <span style="color:#ae81ff">100</span>, <span style="color:#e6db74">&#34;London&#34;</span>: <span style="color:#ae81ff">200</span>, <span style="color:#e6db74">&#34;Tokyo&#34;</span>: <span style="color:#ae81ff">300</span>, <span style="color:#e6db74">&#34;Bangkok&#34;</span>: <span style="color:#ae81ff">400</span>}
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>)
@@ -344,6 +344,11 @@ main()
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>TerraformでNATゲートウェイを作成する</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/mac-files-setting/">
     <span class="title">Next Page »</span>
     <br>

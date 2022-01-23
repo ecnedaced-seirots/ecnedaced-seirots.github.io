@@ -6,7 +6,16 @@
     <description>Recent content in Terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 08 Jan 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jan 2022 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformでNATゲートウェイを作成する</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
+      <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
+      <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>

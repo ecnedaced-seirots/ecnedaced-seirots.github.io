@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 22 Jan 2022 14:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jan 2022 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformでNATゲートウェイを作成する</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
+      <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
+      <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(6) - mapの基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>
