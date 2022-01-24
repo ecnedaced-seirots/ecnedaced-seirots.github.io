@@ -153,6 +153,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>MacにPython3を再インストール</h2>
+  </header>
+  <section class="entry-content">
+    <p>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
+$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &#34;/usr/local/lib/python3.9/site-packages:&#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software....</p>
+  </section>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>ひとり言 - 10月27日</h2>
   </header>
   <section class="entry-content">
@@ -245,27 +259,6 @@ Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブ�
   </section>
   <footer class="entry-footer">October 19, 2021</footer>
   <a class="entry-link" aria-label="post link to middle finger周辺の表現など" href="https://ecnedaced-seirots.github.io/post/a/the-finger/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>単語rageを覚えたきっかけはディラン・トーマスの詩だった</h2>
-  </header>
-  <section class="entry-content">
-    <p>“rage&#34;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
- Do not go gentle into that good night.
-Rage, rage against the dying of the light.
-  パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。“rage&#34;という単語を初めて見たので調べたところ、意味は先述の通り。
-これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
-それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
-  Do not go gentle into that good night,
-Old age should burn and rage at close of day;
-Rage, rage against the dying of the light.
-Though wise men at their end know dark is right,
-Because their words had forked no lightning they...</p>
-  </section>
-  <footer class="entry-footer">October 19, 2021</footer>
-  <a class="entry-link" aria-label="post link to 単語rageを覚えたきっかけはディラン・トーマスの詩だった" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

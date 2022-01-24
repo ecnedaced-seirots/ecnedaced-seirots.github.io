@@ -138,98 +138,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Go入門(7) - mapのrange,deleteなど</h2>
+    <h2>MacにPython3を再インストール</h2>
   </header>
   <section class="entry-content">
-    <p>Goのmap操作続き。range, 追加やdeleteなど。
-...</p>
+    <p>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
+$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &#34;/usr/local/lib/python3.9/site-packages:&#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software....</p>
   </section>
-  <footer class="entry-footer">January 24, 2022</footer>
-  <a class="entry-link" aria-label="post link to Go入門(7) - mapのrange,deleteなど" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Go入門(6) - mapの基本</h2>
-  </header>
-  <section class="entry-content">
-    <p>Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。
-...</p>
-  </section>
-  <footer class="entry-footer">January 22, 2022</footer>
-  <a class="entry-link" aria-label="post link to Go入門(6) - mapの基本" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Go入門(5) - for文の基本</h2>
-  </header>
-  <section class="entry-content">
-    <p>Go言語におけるfor文の基本覚書。
-...</p>
-  </section>
-  <footer class="entry-footer">January 17, 2022</footer>
-  <a class="entry-link" aria-label="post link to Go入門(5) - for文の基本" href="https://ecnedaced-seirots.github.io/post/b/golang-init-for/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Go入門(3) - スライス(Slice)の扱い</h2>
-  </header>
-  <section class="entry-content">
-    <p>Goには配列と似た「スライス(Slice)」というデータ構造の概念がある。要素数の指定が不要で、配列より柔軟にデータを扱うことができる。
-...</p>
-  </section>
-  <footer class="entry-footer">January 16, 2022</footer>
-  <a class="entry-link" aria-label="post link to Go入門(3) - スライス(Slice)の扱い" href="https://ecnedaced-seirots.github.io/post/b/golang-init-slice/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Pythonライブラリのローカルインストール方法</h2>
-  </header>
-  <section class="entry-content">
-    <p>Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。
-...</p>
-  </section>
-  <footer class="entry-footer">December 30, 2021</footer>
-  <a class="entry-link" aria-label="post link to Pythonライブラリのローカルインストール方法" href="https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Terraformのtfvarsファイルを自動生成する</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
-Terraform loop処理の超シンプルな例 
-Python - Jinja2テンプレートで連続データを処理したい
- 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
-work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
-script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv  codecommit.tmpl
- param{{ num }} = { repository_name = &#34;{{ repo_name }}&#34; description = &#34;{{ des }}&#34; }  data.csv （今回の例ではヘッダーありの前提）
-num,repo_name,des 1,&#34;my-repo001&#34;,&#34;my-repo001の説明&#34; 2,&#34;my-repo002&#34;,&#34;my-repo002の説明&#34; 3,&#34;my-repo003&#34;,&#34;my-repo003の説明&#34;  create_vars.py
-import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&#39;....</p>
-  </section>
-  <footer class="entry-footer">November 28, 2021</footer>
-  <a class="entry-link" aria-label="post link to Terraformのtfvarsファイルを自動生成する" href="https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Python - Jinja2テンプレートで連続データを処理したい</h2>
-  </header>
-  <section class="entry-content">
-    <p>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな…
-とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
-  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </p>
-  </section>
-  <footer class="entry-footer">November 24, 2021</footer>
-  <a class="entry-link" aria-label="post link to Python - Jinja2テンプレートで連続データを処理したい" href="https://ecnedaced-seirots.github.io/post/a/jinja2-python/"></a>
+  <footer class="entry-footer">October 30, 2021</footer>
+  <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="https://ecnedaced-seirots.github.io/tags/python/page/2/">Next Page »</a>
+    <a class="prev" href="https://ecnedaced-seirots.github.io/tags/python/">« Prev Page</a>
   </nav>
 </footer>
     </main>

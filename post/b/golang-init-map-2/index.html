@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Go入門(7) - mapのrange,deleteなど | Go Buddy Go</title>
+<meta name="keywords" content="golang, python" />
+<meta name="description" content="Goのmap操作続き。range, 追加やdeleteなど。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="Go入門(7) - mapのrange,deleteなど" />
+<meta property="og:description" content="Goのmap操作続き。range, 追加やdeleteなど。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-24T21:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-24T21:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go入門(7) - mapのrange,deleteなど"/>
+<meta name="twitter:description" content="Goのmap操作続き。range, 追加やdeleteなど。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Go入門(7) - mapのrange,deleteなど",
+      "item": "https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Go入門(7) - mapのrange,deleteなど",
+  "name": "Go入門(7) - mapのrange,deleteなど",
+  "description": "Goのmap操作続き。range, 追加やdeleteなど。\n",
+  "keywords": [
+    "golang", "python"
+  ],
+  "articleBody": "Goのmap操作続き。range, 追加やdeleteなど。\n 要素の追加。\npackage main import \"fmt\" func main() { city := map[string]int{ \"NY\": 100, \"London\": 200, \"Tokyo\": 300, } fmt.Println(city) fmt.Println(city[\"London\"]) //key \"London\"の値出力  fmt.Println(city[\"Bangkok\"]) //要素がないkeyの値は0  v, ok := city[\"Bangkok\"] //\"Bangkok\"の値と真偽を確認  fmt.Println(v) fmt.Println(ok) city[\"Bangkok\"] = 400 //要素\"Bangkok\"を追加  //要素と値の真偽を取得し、trueの場合に処理を実行  if v, ok := city[\"Bangkok\"]; ok { fmt.Println(v) } }  結果\nmap[London:200 NY:100 Tokyo:300] 200 0 0 false 400  rangeを使ってloop処理。\npackage main import \"fmt\" func main() { city := map[string]int{ \"NY\": 100, \"London\": 200, \"Tokyo\": 300, } //keyにBangkokを追加  city[\"Bangkok\"] = 400 //rangeでループ処理してkey:valueを出力  for k, v := range city { fmt.Println(k, v) } }  結果\nBangkok 400 NY 100 London 200 Tokyo 300  要素の削除。\npackage main import \"fmt\" func main() { city := map[string]int{ \"NY\": 100, \"Tokyo\": 300, } fmt.Println(city) //\"NY\"を削除  delete(city, \"NY\") fmt.Println(city) //要素と値の真偽を取得し、trueの場合に削除処理を実行  if v, ok := city[\"Tokyo\"]; ok { fmt.Println(\"num:\", v) delete(city, \"Tokyo\") } fmt.Println(city) //空のmapが出力される }  結果\nmap[NY:100 Tokyo:300] map[Tokyo:300] num: 300 map[]  Pythonに置き換えると。\ndict2.py\ndef main(): city = {\"NY\": 100, \"Tokyo\": 300} print(city) # 辞書に要素を追加 city[\"Bangkok\"] = 400 print(city) # popで要素を削除 print(city.pop(\"NY\")) print(city) # clearで辞書データを削除 city.clear() print(city) if __name__ == \"__main__\": main()  結果\n{'NY': 100, 'Tokyo': 300} {'NY': 100, 'Tokyo': 300, 'Bangkok': 400} 100 {'Tokyo': 300, 'Bangkok': 400} {}  参考\n【Go入門】mapの操作 – 要素の追加, range, delete\n  ",
+  "wordCount" : "197",
+  "inLanguage": "en",
+  "datePublished": "2022-01-24T21:00:00+09:00",
+  "dateModified": "2022-01-24T21:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Go入門(7) - mapのrange,deleteなど
+    </h1>
+    <div class="post-meta">January 24, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>Goのmap操作続き。range, 追加やdeleteなど。</p>
+<p> </p>
+<p>要素の追加。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{
+        <span style="color:#e6db74">&#34;NY&#34;</span>: <span style="color:#ae81ff">100</span>,
+        <span style="color:#e6db74">&#34;London&#34;</span>: <span style="color:#ae81ff">200</span>,
+        <span style="color:#e6db74">&#34;Tokyo&#34;</span>: <span style="color:#ae81ff">300</span>,
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>)
+
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;London&#34;</span>])      <span style="color:#75715e">//key &#34;London&#34;の値出力
+</span><span style="color:#75715e"></span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Bangkok&#34;</span>])     <span style="color:#75715e">//要素がないkeyの値は0
+</span><span style="color:#75715e"></span>
+    <span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Bangkok&#34;</span>]         <span style="color:#75715e">//&#34;Bangkok&#34;の値と真偽を確認
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">v</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">ok</span>)
+
+    <span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Bangkok&#34;</span>] = <span style="color:#ae81ff">400</span>            <span style="color:#75715e">//要素&#34;Bangkok&#34;を追加
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">//要素と値の真偽を取得し、trueの場合に処理を実行
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Bangkok&#34;</span>]; <span style="color:#a6e22e">ok</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">v</span>)
+    }
+
+}
+</code></pre></div><p> </p>
+<p>結果</p>
+<pre><code>map[London:200 NY:100 Tokyo:300]
+200
+0
+0
+false
+400
+</code></pre><p> </p>
+<p>rangeを使ってloop処理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{
+        <span style="color:#e6db74">&#34;NY&#34;</span>: <span style="color:#ae81ff">100</span>,
+        <span style="color:#e6db74">&#34;London&#34;</span>: <span style="color:#ae81ff">200</span>,
+        <span style="color:#e6db74">&#34;Tokyo&#34;</span>: <span style="color:#ae81ff">300</span>,
+    }
+
+    <span style="color:#75715e">//keyにBangkokを追加
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Bangkok&#34;</span>] = <span style="color:#ae81ff">400</span>
+    
+
+    <span style="color:#75715e">//rangeでループ処理してkey:valueを出力
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">city</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span>)
+    }
+
+}
+</code></pre></div><p> </p>
+<p>結果</p>
+<pre><code>Bangkok 400
+NY 100
+London 200
+Tokyo 300
+</code></pre><p> </p>
+<p>要素の削除。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{
+        <span style="color:#e6db74">&#34;NY&#34;</span>: <span style="color:#ae81ff">100</span>,
+        <span style="color:#e6db74">&#34;Tokyo&#34;</span>: <span style="color:#ae81ff">300</span>,
+    }
+    
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>)
+    
+    <span style="color:#75715e">//&#34;NY&#34;を削除
+</span><span style="color:#75715e"></span>    delete(<span style="color:#a6e22e">city</span>, <span style="color:#e6db74">&#34;NY&#34;</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>)
+    
+    <span style="color:#75715e">//要素と値の真偽を取得し、trueの場合に削除処理を実行
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">city</span>[<span style="color:#e6db74">&#34;Tokyo&#34;</span>]; <span style="color:#a6e22e">ok</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;num:&#34;</span>, <span style="color:#a6e22e">v</span>)
+        delete(<span style="color:#a6e22e">city</span>, <span style="color:#e6db74">&#34;Tokyo&#34;</span>)
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">city</span>)    <span style="color:#75715e">//空のmapが出力される
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p> </p>
+<p>結果</p>
+<pre><code>map[NY:100 Tokyo:300]
+map[Tokyo:300]
+num: 300
+map[]
+</code></pre><p> </p>
+<p>Pythonに置き換えると。</p>
+<p>dict2.py</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+
+    city <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;NY&#34;</span>: <span style="color:#ae81ff">100</span>, <span style="color:#e6db74">&#34;Tokyo&#34;</span>: <span style="color:#ae81ff">300</span>}
+    print(city)
+
+    <span style="color:#75715e"># 辞書に要素を追加</span>
+    city[<span style="color:#e6db74">&#34;Bangkok&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">400</span>
+    print(city)
+
+    <span style="color:#75715e"># popで要素を削除</span>
+    print(city<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;NY&#34;</span>))
+    print(city)
+
+    <span style="color:#75715e"># clearで辞書データを削除</span>
+    city<span style="color:#f92672">.</span>clear()
+    print(city)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    main()
+</code></pre></div><p> </p>
+<p>結果</p>
+<pre><code>{'NY': 100, 'Tokyo': 300}
+{'NY': 100, 'Tokyo': 300, 'Bangkok': 400}
+100
+{'Tokyo': 300, 'Bangkok': 400}
+{}
+</code></pre><p> </p>
+<p>参考<br>
+<a href="https://code-graffiti.com/manipulate-map-in-golang/">【Go入門】mapの操作 – 要素の追加, range, delete</a></p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/airport_1.JPG" alt="Airport"  />
+
+<img loading="lazy" src="/img/b/airport_2.JPG" alt="Airport"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/golang-init-map/">Go入門(6) - mapの基本</a></li>
+    
+      <li><a href="/post/b/golang-init-for/">Go入門(5) - for文の基本</a></li>
+    
+      <li><a href="/post/b/golang-init-slice/">Go入門(3) - スライス(Slice)の扱い</a></li>
+    
+      <li><a href="/post/b/golang-init-time/">Go入門(4) - 現在時刻の出力</a></li>
+    
+      <li><a href="/post/b/golang-init-array/">Go入門(2) - 配列の扱い</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Coin Locker Babies-2, Ryu Murakami</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

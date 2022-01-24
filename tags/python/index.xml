@@ -6,7 +6,16 @@
     <description>Recent content in python on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 22 Jan 2022 14:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(7) - mapのrange,deleteなど</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</link>
+      <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</guid>
+      <description>&lt;p&gt;Goのmap操作続き。range, 追加やdeleteなど。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(6) - mapの基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>

@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 23 Jan 2022 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang</title>
+      <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
+      <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
+      <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>english</title>
       <link>https://ecnedaced-seirots.github.io/tags/english/</link>
@@ -76,24 +94,6 @@
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
-      <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>python</title>
-      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
-      <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
       <description></description>
     </item>
     
