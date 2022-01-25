@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>opencv on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/opencv/</link>
+    <description>Recent content in opencv on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 25 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/opencv/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PythonでOpenCV始めてみる</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</link>
+      <pubDate>Tue, 25 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</guid>
+      <description>&lt;p&gt;画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
