@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 25 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(8) - if文の基本</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</link>
+      <pubDate>Wed, 26 Jan 2022 23:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</guid>
+      <description>&lt;p&gt;Go言語におけるif文の基本覚書。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>PythonでOpenCV始めてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</link>
