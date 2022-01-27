@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 26 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>「愛と幻想のファシズム」より(6)</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-8/</link>
+      <pubDate>Thu, 27 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-8/</guid>
+      <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(8) - if文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</link>
@@ -236,10 +245,10 @@
     
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
       
-      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
     

@@ -27,10 +27,10 @@
     
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
       
-      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstalle/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
     
