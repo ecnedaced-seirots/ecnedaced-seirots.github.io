@@ -6,7 +6,16 @@
     <description>Recent content in CodeDeploy on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 06 Dec 2021 00:20:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/codedeploy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Jan 2022 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/codedeploy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS CodeDeploy備忘録</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</link>
+      <pubDate>Sat, 29 Jan 2022 10:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</guid>
+      <description>&lt;p&gt;簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
