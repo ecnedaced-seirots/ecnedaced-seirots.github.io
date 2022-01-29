@@ -6,7 +6,16 @@
     <description>Recent content in cloudwatchlogs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 23 Jan 2022 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Jan 2022 23:30:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Logs Insightsでロギングタイプを指定するクエリ</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</link>
+      <pubDate>Sat, 29 Jan 2022 23:30:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</guid>
+      <description>&lt;p&gt;CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWS Lambdaのログ監視方法を考えてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</link>

@@ -138,6 +138,21 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編(4) - Lambda</h2>
+  </header>
+  <section class="entry-content">
+    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
+  </section>
+  <footer class="entry-footer">December 12, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編(3) - Event rule</h2>
   </header>
   <section class="entry-content">
@@ -232,21 +247,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </section>
   <footer class="entry-footer">November 20, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
-  </section>
-  <footer class="entry-footer">November 14, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
