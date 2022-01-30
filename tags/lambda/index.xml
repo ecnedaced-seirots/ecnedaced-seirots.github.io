@@ -36,10 +36,10 @@
     
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
       
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference

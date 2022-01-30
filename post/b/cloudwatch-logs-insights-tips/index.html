@@ -63,7 +63,7 @@
   "keywords": [
     "cloudwatchlogs", "AWS"
   ],
-  "articleBody": "CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。\n クエリ内容は以下の通り。\nfields @message | parse @message \"[*] *\" as loggingType, loggingMessage | filter loggingType = \"ERROR\" | display loggingMessage  これにより、ロギングタイプがERRORのメッセージのみ抽出される。\n 以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。上記パターン@logStreamは指定できない。目的に応じて使い分けるか。\nfileds @timestamp, @message, @logStream | filter @message like /ERROR/ | sort @timestamp desc  参考\nCloudWatch Logs Insights の勉強メモ\n  ",
+  "articleBody": "CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。\n クエリ内容は以下の通り。\nfields @message | parse @message \"[*] *\" as loggingType, loggingMessage | filter loggingType = \"ERROR\" | display loggingMessage  これにより、ロギングタイプがERRORのメッセージのみ抽出される。\n 以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。先のパターンでは指定できない。目的に応じて使い分けるか。\nfileds @timestamp, @message, @logStream | filter @message like /ERROR/ | sort @timestamp desc  参考\nCloudWatch Logs Insights の勉強メモ\n  ",
   "wordCount" : "42",
   "inLanguage": "en",
   "datePublished": "2022-01-29T23:30:00+09:00",
@@ -206,7 +206,7 @@
 </code></pre><p> </p>
 <p>これにより、ロギングタイプがERRORのメッセージのみ抽出される。</p>
 <p> </p>
-<p>以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。上記パターン@logStreamは指定できない。目的に応じて使い分けるか。</p>
+<p>以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。先のパターンでは指定できない。目的に応じて使い分けるか。</p>
 <pre><code>fileds @timestamp, @message, @logStream
 | filter @message like /ERROR/
 | sort @timestamp desc
@@ -228,7 +228,7 @@
     
       <li><a href="/post/b/eks-fargate-fluent-bit/">EKS FargateからFluent BitでCloudWatchにログ送信する</a></li>
     
-      <li><a href="/post/a/cloudwatchlogs-export/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
+      <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
     
       <li><a href="/post/a/terraform-loop-example-5/">Terraform loop処理の応用編(4) - Lambda</a></li>
     
@@ -243,6 +243,11 @@
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>Go入門(9) - if else文</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/">
     <span class="title">Next Page »</span>
     <br>

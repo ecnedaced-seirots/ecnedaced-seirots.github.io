@@ -149,6 +149,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>ひとり言 - 10月27日</h2>
+  </header>
+  <section class="entry-content">
+    <p>あー、マジやべぇ、息が詰まりそうだ、いろいろと、勘弁してくれよもう的な動きが多くてさ、めっちゃやり辛い。まじで、10月入ってからすげえやり辛くなった。鬱屈がたまってどうしようもねぇ。
+しばらく前から通勤時に英文小説読む余力もないし、Tumblrやり過ぎるとDVT症候群で頭痛と目眩がするし、イヤホンで大音量で音楽聴きすぎて耳がイカレそうだし、もう何を支えにしていいかわからないな、オレは生き延びることができるんだろうか？
+そりゃ仕事があるだけありがたい立場だってことは忘れちゃいけないけどね、もし今「戦争」状態じゃなかったらいつでも出ていけるんだからな、なにせ俺様能力高いからな。
+ うん、そのつもりでやっていくしかねぇ。
+ </p>
+  </section>
+  <footer class="entry-footer">October 27, 2021</footer>
+  <a class="entry-link" aria-label="post link to ひとり言 - 10月27日" href="https://ecnedaced-seirots.github.io/post/a/life-1027/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Eye Candyがいるんだ</h2>
   </header>
   <section class="entry-content">
@@ -187,16 +202,16 @@ $ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-
   <section class="entry-content">
     <p>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる…
 コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。
+ 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。
  バケットポリシーサンプル
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } }, { &#34;Action&#34;: &#34;s3:PutObject&#34; , &#34;Effect&#34;: &#34;Allow&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } }, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
  対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
 ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するのが普通だろう。しかしね、たかがログエクスポートだろ？て舐めちゃいけないよ、作り込みがいけてないせいで、処理に24時間以上かかる例があったんだから。（もちろん作ったのはオレじゃない）
+ 上記に書いた作業はもちろん必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するだろう。
  </p>
   </section>
   <footer class="entry-footer">October 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cwl-s3-export/"></a>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsからS3へログをエクスポートする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -247,25 +262,6 @@ Because their words had forked no lightning they...</p>
   </section>
   <footer class="entry-footer">October 19, 2021</footer>
   <a class="entry-link" aria-label="post link to 単語rageを覚えたきっかけはディラン・トーマスの詩だった" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>MacにGNU版dateをインストール</h2>
-  </header>
-  <section class="entry-content">
-    <p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&#34;date&#34;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- </p>
-  </section>
-  <footer class="entry-footer">October 18, 2021</footer>
-  <a class="entry-link" aria-label="post link to MacにGNU版dateをインストール" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Go入門(9) - if else文 | Go Buddy Go</title>
+<meta name="keywords" content="golang, python" />
+<meta name="description" content="Go言語におけるif-else文の覚書。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="Go入門(9) - if else文" />
+<meta property="og:description" content="Go言語におけるif-else文の覚書。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-30T10:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-01-30T10:00:00&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go入門(9) - if else文"/>
+<meta name="twitter:description" content="Go言語におけるif-else文の覚書。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Go入門(9) - if else文",
+      "item": "https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Go入門(9) - if else文",
+  "name": "Go入門(9) - if else文",
+  "description": "Go言語におけるif-else文の覚書。\n",
+  "keywords": [
+    "golang", "python"
+  ],
+  "articleBody": "Go言語におけるif-else文の覚書。\n 基本構文\nif 条件式 { 処理A } else { 処理B }  以下サンプル。\nif_else1.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 15 var str string str = strconv.Itoa(num) //if-elseによる条件分岐  if num = 10 { fmt.Println(str, \":\", \"変数numは10以上です。\") //15 : 変数numは10以上です。  } else { fmt.Println(str, \":\", \"変数numは10未満です。\") } }  if文の条件の分岐を複数実行するには、else ifブロックを作って投入する。以下の条件に沿って処理が実行される。\n 条件式Aが成立する場合は処理A 条件式Bが成立する場合は処理B これらの条件が成立しなかった場合は処理C   ただし条件が成立した時点で処理が終了するため、記述方法には注意する。\n if 条件式A { 処理A } else if 条件式B { 処理B } else { 処理C }  if_else2.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 6 var str string str = strconv.Itoa(num) //if-else文で複数条件分岐するには、\"else if\"を挟む。  if num = 10 { fmt.Println(str, \":\", \"変数num は10以上です。\") } else if num = 5 { fmt.Println(str, \":\", \"変数num は5以上10未満です。\") //6 : 変数num は5以上10未満です  } else { fmt.Println(str, \":\", \"変数num は5未満です。\") } }  Python置き換えパターン。\ndef main(): num = 4 s = str(num) # Pythonの複数条件分岐ブロックは \"else if\"ではなく\"elif\"とする。 if num = 10: print(s, \":\", \"変数numは10以上です。\") elif num = 5: print(s, \":\", \"変数numは5以上10未満です。\") else: print(s, \":\", \"変数numは5未満です。\") # 4 : 変数numは5未満です。 if __name__ == \"__main__\": main()  参考\n【Go入門】ifによる条件分岐とelse if, elseブロック\n  ",
+  "wordCount" : "172",
+  "inLanguage": "en",
+  "datePublished": "2022-01-30T10:00:00+09:00",
+  "dateModified": "2022-01-30T10:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Go入門(9) - if else文
+    </h1>
+    <div class="post-meta">January 30, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>Go言語におけるif-else文の覚書。</p>
+<p> </p>
+<p>基本構文</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">条件式</span> {
+        <span style="color:#a6e22e">処理A</span>
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">処理B</span>
+    }
+</code></pre></div><p> </p>
+<p>以下サンプル。</p>
+<p>if_else1.go</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;strconv&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">15</span>
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">str</span> = <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Itoa</span>(<span style="color:#a6e22e">num</span>)
+    
+    <span style="color:#75715e">//if-elseによる条件分岐
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">num</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">str</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数numは10以上です。&#34;</span>)  <span style="color:#75715e">//15 : 変数numは10以上です。
+</span><span style="color:#75715e"></span>    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">str</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数numは10未満です。&#34;</span>)
+    }
+}
+</code></pre></div><p> </p>
+<p>if文の条件の分岐を複数実行するには、else ifブロックを作って投入する。以下の条件に沿って処理が実行される。</p>
+<ul>
+<li>条件式Aが成立する場合は処理A</li>
+<li>条件式Bが成立する場合は処理B</li>
+<li>これらの条件が成立しなかった場合は処理C</li>
+</ul>
+<p> </p>
+<p>ただし条件が成立した時点で処理が終了するため、記述方法には注意する。</p>
+<p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">     <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">条件式A</span> {
+          <span style="color:#a6e22e">処理A</span>
+     } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">条件式B</span> {
+          <span style="color:#a6e22e">処理B</span>
+     } <span style="color:#66d9ef">else</span> {
+          <span style="color:#a6e22e">処理C</span>
+     }
+</code></pre></div><p> </p>
+<p>if_else2.go</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;strconv&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">num</span>   <span style="color:#f92672">:=</span> <span style="color:#ae81ff">6</span>
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">str</span> = <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Itoa</span>(<span style="color:#a6e22e">num</span>)
+    
+    <span style="color:#75715e">//if-else文で複数条件分岐するには、&#34;else if&#34;を挟む。
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">num</span>   <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">str</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数num は10以上です。&#34;</span>)
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">num</span>   <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">5</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">str</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数num は5以上10未満です。&#34;</span>) <span style="color:#75715e">//6 : 変数num は5以上10未満です
+</span><span style="color:#75715e"></span>    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">str</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数num は5未満です。&#34;</span>)
+    }
+}
+</code></pre></div><p> </p>
+<p>Python置き換えパターン。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+
+    num <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+    s <span style="color:#f92672">=</span> str(num)
+    
+    <span style="color:#75715e"># Pythonの複数条件分岐ブロックは &#34;else if&#34;ではなく&#34;elif&#34;とする。</span>
+    <span style="color:#66d9ef">if</span> num <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>:
+        print(s, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数numは10以上です。&#34;</span>)
+    <span style="color:#66d9ef">elif</span> num <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">5</span>:
+        print(s, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数numは5以上10未満です。&#34;</span>)
+    <span style="color:#66d9ef">else</span>:
+        print(s, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#e6db74">&#34;変数numは5未満です。&#34;</span>)  <span style="color:#75715e"># 4 : 変数numは5未満です。</span>
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    main()
+</code></pre></div><p> </p>
+<p>参考<br>
+<a href="https://code-graffiti.com/if-else-statement-in-golang/">【Go入門】ifによる条件分岐とelse if, elseブロック</a></p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/metro_001.JPG" alt="Metro"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/golang-init-if/">Go入門(8) - if文の基本</a></li>
+    
+      <li><a href="/post/b/golang-init-map-2/">Go入門(7) - mapのrange,deleteなど</a></li>
+    
+      <li><a href="/post/b/golang-init-map/">Go入門(6) - mapの基本</a></li>
+    
+      <li><a href="/post/b/golang-init-for/">Go入門(5) - for文の基本</a></li>
+    
+      <li><a href="/post/b/golang-init-slice/">Go入門(3) - スライス(Slice)の扱い</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Logs Insightsでロギングタイプを指定するクエリ</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

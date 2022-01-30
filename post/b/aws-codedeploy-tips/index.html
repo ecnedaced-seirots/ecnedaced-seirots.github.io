@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>AWS CodeDeploy備忘録 | Go Buddy Go</title>
 <meta name="keywords" content="CodeDeploy, CodePipeline, AWS" />
-<meta name="description" content="簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。">
+<meta name="description" content="簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。">
 <meta name="author" content="">
 <link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
@@ -22,7 +22,7 @@
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
 <meta property="og:title" content="AWS CodeDeploy備忘録" />
-<meta property="og:description" content="簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。" />
+<meta property="og:description" content="簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-01-29T10:00:00&#43;09:00" />
@@ -30,7 +30,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWS CodeDeploy備忘録"/>
-<meta name="twitter:description" content="簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。"/>
+<meta name="twitter:description" content="簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。"/>
 
 
 <script type="application/ld+json">
@@ -59,11 +59,11 @@
   "@type": "BlogPosting",
   "headline": "AWS CodeDeploy備忘録",
   "name": "AWS CodeDeploy備忘録",
-  "description": "簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n",
+  "description": "簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n",
   "keywords": [
     "CodeDeploy", "CodePipeline", "AWS"
   ],
-  "articleBody": "簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n 単純化しているが以下のサンプルを元にする。\nappspec.yml\nversion: 0.0 os: linux files: - source: /opt/script  #ディレクトリ自体を配布 destination: /opt/script - source: /opt/conf/server.conf  #特定のファイルを配布 destination: /opt/conf file_exists_behavior: OVERWRITE  #既存ファイルの上書き指定 permissions: - object: /opt/script  #/opt/script配下のディレクトリすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/script pattern: \"*.sh\" owner: root group: root mode: 755 type: - file - object: /opt/conf  #/opt/script配下のshファイルはすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/conf  #/opt/conf内のserver.confに対するパーミッションを指定 pattern: \"server.conf\" owner: root group: root mode: 644 type: - file hooks: AfterInstall: - location: ./deploy_task  #hookスクリプトファイルを相対パスで指定 timeout: 300  1.filesセクションの記述 appspec.ymlのfilesセクションがわかっているようでわかっていなかった。ひとつのappspec.ymlに複数のパターンがあると気をつけていても間違える。\nfiles\nsource: ディレクトリ配布の場合はディレクトリ名を、個別ファイルの場合はファイル名を指定。\ndestination: ディレクトリ名を指定。\ndestinationではファイル名は指定しない。（これ重要）\n 2. CodeDeployの上書きオプション OSに最初から入っている既存のファイルやリビジョンに加える前から存在しているファイルを配布したい場合、デフォルトだと以下のエラーにより失敗する。\n  The deployment failed because a specified file already exists at this location\n  CodeDeployエージェント 1.3.2以降のバージョンであれば、appspec.ymlのfilesセクションにfile_exists_behaviorオプションを指定すれば期待値になる。\nfiles: - source: /opt/script destination: /opt/script - source: /opt/conf/server.conf destination: /opt/conf file_exists_behavior: OVERWRITE  #既存リソースに対する動作を上書きとして指定  file_exists_behaviorに指定可能な値は DISALLOW|OVERWRITE|RETAIN のどれか。詳細は以下参考。\n参考\nAppSpecの「files」セクション\n 3. デプロイ後のファイルタイムスタンプ問題 現状の仕様により、CodePipelineでソースアクションとしてCodeCommitをソースにした場合、ファイルのタイムスタンプを取得できないという問題がある。何もしないとデプロイ後のタイムスタンプが1979年12月29日になってしまう。これを是正するため、以下のhookスクリプトによりデプロイ時点の時刻をタイムスタンプとしてセットする。\nミドルウェアの設定ファイルを配布する場合は、この後プロセス再起動の処理を書くこともできる。\ndeploy_task\n#!/bin/bash  touch /opt/script/* touch /opt/conf/*  4. AMIから復旧させたインスタンスのリビジョン 過去のインスタンスで実行した既存のデプロイは、teriminate後にAMIから復旧させたインスタンスでもリビジョン対象として認識される。このためfile_exists_behaviorがなくてもデプロイは可能である。（しかしその後の変更時にエラーを回避したければ、つけておく方が安心）\n 5. リビジョン対象資材削除時の対応 検索したが意外に情報がない。ほぼ皆無だ。以下、仕方ないので自分で検証して判明した結果より。\n(1) ディレクトリ内の資材一部の削除 リポジトリ内の対象資材をGit上から削除する。コミット/pushするとデプロイ時にその資材は削除された状態になる。サンプルymlの例で言うと、/opt/script内に複数のスクリプトがあるとして、その中の一つを削除したければGit上でdeleteし、appspec.ymlは変更なしでよい。\n(2) filesセクションで特定のファイルを削除する appspec.ymlのfilesセクションから対象のsource/destination行を削除する。permissionセクションからも削除。サンプルymlからserver.confを削除する場合、以下2行を削除する。\n- source: /opt/conf/server.conf destination: /opt/conf  さらに以下も削除。\n- object: /opt/conf pattern: \"server.conf\" owner: root group: root mode: 644 type: - file  ただし、これを実行すると「対象のファイルだけリビジョン対象外としてディレクトリは残す」ことができない。（ディレクトリの階層の状況にもよる）デプロイで期待値にならない部分は手動で対応するしかなさそうである。\n  ",
+  "articleBody": "簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n 単純化しているが以下のサンプルを元にする。\nappspec.yml\nversion: 0.0 os: linux files: - source: /opt/script  #ディレクトリ自体を配布 destination: /opt/script - source: /opt/conf/server.conf  #特定のファイルを配布 destination: /opt/conf file_exists_behavior: OVERWRITE  #既存ファイルの上書き指定 permissions: - object: /opt/script  #/opt/script配下のディレクトリすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/script pattern: \"*.sh\" owner: root group: root mode: 755 type: - file - object: /opt/conf  #/opt/script配下のshファイルはすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/conf  #/opt/conf内のserver.confに対するパーミッションを指定 pattern: \"server.conf\" owner: root group: root mode: 644 type: - file hooks: AfterInstall: - location: ./deploy_task  #hookスクリプトファイルを相対パスで指定 timeout: 300  1.filesセクションの記述 appspec.ymlのfilesセクションがわかっているようでわかっていなかった。ひとつのappspec.ymlに複数のパターンがあると気をつけていても間違える。\nfiles\nsource: ディレクトリ配布の場合はディレクトリ名を、個別ファイルの場合はファイル名を指定。\ndestination: ディレクトリ名を指定。\ndestinationではファイル名は指定しない。（これ重要）\n 2. CodeDeployの上書きオプション OSに最初から入っている既存のファイルやリビジョンに加える前から存在しているファイルを配布したい場合、デフォルトだと以下のエラーにより失敗する。\n  The deployment failed because a specified file already exists at this location\n  CodeDeployエージェント 1.3.2以降のバージョンであれば、appspec.ymlのfilesセクションにfile_exists_behaviorオプションを指定すれば期待値になる。\nfiles: - source: /opt/script destination: /opt/script - source: /opt/conf/server.conf destination: /opt/conf file_exists_behavior: OVERWRITE  #既存リソースに対する動作を上書きとして指定  file_exists_behaviorに指定可能な値は DISALLOW|OVERWRITE|RETAIN のどれか。詳細は以下参考。\n参考\nAppSpecの「files」セクション\n 3. デプロイ後のファイルタイムスタンプ問題 現状の仕様により、CodePipelineでソースアクションとしてCodeCommitをソースにした場合、ファイルのタイムスタンプを取得できないという問題がある。何もしないとデプロイ後のタイムスタンプが1979年12月29日になってしまう。これを是正するため、以下のhookスクリプトによりデプロイ時点の時刻をタイムスタンプとしてセットする。\nミドルウェアの設定ファイルを配布する場合は、この後プロセス再起動の処理を書くこともできる。\ndeploy_task\n#!/bin/bash  touch /opt/script/* touch /opt/conf/*  4. AMIから復旧させたインスタンスのリビジョン 過去のインスタンスで実行した既存のデプロイは、teriminate後にAMIから復旧させたインスタンスでもリビジョン対象として認識される。このためfile_exists_behaviorがなくてもデプロイは可能である。（しかしその後の変更時にエラーを回避したければ、つけておく方が安心）\n 5. リビジョン対象資材削除時の対応 検索したが意外に情報がない。ほぼ皆無だ。以下、仕方ないので自分で検証して判明した結果より。\n(1) ディレクトリ内の資材一部の削除 リポジトリ内の対象資材をGit上から削除する。コミット/pushするとデプロイ時にその資材は削除された状態になる。サンプルymlの例で言うと、/opt/script内に複数のスクリプトがあるとして、その中の一つを削除したければGit上でdeleteし、appspec.ymlは変更なしでよい。\n(2) filesセクションで特定のファイルを削除する appspec.ymlのfilesセクションから対象のsource/destination行を削除する。permissionセクションからも削除。サンプルymlからserver.confを削除する場合、以下2行を削除する。\n- source: /opt/conf/server.conf destination: /opt/conf  さらに以下も削除。\n- object: /opt/conf pattern: \"server.conf\" owner: root group: root mode: 644 type: - file  ただし、これを実行すると「対象のファイルだけリビジョン対象外としてディレクトリは残す」ことができない。（ディレクトリの階層の状況にもよる）デプロイで期待値にならない部分は手動で対応するしかなさそうである。\n  ",
   "wordCount" : "179",
   "inLanguage": "en",
   "datePublished": "2022-01-29T10:00:00+09:00",
@@ -195,7 +195,7 @@
     <div class="post-meta">January 29, 2022
 </div>
   </header> 
-  <div class="post-content"><p>簡単そうとなめていると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。</p>
+  <div class="post-content"><p>簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。</p>
 <p> </p>
 <p>単純化しているが以下のサンプルを元にする。</p>
 <p>appspec.yml</p>
