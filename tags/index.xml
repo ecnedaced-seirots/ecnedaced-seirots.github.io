@@ -6,7 +6,16 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 30 Jan 2022 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang</title>
+      <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
+      <pubDate>Sun, 30 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
@@ -31,15 +40,6 @@
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
-      <pubDate>Sun, 30 Jan 2022 10:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
       <description></description>
     </item>
     

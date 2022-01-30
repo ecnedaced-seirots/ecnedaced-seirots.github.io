@@ -6,7 +6,16 @@
     <description>Recent content in Go on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 30 Jan 2022 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jan 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(10) - コマンドライン引数の処理</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</link>
+      <pubDate>Sun, 30 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</guid>
+      <description>&lt;p&gt;コマンドライン引数を受け取って処理。どの言語でもやるけどGoはどうするんだろう、と思って軽く調べてみた。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Go入門(9) - if else文</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</link>
