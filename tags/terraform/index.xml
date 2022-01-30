@@ -6,7 +6,16 @@
     <description>Recent content in terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 23 Jan 2022 10:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jan 2022 15:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terraform - EC2インスタンス作成時のAMI参照</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</link>
+      <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</guid>
+      <description>&lt;p&gt;今時あまり流行らないが、「AMIを作り込んでEC2を起動」というサイクルを繰り返す運用があるとする。それをTerraformに組み込む場合の、AMIの参照方法。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>TerraformでNATゲートウェイを作成する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>

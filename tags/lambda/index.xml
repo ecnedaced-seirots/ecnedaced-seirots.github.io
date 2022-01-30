@@ -44,7 +44,9 @@
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。
+ ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 
+ 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
  S3バケットポリシー（log-export-xxxxxxxx）
 { &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] }  Lambdaコード(Python3.</description>
     </item>

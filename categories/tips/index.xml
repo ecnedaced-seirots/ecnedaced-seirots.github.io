@@ -59,8 +59,8 @@ Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + S
       
       <guid>https://ecnedaced-seirots.github.io/post/a/sakura/</guid>
       <description>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
-メニューから[設定] 〜 [タイプ別設定] を選択。
- 「カラー」タブ 半角空白 「色分け/表示」にチェック  </description>
+ メニューから[設定] 〜 [タイプ別設定] を選択。
+ 「カラー」タブ 半角空白 「色分け/表示」にチェック   </description>
     </item>
     
     <item>
