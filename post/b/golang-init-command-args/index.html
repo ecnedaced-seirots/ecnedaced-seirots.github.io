@@ -63,8 +63,8 @@
   "keywords": [
     "golang"
   ],
-  "articleBody": "コマンドライン引数を受け取って処理。どの言語でもやるけどGoはどうするんだろう、と思って軽く調べてみた。\nざっくり言うと引数を扱うにはosパッケージとflagパッケージの2種類があり、どちらかを使う。flagは色々と細かい制御ができて便利、らしい。しかし説明やコードを読んで理解するのが面倒なんである。今は簡単なことができればいいのである。というわけで、今回面倒なことは書かない。いつも書かないけど。\n args1.go\npackage main import ( \"flag\" \"fmt\" ) func main() { flag.Parse() //引数の値を出力  fmt.Println(flag.Args()) //特定の要素を取り出す  fmt.Println(flag.Arg(0), flag.Arg(1)) //変数argに引数を代入  arg := flag.Args() //引数の型を出力  fmt.Printf(\"%T\\n\", arg) //引数の型と値を出力  fmt.Printf(\"%T, %v\\n\", arg, arg) }  結果\n$ go run args1.go blue green red [blue green red] blue green []string []string, [blue green red]  一番知りたかったのは「引数の特定の要素を取り出す」という、非常に単純しかし絶対よく使う方法なんだが、検索の仕方が悪いのか知らんが見つけるのに妙に手間取った。\nちなみに引数に数値を指定しても型はstringである。通常は受け取ってからintに変換とかやるけど、flagの機能を使えば渡す時点でうまいことやってくれるのかな。\n次、os.Args()の例。os.Argsはstring型のスライス。\npackage main import ( \"fmt\" \"os\" ) func main() { //引数の要素数を出力  fmt.Printf(\"args count: %d\\n\", len(os.Args)) //コマンド名と要素の値全てを出力  fmt.Printf(\"args : %#v\\n\", os.Args) //要素の個別の値を出力  //arg[0]は実行内容であり、実際の引数はarg[1]以降になる。  for i, v := range os.Args { fmt.Printf(\"args[%d] - %s\\n\", i, v) } }  実行結果。実行環境がMacだとこんなパスが表示されるが、これがコマンドの実体ということになる。（xxxxxxはランダム文字列/数値）\n$ go run args2.go blue green red args count: 4 args : []string{\"/var/folders/14/xxxxxxx/T/go-buildxxxxxxx/b001/exe/args2\", \"blue\", \"green\", \"red\"} args[0] - /var/folders/14/xxxxxxx/T/go-buildxxxxxxx/b001/exe/args2 args[1] - blue args[2] - green args[3] - red  参考\ngolang でコマンドライン引数を使う\nGo言語 - os.Argsでコマンドラインパラメータを受け取る\nGoでflagを使ってコマンドライン引数を扱う\n【Go入門】型（type）を調べる – %T と Printf() \n ",
-  "wordCount" : "130",
+  "articleBody": "コマンドライン引数を受け取って処理。どの言語でもやるけどGoはどうするんだろう、と思って軽く調べてみた。\nざっくり言うと引数を扱うにはosパッケージとflagパッケージの2種類があり、どちらかを使う。flagは色々と細かい制御ができて便利、らしい。しかし説明やコードを読んで理解するのが面倒なんである。今は簡単なことができればいいのである。というわけで、今回面倒なことは書かない。いつも書かないけど。\n args1.go\npackage main import ( \"flag\" \"fmt\" ) func main() { flag.Parse() //引数の値を出力  fmt.Println(flag.Args()) //特定の要素を取り出して出力  arg1 := flag.Arg(0) arg2 := flag.Arg(1) fmt.Println(arg1) fmt.Println(arg2) //要素の型と値を出力  fmt.Printf(\"%T, %v\\n\", arg1, arg1) fmt.Printf(\"%T, %v\\n\", arg2, arg2) //変数argに引数を代入  args := flag.Args() //引数の値を出力  //fmt.Println(args)  //引数の型を出力  fmt.Printf(\"%T\\n\", args) //引数の型と値を出力  fmt.Printf(\"%T, %v\\n\", args, args) }  結果\n$ go run args1.go blue green red [blue green red] blue green string, blue string, green []string []string, [blue green red]  一番知りたかったのは「引数の特定の要素を取り出す」という、非常に単純しかし絶対よく使う方法なんだが、検索の仕方が悪いのか知らんが見つけるのに妙に手間取った。\nちなみに引数に数値を指定しても型はstringである。通常は受け取ってからintに変換とかやるけど、flagの機能を使えば渡す時点でうまいことやってくれるのかな。\n次、os.Args()の例。os.Argsはstring型のスライス。\npackage main import ( \"fmt\" \"os\" ) func main() { //引数の要素数を出力  fmt.Printf(\"args count: %d\\n\", len(os.Args)) //コマンド名と要素の値全てを出力  fmt.Printf(\"args : %#v\\n\", os.Args) //要素の個別の値を出力  //arg[0]は実行内容であり、実際の引数はarg[1]以降になる。  for i, v := range os.Args { fmt.Printf(\"args[%d] - %s\\n\", i, v) } }  実行結果。実行環境がMacだとこんなパスが表示されるが、これがコマンドの実体ということになる。（xxxxxxはランダム文字列/数値）\n$ go run args2.go blue green red args count: 4 args : []string{\"/var/folders/14/xxxxxxx/T/go-buildxxxxxxx/b001/exe/args2\", \"blue\", \"green\", \"red\"} args[0] - /var/folders/14/xxxxxxx/T/go-buildxxxxxxx/b001/exe/args2 args[1] - blue args[2] - green args[3] - red  参考\ngolang でコマンドライン引数を使う\nGo言語 - os.Argsでコマンドラインパラメータを受け取る\nGoでflagを使ってコマンドライン引数を扱う\n【Go入門】型（type）を調べる – %T と Printf() \n ",
+  "wordCount" : "151",
   "inLanguage": "en",
   "datePublished": "2022-01-30T22:00:00+09:00",
   "dateModified": "2022-01-30T22:00:00+09:00",
@@ -212,24 +212,38 @@
     <span style="color:#75715e">//引数の値を出力
 </span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Args</span>())
     
-    <span style="color:#75715e">//特定の要素を取り出す
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>), <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">1</span>))
+    <span style="color:#75715e">//特定の要素を取り出して出力
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">arg1</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>)
+    <span style="color:#a6e22e">arg2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">1</span>)
+
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">arg1</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">arg2</span>)
+    
+    <span style="color:#75715e">//要素の型と値を出力
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T, %v\n&#34;</span>, <span style="color:#a6e22e">arg1</span>, <span style="color:#a6e22e">arg1</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T, %v\n&#34;</span>, <span style="color:#a6e22e">arg2</span>, <span style="color:#a6e22e">arg2</span>)
     
     <span style="color:#75715e">//変数argに引数を代入
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">arg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Args</span>()
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">args</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Args</span>()
     
+    <span style="color:#75715e">//引数の値を出力
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//fmt.Println(args)
+</span><span style="color:#75715e"></span>    
     <span style="color:#75715e">//引数の型を出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T\n&#34;</span>, <span style="color:#a6e22e">arg</span>)
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T\n&#34;</span>, <span style="color:#a6e22e">args</span>)
     
     <span style="color:#75715e">//引数の型と値を出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T, %v\n&#34;</span>, <span style="color:#a6e22e">arg</span>, <span style="color:#a6e22e">arg</span>)
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T, %v\n&#34;</span>, <span style="color:#a6e22e">args</span>, <span style="color:#a6e22e">args</span>)
 }
 
 </code></pre></div><p> </p>
 <p>結果</p>
 <pre><code>$ go run args1.go blue green red
 [blue green red]
-blue green
+blue
+green
+string, blue
+string, green
 []string
 []string, [blue green red]
 </code></pre><p> </p>

@@ -3,15 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2022-02-02T09:00:00+09:00</lastmod>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2022-02-02T09:00:00+09:00</lastmod>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
-    <lastmod>2022-02-02T09:00:00+09:00</lastmod>
+    <loc>https://ecnedaced-seirots.github.io/categories/go/</loc>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/golang/</loc>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</loc>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2022-02-02T22:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/literature/</loc>
     <lastmod>2022-02-02T09:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/reading/</loc>
@@ -20,17 +32,8 @@
     <loc>https://ecnedaced-seirots.github.io/tags/ryu-murakami/</loc>
     <lastmod>2022-02-02T09:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
-    <lastmod>2022-02-02T09:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-9/</loc>
     <lastmod>2022-02-02T09:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/go/</loc>
-    <lastmod>2022-01-30T22:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/golang/</loc>
-    <lastmod>2022-01-30T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</loc>
     <lastmod>2022-01-30T22:00:00+09:00</lastmod>

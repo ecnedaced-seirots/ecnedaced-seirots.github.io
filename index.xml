@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 02 Feb 2022 09:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Feb 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go入門(11) - 型変換(str-int, int-str)</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</link>
+      <pubDate>Wed, 02 Feb 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</guid>
+      <description>&lt;p&gt;文字列から数値 or 数値から文字列。Goでこのように型を変更するには、&lt;code&gt;strconv&lt;/code&gt;を使う。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>村上龍 対談集「最前線」より</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-9/</link>
