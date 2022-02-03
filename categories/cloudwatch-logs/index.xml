@@ -6,7 +6,16 @@
     <description>Recent content in CloudWatch Logs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 29 Jan 2022 23:30:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Feb 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Logs Insightsで秒毎のログイベント数をカウントするクエリ</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</link>
+      <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</guid>
+      <description>&lt;p&gt;CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Logs Insightsでロギングタイプを指定するクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</link>

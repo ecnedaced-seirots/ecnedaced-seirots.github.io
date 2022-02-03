@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 02 Feb 2022 22:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Feb 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloudwatchlogs</title>
+      <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
+      <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>logsinsights</title>
+      <link>https://ecnedaced-seirots.github.io/tags/logsinsights/</link>
+      <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/logsinsights/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>golang</title>
       <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
@@ -35,15 +62,6 @@
     </item>
     
     <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>EC2</title>
       <link>https://ecnedaced-seirots.github.io/tags/ec2/</link>
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
@@ -67,15 +85,6 @@
       <pubDate>Sun, 30 Jan 2022 10:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cloudwatchlogs</title>
-      <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
-      <pubDate>Sat, 29 Jan 2022 23:30:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</guid>
       <description></description>
     </item>
     

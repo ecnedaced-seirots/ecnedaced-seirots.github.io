@@ -153,6 +153,26 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
+  </header>
+  <section class="entry-content">
+    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
+ 過去記事
+CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
+CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
+ CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
+ lambda_function.py （時刻表示JSTバージョン）
+import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
+  </section>
+  <footer class="entry-footer">November 20, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>英語メモ - into the bargain</h2>
   </header>
   <section class="entry-content">
@@ -263,22 +283,6 @@ iHerb独自ブランドのタウリンサプリが安価で嬉しいけど、数
   </section>
   <footer class="entry-footer">November 6, 2021</footer>
   <a class="entry-link" aria-label="post link to タウリン(taurine)の効能いろいろ" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

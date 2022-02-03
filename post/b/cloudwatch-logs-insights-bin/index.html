@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Logs Insightsでロギングタイプを指定するクエリ | Go Buddy Go</title>
+<title>Logs Insightsで秒毎のログイベント数をカウントするクエリ | Go Buddy Go</title>
 <meta name="keywords" content="cloudwatchlogs, logsinsights, AWS" />
-<meta name="description" content="CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。">
+<meta name="description" content="CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Logs Insightsでロギングタイプを指定するクエリ" />
-<meta property="og:description" content="CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。" />
+<meta property="og:title" content="Logs Insightsで秒毎のログイベント数をカウントするクエリ" />
+<meta property="og:description" content="CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-29T23:30:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-29T23:30:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-03T21:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-02-03T21:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Logs Insightsでロギングタイプを指定するクエリ"/>
-<meta name="twitter:description" content="CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。"/>
+<meta name="twitter:title" content="Logs Insightsで秒毎のログイベント数をカウントするクエリ"/>
+<meta name="twitter:description" content="CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Logs Insightsでロギングタイプを指定するクエリ",
-      "item": "https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/"
+      "name": "Logs Insightsで秒毎のログイベント数をカウントするクエリ",
+      "item": "https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Logs Insightsでロギングタイプを指定するクエリ",
-  "name": "Logs Insightsでロギングタイプを指定するクエリ",
-  "description": "CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。\n",
+  "headline": "Logs Insightsで秒毎のログイベント数をカウントするクエリ",
+  "name": "Logs Insightsで秒毎のログイベント数をカウントするクエリ",
+  "description": "CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。\n",
   "keywords": [
     "cloudwatchlogs", "logsinsights", "AWS"
   ],
-  "articleBody": "CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。\n クエリ内容は以下の通り。\nfields @message | parse @message \"[*] *\" as loggingType, loggingMessage | filter loggingType = \"ERROR\" | display loggingMessage  これにより、ロギングタイプがERRORのメッセージのみ抽出される。\n 以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。先のパターンでは指定できない。目的に応じて使い分けるか。\nfileds @timestamp, @message, @logStream | filter @message like /ERROR/ | sort @timestamp desc  参考\nCloudWatch Logs Insights の勉強メモ\n  ",
-  "wordCount" : "42",
+  "articleBody": "CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。\n ログストリームと時間範囲指定後、以下クエリを実行する。sをm,hにして分毎、時間毎のカウントとしてもよい。\nfileds @timestamp, @message | sort @timestamp desc | stats count(*) by bin(1s)  あとおまけで、「フィルタキーワードのor条件 + 大文字小文字区別しない」パターン。\nfileds @timestamp, @message | filter @message like /(?i)(error|fail|exception)/ | sort @timestamp desc  以下にすると、該当ログイベントを含むログストリーム数をカウントする。\nfileds @timestamp, @message | filter @message like /(?i)(error|fail|exception)/ | sort @timestamp desc | stats count(*) by @logStream  こないだちょっと思ったのが、キーワード\"hoge\"を含むログのみ絞り込んで、その中でかつerrorが出力されているものを抽出したい時はどうればいいんだろう、と。こう言う時にparseが使えるんだろうか？いいかげんparse覚えたい。\n  ",
+  "wordCount" : "50",
   "inLanguage": "en",
-  "datePublished": "2022-01-29T23:30:00+09:00",
-  "dateModified": "2022-01-29T23:30:00+09:00",
+  "datePublished": "2022-02-03T21:00:00+09:00",
+  "dateModified": "2022-02-03T21:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,32 +190,35 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      Logs Insightsでロギングタイプを指定するクエリ
+      Logs Insightsで秒毎のログイベント数をカウントするクエリ
     </h1>
-    <div class="post-meta">January 29, 2022
+    <div class="post-meta">February 3, 2022
 </div>
   </header> 
-  <div class="post-content"><p>CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。</p>
+  <div class="post-content"><p>CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。</p>
 <p> </p>
-<p>クエリ内容は以下の通り。</p>
-<pre><code>fields @message
-  | parse @message &quot;[*] *&quot; as loggingType, loggingMessage
-  | filter loggingType = &quot;ERROR&quot;
-  | display loggingMessage
-
+<p>ログストリームと時間範囲指定後、以下クエリを実行する。sをm,hにして分毎、時間毎のカウントとしてもよい。</p>
+<pre><code>fileds @timestamp, @message
+| sort @timestamp desc
+| stats count(*) by bin(1s)
 </code></pre><p> </p>
-<p>これにより、ロギングタイプがERRORのメッセージのみ抽出される。</p>
-<p> </p>
-<p>以下はキーワード抽出の例。filedsに@logStreamを指定すると対象のログストリームのリンク列が表示されてちょっと便利。先のパターンでは指定できない。目的に応じて使い分けるか。</p>
-<pre><code>fileds @timestamp, @message, @logStream
-| filter @message like /ERROR/
+<p>あとおまけで、「フィルタキーワードのor条件 + 大文字小文字区別しない」パターン。</p>
+<pre><code>fileds @timestamp, @message
+| filter @message like /(?i)(error|fail|exception)/
 | sort @timestamp desc
 </code></pre><p> </p>
-<p>参考<br>
-<a href="https://zenn.dev/daisuzz/scraps/8014a463b27007">CloudWatch Logs Insights の勉強メモ</a></p>
+<p>以下にすると、該当ログイベントを含むログストリーム数をカウントする。</p>
+<pre><code>fileds @timestamp, @message
+| filter @message like /(?i)(error|fail|exception)/
+| sort @timestamp desc
+| stats count(*) by @logStream
+</code></pre><p> </p>
+<p>こないだちょっと思ったのが、キーワード&quot;hoge&quot;を含むログのみ絞り込んで、その中でかつerrorが出力されているものを抽出したい時はどうればいいんだろう、と。こう言う時にparseが使えるんだろうか？いいかげんparse覚えたい。</p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/bcn_106.JPG" alt="Travel"  />
+<p><img loading="lazy" src="/img/b/coffee_001.JPG" alt="Coffee"  />
+
+<img loading="lazy" src="/img/b/coffee_002.JPG" alt="Coffee"  />
 </p>
 
     
@@ -224,6 +227,8 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/b/cloudwatch-logs-insights-tips/">Logs Insightsでロギングタイプを指定するクエリ</a></li>
+    
       <li><a href="/post/b/aws-lambda-log-monitoring/">AWS Lambdaのログ監視方法を考えてみる</a></li>
     
       <li><a href="/post/b/eks-fargate-fluent-bit/">EKS FargateからFluent BitでCloudWatchにログ送信する</a></li>
@@ -231,8 +236,6 @@
       <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
     
       <li><a href="/post/a/terraform-loop-example-5/">Terraform loop処理の応用編(4) - Lambda</a></li>
-    
-      <li><a href="/post/a/cloudwatchlogs-send-filter-mail-2/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</a></li>
     
   </ul>
 
@@ -244,15 +247,10 @@
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Go入門(9) - if else文</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/">
     <span class="title">Next Page »</span>
     <br>
-    <span>AWS CodeDeploy備忘録</span>
+    <span>Go入門(11) - 型変換(str-int, int-str)</span>
   </a>
 </nav>
 
