@@ -63,8 +63,8 @@
   "keywords": [
     "golang", "python"
   ],
-  "articleBody": "Go言語におけるif-else文の覚書。\n 基本構文\nif 条件式 { 処理A } else { 処理B }  以下サンプル。\nif_else1.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 15 var str string str = strconv.Itoa(num) //if-elseによる条件分岐  if num = 10 { fmt.Println(str, \":\", \"変数numは10以上です。\") //15 : 変数numは10以上です。  } else { fmt.Println(str, \":\", \"変数numは10未満です。\") } }  if文の条件の分岐を複数実行するには、else ifブロックを作って投入する。以下の条件に沿って処理が実行される。\n 条件式Aが成立する場合は処理A 条件式Bが成立する場合は処理B これらの条件が成立しなかった場合は処理C   ただし条件が成立した時点で処理が終了するため、記述方法には注意する。\n if 条件式A { 処理A } else if 条件式B { 処理B } else { 処理C }  if_else2.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 6 var str string str = strconv.Itoa(num) //if-else文で複数条件分岐するには、\"else if\"を挟む。  if num = 10 { fmt.Println(str, \":\", \"変数num は10以上です。\") } else if num = 5 { fmt.Println(str, \":\", \"変数num は5以上10未満です。\") //6 : 変数num は5以上10未満です  } else { fmt.Println(str, \":\", \"変数num は5未満です。\") } }  Python置き換えパターン。\ndef main(): num = 4 s = str(num) # Pythonの複数条件分岐ブロックは \"else if\"ではなく\"elif\"とする。 if num = 10: print(s, \":\", \"変数numは10以上です。\") elif num = 5: print(s, \":\", \"変数numは5以上10未満です。\") else: print(s, \":\", \"変数numは5未満です。\") # 4 : 変数numは5未満です。 if __name__ == \"__main__\": main()  参考\n【Go入門】ifによる条件分岐とelse if, elseブロック\n  ",
-  "wordCount" : "172",
+  "articleBody": "Go言語におけるif-else文の覚書。\n 基本構文\nif 条件式 { 処理A } else { 処理B }  以下サンプル。\nif_else1.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 15 var str string str = strconv.Itoa(num) //if-elseによる条件分岐  if num = 10 { fmt.Println(str, \":\", \"変数numは10以上です。\") //15 : 変数numは10以上です。  } else { fmt.Println(str, \":\", \"変数numは10未満です。\") } }  if文の条件の分岐を複数実行するには、else ifブロックを作って投入する。以下の条件に沿って処理が実行される。\n 条件式Aが成立する場合は処理A 条件式Bが成立する場合は処理B これらの条件が成立しなかった場合は処理C   ただし条件が成立した時点で処理が終了するため、記述方法には注意する。\n if 条件式A { 処理A } else if 条件式B { 処理B } else { 処理C }  if_else2.go\npackage main import ( \"fmt\" \"strconv\" ) func main() { num := 6 var str string str = strconv.Itoa(num) //if-else文で複数条件分岐するには、\"else if\"を挟む。  if num = 10 { fmt.Println(str, \":\", \"変数num は10以上です。\") } else if num = 5 { fmt.Println(str, \":\", \"変数num は5以上10未満です。\") //6 : 変数num は5以上10未満です  } else { fmt.Println(str, \":\", \"変数num は5未満です。\") } }  Python置き換えパターン。\ndef main(): num = 4 s = str(num) # Pythonの複数条件分岐ブロックは \"else if\"ではなく\"elif\"とする。 if num = 10: print(s, \":\", \"変数numは10以上です。\") elif num = 5: print(s, \":\", \"変数numは5以上10未満です。\") else: print(s, \":\", \"変数numは5未満です。\") # 4 : 変数numは5未満です。 if __name__ == \"__main__\": main()  追記。引数を与えてそれに応じて処理するパターンやってみた。\nif_args.go\npackage main import ( \"flag\" \"fmt\" \"strconv\" ) func main() { flag.Parse() //引数をintに変換する  arg := flag.Arg(0) var i int var str string=arg i, _ = strconv.Atoi(str) //引数の値に応じて出力を分岐  if i = 100 { fmt.Println(\"変数iは100以上です。\") } else { fmt.Println(\"変数iは100未満です。\") } }  結果\n $ go run if_args.go 100 変数iは100以上です。 $ go run if_args.go 101 変数iは100以上です。 $ go run if_args.go 99 変数iは100未満です。  参考\n【Go入門】ifによる条件分岐とelse if, elseブロック\n  ",
+  "wordCount" : "232",
   "inLanguage": "en",
   "datePublished": "2022-01-30T10:00:00+09:00",
   "dateModified": "2022-01-30T10:00:00+09:00",
@@ -283,6 +283,44 @@
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
     main()
 </code></pre></div><p> </p>
+<p>追記。引数を与えてそれに応じて処理するパターンやってみた。</p>
+<p>if_args.go</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;flag&#34;</span>
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;strconv&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
+    
+    <span style="color:#75715e">//引数をintに変換する
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">arg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>)
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str</span> <span style="color:#66d9ef">string</span>=<span style="color:#a6e22e">arg</span>
+    <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">str</span>)
+
+    <span style="color:#75715e">//引数の値に応じて出力を分岐
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">100</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;変数iは100以上です。&#34;</span>)
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;変数iは100未満です。&#34;</span>)
+    }
+}
+
+</code></pre></div><p> </p>
+<p>結果</p>
+<pre><code> $ go run if_args.go 100
+変数iは100以上です。
+
+ $ go run if_args.go 101
+変数iは100以上です。
+
+ $ go run if_args.go 99
+変数iは100未満です。
+</code></pre><p> </p>
 <p>参考<br>
 <a href="https://code-graffiti.com/if-else-statement-in-golang/">【Go入門】ifによる条件分岐とelse if, elseブロック</a></p>
 <p> </p>
