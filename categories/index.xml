@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 03 Feb 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Feb 2022 21:00:30 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CICD</title>
+      <link>https://ecnedaced-seirots.github.io/categories/cicd/</link>
+      <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/cicd/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>CloudWatch Logs</title>
       <link>https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/</link>
@@ -40,15 +49,6 @@
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CICD</title>
-      <link>https://ecnedaced-seirots.github.io/categories/cicd/</link>
-      <pubDate>Sat, 29 Jan 2022 10:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/cicd/</guid>
       <description></description>
     </item>
     

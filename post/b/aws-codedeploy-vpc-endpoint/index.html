@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AWS CodeDeployでVPCエンドポイント使用時の注意 | Go Buddy Go</title>
+<meta name="keywords" content="CodeDeploy, CodePipeline, AWS" />
+<meta name="description" content="AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="AWS CodeDeployでVPCエンドポイント使用時の注意" />
+<meta property="og:description" content="AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-04T21:00:30&#43;09:00" />
+<meta property="article:modified_time" content="2022-02-04T21:00:30&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS CodeDeployでVPCエンドポイント使用時の注意"/>
+<meta name="twitter:description" content="AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "AWS CodeDeployでVPCエンドポイント使用時の注意",
+      "item": "https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AWS CodeDeployでVPCエンドポイント使用時の注意",
+  "name": "AWS CodeDeployでVPCエンドポイント使用時の注意",
+  "description": "AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。\n",
+  "keywords": [
+    "CodeDeploy", "CodePipeline", "AWS"
+  ],
+  "articleBody": "AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。\n 今時だと大抵のEC2インスタンスはプライベートサブネットに配置されているので、VPC外に通信する場合はNATゲートウェイ・プロキシ・VPCエンドポイントいずれかを通って出ていくことになる。最初の2つは気にしなくていいのだが、VPCエンドポイントの場合は別途追加対応が必要なのである。\n 事象 codedeploy-agentが再起動を繰り返していて、こんなエラーを吐いていた。\n  Errorno:: ENETUNREACH - Failed to open TCP connection to 169.254.169.254:80 (Network is unreachble …\n   ERROR [codedeploy-agent(2100)]: booting child: error during start or run: SystemExit - exit - …\n  さらに、cloudwatch-agentのログにもこんなエラーが大量の吐き出されていた。codedeployのログよりこっちの方がすごかった。\n  ERROR [codedeploy-agent(4492)]:Error validating the SSL configuration: Invalid server certificate (snip)\n   ERROR [codedeploy-agent(2100)]: booting child: error during start or run: SystemExit - Stopping CodeDeploy agent due to SSL validation error. (snip)\n  メッセージから見ると通信に失敗しているのは明らかなのだが、別環境の検証時は問題なく動いていた。しかしその時はNATゲートウェイを使用していた。VPCエンドポイントに切り替えた環境で、上記エラーが発生したのだ。\n やったこと 調べた結果、追加で以下の設定が必要と判明。\n codedeployagent.yml\n:enable_auto_policy:true #デフォルトはfalse  ファイルパス\nLinux: /etc/codedeploy-agent/conf/codedeployagent.yml\nWindows: C:¥ProgramData¥Amazon¥CodeDeploy¥conf.yml\n これで起動状態は正常になってエラーも解消した。しかし、追加のIAMポリシーがないとデプロイ時に権限が足りないと怒られて失敗する。エージェントが動作するEC2にアタッチしているIAMロールに、以下の権限が必要なのである。\n{ \"Statement\": [ { \"Action\": [ \"codedeploy-commands-secure:GetDeploymentSpecification\", \"codedeploy-commands-secure:PollHostCommand\", \"codedeploy-commands-secure:PutHostCommandAcknowledgement\", \"codedeploy-commands-secure:PutHostCommandComplete\" ], \"Effect\": \"Allow\", \"Resource\": \"*\" } ] }  対象IAMロールに上記ポリシー追加後、デプロイが成功した。ネットワーク環境の違いって何かと影響でかいんだよな…、まぁそんなに疲れるネタじゃなかったからいいけど。\n オマケ：CodeDeployのエンドポイントと疎通確認するには以下コマンドで。\n$ curl -v https://codedeploy-commands.ap-northeast-1.amazon.com  参考\nCodeDeployエージェント構成リファレンス\nAmazon Virtual Private Cloud で CodeDeploy を使用\n【AWSの呼吸 弐ノ型】CodeDeployでVPCエンドポイントを設定する\n  ",
+  "wordCount" : "111",
+  "inLanguage": "en",
+  "datePublished": "2022-02-04T21:00:30+09:00",
+  "dateModified": "2022-02-04T21:00:30+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      AWS CodeDeployでVPCエンドポイント使用時の注意
+    </h1>
+    <div class="post-meta">February 4, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。</p>
+<p> </p>
+<p>今時だと大抵のEC2インスタンスはプライベートサブネットに配置されているので、VPC外に通信する場合はNATゲートウェイ・プロキシ・VPCエンドポイントいずれかを通って出ていくことになる。最初の2つは気にしなくていいのだが、VPCエンドポイントの場合は別途追加対応が必要なのである。</p>
+<p> </p>
+<h3 id="事象">事象<a hidden class="anchor" aria-hidden="true" href="#事象">#</a></h3>
+<p>codedeploy-agentが再起動を繰り返していて、こんなエラーを吐いていた。</p>
+<p> </p>
+<blockquote>
+<p>Errorno:: ENETUNREACH - Failed to open TCP connection to 169.254.169.254:80 (Network is unreachble &hellip;</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>ERROR [codedeploy-agent(2100)]: booting child: error during start or run: SystemExit - exit - &hellip;</p>
+</blockquote>
+<p> </p>
+<p>さらに、cloudwatch-agentのログにもこんなエラーが大量の吐き出されていた。codedeployのログよりこっちの方がすごかった。</p>
+<p> </p>
+<blockquote>
+<p>ERROR [codedeploy-agent(4492)]:Error validating the SSL configuration: Invalid server certificate (snip)</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>ERROR [codedeploy-agent(2100)]: booting child: error during start or run: SystemExit - Stopping CodeDeploy agent due to SSL validation error. (snip)</p>
+</blockquote>
+<p> </p>
+<p>メッセージから見ると通信に失敗しているのは明らかなのだが、別環境の検証時は問題なく動いていた。しかしその時はNATゲートウェイを使用していた。VPCエンドポイントに切り替えた環境で、上記エラーが発生したのだ。</p>
+<p> </p>
+<h3 id="やったこと">やったこと<a hidden class="anchor" aria-hidden="true" href="#やったこと">#</a></h3>
+<p>調べた結果、追加で以下の設定が必要と判明。</p>
+<p> </p>
+<p>codedeployagent.yml</p>
+<pre><code>:enable_auto_policy:true    #デフォルトはfalse
+</code></pre><p> </p>
+<p>ファイルパス<br>
+Linux:   /etc/codedeploy-agent/conf/codedeployagent.yml<br>
+Windows: C:¥ProgramData¥Amazon¥CodeDeploy¥conf.yml</p>
+<p> </p>
+<p>これで起動状態は正常になってエラーも解消した。しかし、追加のIAMポリシーがないとデプロイ時に権限が足りないと怒られて失敗する。エージェントが動作するEC2にアタッチしているIAMロールに、以下の権限が必要なのである。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+    {
+      <span style="color:#f92672">&#34;Action&#34;</span>: [
+        <span style="color:#e6db74">&#34;codedeploy-commands-secure:GetDeploymentSpecification&#34;</span>,
+        <span style="color:#e6db74">&#34;codedeploy-commands-secure:PollHostCommand&#34;</span>,
+        <span style="color:#e6db74">&#34;codedeploy-commands-secure:PutHostCommandAcknowledgement&#34;</span>,
+        <span style="color:#e6db74">&#34;codedeploy-commands-secure:PutHostCommandComplete&#34;</span>
+      ],
+      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+    }
+  ]
+}
+</code></pre></div><p> </p>
+<p>対象IAMロールに上記ポリシー追加後、デプロイが成功した。ネットワーク環境の違いって何かと影響でかいんだよな&hellip;、まぁそんなに疲れるネタじゃなかったからいいけど。</p>
+<p> </p>
+<p>オマケ：CodeDeployのエンドポイントと疎通確認するには以下コマンドで。</p>
+<pre><code>$ curl -v https://codedeploy-commands.ap-northeast-1.amazon.com
+</code></pre><p> </p>
+<p>参考<br>
+<a href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/reference-agent-configuration.html">CodeDeployエージェント構成リファレンス</a><br>
+<a href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/vpc-endpoints.html#vpc-codedeploy-agent-configuration">Amazon Virtual Private Cloud で CodeDeploy を使用</a><br>
+<a href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/vpc-endpoints.html#vpc-codedeploy-agent-configuration">【AWSの呼吸 弐ノ型】CodeDeployでVPCエンドポイントを設定する</a></p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/skybus_0003.JPG" alt="Skybus"  />
+
+<img loading="lazy" src="/img/b/skybus_0004.JPG" alt="Skybus"  />
+
+<img loading="lazy" src="/img/b/skybus_0005.JPG" alt="Skybus"  />
+
+<img loading="lazy" src="/img/b/skybus_0006.JPG" alt="Skybus"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/aws-codedeploy-tips/">AWS CodeDeploy備忘録</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a></li>
+    
+      <li><a href="/post/a/aws-crossaccount-pipeline-2/">AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</a></li>
+    
+      <li><a href="/post/a/aws-crossaccount-pipeline-1/">AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</a></li>
+    
+      <li><a href="/post/a/terraform-loop-example-4/">Terraform loop処理の応用編(3) - Event rule</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/codedeploy/">CodeDeploy</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/codepipeline/">CodePipeline</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Logs Insightsで秒毎のログイベント数をカウントするクエリ</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

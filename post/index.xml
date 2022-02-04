@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 03 Feb 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Feb 2022 21:00:30 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS CodeDeployでVPCエンドポイント使用時の注意</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</link>
+      <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</guid>
+      <description>&lt;p&gt;AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Logs Insightsで秒毎のログイベント数をカウントするクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</link>
