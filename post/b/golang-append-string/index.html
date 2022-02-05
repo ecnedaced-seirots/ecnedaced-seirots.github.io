@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Go入門 (12) - Goで文字列を連結するいくつかの方法 | Go Buddy Go</title>
+<meta name="keywords" content="golang" />
+<meta name="description" content="Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-append-string/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="Go入門 (12) - Goで文字列を連結するいくつかの方法" />
+<meta property="og:description" content="Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-append-string/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-05T17:52:48&#43;09:00" />
+<meta property="article:modified_time" content="2022-02-05T17:52:48&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go入門 (12) - Goで文字列を連結するいくつかの方法"/>
+<meta name="twitter:description" content="Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Go入門 (12) - Goで文字列を連結するいくつかの方法",
+      "item": "https://ecnedaced-seirots.github.io/post/b/golang-append-string/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Go入門 (12) - Goで文字列を連結するいくつかの方法",
+  "name": "Go入門 (12) - Goで文字列を連結するいくつかの方法",
+  "description": "Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。\n",
+  "keywords": [
+    "golang"
+  ],
+  "articleBody": "Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。\nどの言語でも使われる + で連結するのはコスト効率が悪いので大量に処理する時には向かないようだ。以下のコードでは(4)〜(6)の方式が性能的に効率がいいらしい。ま、ちょろっとした処理なら(1)や(2)でいいっしょ、て思うけど。(7)はオマケ的なやつ。\n append_str.go\npackage main import ( \"fmt\" \"strings\" \"bytes\" ) func main() { //(1) +で連結する  name1 := \"Quentin\" + \" \" + \"Tarantino\" fmt.Println(name1) //(2) fmtパッケージのprint関数では引数の複数文字列を自動的に連結する。  fmt.Println(\"Pulp\", \"Fiction\") //(3) stringsパッケージのjoin()関数を使う  sampleSlice := []string{\"Directed\", \"by\", \"Quentin\", \"Tarantino\"} result := strings.Join(sampleSlice, \" \") fmt.Println(result) //(4) バイトバッファによる文字列連結  var sample bytes.Buffer sample.WriteString(\"Martin \") sample.WriteString(\"Scorsese\") fmt.Println(sample.String()) //(5) strings Builderメソッドによる文字列連結  var sb strings.Builder sb.WriteString(\"Taxi \") sb.WriteString(\"Driver\") fmt.Println(sb.String()) //(6) []byte型の値に文字列を足していって連結  b := make([]byte, 0, 10) //サイズ0、内部バッファの長さ10byteの割り当て  b = append(b, \"Directed \"...) b = append(b, \"by \"...) b = append(b, \"Martin \"...) b = append(b, \"Scorsese\"...) fmt.Println(string(b)) fmt.Println(\"...\") //(7) 文字列繰り返し  fmt.Println(strings.Repeat(\"Blah \", 3)) }  結果\nQuentin Tarantino Pulp Fiction Directed by Quentin Tarantino Martin Scorsese Taxi Driver Directed by Martin Scorsese ... Blah Blah Blah  参考\nGolangで文字列を連結する7つの方法 （いろいろ紹介してくれてるけど動作しないコードがあった…）\nGoでは文字列連結はコストの高い操作 （[]byte例）\nGo言語で効率良く文字列を連結する話 #golang （bytes.Buffer例）\n  ",
+  "wordCount" : "128",
+  "inLanguage": "en",
+  "datePublished": "2022-02-05T17:52:48+09:00",
+  "dateModified": "2022-02-05T17:52:48+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-append-string/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Go入門 (12) - Goで文字列を連結するいくつかの方法
+    </h1>
+    <div class="post-meta">February 5, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。</p>
+<p>どの言語でも使われる + で連結するのはコスト効率が悪いので大量に処理する時には向かないようだ。以下のコードでは(4)〜(6)の方式が性能的に効率がいいらしい。ま、ちょろっとした処理なら(1)や(2)でいいっしょ、て思うけど。(7)はオマケ的なやつ。</p>
+<p> </p>
+<p>append_str.go</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;strings&#34;</span>
+    <span style="color:#e6db74">&#34;bytes&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+    <span style="color:#75715e">//(1) +で連結する
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">name1</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;Quentin&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;Tarantino&#34;</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">name1</span>)
+    
+    <span style="color:#75715e">//(2) fmtパッケージのprint関数では引数の複数文字列を自動的に連結する。
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Pulp&#34;</span>, <span style="color:#e6db74">&#34;Fiction&#34;</span>)
+    
+    <span style="color:#75715e">//(3) stringsパッケージのjoin()関数を使う
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sampleSlice</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;Directed&#34;</span>, <span style="color:#e6db74">&#34;by&#34;</span>, <span style="color:#e6db74">&#34;Quentin&#34;</span>, <span style="color:#e6db74">&#34;Tarantino&#34;</span>}
+    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">sampleSlice</span>, <span style="color:#e6db74">&#34; &#34;</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>)
+    
+    <span style="color:#75715e">//(4) バイトバッファによる文字列連結
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sample</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>
+    
+    <span style="color:#a6e22e">sample</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;Martin &#34;</span>)
+    <span style="color:#a6e22e">sample</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;Scorsese&#34;</span>)
+    
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">sample</span>.<span style="color:#a6e22e">String</span>())
+    
+    <span style="color:#75715e">//(5) strings Builderメソッドによる文字列連結
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sb</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Builder</span>
+    
+    <span style="color:#a6e22e">sb</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;Taxi &#34;</span>)
+    <span style="color:#a6e22e">sb</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;Driver&#34;</span>)
+    
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">sb</span>.<span style="color:#a6e22e">String</span>())
+    
+    <span style="color:#75715e">//(6) []byte型の値に文字列を足していって連結
+</span><span style="color:#75715e"></span>    
+    <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)  <span style="color:#75715e">//サイズ0、内部バッファの長さ10byteの割り当て
+</span><span style="color:#75715e"></span>    
+    <span style="color:#a6e22e">b</span> = append(<span style="color:#a6e22e">b</span>, <span style="color:#e6db74">&#34;Directed &#34;</span><span style="color:#f92672">...</span>)
+    <span style="color:#a6e22e">b</span> = append(<span style="color:#a6e22e">b</span>, <span style="color:#e6db74">&#34;by &#34;</span><span style="color:#f92672">...</span>)
+    <span style="color:#a6e22e">b</span> = append(<span style="color:#a6e22e">b</span>, <span style="color:#e6db74">&#34;Martin &#34;</span><span style="color:#f92672">...</span>)
+    <span style="color:#a6e22e">b</span> = append(<span style="color:#a6e22e">b</span>, <span style="color:#e6db74">&#34;Scorsese&#34;</span><span style="color:#f92672">...</span>)
+    
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(string(<span style="color:#a6e22e">b</span>))
+    
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;...&#34;</span>)
+    
+    <span style="color:#75715e">//(7) 文字列繰り返し
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Repeat</span>(<span style="color:#e6db74">&#34;Blah &#34;</span>, <span style="color:#ae81ff">3</span>))
+
+}
+</code></pre></div><p> </p>
+<p>結果</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">Quentin</span> <span style="color:#a6e22e">Tarantino</span>
+<span style="color:#a6e22e">Pulp</span> <span style="color:#a6e22e">Fiction</span>
+<span style="color:#a6e22e">Directed</span> <span style="color:#a6e22e">by</span> <span style="color:#a6e22e">Quentin</span> <span style="color:#a6e22e">Tarantino</span>
+<span style="color:#a6e22e">Martin</span> <span style="color:#a6e22e">Scorsese</span>
+<span style="color:#a6e22e">Taxi</span> <span style="color:#a6e22e">Driver</span>
+<span style="color:#a6e22e">Directed</span> <span style="color:#a6e22e">by</span> <span style="color:#a6e22e">Martin</span> <span style="color:#a6e22e">Scorsese</span>
+<span style="color:#f92672">...</span>
+<span style="color:#a6e22e">Blah</span> <span style="color:#a6e22e">Blah</span> <span style="color:#a6e22e">Blah</span> 
+</code></pre></div><p> </p>
+<p>参考<br>
+<a href="https://asapoon.com/article/golang-post/4456/golang-how-to-join-string/">Golangで文字列を連結する7つの方法</a> （いろいろ紹介してくれてるけど動作しないコードがあった&hellip;）<br>
+<a href="https://qiita.com/ruiu/items/2bb83b29baeae2433a79">Goでは文字列連結はコストの高い操作</a> （[]byte例）<br>
+<a href="https://atotto.hatenadiary.jp/entry/2013/04/26/202701">Go言語で効率良く文字列を連結する話 #golang</a> （bytes.Buffer例）</p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/metro_002.JPG" alt="Metro"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/golang-init-changetype/">Go入門(11) - 型変換(str-int, int-str)</a></li>
+    
+      <li><a href="/post/b/golang-init-command-args/">Go入門(10) - コマンドライン引数の処理</a></li>
+    
+      <li><a href="/post/b/golang-init-if-2/">Go入門(9) - if else文</a></li>
+    
+      <li><a href="/post/b/golang-init-if/">Go入門(8) - if文の基本</a></li>
+    
+      <li><a href="/post/b/golang-init-map-2/">Go入門(7) - mapのrange,deleteなど</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>MS Officeの邪魔なサジェストを無効にする</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
