@@ -63,8 +63,8 @@
   "keywords": [
     "terraform", "network", "AWS"
   ],
-  "articleBody": "TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。\n ちなみに手動作成の手順は以下。\nAWS NATゲートウェイの作成と設定\n NATゲートウェイを作るだけなら、以下コードだけでよい。\nnat.tf\n########################################### # EIP ########################################### resource \"aws_eip\" \"poc_eip\" { vpc = true } ########################################### # NAT Gateway ########################################### resource \"aws_nat_gateway\" \"nat_gw\" { allocation_id = aws_eip.poc_eip.id subnet_id = var.public-a tags = { Name = \"NAT-for-PoC\" } # To ensure proper ordering, it is recommended to add an explicit dependency # on the Internet Gateway for the VPC. # depends_on = [aws_internet_gateway.example] }  先にEIPを作ってNATゲートウェイに割り当てている。このEIPはリソースに関連付けている限りは課金対象外だが、関連付けリソースから外れると課金対象になる。このためNATゲートウェイ削除時にはEIPもリリースしないといけないが、忘れがちなので要注意である。Terraformで作成するならTerraform destroy時に一緒にリリースされるはずだから安心だ。（しかし未検証）\n で、上記をapplyするとEIPとNATゲートウェイが作成される。しかし実際に使用できるようにするにはルートテーブルの設定が必要なのである。これが、よくわからなくてハマった。当初はaws_route_table_associationで設定可能か？と思って試してみた。しかしドキュメントを見ると設定可能なのはインターネットゲートウェイかサブネットIDのみで、NATゲートウェイは含まれていない。それでも無理矢理コードを書いてapplyしてみたら、無効なパラメータなんだよボケ！と怒られた。\nError: error creating Route Table (rtb-1234567890123445) Association: InvalidParameterValue: invalid value for parameter gateway-id: nat-02d182b4d52eb6aa7 status code: 400, request id: ae4cb491-23d6-41e8-b7ef-e01983cabef8 (snip)  しばし思いを馳せて、NATゲートウェイの関連付けはaws_route_table_associationではなくroute_tableでやればいいらしいのはなんとなく分かった。しかしドキュメントを読んでも設定項目がわからん…\nTerraform - route_table\n そこで、ルートテーブルの設定をマネコンから手動で実施して、その状態をimportして探ってみた。importするため以下のような最低限のtfコードを用意してimportコマンドを実行する。\nrt-prv.tf\nresource \"aws_route_table\" \"rt_prv\" { }  $ terraform import aws_route_table.rt_prv rtb-1234567890123445  実行後のtfstateを確認する。以下は対象ルートテーブルの辺りだけ抜粋。\n{ \"mode\": \"managed\", \"type\": \"aws_route_table\", \"name\": \"rt_prv\", \"provider\": \"provider[\\\"registry.terraform.io/hashicorp/aws\\\"]\", \"instances\": [ { \"schema_version\": 0, \"attributes\": { \"arn\": \"arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-1234567890123445\", \"id\": \"rtb-1234567890123445\", \"owner_id\": \"0123456789010\", \"propagating_vgws\": [], \"route\": [ { \"carrier_gateway_id\": \"\", \"cidr_block\": \"0.0.0.0/0\", \"destination_prefix_list_id\": \"\", \"egress_only_gateway_id\": \"\", \"gateway_id\": \"\", \"instance_id\": \"\", \"ipv6_cidr_block\": \"\", \"local_gateway_id\": \"\", \"nat_gateway_id\": \"nat-02d182b4d52eb6aa7\", \"network_interface_id\": \"\", \"transit_gateway_id\": \"\", \"vpc_endpoint_id\": \"\", \"vpc_peering_connection_id\": \"\" } ], \"tags\": { \"Name\": \"dev-private-rt\" }, \"tags_all\": { \"Name\": \"dev-private-rt\" }, \"timeouts\": { \"create\": null, \"delete\": null, \"update\": null }, \"vpc_id\": \"vpc-1234567890123445\" }, \"sensitive_attributes\": [], \"private\": (snip)  上記の値を参考にroute_tableでNATゲートウェイの関連付けができそうではある。しかしここで、今更ではあるがふと気がついた。\nもともと今回使っているサブネットやルートテーブルはTerraform外で作成したものである。既存の管理外ルートテーブルを下手にTerraformで操作して干渉させるのはNGじゃないかと。そして、importを実行した時点でTerraform管理下になってしまっているが、確認したかっただけなので管理下に置くつもりはないのである。(なので、今後のTerraform作業はこのtfstateから干渉されないパスで実行する）\n ネットワーク周りもすべてTerraformで作成したものであれば使い終わったらすべてdestroyで問題ないが、そうでないとなかなか厄介だ。かといってそのために今からコード追加したり書き換えるのも面倒だ。\nで、考えた挙句、ルートテーブル関連付けだけは手動でやることにした。本来は全自動でやりたいが、現状はNATゲートウェイ作成とEKSクラスタ作成を2段階で分割する必要がある。なかなか、思い通りにはいかない。まぁこういうジレンマは、TerraformだろうがCFnだろうがついて回る。試行錯誤でやっていくしかない。\n ところで自分はこれまでTerraformインポートは構成の確認のために使っていたが、こういう目的で使うこともあるのか。備忘録。\nTerraform import機能を使って既存のVPCとサブネットをTerraformで管理できるようにする\n ",
-  "wordCount" : "197",
+  "articleBody": "TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。\n ちなみに手動作成の手順は以下。\nAWS NATゲートウェイの作成と設定\n NATゲートウェイを作るだけなら、以下コードだけでよい。\nnat.tf\n########################################### # EIP ########################################### resource \"aws_eip\" \"poc_eip\" { vpc = true } ########################################### # NAT Gateway ########################################### resource \"aws_nat_gateway\" \"nat_gw\" { allocation_id = aws_eip.poc_eip.id subnet_id = var.public-a tags = { Name = \"NAT-for-PoC\" } # To ensure proper ordering, it is recommended to add an explicit dependency # on the Internet Gateway for the VPC. # depends_on = [aws_internet_gateway.example] }  先にEIPを作ってNATゲートウェイに割り当てている。このEIPはリソースに関連付けている限りは課金対象外だが、関連付けリソースから外れると課金対象になる。このためNATゲートウェイ削除時にはEIPもリリースしないといけないが、忘れがちなので要注意である。Terraformで作成するならTerraform destroy時に一緒にリリースされるはずだから安心だ。（しかし未検証）\n で、上記をapplyするとEIPとNATゲートウェイが作成される。しかし実際に使用できるようにするにはルートテーブルの設定が必要なのである。これが、よくわからなくてハマった。当初はaws_route_table_associationで設定可能か？と思って試してみた。しかしドキュメントを見ると設定可能なのはインターネットゲートウェイかサブネットIDのみで、NATゲートウェイは含まれていない。それでも無理矢理コードを書いてapplyしてみたら、無効なパラメータなんだよボケ！と怒られた。\nError: error creating Route Table (rtb-1234567890123445) Association: InvalidParameterValue: invalid value for parameter gateway-id: nat-02d182b4d52eb6aa7 status code: 400, request id: ae4cb491-23d6-41e8-b7ef-e01983cabef8 (snip)  しばし思いを馳せて、NATゲートウェイの関連付けはaws_route_table_associationではなくroute_tableでやればいいらしいのはなんとなく分かった。しかしドキュメントを読んでも設定項目がわからん…\nTerraform - route_table\n そこで、ルートテーブルの設定をマネコンから手動で実施して、その状態をimportして探ってみた。importするため以下のような最低限のtfコードを用意してimportコマンドを実行する。\nrt-prv.tf\nresource \"aws_route_table\" \"rt_prv\" { }  $ terraform import aws_route_table.rt_prv rtb-1234567890123445  実行後のtfstateを確認する。以下は対象ルートテーブルの辺りだけ抜粋。\n{ \"mode\": \"managed\", \"type\": \"aws_route_table\", \"name\": \"rt_prv\", \"provider\": \"provider[\\\"registry.terraform.io/hashicorp/aws\\\"]\", \"instances\": [ { \"schema_version\": 0, \"attributes\": { \"arn\": \"arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-1234567890123445\", \"id\": \"rtb-1234567890123445\", \"owner_id\": \"0123456789010\", \"propagating_vgws\": [], \"route\": [ { \"carrier_gateway_id\": \"\", \"cidr_block\": \"0.0.0.0/0\", \"destination_prefix_list_id\": \"\", \"egress_only_gateway_id\": \"\", \"gateway_id\": \"\", \"instance_id\": \"\", \"ipv6_cidr_block\": \"\", \"local_gateway_id\": \"\", \"nat_gateway_id\": \"nat-02d182b4d52eb6aa7\", \"network_interface_id\": \"\", \"transit_gateway_id\": \"\", \"vpc_endpoint_id\": \"\", \"vpc_peering_connection_id\": \"\" } ], \"tags\": { \"Name\": \"dev-private-rt\" }, \"tags_all\": { \"Name\": \"dev-private-rt\" }, \"timeouts\": { \"create\": null, \"delete\": null, \"update\": null }, \"vpc_id\": \"vpc-1234567890123445\" }, \"sensitive_attributes\": [], \"private\": (snip)  上記の値を参考にroute_tableでNATゲートウェイの関連付けができそうではある。しかしここで、今更ではあるがふと気がついた。\nもともと今回使っているサブネットやルートテーブルはTerraform外で作成したものである。既存の管理外ルートテーブルを下手にTerraformで操作して干渉させるのはNGじゃないかと。そして、importを実行した時点でTerraform管理下になってしまっているが、確認したかっただけなので管理下に置くつもりはないのである。(なので、今後のTerraform作業はこのtfstateから干渉されないパスで実行する）\n ネットワーク周りもすべてTerraformで作成したものであれば使い終わったらすべてdestroyで問題ないが、そうでないとなかなか厄介だ。かといってそのために今からコード追加したり書き換えるのも面倒だ。\nで、考えた挙句、ルートテーブル関連付けだけは手動でやることにした。本来は全自動でやりたいが、現状はNATゲートウェイ作成とEKSクラスタ作成を2段階で分割する必要がある。なかなか、思い通りにはいかない。まぁこういうジレンマは、TerraformだろうがCFnだろうがついて回る。試行錯誤でやっていくしかない。\n ところで自分はこれまでTerraformインポートは構成の確認のために使っていたが、こういう目的で使うこともあるのか。備忘録。\nTerraform import機能を使って既存のVPCとサブネットをTerraformで管理できるようにする\n 追記\nTerraform import後の結果を見やすく出力するコマンドがあったのを思い出した。\n$ terraform state [AWSリソース名].[Terraformリソース名]  $ terraform state show aws_route_table.rt_prv # aws_route_table.rt_prv: resource \"aws_route_table\" \"rt_prv\" { arn = \"arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-01234567890123456\" id = \"rtb-01234567890123456\" owner_id = \"0123456789010\" propagating_vgws = [] route = [ { carrier_gateway_id = \"\" cidr_block = \"0.0.0.0/0\" destination_prefix_list_id = \"\" egress_only_gateway_id = \"\" gateway_id = \"\" instance_id = \"\" ipv6_cidr_block = \"\" local_gateway_id = \"\" nat_gateway_id = \"nat-02d182b4d52eb6aa7\" network_interface_id = \"\" transit_gateway_id = \"\" vpc_endpoint_id = \"\" vpc_peering_connection_id = \"\" }, ] tags = { \"Name\" = \"dev-private-rt\" } tags_all = { \"Name\" = \"dev-private-rt\" } vpc_id = \"vpc-01234567890123456\" timeouts {} }   ",
+  "wordCount" : "292",
   "inLanguage": "en",
   "datePublished": "2022-01-23T10:00:00+09:00",
   "dateModified": "2022-01-23T10:00:00+09:00",
@@ -303,6 +303,46 @@ resource &quot;aws_nat_gateway&quot; &quot;nat_gw&quot; {
 <p> </p>
 <p>ところで自分はこれまでTerraformインポートは構成の確認のために使っていたが、こういう目的で使うこともあるのか。備忘録。<br>
 <a href="https://qiita.com/okubot55/items/0f6fb71524b4eafd5c08">Terraform import機能を使って既存のVPCとサブネットをTerraformで管理できるようにする</a></p>
+<p> </p>
+<p>追記<br>
+Terraform import後の結果を見やすく出力するコマンドがあったのを思い出した。</p>
+<pre><code>$ terraform state [AWSリソース名].[Terraformリソース名]
+</code></pre><p> </p>
+<pre><code>$ terraform state show aws_route_table.rt_prv
+# aws_route_table.rt_prv:
+resource &quot;aws_route_table&quot; &quot;rt_prv&quot; {
+    arn              = &quot;arn:aws:ec2:ap-northeast-1:0123456789010:route-table/rtb-01234567890123456&quot;
+    id               = &quot;rtb-01234567890123456&quot;
+    owner_id         = &quot;0123456789010&quot;
+    propagating_vgws = []
+    route            = [
+        {
+            carrier_gateway_id         = &quot;&quot;
+            cidr_block                 = &quot;0.0.0.0/0&quot;
+            destination_prefix_list_id = &quot;&quot;
+            egress_only_gateway_id     = &quot;&quot;
+            gateway_id                 = &quot;&quot;
+            instance_id                = &quot;&quot;
+            ipv6_cidr_block            = &quot;&quot;
+            local_gateway_id           = &quot;&quot;
+            nat_gateway_id             = &quot;nat-02d182b4d52eb6aa7&quot;
+            network_interface_id       = &quot;&quot;
+            transit_gateway_id         = &quot;&quot;
+            vpc_endpoint_id            = &quot;&quot;
+            vpc_peering_connection_id  = &quot;&quot;
+        },
+    ]
+    tags             = {
+        &quot;Name&quot; = &quot;dev-private-rt&quot;
+    }
+    tags_all         = {
+        &quot;Name&quot; = &quot;dev-private-rt&quot;
+    }
+    vpc_id           = &quot;vpc-01234567890123456&quot;
+
+    timeouts {}
+}
+</code></pre><p> </p>
 <p> </p>
 <p><img loading="lazy" src="/img/b/plane_0001.JPG" alt="Travel"  />
 
