@@ -3,15 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2022-02-04T21:00:30+09:00</lastmod>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/tips/</loc>
+    <lastmod>2022-02-05T11:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
     <lastmod>2022-02-04T21:00:30+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</loc>
-    <lastmod>2022-02-04T21:00:30+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
     <lastmod>2022-02-04T21:00:30+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/cicd/</loc>
@@ -21,12 +36,6 @@
     <lastmod>2022-02-04T21:00:30+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/codepipeline/</loc>
-    <lastmod>2022-02-04T21:00:30+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2022-02-04T21:00:30+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2022-02-04T21:00:30+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/</loc>
@@ -140,9 +149,6 @@
     <loc>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</loc>
     <lastmod>2022-01-22T11:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
-    <lastmod>2022-01-22T11:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/%E4%BA%95%E3%81%AE%E9%A0%AD%E5%85%AC%E5%9C%92/</loc>
     <lastmod>2022-01-22T11:00:00+09:00</lastmod>
   </url><url>
@@ -195,9 +201,6 @@
     <lastmod>2022-01-10T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</loc>
-    <lastmod>2022-01-09T23:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/tips/</loc>
     <lastmod>2022-01-09T23:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/amazon-sns/</loc>

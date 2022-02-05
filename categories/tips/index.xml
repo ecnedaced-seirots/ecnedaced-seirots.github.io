@@ -6,7 +6,17 @@
     <description>Recent content in Tips on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 09 Jan 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Feb 2022 11:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/tips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MS Officeの邪魔なサジェストを無効にする</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</link>
+      <pubDate>Sat, 05 Feb 2022 11:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</guid>
+      <description>&lt;h3 id=&#34;迷惑サジェスト-その１&#34;&gt;迷惑サジェスト その１&lt;/h3&gt;
+&lt;p&gt;Outlookで「登録名の先頭の数文字の入力で候補を表示する」を無効にしたい。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
