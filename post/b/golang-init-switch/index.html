@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>OpenCVで画像ファイルを保存する | Go Buddy Go</title>
-<meta name="keywords" content="opencv, python" />
-<meta name="description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。">
+<title>Go入門(13) - Switch文による条件分岐 | Go Buddy Go</title>
+<meta name="keywords" content="golang" />
+<meta name="description" content="Go言語のSwitch文による条件分岐例など。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-switch/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="OpenCVで画像ファイルを保存する" />
-<meta property="og:description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。" />
+<meta property="og:title" content="Go入門(13) - Switch文による条件分岐" />
+<meta property="og:description" content="Go言語のSwitch文による条件分岐例など。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-02-06T20:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-02-06T20:00:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-switch/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-06T23:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-02-06T23:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="OpenCVで画像ファイルを保存する"/>
-<meta name="twitter:description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。"/>
+<meta name="twitter:title" content="Go入門(13) - Switch文による条件分岐"/>
+<meta name="twitter:description" content="Go言語のSwitch文による条件分岐例など。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "OpenCVで画像ファイルを保存する",
-      "item": "https://ecnedaced-seirots.github.io/post/b/python-opencv-2/"
+      "name": "Go入門(13) - Switch文による条件分岐",
+      "item": "https://ecnedaced-seirots.github.io/post/b/golang-init-switch/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "OpenCVで画像ファイルを保存する",
-  "name": "OpenCVで画像ファイルを保存する",
-  "description": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n",
+  "headline": "Go入門(13) - Switch文による条件分岐",
+  "name": "Go入門(13) - Switch文による条件分岐",
+  "description": "Go言語のSwitch文による条件分岐例など。\n",
   "keywords": [
-    "opencv", "python"
+    "golang"
   ],
-  "articleBody": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n 1. グレースケールの出力  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 画像を出力 cv2.imshow('Yellow', img) #オリジナル cv2.imshow(\"gray\", gray)　#グレースケール while True: # Escキー入力で終了 if cv2.waitKey(1) == 27: break cv2.destroyAllWindows()  こんな感じになる。escキー入力で閉じる。\n 2. 画像を保存する  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #別名のファイルとして保存 outfile = cv2.imwrite('img_gray.png', gray) if outfile: print('Image is successfully saved.')  結果、Image is successfully saved.が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな…（遠い昔）\n 参考\nPythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】\nPython OpenCV cv2.imwrite() – Save Image\n  ",
-  "wordCount" : "70",
+  "articleBody": "Go言語のSwitch文による条件分岐例など。\n 基本構文。まぁ説明するまでもない。\nswitch 条件 { case A: 処理コードA case B: 処理コードB case C: 処理コードC default: デフォルト処理 }  サンプル。引数を与えて、その値によって処理を分岐させる。\nswitch1.go\npackage main import ( \"flag\" \"fmt\" ) func main() { flag.Parse() //条件の値となる引数を定義。  city := flag.Arg(0) //引数の値に応じて処理  switch city { case \"Tokyo\": fmt.Println(\"住んでいます。\") case \"Bangkok\": fmt.Println(\"一度行ったことがあります。\") case \"NY\": fmt.Println(\"行ったことないです。\") default: fmt.Println(\"いつか行きたいです。\") } }  結果。\n$ go run switch1.go Tokyo 住んでいます。 $ go run switch1.go NY 行ったことないです。 $ go run switch1.go Bangkok 一度行ったことがあります。 $ go run switch1.go Havana いつか行きたいです。  参考\n【Go入門】switchによる分岐 \n  ",
+  "wordCount" : "78",
   "inLanguage": "en",
-  "datePublished": "2022-02-06T20:00:00+09:00",
-  "dateModified": "2022-02-06T20:00:00+09:00",
+  "datePublished": "2022-02-06T23:00:00+09:00",
+  "dateModified": "2022-02-06T23:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/python-opencv-2/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/golang-init-switch/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,67 +190,77 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      OpenCVで画像ファイルを保存する
+      Go入門(13) - Switch文による条件分岐
     </h1>
     <div class="post-meta">February 6, 2022
 </div>
   </header> 
-  <div class="post-content"><p>OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。</p>
+  <div class="post-content"><p>Go言語のSwitch文による条件分岐例など。</p>
 <p> </p>
-<h3 id="1-グレースケールの出力">1. グレースケールの出力<a hidden class="anchor" aria-hidden="true" href="#1-グレースケールの出力">#</a></h3>
-<p> </p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
-
-<span style="color:#75715e">#ファイル読み込み</span>
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
-
-<span style="color:#75715e">#グレースケールの定義</span>
-gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
-
-<span style="color:#75715e"># 画像を出力</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img) 　　　　<span style="color:#75715e">#オリジナル</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;gray&#34;</span>, gray)　　　　　<span style="color:#75715e">#グレースケール</span>
-
-<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-    <span style="color:#75715e"># Escキー入力で終了</span>
-    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">27</span>:
-        <span style="color:#66d9ef">break</span>
-cv2<span style="color:#f92672">.</span>destroyAllWindows()
+<p>基本構文。まぁ説明するまでもない。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">条件</span> {
+<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">A</span>:
+    <span style="color:#a6e22e">処理コードA</span>
+<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">B</span>:
+    <span style="color:#a6e22e">処理コードB</span>
+<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">C</span>:
+    <span style="color:#a6e22e">処理コードC</span>
+<span style="color:#66d9ef">default</span>:
+    <span style="color:#a6e22e">デフォルト処理</span>
+}
 
 </code></pre></div><p> </p>
-<p>こんな感じになる。escキー入力で閉じる。</p>
-<p><img loading="lazy" src="/img/b/opencv_gray.jpg" alt="OpenCV img"  />
-</p>
-<p> </p>
-<h3 id="2-画像を保存する">2. 画像を保存する<a hidden class="anchor" aria-hidden="true" href="#2-画像を保存する">#</a></h3>
-<p> </p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
+<p>サンプル。引数を与えて、その値によって処理を分岐させる。</p>
+<p>switch1.go</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<span style="color:#75715e">#ファイル読み込み</span>
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;flag&#34;</span>
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+)
 
-<span style="color:#75715e">#グレースケールの定義</span>
-gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
+    
+    <span style="color:#75715e">//条件の値となる引数を定義。
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">city</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>)
 
-<span style="color:#75715e">#別名のファイルとして保存</span>
-outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imwrite(<span style="color:#e6db74">&#39;img_gray.png&#39;</span>, gray)
-
-<span style="color:#66d9ef">if</span> outfile:
-    print(<span style="color:#e6db74">&#39;Image is successfully saved.&#39;</span>)
+    <span style="color:#75715e">//引数の値に応じて処理
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">city</span> {
+    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Tokyo&#34;</span>:
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;住んでいます。&#34;</span>)
+    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Bangkok&#34;</span>:
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;一度行ったことがあります。&#34;</span>)
+    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;NY&#34;</span>:
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;行ったことないです。&#34;</span>)
+    <span style="color:#66d9ef">default</span>:
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;いつか行きたいです。&#34;</span>)
+    }
+}
 
 </code></pre></div><p> </p>
-<p>結果、<code>Image is successfully saved.</code>が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな&hellip;（遠い昔）</p>
-<p> </p>
+<p>結果。</p>
+<pre><code>$ go run switch1.go Tokyo
+住んでいます。
+
+$ go run switch1.go NY
+行ったことないです。
+
+$ go run switch1.go Bangkok
+一度行ったことがあります。
+
+$ go run switch1.go Havana
+いつか行きたいです。
+
+</code></pre><p> </p>
 <p>参考<br>
-<a href="https://techacademy.jp/magazine/28477">Pythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】</a><br>
-<a href="https://pythonexamples.org/python-opencv-cv2-imwrite-save-image/">Python OpenCV cv2.imwrite() – Save Image</a></p>
+<a href="https://code-graffiti.com/switch-statement-in-golang/">【Go入門】switchによる分岐 </a></p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/odawara_cafe_001.JPG" alt="Odawara"  />
+<p><img loading="lazy" src="/img/b/bnc_107.JPG" alt="Travel"  />
 
-<img loading="lazy" src="/img/b/odawara_cafe_002.JPG" alt="Odawara"  />
-
-<img loading="lazy" src="/img/b/odawara_cafe_003.JPG" alt="Odawara"  />
+<img loading="lazy" src="/img/b/bnc_108.JPG" alt="Travel"  />
 </p>
 
     
@@ -259,34 +269,28 @@ outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</s
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/python-opencv-1/">PythonでOpenCV始めてみる</a></li>
+      <li><a href="/post/b/golang-append-string/">Go入門 (12) - Goで文字列を連結するいくつかの方法</a></li>
+    
+      <li><a href="/post/b/golang-init-changetype/">Go入門(11) - 型変換(str-int, int-str)</a></li>
+    
+      <li><a href="/post/b/golang-init-command-args/">Go入門(10) - コマンドライン引数の処理</a></li>
     
       <li><a href="/post/b/golang-init-if-2/">Go入門(9) - if else文</a></li>
     
       <li><a href="/post/b/golang-init-if/">Go入門(8) - if文の基本</a></li>
-    
-      <li><a href="/post/b/golang-init-map-2/">Go入門(7) - mapのrange,deleteなど</a></li>
-    
-      <li><a href="/post/b/golang-init-map/">Go入門(6) - mapの基本</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/opencv/">opencv</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-switch/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Go入門(13) - Switch文による条件分岐</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-append-string/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/">
     <span class="title">Next Page »</span>
     <br>
-    <span>Go入門 (12) - Goで文字列を連結するいくつかの方法</span>
+    <span>OpenCVで画像ファイルを保存する</span>
   </a>
 </nav>
 
