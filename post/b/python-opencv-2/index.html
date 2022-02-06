@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>PythonでOpenCV始めてみる | Go Buddy Go</title>
+<title>OpenCVで画像ファイルを保存する | Go Buddy Go</title>
 <meta name="keywords" content="opencv, python" />
-<meta name="description" content="画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python &#43; 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。">
+<meta name="description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-1/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="PythonでOpenCV始めてみる" />
-<meta property="og:description" content="画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python &#43; 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。" />
+<meta property="og:title" content="OpenCVで画像ファイルを保存する" />
+<meta property="og:description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-opencv-1/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-25T22:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-25T22:00:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-06T20:00:00&#43;09:00" />
+<meta property="article:modified_time" content="2022-02-06T20:00:00&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="PythonでOpenCV始めてみる"/>
-<meta name="twitter:description" content="画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python &#43; 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。"/>
+<meta name="twitter:title" content="OpenCVで画像ファイルを保存する"/>
+<meta name="twitter:description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "PythonでOpenCV始めてみる",
-      "item": "https://ecnedaced-seirots.github.io/post/b/python-opencv-1/"
+      "name": "OpenCVで画像ファイルを保存する",
+      "item": "https://ecnedaced-seirots.github.io/post/b/python-opencv-2/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "PythonでOpenCV始めてみる",
-  "name": "PythonでOpenCV始めてみる",
-  "description": "画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。\n",
+  "headline": "OpenCVで画像ファイルを保存する",
+  "name": "OpenCVで画像ファイルを保存する",
+  "description": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n",
   "keywords": [
     "opencv", "python"
   ],
-  "articleBody": "画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。\n Macにインストールする。インストール方法が複数あり、その時点でどれを選んでいいか分からずつまづく派が多いらしい。とりあえずpipがおすすめらしいのでそれでいく。\n$ pip3 install opencv-python : : $ pip3 freeze boto3==1.18.63 botocore==1.21.63 Jinja2==2.11.2 jmespath==0.10.0 MarkupSafe==1.1.1 numpy==1.21.4 #numpyも一緒に入る opencv-python==4.5.5.62 pandas==1.3.4 python-dateutil==2.8.2 (snip)  適当なディレクトリに画像ファイルと以下コードを格納する。\ninit.py\nimport cv2 img = cv2.imread('img_01.png') #イメージファイルを指定 cv2.imshow('Yellow', img) #ウィンドウ名とイメージファイルを指定 cv2.waitKey(0) #これを記述することで、ファイルオープンの状態が継続する cv2.destroyAllWindows() #キーボード入力があった時点で終了  上記はカレントディレクトリにファイルが存在する前提。それ以外の場合は絶対パスか相対パスで指定する。実行すると以下のように画像が開く。何かキーボート入力すると閉じる。\n 何もしてないに等しいが、今日はここまで。\n参考\n【初心者向け】PythonとOpenCVで画像処理を体験してみよう\n ",
-  "wordCount" : "43",
+  "articleBody": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n 1. グレースケールの出力  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 画像を出力 cv2.imshow('Yellow', img) #オリジナル cv2.imshow(\"gray\", gray)　#グレースケール while True: # Escキー入力で終了 if cv2.waitKey(1) == 27: break cv2.destroyAllWindows()  こんな感じになる。escキー入力で閉じる。\n 2. 画像を保存する  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #別名のファイルとして保存 outfile = cv2.imwrite('img_gray.png', gray) if outfile: print('Image is successfully saved.')  結果、Image is successfully saved.が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな…（遠い昔）\n 参考\nPythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】\nPython OpenCV cv2.imwrite() – Save Image\n  ",
+  "wordCount" : "70",
   "inLanguage": "en",
-  "datePublished": "2022-01-25T22:00:00+09:00",
-  "dateModified": "2022-01-25T22:00:00+09:00",
+  "datePublished": "2022-02-06T20:00:00+09:00",
+  "dateModified": "2022-02-06T20:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/python-opencv-1/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/python-opencv-2/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,48 +190,67 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      PythonでOpenCV始めてみる
+      OpenCVで画像ファイルを保存する
     </h1>
-    <div class="post-meta">January 25, 2022
+    <div class="post-meta">February 6, 2022
 </div>
   </header> 
-  <div class="post-content"><p>画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。</p>
+  <div class="post-content"><p>OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。</p>
 <p> </p>
-<p>Macにインストールする。インストール方法が複数あり、その時点でどれを選んでいいか分からずつまづく派が多いらしい。とりあえずpipがおすすめらしいのでそれでいく。</p>
-<pre><code>$ pip3 install opencv-python
-:
-:
-$ pip3 freeze
-boto3==1.18.63
-botocore==1.21.63
-Jinja2==2.11.2
-jmespath==0.10.0
-MarkupSafe==1.1.1
-numpy==1.21.4        　　　　#numpyも一緒に入る
-opencv-python==4.5.5.62
-pandas==1.3.4
-python-dateutil==2.8.2
-(snip)
-
-</code></pre><p> </p>
-<p>適当なディレクトリに画像ファイルと以下コードを格納する。</p>
-<p>init.py</p>
+<h3 id="1-グレースケールの出力">1. グレースケールの出力<a hidden class="anchor" aria-hidden="true" href="#1-グレースケールの出力">#</a></h3>
+<p> </p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)    <span style="color:#75715e">#イメージファイルを指定</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img)         <span style="color:#75715e">#ウィンドウ名とイメージファイルを指定</span>
-cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">0</span>)                    <span style="color:#75715e">#これを記述することで、ファイルオープンの状態が継続する</span>
-cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style="color:#75715e">#キーボード入力があった時点で終了</span>
+
+<span style="color:#75715e">#ファイル読み込み</span>
+img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
+
+<span style="color:#75715e">#グレースケールの定義</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 画像を出力</span>
+cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img) 　　　　<span style="color:#75715e">#オリジナル</span>
+cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;gray&#34;</span>, gray)　　　　　<span style="color:#75715e">#グレースケール</span>
+
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+    <span style="color:#75715e"># Escキー入力で終了</span>
+    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">27</span>:
+        <span style="color:#66d9ef">break</span>
+cv2<span style="color:#f92672">.</span>destroyAllWindows()
 
 </code></pre></div><p> </p>
-<p>上記はカレントディレクトリにファイルが存在する前提。それ以外の場合は絶対パスか相対パスで指定する。実行すると以下のように画像が開く。何かキーボート入力すると閉じる。</p>
-<p><img loading="lazy" src="/img/b/opencv_001.jpg" alt="OpenCV image"  />
+<p>こんな感じになる。escキー入力で閉じる。</p>
+<p><img loading="lazy" src="/img/b/opencv_gray.jpg" alt="OpenCV img"  />
 </p>
 <p> </p>
-<p>何もしてないに等しいが、今日はここまで。</p>
-<p>参考<br>
-<a href="https://tech-blog.rakus.co.jp/entry/20201225/open-cv">【初心者向け】PythonとOpenCVで画像処理を体験してみよう</a></p>
+<h3 id="2-画像を保存する">2. 画像を保存する<a hidden class="anchor" aria-hidden="true" href="#2-画像を保存する">#</a></h3>
 <p> </p>
-<p><img loading="lazy" src="/img/b/bcn_103.jpg" alt="Travel"  />
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
+
+<span style="color:#75715e">#ファイル読み込み</span>
+img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
+
+<span style="color:#75715e">#グレースケールの定義</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e">#別名のファイルとして保存</span>
+outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imwrite(<span style="color:#e6db74">&#39;img_gray.png&#39;</span>, gray)
+
+<span style="color:#66d9ef">if</span> outfile:
+    print(<span style="color:#e6db74">&#39;Image is successfully saved.&#39;</span>)
+
+</code></pre></div><p> </p>
+<p>結果、<code>Image is successfully saved.</code>が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな&hellip;（遠い昔）</p>
+<p> </p>
+<p>参考<br>
+<a href="https://techacademy.jp/magazine/28477">Pythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】</a><br>
+<a href="https://pythonexamples.org/python-opencv-cv2-imwrite-save-image/">Python OpenCV cv2.imwrite() – Save Image</a></p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/odawara_cafe_001.JPG" alt="Odawara"  />
+
+<img loading="lazy" src="/img/b/odawara_cafe_002.JPG" alt="Odawara"  />
+
+<img loading="lazy" src="/img/b/odawara_cafe_003.JPG" alt="Odawara"  />
 </p>
 
     
@@ -240,15 +259,15 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/b/python-opencv-1/">PythonでOpenCV始めてみる</a></li>
+    
+      <li><a href="/post/b/golang-init-if-2/">Go入門(9) - if else文</a></li>
+    
+      <li><a href="/post/b/golang-init-if/">Go入門(8) - if文の基本</a></li>
+    
       <li><a href="/post/b/golang-init-map-2/">Go入門(7) - mapのrange,deleteなど</a></li>
     
       <li><a href="/post/b/golang-init-map/">Go入門(6) - mapの基本</a></li>
-    
-      <li><a href="/post/b/golang-init-for/">Go入門(5) - for文の基本</a></li>
-    
-      <li><a href="/post/b/golang-init-slice/">Go入門(3) - スライス(Slice)の扱い</a></li>
-    
-      <li><a href="/post/a/python-package-localinstall/">Pythonライブラリのローカルインストール方法</a></li>
     
   </ul>
 
@@ -259,15 +278,10 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-if/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Go入門(8) - if文の基本</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-append-string/">
     <span class="title">Next Page »</span>
     <br>
-    <span>Go入門(7) - mapのrange,deleteなど</span>
+    <span>Go入門 (12) - Goで文字列を連結するいくつかの方法</span>
   </a>
 </nav>
 

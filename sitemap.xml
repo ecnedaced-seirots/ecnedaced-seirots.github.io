@@ -3,10 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2022-02-05T17:52:48+09:00</lastmod>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2022-02-05T17:52:48+09:00</lastmod>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/opencv/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/opencv/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/go/</loc>
     <lastmod>2022-02-05T17:52:48+09:00</lastmod>
@@ -15,12 +33,6 @@
     <lastmod>2022-02-05T17:52:48+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-append-string/</loc>
-    <lastmod>2022-02-05T17:52:48+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2022-02-05T17:52:48+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2022-02-05T17:52:48+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
@@ -92,9 +104,6 @@
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</loc>
     <lastmod>2022-01-30T10:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
-    <lastmod>2022-01-30T10:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</loc>
     <lastmod>2022-01-29T23:30:00+09:00</lastmod>
   </url><url>
@@ -106,12 +115,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</loc>
     <lastmod>2022-01-26T23:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/opencv/</loc>
-    <lastmod>2022-01-25T22:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/opencv/</loc>
-    <lastmod>2022-01-25T22:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</loc>
     <lastmod>2022-01-25T22:00:00+09:00</lastmod>
