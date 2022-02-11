@@ -149,6 +149,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>AWS CLIのページャを無効化する</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
+ configで設定  ~/.aws/configに以下記載する。
+[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&#34;&#34;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
+ </p>
+  </section>
+  <footer class="entry-footer">October 16, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>CloudWatchアラーム作成時のメモ（過去事例）</h2>
   </header>
   <section class="entry-content">
@@ -314,24 +328,6 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
   </section>
   <footer class="entry-footer">September 23, 2021</footer>
   <a class="entry-link" aria-label="post link to Firefox/Chromeでアドオンなし全画面キャプチャ" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Macで必須のショートカット3選</h2>
-  </header>
-  <section class="entry-content">
-    <p> 私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
-  フルスクリーン解除 control&#43; command &#43; F
-  アプリケーションの強制終了 command &#43; option &#43; esc
-  スクリーンショット command &#43; shift &#43; 3
-   それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない…
- 追記
-もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command &#43; D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command &#43; Shift &#43; D。3選といいつつ、思い出したらまた書くかもな…
- </p>
-  </section>
-  <footer class="entry-footer">September 18, 2021</footer>
-  <a class="entry-link" aria-label="post link to Macで必須のショートカット3選" href="https://ecnedaced-seirots.github.io/post/a/mac-shortcut/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

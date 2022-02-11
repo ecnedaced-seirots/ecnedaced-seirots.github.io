@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 10 Feb 2022 18:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Feb 2022 17:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>グリシン酸マグネシウムが入手困難！</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</link>
+      <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</guid>
+      <description>&lt;p&gt;数年前からずっと飲んできた、ソラレー社(Solaray)のマグネシウム・グリシネートが生産停止になってしまった。最後に購入したのは去年の11月だ。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Pythonの辞書・文字列変換とJSON処理</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</link>
@@ -754,7 +763,7 @@ SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる</descript
     </item>
     
     <item>
-      <title>タウリン(taurine)の効能いろいろ</title>
+      <title>タウリン(Taurine)の効能いろいろ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</link>
       <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
       
