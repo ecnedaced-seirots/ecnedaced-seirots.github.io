@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 12 Feb 2022 19:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 13 Feb 2022 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatch Agent: LinuxとWindowsの違い</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</link>
+      <pubDate>Sun, 13 Feb 2022 16:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</guid>
+      <description>&lt;p&gt;Amazon CloudWatch AgentはLinuxとWindowsでかなり仕組みが異なるところがあるので注意がいる。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>カナダ及び各国のFreedom Convoyに注目</title>
       <link>https://ecnedaced-seirots.github.io/post/b/freedom-convoy/</link>

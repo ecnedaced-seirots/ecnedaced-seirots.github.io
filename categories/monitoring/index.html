@@ -138,6 +138,18 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatch Agent: LinuxとWindowsの違い</h2>
+  </header>
+  <section class="entry-content">
+    <p>Amazon CloudWatch AgentはLinuxとWindowsでかなり仕組みが異なるところがあるので注意がいる。
+...</p>
+  </section>
+  <footer class="entry-footer">February 13, 2022</footer>
+  <a class="entry-link" aria-label="post link to CloudWatch Agent: LinuxとWindowsの違い" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>AWS Lambdaのログ監視方法を考えてみる</h2>
   </header>
   <section class="entry-content">
@@ -223,35 +235,6 @@ import base64 import json import zlib import datetime import os import boto3 fro
   </section>
   <footer class="entry-footer">November 14, 2021</footer>
   <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>AWS監視の方式を整理したい</h2>
-  </header>
-  <section class="entry-content">
-    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
-監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
-閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
-ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
-プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
-EC2上のプロセスを監視し自動復旧する
-CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
-AWSでプロセス監視を実装したい
-CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
-EC2のプロセス監視と自動再起動
- procstat事例
-以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
-CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
-  </section>
-  <footer class="entry-footer">November 7, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

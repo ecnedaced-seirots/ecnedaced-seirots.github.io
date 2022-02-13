@@ -138,6 +138,21 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Terraform loop処理の応用編</h2>
+  </header>
+  <section class="entry-content">
+    <p>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
+前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
+作業ディレクトリ構成
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) service_role_arn = var.deploy_role deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34; ec2_tag_set { ec2_tag_filter { key = &#34;Name&#34; type = &#34;KEY_AND_VALUE&#34; value = lookup(each....</p>
+  </section>
+  <footer class="entry-footer">December 5, 2021</footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の超シンプルな例</h2>
   </header>
   <section class="entry-content">
@@ -249,22 +264,6 @@ SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
   </section>
   <footer class="entry-footer">November 7, 2021</footer>
   <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
