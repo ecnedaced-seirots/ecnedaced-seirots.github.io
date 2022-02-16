@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 13 Feb 2022 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Feb 2022 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pythonで区切り文字の最後の要素を取得</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</link>
+      <pubDate>Wed, 16 Feb 2022 13:00:00 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</guid>
+      <description>&lt;p&gt;Pythonで、区切り文字の最後の要素を取得する。「要素」と言ってるのは、一旦リストにする必要があるため。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>CloudWatch Agent: LinuxとWindowsの違い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</link>
