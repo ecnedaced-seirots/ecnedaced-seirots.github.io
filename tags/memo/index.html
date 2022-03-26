@@ -138,6 +138,18 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>サクラエディタで先頭列を置換する</h2>
+  </header>
+  <section class="entry-content">
+    <p>サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。
+...</p>
+  </section>
+  <footer class="entry-footer">March 26, 2022</footer>
+  <a class="entry-link" aria-label="post link to サクラエディタで先頭列を置換する" href="https://ecnedaced-seirots.github.io/post/b/sakura-replace/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>MS Officeの邪魔なサジェストを無効にする</h2>
   </header>
   <section class="entry-content">
@@ -209,25 +221,6 @@ Hugo &#43; GitHub Pages &#43; GitHub Actions で独自ドメインのウェブ�
   </section>
   <footer class="entry-footer">October 23, 2021</footer>
   <a class="entry-link" aria-label="post link to Github Actionsメモ" href="https://ecnedaced-seirots.github.io/post/a/github-actions/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>MacにGNU版dateをインストール</h2>
-  </header>
-  <section class="entry-content">
-    <p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
-このままだとコマンドがgdateなので、gdateを&#34;date&#34;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
-Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- </p>
-  </section>
-  <footer class="entry-footer">October 18, 2021</footer>
-  <a class="entry-link" aria-label="post link to MacにGNU版dateをインストール" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

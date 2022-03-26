@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>「アメリカン★ドリーム」より (1) | Go Buddy Go</title>
-<meta name="keywords" content="literature, ryu murakami" />
-<meta name="description" content="村上龍初期エッセイ「アメリカン★ドリーム」より。">
+<title>サクラエディタで先頭列を置換する | Go Buddy Go</title>
+<meta name="keywords" content="memo, RWC" />
+<meta name="description" content="サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/sakura-replace/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="「アメリカン★ドリーム」より (1)" />
-<meta property="og:description" content="村上龍初期エッセイ「アメリカン★ドリーム」より。" />
+<meta property="og:title" content="サクラエディタで先頭列を置換する" />
+<meta property="og:description" content="サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-03-11T22:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-03-11T22:00:00&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/sakura-replace/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-03-26T10:43:37&#43;09:00" />
+<meta property="article:modified_time" content="2022-03-26T10:43:37&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="「アメリカン★ドリーム」より (1)"/>
-<meta name="twitter:description" content="村上龍初期エッセイ「アメリカン★ドリーム」より。"/>
+<meta name="twitter:title" content="サクラエディタで先頭列を置換する"/>
+<meta name="twitter:description" content="サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "「アメリカン★ドリーム」より (1)",
-      "item": "https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/"
+      "name": "サクラエディタで先頭列を置換する",
+      "item": "https://ecnedaced-seirots.github.io/post/b/sakura-replace/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "「アメリカン★ドリーム」より (1)",
-  "name": "「アメリカン★ドリーム」より (1)",
-  "description": "村上龍初期エッセイ「アメリカン★ドリーム」より。\n",
+  "headline": "サクラエディタで先頭列を置換する",
+  "name": "サクラエディタで先頭列を置換する",
+  "description": "サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。\n",
   "keywords": [
-    "literature", "ryu murakami"
+    "memo", "RWC"
   ],
-  "articleBody": "村上龍初期エッセイ「アメリカン★ドリーム」より。\n  進化の原動力となるのは、常に異端者、はじきとばされたもの達なんだ。要するに、環境に適応できないものが未来を背負うことになる。\n   ",
-  "wordCount" : "2",
+  "articleBody": "サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。\n 1. ファイル全体行をコメントアウトする Ctrl + Rで置換ボックスを開き、入力欄に以下を入力する。\n 置換前：^ 置換後: # （変換したい文字何でも）  下のチェックボックスで「正規表現」にチェックを入れ、「すべて置換」押下。\nこれでファイル全体の行頭に#が入る。\n 戻す時\n 置換前：^# 置換後: （何も入力しない）  同様に「すべて置換」で元に戻る。\n 2. ファイルの一部数行だけをコメントアウトする Altを押しながら、変更したい行の先頭1列分だけ選択する。\nその状態でshift + 「#」押下　-＞ 選択部分のみ#が投入される。\n 戻す時 Altを押しながら戻したい行の先頭1列分だけ選択する。その状態で「Backspace押下」で元に戻る\nあまり使わないと思うが、行末で同じことやりたかったら「$」。\n 参考\n【サクラエディタ】正規表現を使った置換で行頭、行末に文字列を追加する方法\n  ",
+  "wordCount" : "30",
   "inLanguage": "en",
-  "datePublished": "2022-03-11T22:00:00+09:00",
-  "dateModified": "2022-03-11T22:00:00+09:00",
+  "datePublished": "2022-03-26T10:43:37+09:00",
+  "dateModified": "2022-03-26T10:43:37+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/sakura-replace/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,21 +190,46 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      「アメリカン★ドリーム」より (1)
+      サクラエディタで先頭列を置換する
     </h1>
-    <div class="post-meta">March 11, 2022
+    <div class="post-meta">March 26, 2022
 </div>
   </header> 
-  <div class="post-content"><p>村上龍初期エッセイ「アメリカン★ドリーム」より。</p>
+  <div class="post-content"><p>サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。</p>
 <p> </p>
-<blockquote>
-<p>進化の原動力となるのは、常に異端者、はじきとばされたもの達なんだ。要するに、環境に適応できないものが未来を背負うことになる。</p>
-</blockquote>
+<h3 id="1-ファイル全体行をコメントアウトする">1. ファイル全体行をコメントアウトする<a hidden class="anchor" aria-hidden="true" href="#1-ファイル全体行をコメントアウトする">#</a></h3>
+<p>Ctrl + Rで置換ボックスを開き、入力欄に以下を入力する。</p>
+<ul>
+<li>置換前：^</li>
+<li>置換後: # （変換したい文字何でも）</li>
+</ul>
+<p>下のチェックボックスで「正規表現」にチェックを入れ、「すべて置換」押下。</p>
+<p>これでファイル全体の行頭に#が入る。</p>
+<p> </p>
+<p><strong>戻す時</strong></p>
+<ul>
+<li>置換前：^#</li>
+<li>置換後: （何も入力しない）</li>
+</ul>
+<p>同様に「すべて置換」で元に戻る。</p>
+<p> </p>
+<h3 id="2-ファイルの一部数行だけをコメントアウトする">2. ファイルの一部数行だけをコメントアウトする<a hidden class="anchor" aria-hidden="true" href="#2-ファイルの一部数行だけをコメントアウトする">#</a></h3>
+<p>Altを押しながら、変更したい行の先頭1列分だけ選択する。<br>
+その状態でshift + 「#」押下　-＞ 選択部分のみ#が投入される。</p>
+<p> </p>
+<p><strong>戻す時</strong>
+Altを押しながら戻したい行の先頭1列分だけ選択する。その状態で「Backspace押下」で元に戻る</p>
+<p>あまり使わないと思うが、行末で同じことやりたかったら「$」。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://it-rpa.hatenablog.com/entry/%E3%82%B5%E3%82%AF%E3%83%A9%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF_%E8%A1%8C%E9%A0%AD%E3%83%BB%E8%A1%8C%E6%9C%AB_%E6%96%87%E5%AD%97%E5%88%97%E8%BF%BD%E5%8A%A0">【サクラエディタ】正規表現を使った置換で行頭、行末に文字列を追加する方法</a></p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/sumida_liver_0003.jpg" alt="Tokyo"  />
+<p><img loading="lazy" src="/img/b/rwc2019-0921-01.JPG" alt="RWC2019"  />
 
-<img loading="lazy" src="/img/b/sumida_liver_0002.jpg" alt="Tokyo"  />
+<img loading="lazy" src="/img/b/rwc2019-0921-02.JPG" alt="RWC2019"  />
+
+<img loading="lazy" src="/img/b/rwc2019-0921-03.JPG" alt="RWC2019"  />
 </p>
 
     
@@ -213,34 +238,29 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/ryu-quotes-10/">「愛と幻想のファシズム」より(6)</a></li>
+      <li><a href="/post/b/ms-outlook-excel-disable-suggest/">MS Officeの邪魔なサジェストを無効にする</a></li>
     
-      <li><a href="/post/b/ryu-quotes-9/">村上龍 対談集「最前線」より</a></li>
+      <li><a href="/post/b/mac-files-setting/">Macでファイルをデフォルトで開くアプリを設定</a></li>
     
-      <li><a href="/post/b/ryu-quotes-8/">「愛と幻想のファシズム」より(6)</a></li>
+      <li><a href="/post/b/aws-create-nat-gateway/">AWS NATゲートウェイの作成と設定</a></li>
     
-      <li><a href="/post/b/ryu-quotes-7/">Coin Locker Babies-2, Ryu Murakami</a></li>
+      <li><a href="/post/a/python-package-localinstall/">Pythonライブラリのローカルインストール方法</a></li>
     
-      <li><a href="/post/b/ryu-quotes-6/">Coin Locker Babies-1, Ryu Murakami</a></li>
+      <li><a href="/post/a/mac-python3-re-install/">MacにPython3を再インストール</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/literature/">literature</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/ryu-murakami/">ryu murakami</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/rwc/">RWC</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/sakura-replace/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>サクラエディタで先頭列を置換する</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/travel-0001/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/">
     <span class="title">Next Page »</span>
     <br>
-    <span>小休止</span>
+    <span>「アメリカン★ドリーム」より (1)</span>
   </a>
 </nav>
 
