@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Chrome on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/chrome/</link>
+    <description>Recent content in Chrome on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Thu, 23 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/chrome/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Firefox/Chromeでアドオンなし全画面キャプチャ</title>
+      <link>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</link>
+      <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</guid>
+      <description>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
+Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
+&amp;hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
+Chromeの場合 Chromeでやる場合は一手間増える。
+Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</description>
+    </item>
+    
+  </channel>
+</rss>
