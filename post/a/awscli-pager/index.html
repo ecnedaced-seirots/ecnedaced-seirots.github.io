@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>AWS CLIのページャを無効化する | Go Buddy Go</title>
-<meta name="keywords" content="memo, AWS, aws cli" />
+<meta name="keywords" content="memo, AWS, aws cli, RWC" />
 <meta name="description" content="AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
  configで設定  ~/.aws/configに以下記載する。
 [default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&quot;&quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
@@ -70,7 +70,7 @@
   "name": "AWS CLIのページャを無効化する",
   "description": "AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。\n configで設定  ~/.aws/configに以下記載する。\n[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=\u0026quot;\u0026quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。\n ",
   "keywords": [
-    "memo", "AWS", "aws cli"
+    "memo", "AWS", "aws cli", "RWC"
   ],
   "articleBody": "AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。\n configで設定  ~/.aws/configに以下記載する。\n[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=\"\"  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。\n ",
   "wordCount" : "12",
@@ -249,6 +249,7 @@ cli_pager=
       <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws-cli/">aws cli</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/rwc/">RWC</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/">
