@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>BCN on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
+    <description>Recent content in BCN on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 04 Apr 2022 20:56:07 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/bcn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>
+      <pubDate>Mon, 04 Apr 2022 20:56:07 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</guid>
+      <description>&lt;p&gt;TerraformでCodePipeline作成する時のオプション&amp;quot;PollForSourceChanges&amp;quot;の注意点。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

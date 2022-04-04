@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>リモートデスクトップのショートカット | Go Buddy Go</title>
-<meta name="keywords" content="memo" />
-<meta name="description" content="ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。">
+<title>TerraformでCodePipeline - PollForSourceChangesの注意 | Go Buddy Go</title>
+<meta name="keywords" content="terraform, CodePipeline, BCN" />
+<meta name="description" content="TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/rdp-connect/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="リモートデスクトップのショートカット" />
-<meta property="og:description" content="ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。" />
+<meta property="og:title" content="TerraformでCodePipeline - PollForSourceChangesの注意" />
+<meta property="og:description" content="TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/rdp-connect/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-04-01T14:59:44&#43;09:00" />
-<meta property="article:modified_time" content="2022-04-01T14:59:44&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-04-04T20:56:07&#43;09:00" />
+<meta property="article:modified_time" content="2022-04-04T20:56:07&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="リモートデスクトップのショートカット"/>
-<meta name="twitter:description" content="ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。"/>
+<meta name="twitter:title" content="TerraformでCodePipeline - PollForSourceChangesの注意"/>
+<meta name="twitter:description" content="TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "リモートデスクトップのショートカット",
-      "item": "https://ecnedaced-seirots.github.io/post/b/rdp-connect/"
+      "name": "TerraformでCodePipeline - PollForSourceChangesの注意",
+      "item": "https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "リモートデスクトップのショートカット",
-  "name": "リモートデスクトップのショートカット",
-  "description": "ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。\n",
+  "headline": "TerraformでCodePipeline - PollForSourceChangesの注意",
+  "name": "TerraformでCodePipeline - PollForSourceChangesの注意",
+  "description": "TerraformでCodePipeline作成する時のオプション\u0026quot;PollForSourceChanges\u0026quot;の注意点。\n",
   "keywords": [
-    "memo"
+    "terraform", "CodePipeline", "BCN"
   ],
-  "articleBody": "ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。\n Windowsキー + R で、mstsc 入力\n  ",
-  "wordCount" : "6",
+  "articleBody": "TerraformでCodePipeline作成する時のオプション\"PollForSourceChanges\"の注意点。\nソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。\n 以下は以前の投稿 Terraform loop処理の応用編(2) - CI/CD にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。\n #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"false\" #ここに注意！ RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } }  EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、PollForSourceChanges = \"true\" だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である…。(なんか変だなと思いつつ放置してた)\n  ",
+  "wordCount" : "147",
   "inLanguage": "en",
-  "datePublished": "2022-04-01T14:59:44+09:00",
-  "dateModified": "2022-04-01T14:59:44+09:00",
+  "datePublished": "2022-04-04T20:56:07+09:00",
+  "dateModified": "2022-04-04T20:56:07+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/rdp-connect/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,17 +190,75 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      リモートデスクトップのショートカット
+      TerraformでCodePipeline - PollForSourceChangesの注意
     </h1>
-    <div class="post-meta">April 1, 2022
+    <div class="post-meta">April 4, 2022
 </div>
   </header> 
-  <div class="post-content"><p>ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。</p>
+  <div class="post-content"><p>TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。</p>
+<p>ソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。</p>
 <p> </p>
-<p>Windowsキー + R で、mstsc 入力</p>
+<p>以下は以前の投稿 <a href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a> にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。</p>
+<p> </p>
+<pre><code>####################################
+# CodePipeline
+####################################
+
+resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
+  for_each = var.pipeline_param_list
+
+  name     = lookup(each.value, &quot;name&quot;)
+  role_arn = var.pipeline_role
+  artifact_store {
+    location = var.bucket
+    type     = &quot;S3&quot;
+  }
+  stage {
+    name = &quot;Source&quot;
+    action {
+      category        = &quot;Source&quot;
+      configuration   = {
+        BranchName          = &quot;master&quot;
+        PollForSourceChanges = &quot;false&quot; #ここに注意！
+        RepositoryName      = lookup(each.value, &quot;repository_name&quot;)
+      }
+      input_artifacts = []
+      name            = &quot;Source&quot;
+      namespace       = &quot;SourceVariables&quot;
+      output_artifacts = [&quot;SourceArtifact&quot;]
+      owner           = &quot;AWS&quot;
+      provider        = &quot;CodeCommit&quot;
+      region          = var.region
+      run_order       = 1
+      version         = &quot;1&quot;
+    }
+  }
+  stage {
+    name = &quot;Deploy&quot;
+    action {
+      category        = &quot;Deploy&quot;
+      configuration   = {
+        ApplicationName     = lookup(each.value, &quot;app_name&quot;)
+        DeploymentGroupName = lookup(each.value, &quot;deployment_group_name&quot;)
+      }
+      input_artifacts = [&quot;SourceArtifact&quot;]
+      name            = &quot;Deploy&quot;
+      namespace       = &quot;DeployVariables&quot;
+      output_artifacts = []
+      owner           = &quot;AWS&quot;
+      provider        = &quot;CodeDeploy&quot;
+      region          = var.region
+      run_order       = 1
+      version         = &quot;1&quot;
+    }
+  }
+}
+
+</code></pre><p> </p>
+<p>EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、<code>PollForSourceChanges = &quot;true&quot; </code>だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である&hellip;。(なんか変だなと思いつつ放置してた)</p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/gokokuji_0006.JPG" alt="Tokyo"  />
+<p><img loading="lazy" src="/img/b/bcn_114.jpg" alt="Travel"  />
 </p>
 
     
@@ -209,33 +267,30 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/firefox-show-source/">Firefoxでソースを表示</a></li>
+      <li><a href="/post/a/terraform-loop-example-4/">Terraform loop処理の応用編(3) - Event rule</a></li>
     
-      <li><a href="/post/b/sakura-replace/">サクラエディタで先頭列を置換する</a></li>
+      <li><a href="/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a></li>
     
-      <li><a href="/post/b/ms-outlook-excel-disable-suggest/">MS Officeの邪魔なサジェストを無効にする</a></li>
+      <li><a href="/post/b/aws-codedeploy-vpc-endpoint/">AWS CodeDeployでVPCエンドポイント使用時の注意</a></li>
     
-      <li><a href="/post/b/mac-files-setting/">Macでファイルをデフォルトで開くアプリを設定</a></li>
+      <li><a href="/post/b/terraform-ec2-ami/">Terraform - EC2インスタンス作成時のAMI参照</a></li>
     
-      <li><a href="/post/b/aws-create-nat-gateway/">AWS NATゲートウェイの作成と設定</a></li>
+      <li><a href="/post/b/aws-codedeploy-tips/">AWS CodeDeploy備忘録</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/codepipeline/">CodePipeline</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/bcn/">BCN</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>TerraformでCodePipeline - PollForSourceChangesの注意</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/firefox-show-source/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/rdp-connect/">
     <span class="title">Next Page »</span>
     <br>
-    <span>Firefoxでソースを表示</span>
+    <span>リモートデスクトップのショートカット</span>
   </a>
 </nav>
 
