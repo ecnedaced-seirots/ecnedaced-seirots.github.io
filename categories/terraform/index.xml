@@ -6,7 +6,16 @@
     <description>Recent content in Terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 04 Apr 2022 20:56:07 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 15:19:11 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformでCodePipeline - 要追加作業</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
+      <pubDate>Wed, 06 Apr 2022 15:19:11 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</guid>
+      <description>&lt;p&gt;TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>

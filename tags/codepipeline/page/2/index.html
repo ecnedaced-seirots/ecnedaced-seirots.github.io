@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Go Buddy Go</title>
-
+<title>CodePipeline | Go Buddy Go</title>
+<meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/codepipeline/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -19,30 +19,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/index.xml">
-<link rel="alternate" type="application/json" href="https://ecnedaced-seirots.github.io/index.json">
-<meta property="og:title" content="" />
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/codepipeline/index.xml">
+<meta property="og:title" content="CodePipeline" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/codepipeline/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
+<meta name="twitter:title" content="CodePipeline"/>
 <meta name="twitter:description" content=""/>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Go Buddy Go",
-  "url": "https://ecnedaced-seirots.github.io/",
-  "description": "",
-  "thumbnailUrl": "https://ecnedaced-seirots.github.io/favicon.ico",
-  "sameAs": [
-      
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -146,105 +132,48 @@
     </nav>
 </header>
 <main class="main"> 
+<header class="page-header">
+  <h1>CodePipeline</h1>
+</header>
 
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>AWS Lambda関数をダウンロードする</h2>
+    <h2>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</h2>
   </header>
   <section class="entry-content">
-    <p>AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。
-...</p>
+    <p>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
+ やりたいこと
+AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい…）
+ 主な参考ページ
+他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
+ 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
+クロスアカウントCodeBuild &#43; パイプライン例
+CodePipelineでアカウントをまたいだパイプラインを作成してみる
+ 制約事項
+ クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+1-資材配布元（アカウントA）
+① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
+② KMSキー (両方のアカウントにアクセス許可する)
+③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
+④ CodePipelineが使用するサービスロール
+⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
+JSON取得コマンド
+$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json  2-資材配布先（アカウントB）
+① CodeDeploy定義（アプリケーション/デプロイメントグループ）
+② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
+③ ②のIAMロールをアタッチしたデプロイ先ec2
+④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
+ 作業概要 上記各リソースを作成済として、以下の作業を行う。
+アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名]....</p>
   </section>
-  <footer class="entry-footer">December 26, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWS Lambda関数をダウンロードする" href="https://ecnedaced-seirots.github.io/post/a/lambda-function-export/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</h2>
-  </header>
-  <section class="entry-content">
-    <p>過去に類似のテーマで、CloudTrailによるイベント監視 &#43; 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。
-...</p>
-  </section>
-  <footer class="entry-footer">December 26, 2021</footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>飛行機画像ブログのリンク集</h2>
-  </header>
-  <section class="entry-content">
-    <p>I miss the aiport and airplane vibes.
-...</p>
-  </section>
-  <footer class="entry-footer">December 25, 2021</footer>
-  <a class="entry-link" aria-label="post link to 飛行機画像ブログのリンク集" href="https://ecnedaced-seirots.github.io/post/a/aviation-blog/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>英語メモ - murmur</h2>
-  </header>
-  <section class="entry-content">
-    <p>murmur：ぶつぶつ言う、不満をつぶやく
-類：grumble
-“Zazie in the Metro”(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。
- </p>
-  </section>
-  <footer class="entry-footer">December 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to 英語メモ - murmur" href="https://ecnedaced-seirots.github.io/post/a/english-murmur/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>「愛と幻想のファシズム」より(3)</h2>
-  </header>
-  <section class="entry-content">
-    <p>村上龍著「愛と幻想のファシズム」より
-  俺達は何も知らない。快楽もない。十万人の哀れな日本人が俺を恐れ、あがめるのは、俺が日本人の中では、生態系の情報と快楽を知っているからだ。
-...</p>
-  </section>
-  <footer class="entry-footer">December 23, 2021</footer>
-  <a class="entry-link" aria-label="post link to 「愛と幻想のファシズム」より(3)" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatch LogsからS3にエクスポート(Lambda/Python)</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
-参考
-boto3 API Reference
-LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] }  Lambdaコード(Python3....</p>
-  </section>
-  <footer class="entry-footer">December 19, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatch LogsからS3にエクスポート(Lambda/Python)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>「愛と幻想のファシズム」より(2)</h2>
-  </header>
-  <section class="entry-content">
-    <p>村上龍著「愛と幻想のファシズム」より
-  強者は嫌われない。ゴミのような人間達は、強者と同化したがるのだ。
-...</p>
-  </section>
-  <footer class="entry-footer">December 18, 2021</footer>
-  <a class="entry-link" aria-label="post link to 「愛と幻想のファシズム」より(2)" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-2/"></a>
+  <footer class="entry-footer">October 3, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="https://ecnedaced-seirots.github.io/page/8/">« Prev Page</a>
-    <a class="next" href="https://ecnedaced-seirots.github.io/page/10/">Next Page »</a>
+    <a class="prev" href="https://ecnedaced-seirots.github.io/tags/codepipeline/">« Prev Page</a>
   </nav>
 </footer>
     </main>
