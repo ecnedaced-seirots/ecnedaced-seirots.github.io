@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>TerraformでCodePipeline - 要追加作業 | Go Buddy Go</title>
-<meta name="keywords" content="terraform, CodePipeline, BCN" />
-<meta name="description" content="TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。">
+<title>Gitで所定のリソースを管理対象外にする | Go Buddy Go</title>
+<meta name="keywords" content="git, memo" />
+<meta name="description" content="Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/git-reset-tips/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="TerraformでCodePipeline - 要追加作業" />
-<meta property="og:description" content="TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。" />
+<meta property="og:title" content="Gitで所定のリソースを管理対象外にする" />
+<meta property="og:description" content="Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-04-06T15:19:11&#43;09:00" />
-<meta property="article:modified_time" content="2022-04-06T15:19:11&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/git-reset-tips/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-04-06T19:16:37&#43;09:00" />
+<meta property="article:modified_time" content="2022-04-06T19:16:37&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="TerraformでCodePipeline - 要追加作業"/>
-<meta name="twitter:description" content="TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。"/>
+<meta name="twitter:title" content="Gitで所定のリソースを管理対象外にする"/>
+<meta name="twitter:description" content="Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "TerraformでCodePipeline - 要追加作業",
-      "item": "https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/"
+      "name": "Gitで所定のリソースを管理対象外にする",
+      "item": "https://ecnedaced-seirots.github.io/post/b/git-reset-tips/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "TerraformでCodePipeline - 要追加作業",
-  "name": "TerraformでCodePipeline - 要追加作業",
-  "description": "TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。\n",
+  "headline": "Gitで所定のリソースを管理対象外にする",
+  "name": "Gitで所定のリソースを管理対象外にする",
+  "description": "Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。\n",
   "keywords": [
-    "terraform", "CodePipeline", "BCN"
+    "git", "memo"
   ],
-  "articleBody": "TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。\nAWSで、マネコンからリソース作成する時は必要なコネタ系リソースが裏で自動で設定されるが、API経由だとやってもらえないから関連する設定を記述する必要がある、というのはこれに限らずよくあること。これもそのひとつ。\nで、やることは。\n TerraformによりCodePipeline作成後：\n マネコン画面でパイプラインを選択 画面上部「編集」押下 何もせずに、画面上部「保存」押下 「パイプラインの変更を保存する」ポップアップ画面にて、「保存」押下\n#画面上部に「パイプラインが正常に保存されました。」メッセージが表示される。   これをパイプラインの数だけ繰り返す。ということで意味不明なんだが、とにかくやるんだ。\n  ",
-  "wordCount" : "10",
+  "articleBody": "Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。\nこの段階で.gitignoreに書いても反映されないので、以下で対処。\n 1. コミット済みのリソースを管理対象外にする リポジトリ内で以下コマンド実行。\n$ git rm -cached ファイル名 $ git rm -cached -r ディレクトリ名  この後コミットする。もちろん.gitignoreにも書いておこう。\n 2. git addの取り消し まだコミットはしておらず、git addしただけのタイミングでは以下で対処。\n$ git reset ファイル名 $ git reset /ディレクトリ名/  ただし、一番最初に実行したgit addを取り消すには 1.と同様に git rm --cached xxxx を使うことになる。（レポジトリ内にリセット対象が存在しないため）\n 気をつけているつもりでも、特に一番最初のタイミングは「うっかり」やっちゃいがちなんだよな。\n 参考\ngit add の取り消し方法と、関連コマンドまとめ\n  ",
+  "wordCount" : "43",
   "inLanguage": "en",
-  "datePublished": "2022-04-06T15:19:11+09:00",
-  "dateModified": "2022-04-06T15:19:11+09:00",
+  "datePublished": "2022-04-06T19:16:37+09:00",
+  "dateModified": "2022-04-06T19:16:37+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/git-reset-tips/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,28 +190,39 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      TerraformでCodePipeline - 要追加作業
+      Gitで所定のリソースを管理対象外にする
     </h1>
     <div class="post-meta">April 6, 2022
 </div>
   </header> 
-  <div class="post-content"><p>TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。</p>
-<p>AWSで、マネコンからリソース作成する時は必要なコネタ系リソースが裏で自動で設定されるが、API経由だとやってもらえないから関連する設定を記述する必要がある、というのはこれに限らずよくあること。これもそのひとつ。</p>
-<p>で、やることは。</p>
+  <div class="post-content"><p>Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。</p>
+<p>この段階で.gitignoreに書いても反映されないので、以下で対処。</p>
 <p> </p>
-<p>TerraformによりCodePipeline作成後：</p>
-<ol>
-<li>マネコン画面でパイプラインを選択</li>
-<li>画面上部「編集」押下</li>
-<li>何もせずに、画面上部「保存」押下</li>
-<li>「パイプラインの変更を保存する」ポップアップ画面にて、「保存」押下<br>
-#画面上部に「パイプラインが正常に保存されました。」メッセージが表示される。</li>
-</ol>
+<h3 id="1-コミット済みのリソースを管理対象外にする">1. コミット済みのリソースを管理対象外にする<a hidden class="anchor" aria-hidden="true" href="#1-コミット済みのリソースを管理対象外にする">#</a></h3>
+<p>リポジトリ内で以下コマンド実行。</p>
+<pre><code>$ git rm -cached ファイル名
+
+$ git rm -cached -r ディレクトリ名
+</code></pre><p> </p>
+<p>この後コミットする。もちろん.gitignoreにも書いておこう。</p>
 <p> </p>
-<p>これをパイプラインの数だけ繰り返す。ということで意味不明なんだが、とにかくやるんだ。</p>
+<h3 id="2-git-addの取り消し">2. git addの取り消し<a hidden class="anchor" aria-hidden="true" href="#2-git-addの取り消し">#</a></h3>
+<p>まだコミットはしておらず、git addしただけのタイミングでは以下で対処。</p>
+<pre><code>$ git reset ファイル名
+
+$ git reset /ディレクトリ名/
+</code></pre><p> </p>
+<p>ただし、一番最初に実行したgit addを取り消すには 1.と同様に <code>git rm --cached xxxx</code> を使うことになる。（レポジトリ内にリセット対象が存在しないため）</p>
+<p> </p>
+<p>気をつけているつもりでも、特に一番最初のタイミングは「うっかり」やっちゃいがちなんだよな。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://www-creators.com/archives/1282">git add の取り消し方法と、関連コマンドまとめ</a></p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/bcn_113.jpg" alt="BCN"  />
+<p><img loading="lazy" src="/img/b/numazu_0006.JPG" alt="Travel"  />
+
+<img loading="lazy" src="/img/b/numazu_0007.JPG" alt="Travel"  />
 </p>
 
     
@@ -220,35 +231,29 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/terraform-codepipeline-memo/">TerraformでCodePipeline - PollForSourceChangesの注意</a></li>
+      <li><a href="/post/b/rdp-connect/">リモートデスクトップのショートカット</a></li>
     
-      <li><a href="/post/a/terraform-loop-example-4/">Terraform loop処理の応用編(3) - Event rule</a></li>
+      <li><a href="/post/b/firefox-show-source/">Firefoxでソースを表示</a></li>
     
-      <li><a href="/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a></li>
+      <li><a href="/post/b/sakura-replace/">サクラエディタで先頭列を置換する</a></li>
     
-      <li><a href="/post/b/aws-codedeploy-vpc-endpoint/">AWS CodeDeployでVPCエンドポイント使用時の注意</a></li>
+      <li><a href="/post/b/ms-outlook-excel-disable-suggest/">MS Officeの邪魔なサジェストを無効にする</a></li>
     
-      <li><a href="/post/b/terraform-ec2-ami/">Terraform - EC2インスタンス作成時のAMI参照</a></li>
+      <li><a href="/post/b/mac-files-setting/">Macでファイルをデフォルトで開くアプリを設定</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/codepipeline/">CodePipeline</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/bcn/">BCN</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/git/">git</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/git-reset-tips/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>Gitで所定のリソースを管理対象外にする</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/">
     <span class="title">Next Page »</span>
     <br>
-    <span>TerraformでCodePipeline - PollForSourceChangesの注意</span>
+    <span>TerraformでCodePipeline - 要追加作業</span>
   </a>
 </nav>
 
