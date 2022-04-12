@@ -63,8 +63,8 @@
   "keywords": [
     "git", "memo"
   ],
-  "articleBody": "Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。\nこの段階で.gitignoreに書いても反映されないので、以下で対処。\n 1. コミット済みのリソースを管理対象外にする リポジトリ内で以下コマンド実行。\n$ git rm -cached ファイル名 $ git rm -cached -r ディレクトリ名  この後コミットする。もちろん.gitignoreにも書いておこう。\n 2. git addの取り消し まだコミットはしておらず、git addしただけのタイミングでは以下で対処。\n$ git reset ファイル名 $ git reset /ディレクトリ名/  ただし、一番最初に実行したgit addを取り消すには 1.と同様に git rm --cached xxxx を使うことになる。（レポジトリ内にリセット対象が存在しないため）\n 気をつけているつもりでも、特に一番最初のタイミングは「うっかり」やっちゃいがちなんだよな。\n 参考\ngit add の取り消し方法と、関連コマンドまとめ\n  ",
-  "wordCount" : "43",
+  "articleBody": "Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。\nこの段階で.gitignoreに書いても反映されないので、以下で対処。\n 1. コミット済みのリソースを管理対象外にする リポジトリ内で以下コマンド実行。\n$ git rm -cached ファイル名 $ git rm -cached -r ディレクトリ名  この後コミットする。もちろん.gitignoreにも書いておこう。\n 2. git addの取り消し まだコミットはしておらず、git addしただけのタイミングでは以下で対処。\n$ git reset ファイル名 $ git reset /ディレクトリ名/  ただし、一番最初に実行したgit addを取り消すには 1.と同様に git rm --cached xxxx を使うことになる。（レポジトリ内にリセット対象が存在しないため）\n気をつけているつもりでも、特に一番最初のタイミングは「うっかり」やっちゃいがちなんだよな。\n参考\ngit add の取り消し方法と、関連コマンドまとめ\n ついでに.gitignoreの書き方。\n.gitignore\n# ディレクトリを無視 /ディレクトリ名/ # ファイルを無視 /ファイル名  先頭のスラッシュなしでファイル名のみ記述した場合、どのディレクトリかは問わない。スラッシュをつけた場合、.gitignoreが存在するディレクトリ内のファイルが対象となる。ワイルドカードや正規表現も使用可能。\n  ",
+  "wordCount" : "52",
   "inLanguage": "en",
   "datePublished": "2022-04-06T19:16:37+09:00",
   "dateModified": "2022-04-06T19:16:37+09:00",
@@ -213,11 +213,19 @@ $ git rm -cached -r ディレクトリ名
 $ git reset /ディレクトリ名/
 </code></pre><p> </p>
 <p>ただし、一番最初に実行したgit addを取り消すには 1.と同様に <code>git rm --cached xxxx</code> を使うことになる。（レポジトリ内にリセット対象が存在しないため）</p>
-<p> </p>
 <p>気をつけているつもりでも、特に一番最初のタイミングは「うっかり」やっちゃいがちなんだよな。</p>
-<p> </p>
 <p>参考<br>
 <a href="https://www-creators.com/archives/1282">git add の取り消し方法と、関連コマンドまとめ</a></p>
+<p> </p>
+<p>ついでに.gitignoreの書き方。</p>
+<p>.gitignore</p>
+<pre><code># ディレクトリを無視
+/ディレクトリ名/
+
+# ファイルを無視
+/ファイル名
+</code></pre><p> </p>
+<p>先頭のスラッシュなしでファイル名のみ記述した場合、どのディレクトリかは問わない。スラッシュをつけた場合、.gitignoreが存在するディレクトリ内のファイルが対象となる。ワイルドカードや正規表現も使用可能。</p>
 <p> </p>
 <p> </p>
 <p><img loading="lazy" src="/img/b/numazu_0006.JPG" alt="Travel"  />
@@ -250,6 +258,11 @@ $ git reset /ディレクトリ名/
       <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-12/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>「愛と幻想のファシズム」より(8)</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/">
     <span class="title">Next Page »</span>
     <br>

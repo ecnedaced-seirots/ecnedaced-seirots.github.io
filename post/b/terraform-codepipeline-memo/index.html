@@ -63,8 +63,8 @@
   "keywords": [
     "terraform", "CodePipeline", "BCN"
   ],
-  "articleBody": "TerraformでCodePipeline作成する時のオプション\"PollForSourceChanges\"の注意点。\nソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。\n 以下は以前の投稿 Terraform loop処理の応用編(2) - CI/CD にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。\n #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"false\" #ここに注意！ RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } }  EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、PollForSourceChanges = \"true\" だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である…。(なんか変だなと思いつつ放置してた)\n  ",
-  "wordCount" : "147",
+  "articleBody": "TerraformでCodePipeline作成する時のオプション\"PollForSourceChanges\"の注意点。\nソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。\n 以下は以前の投稿 Terraform loop処理の応用編(2) - CI/CD にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。\n #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"false\" #ここに注意！ RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } }  EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、PollForSourceChanges = \"true\" だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である…。(なんか変だなと思いつつ放置してた)\n （追記） もうひとつ注意点あり。PollForSourceChanges = \"false\" にしてTerraformでパイプラインを作成した。これで二重実行はなくなるはずだ！と思いきや、そうではなかった。まだデプロイが重複している。パイプラインの履歴画面を見ると、同一のコミットに対してEventBridgeが二つ存在する。パラメータを変更したことにより、AWS側が勝手に判断してイベントルールを自動生成したのである。親切でやってるんだろうけどね…、このマネージドルールを削除後にデプロイしたところ、やっと期待値になった。（デプロイは一回のみ）\n今書いてて思い出したけど、このマネージドルールに紐づくIAMロールも自動生成されるはず。そっちも削除する必要があるな。あぁ、面倒くさい。\n ",
+  "wordCount" : "153",
   "inLanguage": "en",
   "datePublished": "2022-04-04T20:56:07+09:00",
   "dateModified": "2022-04-04T20:56:07+09:00",
@@ -257,6 +257,9 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
 </code></pre><p> </p>
 <p>EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、<code>PollForSourceChanges = &quot;true&quot; </code>だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である&hellip;。(なんか変だなと思いつつ放置してた)</p>
 <p> </p>
+<p>（追記）
+もうひとつ注意点あり。<code>PollForSourceChanges = &quot;false&quot;</code> にしてTerraformでパイプラインを作成した。これで二重実行はなくなるはずだ！と思いきや、そうではなかった。まだデプロイが重複している。パイプラインの履歴画面を見ると、同一のコミットに対してEventBridgeが二つ存在する。パラメータを変更したことにより、AWS側が勝手に判断してイベントルールを自動生成したのである。親切でやってるんだろうけどね&hellip;、このマネージドルールを削除後にデプロイしたところ、やっと期待値になった。（デプロイは一回のみ）</p>
+<p>今書いてて思い出したけど、このマネージドルールに紐づくIAMロールも自動生成されるはず。そっちも削除する必要があるな。あぁ、面倒くさい。</p>
 <p> </p>
 <p><img loading="lazy" src="/img/b/bcn_114.jpg" alt="Travel"  />
 </p>
@@ -271,11 +274,11 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
     
       <li><a href="/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a></li>
     
+      <li><a href="/post/b/english-glad-to/">英語メモ - I&#39;d be glad to.</a></li>
+    
       <li><a href="/post/b/aws-codedeploy-vpc-endpoint/">AWS CodeDeployでVPCエンドポイント使用時の注意</a></li>
     
       <li><a href="/post/b/terraform-ec2-ami/">Terraform - EC2インスタンス作成時のAMI参照</a></li>
-    
-      <li><a href="/post/b/aws-codedeploy-tips/">AWS CodeDeploy備忘録</a></li>
     
   </ul>
 
