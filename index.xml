@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 21 Apr 2022 00:24:25 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Apr 2022 18:18:09 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SNSメトリクスの監視を作成するTerraformコード</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
+      <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</guid>
+      <description>&lt;p&gt;AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>今後、周波数・量子物理学周辺に注目したい</title>
       <link>https://ecnedaced-seirots.github.io/post/b/quantal-physics-frequency/</link>

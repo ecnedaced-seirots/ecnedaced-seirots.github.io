@@ -6,7 +6,16 @@
     <description>Recent content in BCN on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 06 Apr 2022 15:19:11 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/bcn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Apr 2022 18:18:09 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/bcn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SNSメトリクスの監視を作成するTerraformコード</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
+      <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</guid>
+      <description>&lt;p&gt;AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>TerraformでCodePipeline - 要追加作業</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
