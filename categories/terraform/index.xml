@@ -6,7 +6,16 @@
     <description>Recent content in Terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 29 Apr 2022 18:18:09 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 May 2022 11:44:04 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TerraformでCodePipeline - PollForSourceChangesの注意(2)</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</link>
+      <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</guid>
+      <description>&lt;p&gt;TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>SNSメトリクスの監視を作成するTerraformコード</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
