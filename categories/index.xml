@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 27 May 2022 11:22:42 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 May 2022 18:01:35 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wave</title>
+      <link>https://ecnedaced-seirots.github.io/categories/wave/</link>
+      <pubDate>Sat, 28 May 2022 18:01:35 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/wave/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Monitoring</title>
       <link>https://ecnedaced-seirots.github.io/categories/monitoring/</link>
@@ -31,15 +40,6 @@
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Wave</title>
-      <link>https://ecnedaced-seirots.github.io/categories/wave/</link>
-      <pubDate>Thu, 21 Apr 2022 00:24:25 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/wave/</guid>
       <description></description>
     </item>
     

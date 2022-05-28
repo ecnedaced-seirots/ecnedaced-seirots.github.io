@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 27 May 2022 11:22:42 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 May 2022 18:01:35 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BCN</title>
+      <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
+      <pubDate>Sat, 28 May 2022 18:01:35 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/bcn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vibes</title>
+      <link>https://ecnedaced-seirots.github.io/tags/vibes/</link>
+      <pubDate>Sat, 28 May 2022 18:01:35 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/vibes/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
@@ -62,15 +80,6 @@
     </item>
     
     <item>
-      <title>BCN</title>
-      <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
-      <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/bcn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>CodePipeline</title>
       <link>https://ecnedaced-seirots.github.io/tags/codepipeline/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
@@ -94,15 +103,6 @@
       <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatch/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vibes</title>
-      <link>https://ecnedaced-seirots.github.io/tags/vibes/</link>
-      <pubDate>Thu, 21 Apr 2022 00:24:25 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/vibes/</guid>
       <description></description>
     </item>
     
