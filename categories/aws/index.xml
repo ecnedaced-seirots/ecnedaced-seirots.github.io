@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Tips on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
-    <description>Recent content in Tips on Go Buddy Go</description>
+    <title>AWS on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/aws/</link>
+    <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 09 Sep 2022 22:52:50 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Sep 2022 22:52:50 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>
