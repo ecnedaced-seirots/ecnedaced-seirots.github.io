@@ -6,7 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 09 Sep 2022 22:52:50 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Dec 2022 15:40:13 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</link>
+      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
+      <description>&lt;p&gt;約1年前の記事 &lt;a href=&#34;https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/&#34;&gt;CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)&lt;/a&gt; の改良版の話。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>

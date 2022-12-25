@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3) | Go Buddy Go</title>
+<meta name="keywords" content="monitoring, cloudwatch, cloudwachlogs, lambda, amazon sns, AWS" />
+<meta name="description" content="約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2) の改良版の話。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.87.0" />
+<meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)" />
+<meta property="og:description" content="約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2) の改良版の話。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-25T15:40:13&#43;09:00" />
+<meta property="article:modified_time" content="2022-12-25T15:40:13&#43;09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)"/>
+<meta name="twitter:description" content="約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2) の改良版の話。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(3)",
+      "item": "https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(3)",
+  "name": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ \u002b Lambdaでメール送信(3)",
+  "description": "約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2) の改良版の話。\n",
+  "keywords": [
+    "monitoring", "cloudwatch", "cloudwachlogs", "lambda", "amazon sns", "AWS"
+  ],
+  "articleBody": "約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2) の改良版の話。\n  ログ監視用コードはループさせない\n上記投稿を書いた当時はログイベント全てをメール通知する方式だったが、これだと類似の通知メールが大量に飛んでしまい、抑止した方がいいのでは…という流れになった。通知は最初の一回だけ、に変更した。運用上はこれで要件は満たせるという判断。これが正しいということではなく、現場の方針次第。以下記事のコメント欄で指摘されている対応は、逆にやめることになった。  cloudwatchlogs - lambda - SNSを試してみた\n Lambda自体のログにトリガー元を記録する\n別途Lambda自体のログについて。Lambda自体のログはエラーが出たか否かと発生時刻くらいしか情報を吐かない。設計上複数のイベントを一つのLambda関数に連携する想定なので、そのままだとLambda関数のInvoke時のトリガーが不明で調査が困難になる（ログ監視でもリソース、メトリクス監視でも）  そのため、Lambdaコード自体のログに、トリガー元のロググループ名を出力させることにした。（アラームならアラーム名）\nメッセージ全量を吐かせてもいいがそうするとLambda自体に問題がなくてもLambdaのログにErrorなどの文字が含まれてしまい、ややこしくなる。ログも肥大化する。（大した量ではないとはいえ）このためメッセージ全量については「普段はコメントしておいて、デバッグ時のみコメントを外す」運用とした。\n 追加した内容\nデバッグ用に、メッセージ全量出力。必要時だけコメントを外す\nlog_message= log_json['message'] #print('LogMessage: ', log_message)  ロググループ名を出力。これは常時適用\nlog_group = data_json['logGroup'] print('LogGroup: ',log_group)  アラーム用コード例。件名に投入するためアラーム名を取得しているが、printでLambda自体のログにも吐かせる。\nalm_list = alarm[0].split(':') alm_name = alm_list[-1] print('AlarmName: ', alm_name)  コード全体。\n修正前\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): # ロググループ名取得 log_group = data_json['logGroup'] # ログストリーム名取得 log_stm = data_json['logStream'] # LogEvents取得 log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) #UNIX時間→時刻/JST変換 datetime_utc = log_json['timestamp'] / 1000.0 datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d %H:%M:%S') datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d %H:%M:%S') datetime_jst = datetime_utc + datetime.timedelta(hours = 9) # メール件名整形 subject_str = \"本番環境 - ログアラート \" + log_group # メッセージ本文整形 fix_msg = \"以下のアラートが発生しました\" + \"\\n\" log_group_msg = \"ロググループ名:\" + \"\\n\" + log_group log_stm_msg = \"ログストリーム名:\" + \"\\n\" + log_stm time_msg = \"発生時刻:\" + \"\\n\" + str(datetime_jst) log_msg = \"メッセージ:\" + \"\\n\" + log_json['message'] msg = fix_msg + \"\\n\\n\" + log_group_msg + \"\\n\\n\" + log_stm_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + log_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  修正後\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): # ログメッセージ定義 data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) # ログイベント全体を出力（デバッグ用） #print(log_entire_json) # ロググループ名取得 log_group = data_json['logGroup'] print('LogGroup: ',log_group) # ログストリーム名取得 log_stm = data_json['logStream'] # LogEvents取得。ログイベント数に関わらず最初の１ログイベントのみ取得する。（大量通知抑止のため） log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) #UNIX時間→時刻/JST変換 datetime_utc = log_json['timestamp'] / 1000.0 datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d %H:%M:%S') datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d %H:%M:%S') datetime_jst = datetime_utc + datetime.timedelta(hours = 9) # ログメッセージ取得 log_message = log_json['message'] #print('LogMessage: ', log_message) # メール件名整形 subject_str = \"本番環境 - ログアラート \" + log_group # メッセージ本文整形 fix_msg = \"以下のアラートが発生しました\" + \"\\n\" log_group_msg = \"ロググループ名:\" + \"\\n\" + log_group log_stm_msg = \"ログストリーム名:\" + \"\\n\" + log_stm time_msg = \"発生時刻:\" + \"\\n\" + str(datetime_jst) log_msg = \"メッセージ:\" + \"\\n\" + log_json['message'] msg = fix_msg + \"\\n\\n\" + log_group_msg + \"\\n\\n\" + log_stm_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + log_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)   ",
+  "wordCount" : "386",
+  "inLanguage": "en",
+  "datePublished": "2022-12-25T15:40:13+09:00",
+  "dateModified": "2022-12-25T15:40:13+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)
+    </h1>
+    <div class="post-meta">December 25, 2022
+</div>
+  </header> 
+  <div class="post-content"><p>約1年前の記事 <a href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)</a> の改良版の話。</p>
+<p> </p>
+<ol>
+<li>ログ監視用コードはループさせない<br>
+上記投稿を書いた当時はログイベント全てをメール通知する方式だったが、これだと類似の通知メールが大量に飛んでしまい、抑止した方がいいのでは&hellip;という流れになった。通知は最初の一回だけ、に変更した。運用上はこれで要件は満たせるという判断。これが正しいということではなく、現場の方針次第。以下記事のコメント欄で指摘されている対応は、逆にやめることになった。</li>
+</ol>
+<p><a href="https://qiita.com/sadayuki-matsuno/items/83b70ee97755e534764f#comment-63156edaeeede0ed3fc5">cloudwatchlogs -&gt; lambda -&gt; SNSを試してみた</a></p>
+<p> </p>
+<ol start="2">
+<li>Lambda自体のログにトリガー元を記録する<br>
+別途Lambda自体のログについて。Lambda自体のログはエラーが出たか否かと発生時刻くらいしか情報を吐かない。設計上複数のイベントを一つのLambda関数に連携する想定なので、そのままだとLambda関数のInvoke時のトリガーが不明で調査が困難になる（ログ監視でもリソース、メトリクス監視でも）</li>
+</ol>
+<p>そのため、Lambdaコード自体のログに、トリガー元のロググループ名を出力させることにした。（アラームならアラーム名）</p>
+<p>メッセージ全量を吐かせてもいいがそうするとLambda自体に問題がなくてもLambdaのログにErrorなどの文字が含まれてしまい、ややこしくなる。ログも肥大化する。（大した量ではないとはいえ）このためメッセージ全量については「普段はコメントしておいて、デバッグ時のみコメントを外す」運用とした。</p>
+<p> </p>
+<p><strong>追加した内容</strong></p>
+<p>デバッグ用に、メッセージ全量出力。必要時だけコメントを外す</p>
+<pre><code>log_message= log_json['message']
+#print('LogMessage: ', log_message)
+</code></pre><p> </p>
+<p>ロググループ名を出力。これは常時適用</p>
+<pre><code>log_group = data_json['logGroup']
+print('LogGroup: ',log_group)
+</code></pre><p> </p>
+<p>アラーム用コード例。件名に投入するためアラーム名を取得しているが、printでLambda自体のログにも吐かせる。</p>
+<pre><code>alm_list = alarm[0].split(':')
+alm_name = alm_list[-1]
+print('AlarmName: ', alm_name)
+</code></pre><p> </p>
+<p>コード全体。</p>
+<p>修正前</p>
+<pre><code>import base64
+import json
+import zlib
+import datetime
+import os
+import boto3
+from botocore.exceptions import ClientError
+
+print('Loading function')
+
+
+def lambda_handler(event, context):
+    data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS)
+    data_json = json.loads(data)
+    log_entire_json = json.loads(json.dumps(data_json[&quot;logEvents&quot;], ensure_ascii=False))
+    log_entire_len = len(log_entire_json)
+
+    print(log_entire_json)
+
+    for i in range(log_entire_len): 
+        # ロググループ名取得
+        log_group = data_json['logGroup']
+        
+        # ログストリーム名取得
+        log_stm = data_json['logStream']
+        
+        # LogEvents取得
+        log_json = json.loads(json.dumps(data_json[&quot;logEvents&quot;][i], ensure_ascii=False))
+        
+        #UNIX時間→時刻/JST変換
+        datetime_utc = log_json['timestamp'] / 1000.0
+        datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d %H:%M:%S')
+        datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d %H:%M:%S')
+        datetime_jst = datetime_utc + datetime.timedelta(hours = 9)
+        
+        # メール件名整形
+        subject_str = &quot;本番環境 - ログアラート &quot; + log_group
+        
+        # メッセージ本文整形
+        fix_msg = &quot;以下のアラートが発生しました&quot; + &quot;\n&quot;
+        log_group_msg = &quot;ロググループ名:&quot; + &quot;\n&quot; + log_group
+        log_stm_msg = &quot;ログストリーム名:&quot; + &quot;\n&quot; + log_stm
+        time_msg = &quot;発生時刻:&quot; + &quot;\n&quot; + str(datetime_jst)
+        log_msg = &quot;メッセージ:&quot; + &quot;\n&quot; + log_json['message']
+        msg = fix_msg + &quot;\n\n&quot; + log_group_msg + &quot;\n\n&quot; + log_stm_msg + &quot;\n\n&quot; + time_msg + &quot;\n\n&quot; + log_msg
+
+        try:
+            sns = boto3.client('sns')
+    
+            #SNS Publish
+            publishResponse = sns.publish(
+                TopicArn = os.environ['SNS_TOPIC_ARN'],
+                Message = msg,
+                Subject = subject_str
+            )
+    
+        except Exception as e:
+            print(e)
+
+</code></pre><p> </p>
+<p>修正後</p>
+<pre><code>import base64
+import json
+import zlib
+import datetime
+import os
+import boto3
+from botocore.exceptions import ClientError
+
+print('Loading function')
+
+def lambda_handler(event, context):
+    # ログメッセージ定義
+    data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS)
+    data_json = json.loads(data)
+    log_entire_json = json.loads(json.dumps(data_json[&quot;logEvents&quot;], ensure_ascii=False))
+    log_entire_len = len(log_entire_json)
+
+    # ログイベント全体を出力（デバッグ用）
+    #print(log_entire_json)
+
+    # ロググループ名取得
+    log_group = data_json['logGroup']
+    print('LogGroup: ',log_group)
+    
+    # ログストリーム名取得
+    log_stm = data_json['logStream']
+    
+    # LogEvents取得。ログイベント数に関わらず最初の１ログイベントのみ取得する。（大量通知抑止のため）
+    log_json = json.loads(json.dumps(data_json[&quot;logEvents&quot;][i], ensure_ascii=False))
+    
+    #UNIX時間→時刻/JST変換
+    datetime_utc = log_json['timestamp'] / 1000.0
+    datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d %H:%M:%S')
+    datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d %H:%M:%S')
+    datetime_jst = datetime_utc + datetime.timedelta(hours = 9)
+    
+    # ログメッセージ取得
+    log_message = log_json['message']
+    #print('LogMessage: ', log_message)
+    
+    # メール件名整形
+    subject_str = &quot;本番環境 - ログアラート &quot; + log_group
+    
+    # メッセージ本文整形
+    fix_msg = &quot;以下のアラートが発生しました&quot; + &quot;\n&quot;
+    log_group_msg = &quot;ロググループ名:&quot; + &quot;\n&quot; + log_group
+    log_stm_msg = &quot;ログストリーム名:&quot; + &quot;\n&quot; + log_stm
+    time_msg = &quot;発生時刻:&quot; + &quot;\n&quot; + str(datetime_jst)
+    log_msg = &quot;メッセージ:&quot; + &quot;\n&quot; + log_json['message']
+    msg = fix_msg + &quot;\n\n&quot; + log_group_msg + &quot;\n\n&quot; + log_stm_msg + &quot;\n\n&quot; + time_msg + &quot;\n\n&quot; + log_msg
+
+    try:
+        sns = boto3.client('sns')
+    
+        #SNS Publish
+        publishResponse = sns.publish(
+        TopicArn = os.environ['SNS_TOPIC_ARN'],
+        Message = msg,
+        Subject = subject_str
+        )
+    
+    except Exception as e:
+        print(e)
+
+</code></pre><p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/b/venteun_2163.JPG" alt="Tokyo bay"  />
+
+<img loading="lazy" src="/img/b/venteun_2170.JPG" alt="Tokyo bay"  />
+</p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/a/cloudwatchlogs-send-filter-mail-2/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</a></li>
+    
+      <li><a href="/post/a/cloudwatch-alarm-lambda/">CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-send-filter-mail/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</a></li>
+    
+      <li><a href="/post/a/aws-events-custom-mail-3/">AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
+    
+      <li><a href="/post/a/aws-events-custom-mail-2/">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</a></li>
+    
+  </ul>
+
+  </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwachlogs/">cloudwachlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/aws-icon/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>AWSアーキテクチャアイコンのURL</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

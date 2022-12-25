@@ -138,6 +138,18 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</h2>
+  </header>
+  <section class="entry-content">
+    <p>約1年前の記事 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2) の改良版の話。
+...</p>
+  </section>
+  <footer class="entry-footer">December 25, 2022</footer>
+  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)" href="https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>SNSメトリクスの監視を作成するTerraformコード</h2>
   </header>
   <section class="entry-content">
@@ -237,22 +249,6 @@ SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
   </section>
   <footer class="entry-footer">November 7, 2021</footer>
   <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</h2>
-  </header>
-  <section class="entry-content">
-    <p>CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
-CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
-CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる...</p>
-  </section>
-  <footer class="entry-footer">November 3, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
