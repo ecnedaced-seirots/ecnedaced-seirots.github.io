@@ -6,22 +6,31 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 25 Dec 2022 15:40:13 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Apr 2023 23:17:54 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>amazon sns</title>
-      <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
-      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
+      <title>API Gateway</title>
+      <link>https://ecnedaced-seirots.github.io/tags/api-gateway/</link>
+      <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
       
-      <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
+      <guid>https://ecnedaced-seirots.github.io/tags/api-gateway/</guid>
       <description></description>
     </item>
     
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
+      <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>amazon sns</title>
+      <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
+      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
       <description></description>
     </item>
     

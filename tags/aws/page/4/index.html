@@ -138,6 +138,25 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>CloudWatch LogsからS3にエクスポート(Lambda/Python)</h2>
+  </header>
+  <section class="entry-content">
+    <p>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
+参考
+boto3 API Reference
+LambdaよりCloudWatchログをS3に保存方法紹介
+ ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 
+ 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+ S3バケットポリシー（log-export-xxxxxxxx）
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] }  Lambdaコード(Python3....</p>
+  </section>
+  <footer class="entry-footer">December 19, 2021</footer>
+  <a class="entry-link" aria-label="post link to CloudWatch LogsからS3にエクスポート(Lambda/Python)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Terraform loop処理の応用編(4) - Lambda</h2>
   </header>
   <section class="entry-content">
@@ -228,26 +247,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   <footer class="entry-footer">November 21, 2021</footer>
   <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</h2>
-  </header>
-  <section class="entry-content">
-    <p>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
- 過去記事
-CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z’となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
-で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
-from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=&#43;9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10&#43;09:00  当初JSTに変換した後の時間が変だ&#43;18時間になってる何故だ、と悩んだが、拠点にした時間から&#43;18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば&#43;9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
-ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 &#43; 発生契機 &#43; 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
- lambda_function.py （時刻表示JSTバージョン）
-import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os....</p>
-  </section>
-  <footer class="entry-footer">November 20, 2021</footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://ecnedaced-seirots.github.io/tags/aws/page/3/">« Prev Page</a>
@@ -256,7 +255,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 </footer>
     </main>
     <footer class="footer">
-    <span>&copy; 2022 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

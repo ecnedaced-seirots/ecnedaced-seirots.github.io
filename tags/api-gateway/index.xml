@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>API Gateway on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/api-gateway/</link>
+    <description>Recent content in API Gateway on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 12 Apr 2023 23:17:54 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/api-gateway/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ECSをAmazon API Gatewayのバックエンドにするケース</title>
+      <link>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</link>
+      <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</guid>
+      <description>&lt;p&gt;API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
