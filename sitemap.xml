@@ -3,7 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2023-04-12T23:17:54+09:00</lastmod>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/bcn/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/opencv/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/opencv/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2023-05-07T23:11:44+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/api-gateway/</loc>
     <lastmod>2023-04-12T23:17:54+09:00</lastmod>
@@ -14,16 +38,7 @@
     <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
     <lastmod>2023-04-12T23:17:54+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2023-04-12T23:17:54+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</loc>
-    <lastmod>2023-04-12T23:17:54+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
-    <lastmod>2023-04-12T23:17:54+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2023-04-12T23:17:54+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/amazon-sns/</loc>
@@ -51,9 +66,6 @@
     <lastmod>2022-09-09T22:52:50+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/aws-icon/</loc>
-    <lastmod>2022-09-09T22:52:50+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/bcn/</loc>
     <lastmod>2022-09-09T22:52:50+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/tips/</loc>
@@ -182,9 +194,6 @@
     <loc>https://ecnedaced-seirots.github.io/categories/python/</loc>
     <lastmod>2022-02-16T13:00:00+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
-    <lastmod>2022-02-16T13:00:00+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</loc>
     <lastmod>2022-02-16T13:00:00+09:00</lastmod>
   </url><url>
@@ -229,12 +238,6 @@
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/golang-init-switch/</loc>
     <lastmod>2022-02-06T23:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/opencv/</loc>
-    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/opencv/</loc>
-    <lastmod>2022-02-06T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</loc>
     <lastmod>2022-02-06T20:00:00+09:00</lastmod>

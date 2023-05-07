@@ -6,7 +6,16 @@
     <description>Recent content in python on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 16 Feb 2022 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 May 2023 23:11:44 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenCVで画像を横に連結する</title>
+      <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
+      <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
+      <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Pythonで区切り文字の最後の要素を取得</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</link>

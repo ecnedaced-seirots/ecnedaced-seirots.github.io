@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>ECSをAmazon API Gatewayのバックエンドにするケース | Go Buddy Go</title>
-<meta name="keywords" content="AWS, API Gateway" />
-<meta name="description" content="API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。">
+<title>OpenCVで画像を横に連結する | Go Buddy Go</title>
+<meta name="keywords" content="opencv, python, BCN" />
+<meta name="description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="ECSをAmazon API Gatewayのバックエンドにするケース" />
-<meta property="og:description" content="API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。" />
+<meta property="og:title" content="OpenCVで画像を横に連結する" />
+<meta property="og:description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2023-04-12T23:17:54&#43;09:00" />
-<meta property="article:modified_time" content="2023-04-12T23:17:54&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-05-07T23:11:44&#43;09:00" />
+<meta property="article:modified_time" content="2023-05-07T23:11:44&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ECSをAmazon API Gatewayのバックエンドにするケース"/>
-<meta name="twitter:description" content="API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。"/>
+<meta name="twitter:title" content="OpenCVで画像を横に連結する"/>
+<meta name="twitter:description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "ECSをAmazon API Gatewayのバックエンドにするケース",
-      "item": "https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/"
+      "name": "OpenCVで画像を横に連結する",
+      "item": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "ECSをAmazon API Gatewayのバックエンドにするケース",
-  "name": "ECSをAmazon API Gatewayのバックエンドにするケース",
-  "description": "API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。\n",
+  "headline": "OpenCVで画像を横に連結する",
+  "name": "OpenCVで画像を横に連結する",
+  "description": "画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。\n",
   "keywords": [
-    "AWS", "API Gateway"
+    "opencv", "python", "BCN"
   ],
-  "articleBody": "API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。\n 特にECSと直接連携できるのか気になった。間にALBまたはサービスディスカバリ（ECSの機能）を挟む必要があるらしい。あとこの場合RESTではなくHTTP APIになる模様。それともどっちでもいける？ あといずれのパターンでも、GatewayがVPC内のリソースにアクセスするためにVPCリンクを作成する必要がある。\n チュートリアル: Amazon ECS サービスへのプライベート統合を使用した HTTP API の構築 ※間にALBを挟む例 ECSをAPI Gatewayと組み合わせる ※サービスディスカバリ事例\nAPI Gateway 統合を使用して Fargate で実行されているマイクロサービスを呼び出す ※Step Functions使用例\n 以下は若干古い記事なので現在の仕様と異なる可能性あり。つまり過去は制約があってこの構成になったが、今なら先のリンクのような別のソリューションがある。一応参考までに貼っておく。\nAPI Gateway経由でのみアクセス可能なAPIをECSで構築する\nAPI GatewayとAPIサーバの連携\n これも貼っておく。REST APIの事例も欲しい。\nAPI Gateway の HTTP API が 5つのAWSサービスとの統合をサポート\n  ",
+  "articleBody": "画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。\n こんな画像があるとする。これらを横に繋げたい。\nBCN_001.JPG\n BCN_002.JPG\n コードはめっちゃ単純だけどこんなんで。\nopencv_horizontal_join.py\nimport cv2 import numpy as np #画像読み込み img1 = cv2.imread('BCN_001.JPG') img2 = cv2.imread('BCN_002.JPG') #画像を横に連結 img_h = cv2.hconcat([img1, img2]) cv2.imwrite('BCN_join.JPG', img_h)  画像を格納したディレクトリでコードを実行すると、同じディレクトリに結合された画像（BCN_join.JPG）が出力される。\n BCN_join.JPG\n  画像はもちろん縦に連結したり、タイル状に並べることもできる。縦に結合する場合はcv2.vconcat()を使う。\nそれから今回はサイズが最初から揃っている前提でやっているが、異なるサイズの画像をリサイズして実行させたりもできる。詳細は参考リンクに。あとファイル名は引数で処理したいが、どうにでもなるのでまた今度。\n 参考\nPython, OpenCVで画像を縦・横に連結 (hconcat, vconcat, np.tile)\n  いやはや、どうってことない処理だけどこれがやりたかったんだよ、ツールとか入れたくなかったから、簡単にできて本当によかった。(大昔にImageMagickで散々やってたけど）\n ",
   "wordCount" : "37",
   "inLanguage": "en",
-  "datePublished": "2023-04-12T23:17:54+09:00",
-  "dateModified": "2023-04-12T23:17:54+09:00",
+  "datePublished": "2023-05-07T23:11:44+09:00",
+  "dateModified": "2023-05-07T23:11:44+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/"
+    "@id": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,28 +190,54 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      ECSをAmazon API Gatewayのバックエンドにするケース
+      OpenCVで画像を横に連結する
     </h1>
-    <div class="post-meta">April 12, 2023
+    <div class="post-meta">May 7, 2023
 </div>
   </header> 
-  <div class="post-content"><p>API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。</p>
+  <div class="post-content"><p>画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。</p>
 <p> </p>
-<p>特にECSと直接連携できるのか気になった。間にALBまたはサービスディスカバリ（ECSの機能）を挟む必要があるらしい。あとこの場合RESTではなくHTTP APIになる模様。それともどっちでもいける？ あといずれのパターンでも、GatewayがVPC内のリソースにアクセスするためにVPCリンクを作成する必要がある。</p>
+<p>こんな画像があるとする。これらを横に繋げたい。</p>
+<p><img loading="lazy" src="/img/c/BCN_001.JPG" alt="サグラダファミリア"  />
+
+BCN_001.JPG</p>
 <p> </p>
-<p><a href="https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/http-api-private-integration.html">チュートリアル: Amazon ECS サービスへのプライベート統合を使用した HTTP API の構築</a> ※間にALBを挟む例
-<a href="https://techblog.lclco.com/entry/2020/12/24/120000">ECSをAPI Gatewayと組み合わせる</a> ※サービスディスカバリ事例<br>
-<a href="https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/sample-apigateway-ecs-workflow.html">API Gateway 統合を使用して Fargate で実行されているマイクロサービスを呼び出す</a> ※Step Functions使用例</p>
+<p><img loading="lazy" src="/img/c/BCN_002.JPG" alt="サグラダファミリア"  />
+
+BCN_002.JPG</p>
 <p> </p>
-<p>以下は若干古い記事なので現在の仕様と異なる可能性あり。つまり過去は制約があってこの構成になったが、今なら先のリンクのような別のソリューションがある。一応参考までに貼っておく。</p>
-<p><a href="https://qiita.com/ohtsuka1317/items/d63fe2a554c468570c64">API Gateway経由でのみアクセス可能なAPIをECSで構築する</a><br>
-<a href="https://qiita.com/naomichi-y/items/9840400e7833175d706b">API GatewayとAPIサーバの連携</a></p>
+<p>コードはめっちゃ単純だけどこんなんで。</p>
+<p>opencv_horizontal_join.py</p>
+<pre><code>import cv2
+import numpy as np
+
+#画像読み込み
+img1 = cv2.imread('BCN_001.JPG')
+img2 = cv2.imread('BCN_002.JPG')
+
+#画像を横に連結
+img_h = cv2.hconcat([img1, img2])
+cv2.imwrite('BCN_join.JPG', img_h)
+</code></pre><p> </p>
+<p>画像を格納したディレクトリでコードを実行すると、同じディレクトリに結合された画像（BCN_join.JPG）が出力される。</p>
 <p> </p>
-<p>これも貼っておく。REST APIの事例も欲しい。</p>
-<p><a href="https://blog.serverworks.co.jp/api-gateway-http-apis-adds-integration-with-five-aws-services">API Gateway の HTTP API が 5つのAWSサービスとの統合をサポート</a></p>
+<p><img loading="lazy" src="/img/c/BCN_join.JPG" alt="サグラダファミリア"  />
+
+BCN_join.JPG</p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/c/sakura_20230326_8177.JPG" alt="Sakura"  />
+<p>画像はもちろん縦に連結したり、タイル状に並べることもできる。縦に結合する場合はcv2.vconcat()を使う。</p>
+<p>それから今回はサイズが最初から揃っている前提でやっているが、異なるサイズの画像をリサイズして実行させたりもできる。詳細は参考リンクに。あとファイル名は引数で処理したいが、どうにでもなるのでまた今度。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://note.nkmk.me/python-opencv-hconcat-vconcat-np-tile/">Python, OpenCVで画像を縦・横に連結 (hconcat, vconcat, np.tile)</a></p>
+<p> </p>
+<p> </p>
+<p>いやはや、どうってことない処理だけどこれがやりたかったんだよ、ツールとか入れたくなかったから、簡単にできて本当によかった。(大昔にImageMagickで散々やってたけど）</p>
+<p> </p>
+<p><img loading="lazy" src="/img/c/cafe_puiggros1.jpg" alt="BCN Cafe"  />
+
+<img loading="lazy" src="/img/c/cafe_puiggros2.jpg" alt="BCN Cafe"  />
 </p>
 
     
@@ -220,34 +246,30 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/cloudwatchlogs-send-filter-mail-3/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</a></li>
+      <li><a href="/post/b/python-opencv-2/">OpenCVで画像ファイルを保存する</a></li>
+    
+      <li><a href="/post/b/python-opencv-1/">PythonでOpenCV始めてみる</a></li>
     
       <li><a href="/post/b/aws-icon/">AWSアーキテクチャアイコンのURL</a></li>
     
-      <li><a href="/post/b/ec2-node-monitor-eb/">EC2のノード監視はEventBridgeだけで可能だった</a></li>
+      <li><a href="/post/b/how-to-spent-june-2022/">6月の過ごし方</a></li>
     
-      <li><a href="/post/b/cloudwatch-agent-tips/">CloudWatch Agent: LinuxとWindowsの違い</a></li>
-    
-      <li><a href="/post/b/aws-codedeploy-vpc-endpoint/">AWS CodeDeployでVPCエンドポイント使用時の注意</a></li>
+      <li><a href="/post/b/vax-frequency-spirituality/">振動、周波数、霊性</a></li>
     
   </ul>
 
   </div>
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/api-gateway/">API Gateway</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/opencv/">opencv</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/bcn/">BCN</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>OpenCVで画像を横に連結する</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/">
     <span class="title">Next Page »</span>
     <br>
-    <span>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</span>
+    <span>ECSをAmazon API Gatewayのバックエンドにするケース</span>
   </a>
 </nav>
 

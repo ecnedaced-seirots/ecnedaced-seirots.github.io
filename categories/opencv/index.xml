@@ -6,7 +6,16 @@
     <description>Recent content in OpenCV on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 06 Feb 2022 20:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/opencv/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 May 2023 23:11:44 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/opencv/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenCVで画像を横に連結する</title>
+      <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
+      <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
+      <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>OpenCVで画像ファイルを保存する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</link>

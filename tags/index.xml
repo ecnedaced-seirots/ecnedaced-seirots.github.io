@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 12 Apr 2023 23:17:54 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 May 2023 23:11:44 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BCN</title>
+      <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
+      <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/bcn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>opencv</title>
+      <link>https://ecnedaced-seirots.github.io/tags/opencv/</link>
+      <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/opencv/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
+      <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>API Gateway</title>
       <link>https://ecnedaced-seirots.github.io/tags/api-gateway/</link>
@@ -67,15 +94,6 @@
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/monitoring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>BCN</title>
-      <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
-      <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/bcn/</guid>
       <description></description>
     </item>
     
@@ -215,15 +233,6 @@
     </item>
     
     <item>
-      <title>python</title>
-      <link>https://ecnedaced-seirots.github.io/tags/python/</link>
-      <pubDate>Wed, 16 Feb 2022 13:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Italy</title>
       <link>https://ecnedaced-seirots.github.io/tags/italy/</link>
       <pubDate>Sat, 12 Feb 2022 00:00:00 +0900</pubDate>
@@ -265,15 +274,6 @@
       <pubDate>Sun, 06 Feb 2022 23:00:00 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>opencv</title>
-      <link>https://ecnedaced-seirots.github.io/tags/opencv/</link>
-      <pubDate>Sun, 06 Feb 2022 20:00:00 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/opencv/</guid>
       <description></description>
     </item>
     
