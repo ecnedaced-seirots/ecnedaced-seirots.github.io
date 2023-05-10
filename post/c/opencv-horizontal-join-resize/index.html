@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>OpenCVで画像を横に連結する | Go Buddy Go</title>
-<meta name="keywords" content="opencv, python, BCN" />
-<meta name="description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。">
+<title>OpenCVで画像をリサイズして横に連結する | Go Buddy Go</title>
+<meta name="keywords" content="opencv, python" />
+<meta name="description" content="前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/" />
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,16 +21,16 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="OpenCVで画像を横に連結する" />
-<meta property="og:description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。" />
+<meta property="og:title" content="OpenCVで画像をリサイズして横に連結する" />
+<meta property="og:description" content="前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2023-05-07T23:11:44&#43;09:00" />
-<meta property="article:modified_time" content="2023-05-07T23:11:44&#43;09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-05-10T23:13:19&#43;09:00" />
+<meta property="article:modified_time" content="2023-05-10T23:13:19&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="OpenCVで画像を横に連結する"/>
-<meta name="twitter:description" content="画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。"/>
+<meta name="twitter:title" content="OpenCVで画像をリサイズして横に連結する"/>
+<meta name="twitter:description" content="前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。"/>
 
 
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "OpenCVで画像を横に連結する",
-      "item": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/"
+      "name": "OpenCVで画像をリサイズして横に連結する",
+      "item": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/"
     }
   ]
 }
@@ -57,20 +57,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "OpenCVで画像を横に連結する",
-  "name": "OpenCVで画像を横に連結する",
-  "description": "画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。\n",
+  "headline": "OpenCVで画像をリサイズして横に連結する",
+  "name": "OpenCVで画像をリサイズして横に連結する",
+  "description": "前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。\n",
   "keywords": [
-    "opencv", "python", "BCN"
+    "opencv", "python"
   ],
-  "articleBody": "画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。\n こんな画像があるとする。これらを横に繋げたい。\nBCN_001.JPG\n BCN_002.JPG\n コードはめっちゃ単純だけどこんなんで。\nopencv_horizontal_join.py\nimport cv2 import numpy as np #画像読み込み img1 = cv2.imread('BCN_001.JPG') img2 = cv2.imread('BCN_002.JPG') #画像を横に連結 img_h = cv2.hconcat([img1, img2]) cv2.imwrite('BCN_join.JPG', img_h)  画像を格納したディレクトリでコードを実行すると、同じディレクトリに結合された画像（BCN_join.JPG）が出力される。\n BCN_join.JPG\n  画像はもちろん縦に連結したり、タイル状に並べることもできる。縦に結合する場合はcv2.vconcat()を使う。\nそれから今回はサイズが最初から揃っている前提でやっているが、異なるサイズの画像をリサイズして実行させたりもできる。詳細は参考リンクに。あとファイル名は引数で処理したいが、どうにでもなるのでまた今度。\n 参考\nPython, OpenCVで画像を縦・横に連結 (hconcat, vconcat, np.tile)\n  いやはや、どうってことない処理だけどこれがやりたかったんだよ、ツールとか入れたくなかったから、簡単にできて本当によかった。(大昔にImageMagickで散々やってたけど）\n ",
-  "wordCount" : "37",
+  "articleBody": "前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。\n サンプル画像。cruise_001.JPGの高さは1200px、cruise_002.JPGの高さは1190pxである。\ncruise_001.JPG\n cruise_002.JPG\n エラー処理も何もないが、取り急ぎコードはこんなんで。ここでは小さい方のcruise_002に合わせてcruise_001をリサイズして結合する。ついでに読込み画像ファイルと出力ファイルを引数で指定するようにした。\n resize_horizontal_join.py\nimport sys import cv2 import numpy as np args = sys.argv # 画像ファイル名定義（第一、第二引数） f1 = args[1] f2 = args[2] #Join出力ファイル名（第三引数） outfile = args[3] #画像読み込み img1 = cv2.imread(f1) img2 = cv2.imread(f2) #画像の高さを揃える関数 def hconcat_resize_min(im_list, interpolation=cv2.INTER_CUBIC): h_min = min(im.shape[0] for im in im_list) im_list_resize = [cv2.resize(im, (int(im.shape[1] * h_min / im.shape[0]), h_min), interpolation=interpolation) for im in im_list] return cv2.hconcat(im_list_resize) #画像を結合して出力 img_h_resize = hconcat_resize_min([img1, img2]) cv2.imwrite(outfile, img_h_resize)  実行コマンド。\n$ python3 resize_horizontal_join.py cruise_001.JPG cruise_002.JPG cruise_join.JPG  すると、…おぉ、あっさりやってくれた。画像の高さはcruise_002に合わせたため、1190pxになっている。(投稿時は手動で縮小）\n cruise_join.JPG\n やってることは単純なんだが…、楽しい！こんな気持ち久しぶりだな〜\n 参考\nPython, OpenCVで画像を縦・横に連結 (hconcat, vconcat, np.tile)\n  ",
+  "wordCount" : "86",
   "inLanguage": "en",
-  "datePublished": "2023-05-07T23:11:44+09:00",
-  "dateModified": "2023-05-07T23:11:44+09:00",
+  "datePublished": "2023-05-10T23:13:19+09:00",
+  "dateModified": "2023-05-10T23:13:19+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/"
+    "@id": "https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/"
   },
   "publisher": {
     "@type": "Organization",
@@ -190,54 +190,73 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      OpenCVで画像を横に連結する
+      OpenCVで画像をリサイズして横に連結する
     </h1>
-    <div class="post-meta">May 7, 2023
+    <div class="post-meta">May 10, 2023
 </div>
   </header> 
-  <div class="post-content"><p>画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。</p>
+  <div class="post-content"><p>前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。</p>
 <p> </p>
-<p>こんな画像があるとする。これらを横に繋げたい。</p>
-<p><img loading="lazy" src="/img/c/BCN_001.JPG" alt="サグラダファミリア"  />
+<p>サンプル画像。cruise_001.JPGの高さは1200px、cruise_002.JPGの高さは1190pxである。</p>
+<p><img loading="lazy" src="/img/c/cruise_001.JPG" alt="東京湾クルーズ"  />
 
-BCN_001.JPG</p>
+cruise_001.JPG</p>
 <p> </p>
-<p><img loading="lazy" src="/img/c/BCN_002.JPG" alt="サグラダファミリア"  />
+<p><img loading="lazy" src="/img/c/cruise_002.JPG" alt="東京湾クルーズ"  />
 
-BCN_002.JPG</p>
+cruise_002.JPG</p>
 <p> </p>
-<p>コードはめっちゃ単純だけどこんなんで。</p>
-<p>opencv_horizontal_join.py</p>
-<pre><code>import cv2
+<p>エラー処理も何もないが、取り急ぎコードはこんなんで。ここでは小さい方のcruise_002に合わせてcruise_001をリサイズして結合する。ついでに読込み画像ファイルと出力ファイルを引数で指定するようにした。</p>
+<p> </p>
+<p>resize_horizontal_join.py</p>
+<pre><code>import sys
+import cv2
 import numpy as np
 
+args = sys.argv
+
+# 画像ファイル名定義（第一、第二引数）
+f1 = args[1]
+f2 = args[2]
+
+#Join出力ファイル名（第三引数）
+outfile = args[3]
+
 #画像読み込み
-img1 = cv2.imread('BCN_001.JPG')
-img2 = cv2.imread('BCN_002.JPG')
+img1 = cv2.imread(f1)
+img2 = cv2.imread(f2)
 
-#画像を横に連結
-img_h = cv2.hconcat([img1, img2])
-cv2.imwrite('BCN_join.JPG', img_h)
+#画像の高さを揃える関数
+def hconcat_resize_min(im_list, interpolation=cv2.INTER_CUBIC):
+    h_min = min(im.shape[0] for im in im_list)
+    im_list_resize = [cv2.resize(im, (int(im.shape[1] * h_min / im.shape[0]), h_min), interpolation=interpolation)
+                      for im in im_list]
+    return cv2.hconcat(im_list_resize)
+
+#画像を結合して出力
+img_h_resize = hconcat_resize_min([img1, img2])
+cv2.imwrite(outfile, img_h_resize)
 </code></pre><p> </p>
-<p>画像を格納したディレクトリでコードを実行すると、同じディレクトリに結合された画像（BCN_join.JPG）が出力される。</p>
+<p>実行コマンド。</p>
+<pre><code>$ python3 resize_horizontal_join.py cruise_001.JPG cruise_002.JPG cruise_join.JPG
+</code></pre><p> </p>
+<p>すると、&hellip;おぉ、あっさりやってくれた。画像の高さはcruise_002に合わせたため、1190pxになっている。(投稿時は手動で縮小）</p>
 <p> </p>
-<p><img loading="lazy" src="/img/c/BCN_join.JPG" alt="サグラダファミリア"  />
+<p><img loading="lazy" src="/img/c/cruise_join.JPG" alt="東京湾クルーズ"  />
 
-BCN_join.JPG</p>
+cruise_join.JPG</p>
 <p> </p>
-<p> </p>
-<p>画像はもちろん縦に連結したり、タイル状に並べることもできる。縦に結合する場合はcv2.vconcat()を使う。</p>
-<p>それから今回はサイズが最初から揃っている前提でやっているが、異なるサイズの画像をリサイズして実行させたりもできる。詳細は参考リンクに。あとファイル名は引数で処理したいが、どうにでもなるのでまた今度。</p>
+<p>やってることは単純なんだが&hellip;、楽しい！こんな気持ち久しぶりだな〜</p>
 <p> </p>
 <p>参考<br>
 <a href="https://note.nkmk.me/python-opencv-hconcat-vconcat-np-tile/">Python, OpenCVで画像を縦・横に連結 (hconcat, vconcat, np.tile)</a></p>
 <p> </p>
 <p> </p>
-<p>いやはや、どうってことない処理だけどこれがやりたかったんだよ、ツールとか入れたくなかったから、簡単にできて本当によかった。(大昔にImageMagickで散々やってたけど）</p>
-<p> </p>
-<p><img loading="lazy" src="/img/c/cafe_puiggros1.jpg" alt="BCN Cafe"  />
+<p><img loading="lazy" src="/img/c/cruise_003.JPG" alt="東京湾クルーズ"  />
 
-<img loading="lazy" src="/img/c/cafe_puiggros2.jpg" alt="BCN Cafe"  />
+<img loading="lazy" src="/img/c/cruise_004.JPG" alt="東京湾クルーズ"  />
+
+<img loading="lazy" src="/img/c/cruise_005.JPG" alt="東京湾クルーズ"  />
 </p>
 
     
@@ -246,15 +265,15 @@ BCN_join.JPG</p>
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/c/opencv-horizontal-join/">OpenCVで画像を横に連結する</a></li>
+    
       <li><a href="/post/b/python-opencv-2/">OpenCVで画像ファイルを保存する</a></li>
     
       <li><a href="/post/b/python-opencv-1/">PythonでOpenCV始めてみる</a></li>
     
-      <li><a href="/post/b/aws-icon/">AWSアーキテクチャアイコンのURL</a></li>
+      <li><a href="/post/b/python-get-last-string/">Pythonで区切り文字の最後の要素を取得</a></li>
     
-      <li><a href="/post/b/how-to-spent-june-2022/">6月の過ごし方</a></li>
-    
-      <li><a href="/post/b/vax-frequency-spirituality/">振動、周波数、霊性</a></li>
+      <li><a href="/post/b/python-json-dumps-load/">Pythonの辞書・文字列変換とJSON処理</a></li>
     
   </ul>
 
@@ -263,18 +282,12 @@ BCN_join.JPG</p>
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/opencv/">opencv</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/bcn/">BCN</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/">
-    <span class="title">« Prev Page</span>
-    <br>
-    <span>OpenCVで画像をリサイズして横に連結する</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/">
     <span class="title">Next Page »</span>
     <br>
-    <span>ECSをAmazon API Gatewayのバックエンドにするケース</span>
+    <span>OpenCVで画像を横に連結する</span>
   </a>
 </nav>
 
