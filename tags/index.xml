@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 10 May 2023 23:13:19 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jun 2023 22:38:53 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VPCE</title>
+      <link>https://ecnedaced-seirots.github.io/tags/vpce/</link>
+      <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/tags/vpce/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>opencv</title>
       <link>https://ecnedaced-seirots.github.io/tags/opencv/</link>
@@ -40,15 +58,6 @@
       <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/tags/api-gateway/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     

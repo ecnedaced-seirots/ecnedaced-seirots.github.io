@@ -149,6 +149,35 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>AWS監視の方式を整理したい</h2>
+  </header>
+  <section class="entry-content">
+    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
+監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
+  監視方式大枠  ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+閾値監視
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+ログ監視
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+プロセス監視
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
+EC2上のプロセスを監視し自動復旧する
+CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
+AWSでプロセス監視を実装したい
+CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
+EC2のプロセス監視と自動再起動
+ procstat事例
+以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
+CloudWatch Agent でProcstatプラグインの利用が可能になりました
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる...</p>
+  </section>
+  <footer class="entry-footer">November 7, 2021</footer>
+  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>タウリン(Taurine)の効能いろいろ</h2>
   </header>
   <section class="entry-content">
@@ -273,21 +302,6 @@ $ python WARNING: Python 2.7 is not recommended. This version is included in mac
   </section>
   <footer class="entry-footer">October 30, 2021</footer>
   <a class="entry-link" aria-label="post link to MacにPython3を再インストール" href="https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>ひとり言 - 10月27日</h2>
-  </header>
-  <section class="entry-content">
-    <p>あー、マジやべぇ、息が詰まりそうだ、いろいろと、勘弁してくれよもう的な動きが多くてさ、めっちゃやり辛い。まじで、10月入ってからすげえやり辛くなった。鬱屈がたまってどうしようもねぇ。
-しばらく前から通勤時に英文小説読む余力もないし、Tumblrやり過ぎるとDVT症候群で頭痛と目眩がするし、イヤホンで大音量で音楽聴きすぎて耳がイカレそうだし、もう何を支えにしていいかわからないな、オレは生き延びることができるんだろうか？
-そりゃ仕事があるだけありがたい立場だってことは忘れちゃいけないけどね、もし今「戦争」状態じゃなかったらいつでも出ていけるんだからな、なにせ俺様能力高いからな。
- うん、そのつもりでやっていくしかねぇ。
- </p>
-  </section>
-  <footer class="entry-footer">October 27, 2021</footer>
-  <a class="entry-link" aria-label="post link to ひとり言 - 10月27日" href="https://ecnedaced-seirots.github.io/post/a/life-1027/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

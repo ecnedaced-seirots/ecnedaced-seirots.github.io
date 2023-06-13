@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 10 May 2023 23:13:19 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jun 2023 22:38:53 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/categories/aws/</link>
+      <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
+      
+      <guid>https://ecnedaced-seirots.github.io/categories/aws/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>OpenCV</title>
       <link>https://ecnedaced-seirots.github.io/categories/opencv/</link>
@@ -31,15 +40,6 @@
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
       
       <guid>https://ecnedaced-seirots.github.io/categories/monitoring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/categories/aws/</link>
-      <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/categories/aws/</guid>
       <description></description>
     </item>
     
