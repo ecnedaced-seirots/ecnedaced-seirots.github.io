@@ -1,489 +1,426 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AWS on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 03 Jan 2024 15:48:23 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>異なるアカウント間のS3レプリケーション設定</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</link>
+      <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</guid>
+      <description>&lt;p&gt;S3レプリケーションのポイントとして重要なのが、ソース/レプリケート先両方のバケットでバージョニングを有効にすること。異なるアカウントへのレプリケーションの場合、レプリケート先のバケットポリシーでソースバケットからのアクセスを許可すること。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</title>
       <link>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</guid>
       <description>&lt;p&gt;EC2またはクライアントPCから簡単にRDSへ疎通確認したい時に便利なコマンドがある。（長年この業界にいながら最近知ったという）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS VPCエンドポイントサービス一覧</title>
       <link>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</link>
       <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</guid>
       <description>&lt;p&gt;AWS VPCエンドポイントに対応するサービス一覧。いざという時に見つからなくて困るのでここにリンク貼っておく。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>ECSをAmazon API Gatewayのバックエンドにするケース</title>
       <link>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</link>
       <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</guid>
       <description>&lt;p&gt;API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
       <description>&lt;p&gt;約1年前の記事 &lt;a href=&#34;https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/&#34;&gt;CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)&lt;/a&gt; の改良版の話。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>
       <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-icon/</guid>
       <description>&lt;p&gt;AWSアイコンのURL。間が空くと最新のが入れ替わってることがあるからメモ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EC2のノード監視はEventBridgeだけで可能だった</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</link>
       <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</guid>
       <description>&lt;p&gt;タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatch Agent: LinuxとWindowsの違い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</link>
       <pubDate>Sun, 13 Feb 2022 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</guid>
       <description>&lt;p&gt;Amazon CloudWatch AgentはLinuxとWindowsでかなり仕組みが異なるところがあるので注意がいる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでVPCエンドポイント使用時の注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</guid>
       <description>&lt;p&gt;AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Logs Insightsで秒毎のログイベント数をカウントするクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</link>
       <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</guid>
       <description>&lt;p&gt;CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform - EC2インスタンス作成時のAMI参照</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</link>
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</guid>
       <description>&lt;p&gt;今時あまり流行らないが、「AMIを作り込んでEC2を起動」というサイクルを繰り返す運用があるとする。それをTerraformに組み込む場合の、AMIの参照方法。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Logs Insightsでロギングタイプを指定するクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</link>
       <pubDate>Sat, 29 Jan 2022 23:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</guid>
       <description>&lt;p&gt;CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeploy備忘録</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</link>
       <pubDate>Sat, 29 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</guid>
       <description>&lt;p&gt;簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS Lambdaのログ監視方法を考えてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</link>
       <pubDate>Sun, 23 Jan 2022 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</guid>
       <description>&lt;p&gt;AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでNATゲートウェイを作成する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
       <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateからFluent BitでCloudWatchにログ送信する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</guid>
       <description>&lt;p&gt;過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
       <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
       <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
       <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</guid>
       <description>&lt;p&gt;Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</link>
       <pubDate>Mon, 03 Jan 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</guid>
       <description>&lt;p&gt;前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</link>
       <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</guid>
       <description>&lt;p&gt;一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS ConfigをCLIから削除する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</guid>
       <description>&lt;p&gt;イベント監視通知のためにAWS Configを設定して検証したが、個人PoCであり普段は必要ないため削除しようと思った。微々たる金額だが課金対象だし。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(5) - Metric Alarm</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</link>
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</guid>
       <description>&lt;p&gt;大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS Lambda関数をダウンロードする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
       <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
       <description>&lt;p&gt;AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</guid>
       <description>&lt;p&gt;過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] }  Lambdaコード(Python3.</description>
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
       <pubDate>Sun, 12 Dec 2021 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</guid>
       <description>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
 この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
-work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
 lambda_logs.tf（定数バージョン）
-################################################# # Lambda archive data ################################################# data &amp;quot;archive_file&amp;quot; &amp;quot;data-lambda-func001&amp;quot; { type = &amp;quot;zip&amp;quot; source_dir = &amp;quot;lambda/code/func001&amp;quot; output_path = &amp;quot;lambda/upload/lambda-func001.</description>
+################################################# # Lambda archive data ################################################# data &amp;#34;archive_file&amp;#34; &amp;#34;data-lambda-func001&amp;#34; { type = &amp;#34;zip&amp;#34; source_dir = &amp;#34;lambda/code/func001&amp;#34; output_path = &amp;#34;lambda/upload/lambda-func001.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(3) - Event rule</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</link>
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</guid>
       <description>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &amp;quot;aws_cloudwatch_event_rule&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.events_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) description = &amp;quot;Start the pipeline when detect CodeCommit repository state change.&amp;quot; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;quot;source&amp;quot;: [&amp;quot;aws.codecommit&amp;quot;], &amp;quot;detail-type&amp;quot;: [&amp;quot;CodeCommit Repository State Change&amp;quot;], &amp;quot;resources&amp;quot;: [&amp;quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;quot;repo_name&amp;quot;)}&amp;quot;], &amp;quot;detail&amp;quot;: { &amp;quot;event&amp;quot;: [&amp;quot;referenceCreated&amp;quot;, &amp;quot;referenceUpdated&amp;quot;], &amp;quot;referenceType&amp;quot;: [&amp;quot;branch&amp;quot;], &amp;quot;referenceName&amp;quot; : [&amp;quot;master&amp;quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;quot;aws_cloudwatch_event_target&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.</description>
+######################################## # EventBridge rule ######################################## resource &amp;#34;aws_cloudwatch_event_rule&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.events_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) description = &amp;#34;Start the pipeline when detect CodeCommit repository state change.&amp;#34; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;#34;source&amp;#34;: [&amp;#34;aws.codecommit&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;CodeCommit Repository State Change&amp;#34;], &amp;#34;resources&amp;#34;: [&amp;#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;#34;repo_name&amp;#34;)}&amp;#34;], &amp;#34;detail&amp;#34;: { &amp;#34;event&amp;#34;: [&amp;#34;referenceCreated&amp;#34;, &amp;#34;referenceUpdated&amp;#34;], &amp;#34;referenceType&amp;#34;: [&amp;#34;branch&amp;#34;], &amp;#34;referenceName&amp;#34; : [&amp;#34;master&amp;#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;#34;aws_cloudwatch_event_target&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</guid>
       <description>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &amp;quot;aws_codecommit_repository&amp;quot; &amp;quot;codecommit_repos&amp;quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;quot;repository_name&amp;quot;) description = lookup(each.value, &amp;quot;description&amp;quot;) } #################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
+cicd.tf
+#################################### # CodeCommit #################################### resource &amp;#34;aws_codecommit_repository&amp;#34; &amp;#34;codecommit_repos&amp;#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;#34;repository_name&amp;#34;) description = lookup(each.value, &amp;#34;description&amp;#34;) } #################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</link>
       <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</guid>
       <description>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
 前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
 作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) service_role_arn = var.deploy_role deployment_config_name = &amp;quot;CodeDeployDefault.AllAtOnce&amp;quot; ec2_tag_set { ec2_tag_filter { key = &amp;quot;Name&amp;quot; type = &amp;quot;KEY_AND_VALUE&amp;quot; value = lookup(each.</description>
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) service_role_arn = var.deploy_role deployment_config_name = &amp;#34;CodeDeployDefault.AllAtOnce&amp;#34; ec2_tag_set { ec2_tag_filter { key = &amp;#34;Name&amp;#34; type = &amp;#34;KEY_AND_VALUE&amp;#34; value = lookup(each.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の超シンプルな例</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
       <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</guid>
       <description>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
 前回投稿
 Terraform loop処理のリンク集
 参考記事
 Terraformで配列をloopする時はfor_eachを使った方がいい
- やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
-work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf 以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
 init.tf
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } } terraform { required_version = &amp;quot;1.0.11&amp;quot; backend &amp;quot;s3&amp;quot; { bucket = &amp;quot;my-terraform-poc-repository&amp;quot; key = &amp;quot;poc/poc.tfstate&amp;quot; region = &amp;quot;ap-northeast-1&amp;quot; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+terraform { required_providers { aws = { source = &amp;#34;hashicorp/aws&amp;#34; version = &amp;#34;3.66.0&amp;#34; } } } terraform { required_version = &amp;#34;1.0.11&amp;#34; backend &amp;#34;s3&amp;#34; { bucket = &amp;#34;my-terraform-poc-repository&amp;#34; key = &amp;#34;poc/poc.tfstate&amp;#34; region = &amp;#34;ap-northeast-1&amp;#34; } } で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
 variable.tf
-variable &amp;quot;codecommit_param_list&amp;quot; { type = map(map(string)) default = { param1 = { repository_name = &amp;quot;repo001&amp;quot; description = &amp;quot;desciption for repo001&amp;quot; } param2 = { repository_name = &amp;quot;repo002&amp;quot; description = &amp;quot;desciption for repo002&amp;quot; } param3 = { repository_name = &amp;quot;repo003&amp;quot; description = &amp;quot;desciption for repo003&amp;quot; } } }  codecommit.</description>
+variable &amp;#34;codecommit_param_list&amp;#34; { type = map(map(string)) default = { param1 = { repository_name = &amp;#34;repo001&amp;#34; description = &amp;#34;desciption for repo001&amp;#34; } param2 = { repository_name = &amp;#34;repo002&amp;#34; description = &amp;#34;desciption for repo002&amp;#34; } param3 = { repository_name = &amp;#34;repo003&amp;#34; description = &amp;#34;desciption for repo003&amp;#34; } } } codecommit.</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</link>
       <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</guid>
       <description>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&amp;#39;detail&amp;#39;] #詳細(detail)を定義 e_type = e[&amp;#39;detail-type&amp;#39;] # イベントタイプ 例：&amp;#39;AWS API Call via CloudTrail&amp;#39; t = e[&amp;#39;time&amp;#39;] # 発生時刻 evt_name = dtl[&amp;#39;eventName&amp;#39;] # イベント名 例：DeleteBucket evt_src = dtl[&amp;#39;eventSource&amp;#39;] # イベントソース 例：s3.</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</link>
       <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</guid>
       <description>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
- 過去記事
+過去記事
 CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)
 CloudWatchアラーム + SNSからのメール件名をカスタマイズする
- CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&amp;rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&amp;rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
 で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
-from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00  当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), &amp;#39;JST&amp;#39;) utcstr = &amp;#39;2021-10-24T09:35:10Z&amp;#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00 当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
 ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
- lambda_function.py （時刻表示JSTバージョン）
+lambda_function.py （時刻表示JSTバージョン）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
       <pubDate>Sun, 14 Nov 2021 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</guid>
       <description>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム + SNSからのメール件名をカスタマイズする
- lambda_function.py
+lambda_function.py
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&amp;#39;time&amp;#39;] trig = e[&amp;#39;detail-type&amp;#39;] alarm = e[&amp;#39;resources&amp;#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&amp;#39;detail&amp;#39;][&amp;#39;state&amp;#39;][&amp;#39;reason&amp;#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&amp;#39;detail&amp;#39;][&amp;#39;configuration&amp;#39;][&amp;#39;metrics&amp;#39;][0][&amp;#39;metricStat&amp;#39;][&amp;#39;metric&amp;#39;][&amp;#39;dimensions&amp;#39;] res_str = json.dumps(resource) res = re.sub(r&amp;#34;[{}\&amp;#34;]&amp;#34;, &amp;#34;&amp;#34;, res_str) # 件名整形 subject_str = &amp;#34;本番環境 - アラーム &amp;#34; + trig + &amp;#34; - &amp;#34; + res # メッセージ本文整形 fix_msg = &amp;#34;以下のアラームが発生しました&amp;#34; + &amp;#34;\n&amp;#34; trig_msg = &amp;#34;発生契機:&amp;#34; + &amp;#34;\n&amp;#34; + trig time_msg = &amp;#34;発生時刻:&amp;#34; + &amp;#34;\n&amp;#34; + t alm_msg = &amp;#34;アラーム:&amp;#34; + &amp;#34;\n&amp;#34; + alarm[0] res_msg =&amp;#34;対象リソース:&amp;#34; &amp;#34;\n&amp;#34; + res dtl_msg =&amp;#34;理由:&amp;#34; &amp;#34;\n&amp;#34; + reason msg = fix_msg + &amp;#34;\n\n&amp;#34; + trig_msg + &amp;#34;\n\n&amp;#34; + time_msg + &amp;#34;\n\n&amp;#34; + alm_msg + &amp;#34;\n\n&amp;#34; + res_msg + &amp;#34;\n\n&amp;#34; + dtl_msg try: sns = boto3.</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>
       <pubDate>Sun, 14 Nov 2021 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</guid>
       <description>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
 変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&amp;#39;awslogs&amp;#39;][&amp;#39;data&amp;#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;][i], ensure_ascii=False)) try: sns = boto3.client(&amp;#39;sns&amp;#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;], Message = log_json[&amp;#39;message&amp;#39;], Subject = os.</description>
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&amp;#39;awslogs&amp;#39;][&amp;#39;data&amp;#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;][i], ensure_ascii=False)) try: sns = boto3.client(&amp;#39;sns&amp;#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;], Message = log_json[&amp;#39;message&amp;#39;], Subject = os.environ[&amp;#39;ALARM_SUBJECT&amp;#39;] ) except Exception as e: print(e) 参考</description>
     </item>
-    
     <item>
       <title>AWS監視の方式を整理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</guid>
       <description>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&amp;hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+監視方式大枠 ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
 閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
 ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※これだけEventBridgeを使用しない。
 プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント + SSM + インスタンス停止、Lamabdaなし
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。 CWエージェント + SSM + インスタンス停止、Lamabdaなし
 EC2上のプロセスを監視し自動復旧する
 CWエージェント + SSM + 自動再起動、Lamabdaなし
 AWSでプロセス監視を実装したい
 CWエージェント + Lamabda + SSM + 自動再起動
 EC2のプロセス監視と自動再起動
- procstat事例
+procstat事例
 以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
 CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる</description>
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる
+以下は途中まで参照したところ（後半は有料サービスの案内）、アラームを作成するところまでわかりやすかった。であれば、閾値監視と同様にEBルールを挟んでLambdaをターゲットに指定 ー＞ SNSトピックに渡されてメール送信、でいけるはず。
+CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく紹介
+イベント監視
+イベント発生 ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※1.</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
       <pubDate>Wed, 03 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</guid>
       <description>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&amp;quot; \ --metric-name &amp;quot;CPUUtilization&amp;quot; \ --namespace &amp;quot;AWS/EC2&amp;quot; \ --statistic &amp;quot;Maximum&amp;quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;quot;GreaterThanThreshold&amp;quot; \ --dimensions &amp;quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;quot;  EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
+$ aws cloudwatch put-metric-alarm --alarm-name &amp;#34;CPU_Utilization_Test&amp;#34; \ --metric-name &amp;#34;CPUUtilization&amp;#34; \ --namespace &amp;#34;AWS/EC2&amp;#34; \ --statistic &amp;#34;Maximum&amp;#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;#34;GreaterThanThreshold&amp;#34; \ --dimensions &amp;#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;#34; EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</link>
       <pubDate>Sun, 31 Oct 2021 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</guid>
       <description>AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ</description>
+参考
+CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
+CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
+今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
+過去記事:AWS EventBridge + SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
+とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
+(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore.</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
       <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
       <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
 各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
+アイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 custom-mail-function eventルール custom-mail-rule ではここから作業内容の記録に入る。
 SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+$ aws sns create-topic --name custom-event-notification サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;#34;SubscriptionArn&amp;#34;: &amp;#34;pending confirmation&amp;#34; } 指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
 または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</description>
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。
+trust-policy.json
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;lambda.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34; } ] } $ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy.</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsからS3へログをエクスポートする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</link>
       <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</guid>
       <description>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる&amp;hellip;
 コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。
- バケットポリシーサンプル
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } }, { &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34; , &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } }, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
- 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
+概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。
+バケットポリシーサンプル
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } }, { &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34; , &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } }, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } } ] } 上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
+対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行 エクスポート先のS3では確かzip化された状態で格納されていたと思う。
 ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業は必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するだろう。
- 追記</description>
+上記に書いた作業は必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するだろう。
+追記
+ということで、Lambdaによるログエクスポートの記事書いた。
+CloudWatch LogsからS3にエクスポート(Lambda/Python) </description>
     </item>
-    
     <item>
       <title>AWS CLIのページャを無効化する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
       <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&amp;quot;&amp;quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </description>
+configで設定 ~/.aws/configに以下記載する。
+[default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&amp;#34;&amp;#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム作成時のメモ（過去事例）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</guid>
       <description>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
 数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが&amp;hellip;
 CloudFormationでCloudWatchAlermを作成する
- ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
+ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
 もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
- ここから。
+ここから。
 オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
 サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
 以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど&amp;hellip;、数年前の事例なので。
 スケールアウトポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
-snstopic=&amp;quot;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&amp;quot; scaleoutpolicy=&amp;quot;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&amp;quot; $ aws cloudwatch put-metric-alarm \ --alarm-name &amp;quot;test-web-scaleout-alarm&amp;quot; \ --alarm-description &amp;quot;Alarm when CPU exceeds 70%&amp;quot; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&amp;quot;test-web-asg&amp;quot; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。</description>
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1 スケールインポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1 この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
+snstopic=&amp;#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&amp;#34; scaleoutpolicy=&amp;#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&amp;#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &amp;#34;test-web-scaleout-alarm&amp;#34; \ --alarm-description &amp;#34;Alarm when CPU exceeds 70%&amp;#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&amp;#34;test-web-asg&amp;#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1 スケールイン時のアラームも同様に作成する。</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</link>
       <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</guid>
       <description>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
 前回投稿
@@ -492,44 +429,42 @@ AWS CodeDeployでクロスアカウントデプロイ実行（パイプライン
 やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
+主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
 ③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
- 2-資材配布先（アカウントB）
+2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
+上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
 2-① CodeDeploy定義
 アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
 2-② ec2用のIAMロール
 KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
 KMS用インラインポリシー
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] }  S3用インラインポリシー</description>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] } S3用インラインポリシー</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</link>
       <pubDate>Sun, 03 Oct 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</guid>
       <description>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&amp;hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild + パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -537,51 +472,47 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].</description>
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/</link>
       <pubDate>Sat, 25 Sep 2021 13:28:51 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/</guid>
       <description>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
- 参考
+参考
 異なる AWS アカウントでアプリケーションをデプロイする
 （上記ページにリンクあり。assumeロールの設定は以下参考）
 IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
- 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
 ① 配布元(Dev)
 ② 配布先(Stg)
 概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
 基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
- 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
-  配布先②アカウントにて、①がassumeするためのロールAを作成する。
-  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+作業内容 配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+配布先②アカウントにて、①がassumeするためのロールAを作成する。
+ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
 rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
 IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
- インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &amp;ndash;&amp;gt; [アクセス許可の追加] &amp;ndash;&amp;gt; [インラインポリシーの作成] [JSON] タブ選択
+インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &amp;ndash;&amp;gt; [アクセス許可の追加] &amp;ndash;&amp;gt; [インラインポリシーの作成] [JSON] タブ選択
 以下の内容を設定する。
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&amp;#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;s3:ListAllMyBuckets&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:ListBucket&amp;#34;, &amp;#34;s3:GetBucketLocation&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app&amp;#34; #検証環境の資材格納バケット名 }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:GetObject&amp;#34;, &amp;#34;s3:PutObject&amp;#34;, &amp;#34;s3:DeleteObject&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app/*&amp;#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。</description>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&amp;#34; } } (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;s3:ListAllMyBuckets&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:ListBucket&amp;#34;, &amp;#34;s3:GetBucketLocation&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app&amp;#34; #検証環境の資材格納バケット名 }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:GetObject&amp;#34;, &amp;#34;s3:PutObject&amp;#34;, &amp;#34;s3:DeleteObject&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app/*&amp;#34; } ] } ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。 ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。 この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。</description>
     </item>
-    
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
       <link>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</guid>
       <description>&lt;p&gt;AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Firefox/Chromeでアドオンなし全画面キャプチャ | Go Buddy Go</title>
-<meta name="keywords" content="memo, Firefox, Chrome" />
+<meta name="keywords" content="memo, Firefox, Chrome">
 <meta name="description" content="かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
 Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+Windows Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
 しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -26,19 +26,54 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Firefox/Chromeでアドオンなし全画面キャプチャ" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Firefox/Chromeでアドオンなし全画面キャプチャ" />
 <meta property="og:description" content="かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
 Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+Windows Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
 しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-09-23T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-09-23T00:00:00&#43;00:00" />
+<meta property="article:published_time" content="2021-09-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-23T00:00:00+00:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Firefox/Chromeでアドオンなし全画面キャプチャ"/>
@@ -46,8 +81,8 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
 Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+Windows Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
 しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。"/>
 
 
@@ -77,11 +112,11 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
   "@type": "BlogPosting",
   "headline": "Firefox/Chromeでアドオンなし全画面キャプチャ",
   "name": "Firefox\/Chromeでアドオンなし全画面キャプチャ",
-  "description": "かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。\nFirefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。\n\u0026hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。\nChromeの場合 Chromeでやる場合は一手間増える。\nWindows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。\n（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。\nしかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。",
+  "description": "かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。\nFirefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。\n\u0026hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。\nChromeの場合 Chromeでやる場合は一手間増える。\nWindows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。\n（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。\nしかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。",
   "keywords": [
     "memo", "Firefox", "Chrome"
   ],
-  "articleBody": "かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。\nFirefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。\n…が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。\nChromeの場合 Chromeでやる場合は一手間増える。\nWindows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。\n（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。\nしかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。\n",
+  "articleBody": "かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。\nFirefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。\n…が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。\nChromeの場合 Chromeでやる場合は一手間増える。\nWindows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。\n（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。\nしかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。\n",
   "wordCount" : "36",
   "inLanguage": "en",
   "datePublished": "2021-09-23T00:00:00Z",
@@ -113,56 +148,19 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -176,7 +174,7 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -207,10 +205,11 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Firefox/Chromeでアドオンなし全画面キャプチャ
     </h1>
-    <div class="post-meta">September 23, 2021
+    <div class="post-meta"><span title='2021-09-23 00:00:00 +0000 UTC'>September 23, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。</p>
@@ -259,6 +258,7 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
@@ -267,12 +267,12 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/mac-shortcut/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Macで必須のショートカット3選</span>
   </a>
@@ -281,27 +281,28 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -355,12 +356,12 @@ Windows  Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

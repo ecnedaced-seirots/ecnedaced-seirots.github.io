@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Terraform loop処理の応用編(3) - Event rule | Go Buddy Go</title>
-<meta name="keywords" content="terraform, AWS, IaC, EventBridge, CodePipeline" />
+<meta name="keywords" content="terraform, AWS, IaC, EventBridge, CodePipeline">
 <meta name="description" content="過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &quot;aws_cloudwatch_event_rule&quot; &quot;pln-rule&quot; { for_each = var.events_param_list name = lookup(each.value, &quot;name&quot;) description = &quot;Start the pipeline when detect CodeCommit repository state change.&quot; event_pattern = &lt;&lt;-EOT { &quot;source&quot;: [&quot;aws.codecommit&quot;], &quot;detail-type&quot;: [&quot;CodeCommit Repository State Change&quot;], &quot;resources&quot;: [&quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &quot;repo_name&quot;)}&quot;], &quot;detail&quot;: { &quot;event&quot;: [&quot;referenceCreated&quot;, &quot;referenceUpdated&quot;], &quot;referenceType&quot;: [&quot;branch&quot;], &quot;referenceName&quot; : [&quot;master&quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &quot;aws_cloudwatch_event_target&quot; &quot;pln-rule&quot; { for_each = var.">
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -23,23 +23,58 @@ event_rule.tf
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Terraform loop処理の応用編(3) - Event rule" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Terraform loop処理の応用編(3) - Event rule" />
 <meta property="og:description" content="過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &quot;aws_cloudwatch_event_rule&quot; &quot;pln-rule&quot; { for_each = var.events_param_list name = lookup(each.value, &quot;name&quot;) description = &quot;Start the pipeline when detect CodeCommit repository state change.&quot; event_pattern = &lt;&lt;-EOT { &quot;source&quot;: [&quot;aws.codecommit&quot;], &quot;detail-type&quot;: [&quot;CodeCommit Repository State Change&quot;], &quot;resources&quot;: [&quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &quot;repo_name&quot;)}&quot;], &quot;detail&quot;: { &quot;event&quot;: [&quot;referenceCreated&quot;, &quot;referenceUpdated&quot;], &quot;referenceType&quot;: [&quot;branch&quot;], &quot;referenceName&quot; : [&quot;master&quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &quot;aws_cloudwatch_event_target&quot; &quot;pln-rule&quot; { for_each = var." />
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-11T21:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-12-11T21:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-12-11T21:00:00+09:00" />
+<meta property="article:modified_time" content="2021-12-11T21:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Terraform loop処理の応用編(3) - Event rule"/>
 <meta name="twitter:description" content="過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &quot;aws_cloudwatch_event_rule&quot; &quot;pln-rule&quot; { for_each = var.events_param_list name = lookup(each.value, &quot;name&quot;) description = &quot;Start the pipeline when detect CodeCommit repository state change.&quot; event_pattern = &lt;&lt;-EOT { &quot;source&quot;: [&quot;aws.codecommit&quot;], &quot;detail-type&quot;: [&quot;CodeCommit Repository State Change&quot;], &quot;resources&quot;: [&quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &quot;repo_name&quot;)}&quot;], &quot;detail&quot;: { &quot;event&quot;: [&quot;referenceCreated&quot;, &quot;referenceUpdated&quot;], &quot;referenceType&quot;: [&quot;branch&quot;], &quot;referenceName&quot; : [&quot;master&quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &quot;aws_cloudwatch_event_target&quot; &quot;pln-rule&quot; { for_each = var."/>
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var."/>
 
 
 <script type="application/ld+json">
@@ -68,11 +103,11 @@ event_rule.tf
   "@type": "BlogPosting",
   "headline": "Terraform loop処理の応用編(3) - Event rule",
   "name": "Terraform loop処理の応用編(3) - Event rule",
-  "description": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \u0026quot;aws_cloudwatch_event_rule\u0026quot; \u0026quot;pln-rule\u0026quot; { for_each = var.events_param_list name = lookup(each.value, \u0026quot;name\u0026quot;) description = \u0026quot;Start the pipeline when detect CodeCommit repository state change.\u0026quot; event_pattern = \u0026lt;\u0026lt;-EOT { \u0026quot;source\u0026quot;: [\u0026quot;aws.codecommit\u0026quot;], \u0026quot;detail-type\u0026quot;: [\u0026quot;CodeCommit Repository State Change\u0026quot;], \u0026quot;resources\u0026quot;: [\u0026quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \u0026quot;repo_name\u0026quot;)}\u0026quot;], \u0026quot;detail\u0026quot;: { \u0026quot;event\u0026quot;: [\u0026quot;referenceCreated\u0026quot;, \u0026quot;referenceUpdated\u0026quot;], \u0026quot;referenceType\u0026quot;: [\u0026quot;branch\u0026quot;], \u0026quot;referenceName\u0026quot; : [\u0026quot;master\u0026quot;] } } EOT } ######################################## # EventBridge target ######################################## resource \u0026quot;aws_cloudwatch_event_target\u0026quot; \u0026quot;pln-rule\u0026quot; { for_each = var.",
+  "description": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \u0026#34;aws_cloudwatch_event_rule\u0026#34; \u0026#34;pln-rule\u0026#34; { for_each = var.events_param_list name = lookup(each.value, \u0026#34;name\u0026#34;) description = \u0026#34;Start the pipeline when detect CodeCommit repository state change.\u0026#34; event_pattern = \u0026lt;\u0026lt;-EOT { \u0026#34;source\u0026#34;: [\u0026#34;aws.codecommit\u0026#34;], \u0026#34;detail-type\u0026#34;: [\u0026#34;CodeCommit Repository State Change\u0026#34;], \u0026#34;resources\u0026#34;: [\u0026#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \u0026#34;repo_name\u0026#34;)}\u0026#34;], \u0026#34;detail\u0026#34;: { \u0026#34;event\u0026#34;: [\u0026#34;referenceCreated\u0026#34;, \u0026#34;referenceUpdated\u0026#34;], \u0026#34;referenceType\u0026#34;: [\u0026#34;branch\u0026#34;], \u0026#34;referenceName\u0026#34; : [\u0026#34;master\u0026#34;] } } EOT } ######################################## # EventBridge target ######################################## resource \u0026#34;aws_cloudwatch_event_target\u0026#34; \u0026#34;pln-rule\u0026#34; { for_each = var.",
   "keywords": [
     "terraform", "AWS", "IaC", "EventBridge", "CodePipeline"
   ],
-  "articleBody": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \"aws_cloudwatch_event_rule\" \"pln-rule\" { for_each = var.events_param_list name = lookup(each.value, \"name\") description = \"Start the pipeline when detect CodeCommit repository state change.\" event_pattern =  当初event_patternのJSONはJSONファイルを外出しにしてファイル名指定でいくつもりだった。が、loop処理で回すのができなかった。いくつか試したのだが…。パターンとしては可変になるのがCodeCommitリポジトリ名だけなので、そこをloopで回せばいけるんじゃないかと思いヒアドキュメントでやったらできた。このような場合JSONファイルをルールの数だけ用意するより、ヒアドキュメントの方が意外と楽だ。\nJSON定義の一部。以下の\"repo_name\"に対して、変数リストから取り出したCodeCommitリポジトリ名が格納される。\n\"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"],  loop処理が参照する変数リストは以下の通り。\n rule.auto.tfvars\n################### # rule vars ################### events_param_list = { param1 = { name = \"cicd-event001\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001\" repo_name = \"repo001\" } param2 = { name = \"cicd-event002\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002\" repo_name = \"repo002\" } param3 = { name = \"cicd-event003\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003\" repo_name = \"repo003\" } } ################### # Events role ################### events_role = \"arn:aws:iam::012345678910:role/codepipeline-exe-role\"  上記ルールだけapplyした結果、成功。CICDリソース作成用のtfコードも含めて実行した結果も、成功。\nちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。\n…ということで、ここでは自動生成ではなく別途ルールを作成したけれども、そこまでこだわらないのであれば自動生成でもいいだろう。\n ",
+  "articleBody": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \"aws_cloudwatch_event_rule\" \"pln-rule\" { for_each = var.events_param_list name = lookup(each.value, \"name\") description = \"Start the pipeline when detect CodeCommit repository state change.\" event_pattern = \u003c\u003c-EOT { \"source\": [\"aws.codecommit\"], \"detail-type\": [\"CodeCommit Repository State Change\"], \"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], \"detail\": { \"event\": [\"referenceCreated\", \"referenceUpdated\"], \"referenceType\": [\"branch\"], \"referenceName\" : [\"master\"] } } EOT } ######################################## # EventBridge target ######################################## resource \"aws_cloudwatch_event_target\" \"pln-rule\" { for_each = var.events_param_list rule = lookup(each.value, \"name\") arn = lookup(each.value, \"pipeline\") role_arn = var.events_role depends_on = [aws_cloudwatch_event_rule.pln-rule] } 当初event_patternのJSONはJSONファイルを外出しにしてファイル名指定でいくつもりだった。が、loop処理で回すのができなかった。いくつか試したのだが…。パターンとしては可変になるのがCodeCommitリポジトリ名だけなので、そこをloopで回せばいけるんじゃないかと思いヒアドキュメントでやったらできた。このような場合JSONファイルをルールの数だけ用意するより、ヒアドキュメントの方が意外と楽だ。\nJSON定義の一部。以下の\"repo_name\"に対して、変数リストから取り出したCodeCommitリポジトリ名が格納される。\n\"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], loop処理が参照する変数リストは以下の通り。\nrule.auto.tfvars\n################### # rule vars ################### events_param_list = { param1 = { name = \"cicd-event001\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001\" repo_name = \"repo001\" } param2 = { name = \"cicd-event002\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002\" repo_name = \"repo002\" } param3 = { name = \"cicd-event003\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003\" repo_name = \"repo003\" } } ################### # Events role ################### events_role = \"arn:aws:iam::012345678910:role/codepipeline-exe-role\" 上記ルールだけapplyした結果、成功。CICDリソース作成用のtfコードも含めて実行した結果も、成功。\nちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。\n…ということで、ここでは自動生成ではなく別途ルールを作成したけれども、そこまでこだわらないのであれば自動生成でもいいだろう。\n",
   "wordCount" : "154",
   "inLanguage": "en",
   "datePublished": "2021-12-11T21:00:00+09:00",
@@ -104,56 +139,19 @@ event_rule.tf
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -167,7 +165,7 @@ event_rule.tf
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -198,33 +196,34 @@ event_rule.tf
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Terraform loop処理の応用編(3) - Event rule
     </h1>
-    <div class="post-meta">December 11, 2021
+    <div class="post-meta"><span title='2021-12-11 21:00:00 +0900 JST'>December 11, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>過去記事<a href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2)</a>で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。</p>
 <p>以下tfコード本体に、ルールとターゲットを作成する処理を書く。</p>
 <p>event_rule.tf</p>
-<pre><code>########################################
+<pre tabindex="0"><code>########################################
 # EventBridge rule
 ########################################
 
-resource &quot;aws_cloudwatch_event_rule&quot; &quot;pln-rule&quot; {
+resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; {
   for_each       = var.events_param_list
   
-  name           = lookup(each.value, &quot;name&quot;)
-  description    = &quot;Start the pipeline when detect CodeCommit repository state change.&quot;
+  name           = lookup(each.value, &#34;name&#34;)
+  description    = &#34;Start the pipeline when detect CodeCommit repository state change.&#34;
   event_pattern  = &lt;&lt;-EOT
     {
-      &quot;source&quot;: [&quot;aws.codecommit&quot;],
-      &quot;detail-type&quot;: [&quot;CodeCommit Repository State Change&quot;],
-      &quot;resources&quot;: [&quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &quot;repo_name&quot;)}&quot;],
-      &quot;detail&quot;: {
-      &quot;event&quot;: [&quot;referenceCreated&quot;, &quot;referenceUpdated&quot;],
-      &quot;referenceType&quot;: [&quot;branch&quot;],
-      &quot;referenceName&quot; : [&quot;master&quot;]
+      &#34;source&#34;: [&#34;aws.codecommit&#34;],
+      &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;],
+      &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;],
+      &#34;detail&#34;: {
+      &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;],
+      &#34;referenceType&#34;: [&#34;branch&#34;],
+      &#34;referenceName&#34; : [&#34;master&#34;]
       }
     }
   EOT
@@ -234,41 +233,41 @@ resource &quot;aws_cloudwatch_event_rule&quot; &quot;pln-rule&quot; {
 # EventBridge target
 ########################################
 
-resource &quot;aws_cloudwatch_event_target&quot; &quot;pln-rule&quot; {
+resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; {
   for_each   = var.events_param_list
   
-  rule       = lookup(each.value, &quot;name&quot;)
-  arn        = lookup(each.value, &quot;pipeline&quot;)
+  rule       = lookup(each.value, &#34;name&#34;)
+  arn        = lookup(each.value, &#34;pipeline&#34;)
   role_arn   = var.events_role
   depends_on = [aws_cloudwatch_event_rule.pln-rule]
 }
 </code></pre><p> </p>
 <p>当初event_patternのJSONはJSONファイルを外出しにしてファイル名指定でいくつもりだった。が、loop処理で回すのができなかった。いくつか試したのだが&hellip;。パターンとしては可変になるのがCodeCommitリポジトリ名だけなので、そこをloopで回せばいけるんじゃないかと思いヒアドキュメントでやったらできた。このような場合JSONファイルをルールの数だけ用意するより、ヒアドキュメントの方が意外と楽だ。</p>
 <p>JSON定義の一部。以下の&quot;repo_name&quot;に対して、変数リストから取り出したCodeCommitリポジトリ名が格納される。</p>
-<pre><code>&quot;resources&quot;: [&quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &quot;repo_name&quot;)}&quot;],
+<pre tabindex="0"><code>&#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;],
 </code></pre><p> </p>
 <p>loop処理が参照する変数リストは以下の通り。</p>
 <p> </p>
 <p>rule.auto.tfvars</p>
-<pre><code>###################
+<pre tabindex="0"><code>###################
 # rule vars
 ###################
 
 events_param_list = {
       param1 = {
-        name      = &quot;cicd-event001&quot;
-        pipeline  = &quot;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001&quot;
-        repo_name = &quot;repo001&quot;
+        name      = &#34;cicd-event001&#34;
+        pipeline  = &#34;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001&#34;
+        repo_name = &#34;repo001&#34;
         }
       param2 = {
-        name      = &quot;cicd-event002&quot;
-        pipeline  = &quot;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002&quot;
-        repo_name = &quot;repo002&quot;
+        name      = &#34;cicd-event002&#34;
+        pipeline  = &#34;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002&#34;
+        repo_name = &#34;repo002&#34;
         }
       param3 = {
-        name      = &quot;cicd-event003&quot;
-        pipeline  = &quot;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003&quot;
-        repo_name = &quot;repo003&quot;
+        name      = &#34;cicd-event003&#34;
+        pipeline  = &#34;arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003&#34;
+        repo_name = &#34;repo003&#34;
         }
 }
 
@@ -276,8 +275,7 @@ events_param_list = {
 # Events role
 ###################
 
-events_role = &quot;arn:aws:iam::012345678910:role/codepipeline-exe-role&quot;
-
+events_role = &#34;arn:aws:iam::012345678910:role/codepipeline-exe-role&#34;
 </code></pre><p> </p>
 <p>上記ルールだけapplyした結果、成功。CICDリソース作成用のtfコードも含めて実行した結果も、成功。</p>
 <p>ちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。</p>
@@ -306,6 +304,7 @@ events_role = &quot;arn:aws:iam::012345678910:role/codepipeline-exe-role&quot;
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
@@ -316,12 +315,12 @@ events_role = &quot;arn:aws:iam::012345678910:role/codepipeline-exe-role&quot;
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Terraform loop処理の応用編(4) - Lambda</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/sns/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>ソーシャルな反応に対する反応とか</span>
   </a>
@@ -330,27 +329,28 @@ events_role = &quot;arn:aws:iam::012345678910:role/codepipeline-exe-role&quot;
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -404,12 +404,12 @@ events_role = &quot;arn:aws:iam::012345678910:role/codepipeline-exe-role&quot;
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

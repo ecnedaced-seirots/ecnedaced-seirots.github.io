@@ -1,104 +1,99 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>eventbridge on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
     <description>Recent content in eventbridge on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/eventbridge/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/eventbridge/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</guid>
       <description>&lt;p&gt;過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(3) - Event rule</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</link>
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</guid>
       <description>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &amp;quot;aws_cloudwatch_event_rule&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.events_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) description = &amp;quot;Start the pipeline when detect CodeCommit repository state change.&amp;quot; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;quot;source&amp;quot;: [&amp;quot;aws.codecommit&amp;quot;], &amp;quot;detail-type&amp;quot;: [&amp;quot;CodeCommit Repository State Change&amp;quot;], &amp;quot;resources&amp;quot;: [&amp;quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;quot;repo_name&amp;quot;)}&amp;quot;], &amp;quot;detail&amp;quot;: { &amp;quot;event&amp;quot;: [&amp;quot;referenceCreated&amp;quot;, &amp;quot;referenceUpdated&amp;quot;], &amp;quot;referenceType&amp;quot;: [&amp;quot;branch&amp;quot;], &amp;quot;referenceName&amp;quot; : [&amp;quot;master&amp;quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;quot;aws_cloudwatch_event_target&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.</description>
+######################################## # EventBridge rule ######################################## resource &amp;#34;aws_cloudwatch_event_rule&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.events_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) description = &amp;#34;Start the pipeline when detect CodeCommit repository state change.&amp;#34; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;#34;source&amp;#34;: [&amp;#34;aws.codecommit&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;CodeCommit Repository State Change&amp;#34;], &amp;#34;resources&amp;#34;: [&amp;#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;#34;repo_name&amp;#34;)}&amp;#34;], &amp;#34;detail&amp;#34;: { &amp;#34;event&amp;#34;: [&amp;#34;referenceCreated&amp;#34;, &amp;#34;referenceUpdated&amp;#34;], &amp;#34;referenceType&amp;#34;: [&amp;#34;branch&amp;#34;], &amp;#34;referenceName&amp;#34; : [&amp;#34;master&amp;#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;#34;aws_cloudwatch_event_target&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</link>
       <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</guid>
       <description>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&amp;#39;detail&amp;#39;] #詳細(detail)を定義 e_type = e[&amp;#39;detail-type&amp;#39;] # イベントタイプ 例：&amp;#39;AWS API Call via CloudTrail&amp;#39; t = e[&amp;#39;time&amp;#39;] # 発生時刻 evt_name = dtl[&amp;#39;eventName&amp;#39;] # イベント名 例：DeleteBucket evt_src = dtl[&amp;#39;eventSource&amp;#39;] # イベントソース 例：s3.</description>
     </item>
-    
     <item>
       <title>AWS監視の方式を整理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</guid>
       <description>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&amp;hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+監視方式大枠 ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
 閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
 ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※これだけEventBridgeを使用しない。
 プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント + SSM + インスタンス停止、Lamabdaなし
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。 CWエージェント + SSM + インスタンス停止、Lamabdaなし
 EC2上のプロセスを監視し自動復旧する
 CWエージェント + SSM + 自動再起動、Lamabdaなし
 AWSでプロセス監視を実装したい
 CWエージェント + Lamabda + SSM + 自動再起動
 EC2のプロセス監視と自動再起動
- procstat事例
+procstat事例
 以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
 CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる</description>
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる
+以下は途中まで参照したところ（後半は有料サービスの案内）、アラームを作成するところまでわかりやすかった。であれば、閾値監視と同様にEBルールを挟んでLambdaをターゲットに指定 ー＞ SNSトピックに渡されてメール送信、でいけるはず。
+CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく紹介
+イベント監視
+イベント発生 ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※1.</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
       <pubDate>Wed, 03 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</guid>
       <description>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&amp;quot; \ --metric-name &amp;quot;CPUUtilization&amp;quot; \ --namespace &amp;quot;AWS/EC2&amp;quot; \ --statistic &amp;quot;Maximum&amp;quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;quot;GreaterThanThreshold&amp;quot; \ --dimensions &amp;quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;quot;  EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
+$ aws cloudwatch put-metric-alarm --alarm-name &amp;#34;CPU_Utilization_Test&amp;#34; \ --metric-name &amp;#34;CPUUtilization&amp;#34; \ --namespace &amp;#34;AWS/EC2&amp;#34; \ --statistic &amp;#34;Maximum&amp;#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;#34;GreaterThanThreshold&amp;#34; \ --dimensions &amp;#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;#34; EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
       <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
       <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
 各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
+アイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 custom-mail-function eventルール custom-mail-rule ではここから作業内容の記録に入る。
 SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+$ aws sns create-topic --name custom-event-notification サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;#34;SubscriptionArn&amp;#34;: &amp;#34;pending confirmation&amp;#34; } 指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
 または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</description>
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。
+trust-policy.json
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;lambda.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34; } ] } $ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy.</description>
     </item>
-    
   </channel>
 </rss>

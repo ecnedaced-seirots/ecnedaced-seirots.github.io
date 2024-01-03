@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>aws systems manager on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/aws-systems-manager/</link>
     <description>Recent content in aws systems manager on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 07 Nov 2021 13:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aws-systems-manager/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Nov 2021 13:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/aws-systems-manager/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS監視の方式を整理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</guid>
       <description>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&amp;hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+監視方式大枠 ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
 閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
 ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※これだけEventBridgeを使用しない。
 プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント + SSM + インスタンス停止、Lamabdaなし
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。 CWエージェント + SSM + インスタンス停止、Lamabdaなし
 EC2上のプロセスを監視し自動復旧する
 CWエージェント + SSM + 自動再起動、Lamabdaなし
 AWSでプロセス監視を実装したい
 CWエージェント + Lamabda + SSM + 自動再起動
 EC2のプロセス監視と自動再起動
- procstat事例
+procstat事例
 以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
 CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる</description>
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる
+以下は途中まで参照したところ（後半は有料サービスの案内）、アラームを作成するところまでわかりやすかった。であれば、閾値監視と同様にEBルールを挟んでLambdaをターゲットに指定 ー＞ SNSトピックに渡されてメール送信、でいけるはず。
+CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく紹介
+イベント監視
+イベント発生 ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※1.</description>
     </item>
-    
   </channel>
 </rss>

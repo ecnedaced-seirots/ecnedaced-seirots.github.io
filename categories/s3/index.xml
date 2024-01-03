@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>S3 on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/s3/</link>
+    <description>Recent content in S3 on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 03 Jan 2024 15:48:23 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/s3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>異なるアカウント間のS3レプリケーション設定</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</link>
+      <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</guid>
+      <description>&lt;p&gt;S3レプリケーションのポイントとして重要なのが、ソース/レプリケート先両方のバケットでバージョニングを有効にすること。異なるアカウントへのレプリケーションの場合、レプリケート先のバケットポリシーでソースバケットからのアクセスを許可すること。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

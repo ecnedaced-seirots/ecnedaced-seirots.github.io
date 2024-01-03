@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Pythonの辞書・文字列変換とJSON処理 | Go Buddy Go</title>
-<meta name="keywords" content="python, json" />
+<meta name="keywords" content="python, json">
 <meta name="description" content="Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&hellip;">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Pythonの辞書・文字列変換とJSON処理" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Pythonの辞書・文字列変換とJSON処理" />
 <meta property="og:description" content="Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&hellip;" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-02-10T18:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-02-10T18:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-02-10T18:00:00+09:00" />
+<meta property="article:modified_time" content="2022-02-10T18:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Pythonの辞書・文字列変換とJSON処理"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "python", "json"
   ],
-  "articleBody": "Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない…\n 辞書 ＜–＞　文字列変換基本 辞書から文字列に変換（dict -＞ string）： json.dumps()\n文字列から辞書に変換（string -＞ dict）： json.loads()\n json.loads() とjson.load()は似ているが違うもの。json.load()はJSON形式のファイルを読み込むために使う。\n JSON読み込み例 以下、CloudWatchアラームの閾値超え発生時イベントの中身をファイルに保存したのを呼び出している。json.load()で呼び出した時点で、このオブジェクトは辞書型であり、それをjson.dumps()で文字列に変換している。\n  import json  path = \"event_sample.json\"  with open(path, encoding=\"utf-8\", mode=\"r\") as f: ... event = json.load(f) ... msg = json.dumps(event, indent=3) ... print(msg) ... { \"version\": \"0\", \"id\": \"86fa8a3f-7470-8c16-ef56-aaba9821771e\", \"detail-type\": \"CloudWatch Alarm State Change\", \"source\": \"aws.cloudwatch\", \"account\": \"012345678910\", \"time\": \"2022-02-03T10:17:51Z\", \"region\": \"ap-northeast-1\", \"resources\": [ \"arn:aws:cloudwatch:ap-northeast-1:012345678910:alarm:CPU_Utilization_Test\" ], \"detail\": { \"alarmName\": \"CPU_Utilization_Test\", \"state\": { \"value\": \"ALARM\", \"reason\": \"Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/02/22 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK - ALARM transition).\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2022-02-03T10:17:51.018+0000\\\",\\\"startDate\\\":\\\"2022-02-03T10:11:00.000+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[100.0],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2022-02-03T10:11:00.000+0000\\\",\\\"sampleCount\\\":5.0,\\\"value\\\":100.0}]}\", \"timestamp\": \"2022-02-03T10:17:51.020+0000\" }, \"previousState\": { \"value\": \"INSUFFICIENT_DATA\", \"reason\": \"Insufficient Data: 1 datapoint was unknown.\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2022-02-03T10:13:51.019+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2022-02-03T10:13:00.000+0000\\\"}]}\", \"timestamp\": \"2022-02-03T10:13:51.023+0000\" }, \"configuration\": { \"metrics\": [ { \"id\": \"4cbe7286-d70f-fcb9-4a0a-758612d568db\", \"metricStat\": { \"metric\": { \"namespace\": \"AWS/EC2\", \"name\": \"CPUUtilization\", \"dimensions\": { \"InstanceId\": \"i-01234567891012345\" } }, \"period\": 60, \"stat\": \"Maximum\" }, \"returnData\": true } ] } } }  イベントの中身を抽出するためにやってるんだけど、JSONの保存形式に不正があるとエラーになったりして面倒くさい。Lambdaにイベント渡している場合、LambdaのロググループをLogs Insightsでクエリかけると項目毎に見やすく整型されて画面表示してくれる。だからそっちで確認してもいいのだが…、やはりJSONデータとして見たい時もあるんだよな。\n  ",
+  "articleBody": "Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない…\n辞書 ＜–＞　文字列変換基本 辞書から文字列に変換（dict -＞ string）： json.dumps()\n文字列から辞書に変換（string -＞ dict）： json.loads()\njson.loads() とjson.load()は似ているが違うもの。json.load()はJSON形式のファイルを読み込むために使う。\nJSON読み込み例 以下、CloudWatchアラームの閾値超え発生時イベントの中身をファイルに保存したのを呼び出している。json.load()で呼び出した時点で、このオブジェクトは辞書型であり、それをjson.dumps()で文字列に変換している。\n\u003e\u003e\u003e import json \u003e\u003e\u003e path = \"event_sample.json\" \u003e\u003e\u003e with open(path, encoding=\"utf-8\", mode=\"r\") as f: ... event = json.load(f) ... msg = json.dumps(event, indent=3) ... print(msg) ... { \"version\": \"0\", \"id\": \"86fa8a3f-7470-8c16-ef56-aaba9821771e\", \"detail-type\": \"CloudWatch Alarm State Change\", \"source\": \"aws.cloudwatch\", \"account\": \"012345678910\", \"time\": \"2022-02-03T10:17:51Z\", \"region\": \"ap-northeast-1\", \"resources\": [ \"arn:aws:cloudwatch:ap-northeast-1:012345678910:alarm:CPU_Utilization_Test\" ], \"detail\": { \"alarmName\": \"CPU_Utilization_Test\", \"state\": { \"value\": \"ALARM\", \"reason\": \"Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/02/22 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -\u003e ALARM transition).\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2022-02-03T10:17:51.018+0000\\\",\\\"startDate\\\":\\\"2022-02-03T10:11:00.000+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[100.0],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2022-02-03T10:11:00.000+0000\\\",\\\"sampleCount\\\":5.0,\\\"value\\\":100.0}]}\", \"timestamp\": \"2022-02-03T10:17:51.020+0000\" }, \"previousState\": { \"value\": \"INSUFFICIENT_DATA\", \"reason\": \"Insufficient Data: 1 datapoint was unknown.\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2022-02-03T10:13:51.019+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2022-02-03T10:13:00.000+0000\\\"}]}\", \"timestamp\": \"2022-02-03T10:13:51.023+0000\" }, \"configuration\": { \"metrics\": [ { \"id\": \"4cbe7286-d70f-fcb9-4a0a-758612d568db\", \"metricStat\": { \"metric\": { \"namespace\": \"AWS/EC2\", \"name\": \"CPUUtilization\", \"dimensions\": { \"InstanceId\": \"i-01234567891012345\" } }, \"period\": 60, \"stat\": \"Maximum\" }, \"returnData\": true } ] } } } イベントの中身を抽出するためにやってるんだけど、JSONの保存形式に不正があるとエラーになったりして面倒くさい。Lambdaにイベント渡している場合、LambdaのロググループをLogs Insightsでクエリかけると項目毎に見やすく整型されて画面表示してくれる。だからそっちで確認してもいいのだが…、やはりJSONデータとして見たい時もあるんだよな。\n",
   "wordCount" : "155",
   "inLanguage": "en",
   "datePublished": "2022-02-10T18:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Pythonの辞書・文字列変換とJSON処理
     </h1>
-    <div class="post-meta">February 10, 2022
+    <div class="post-meta"><span title='2022-02-10 18:00:00 +0900 JST'>February 10, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&hellip;</p>
@@ -206,60 +205,59 @@
 <h3 id="json読み込み例">JSON読み込み例<a hidden class="anchor" aria-hidden="true" href="#json読み込み例">#</a></h3>
 <p>以下、CloudWatchアラームの閾値超え発生時イベントの中身をファイルに保存したのを呼び出している。<code>json.load()</code>で呼び出した時点で、このオブジェクトは辞書型であり、それを<code>json.dumps()</code>で文字列に変換している。</p>
 <p> </p>
-<pre><code>&gt;&gt;&gt; import json
-&gt;&gt;&gt; path = &quot;event_sample.json&quot;
-&gt;&gt;&gt; with open(path, encoding=&quot;utf-8&quot;, mode=&quot;r&quot;) as f:
+<pre tabindex="0"><code>&gt;&gt;&gt; import json
+&gt;&gt;&gt; path = &#34;event_sample.json&#34;
+&gt;&gt;&gt; with open(path, encoding=&#34;utf-8&#34;, mode=&#34;r&#34;) as f:
 ...   event = json.load(f)
 ...   msg = json.dumps(event, indent=3)
 ...   print(msg)
 ... 
 {
-   &quot;version&quot;: &quot;0&quot;,
-   &quot;id&quot;: &quot;86fa8a3f-7470-8c16-ef56-aaba9821771e&quot;,
-   &quot;detail-type&quot;: &quot;CloudWatch Alarm State Change&quot;,
-   &quot;source&quot;: &quot;aws.cloudwatch&quot;,
-   &quot;account&quot;: &quot;012345678910&quot;,
-   &quot;time&quot;: &quot;2022-02-03T10:17:51Z&quot;,
-   &quot;region&quot;: &quot;ap-northeast-1&quot;,
-   &quot;resources&quot;: [
-      &quot;arn:aws:cloudwatch:ap-northeast-1:012345678910:alarm:CPU_Utilization_Test&quot;
+   &#34;version&#34;: &#34;0&#34;,
+   &#34;id&#34;: &#34;86fa8a3f-7470-8c16-ef56-aaba9821771e&#34;,
+   &#34;detail-type&#34;: &#34;CloudWatch Alarm State Change&#34;,
+   &#34;source&#34;: &#34;aws.cloudwatch&#34;,
+   &#34;account&#34;: &#34;012345678910&#34;,
+   &#34;time&#34;: &#34;2022-02-03T10:17:51Z&#34;,
+   &#34;region&#34;: &#34;ap-northeast-1&#34;,
+   &#34;resources&#34;: [
+      &#34;arn:aws:cloudwatch:ap-northeast-1:012345678910:alarm:CPU_Utilization_Test&#34;
    ],
-   &quot;detail&quot;: {
-      &quot;alarmName&quot;: &quot;CPU_Utilization_Test&quot;,
-      &quot;state&quot;: {
-         &quot;value&quot;: &quot;ALARM&quot;,
-         &quot;reason&quot;: &quot;Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/02/22 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -&gt; ALARM transition).&quot;,
-         &quot;reasonData&quot;: &quot;{\&quot;version\&quot;:\&quot;1.0\&quot;,\&quot;queryDate\&quot;:\&quot;2022-02-03T10:17:51.018+0000\&quot;,\&quot;startDate\&quot;:\&quot;2022-02-03T10:11:00.000+0000\&quot;,\&quot;statistic\&quot;:\&quot;Maximum\&quot;,\&quot;period\&quot;:60,\&quot;recentDatapoints\&quot;:[100.0],\&quot;threshold\&quot;:10.0,\&quot;evaluatedDatapoints\&quot;:[{\&quot;timestamp\&quot;:\&quot;2022-02-03T10:11:00.000+0000\&quot;,\&quot;sampleCount\&quot;:5.0,\&quot;value\&quot;:100.0}]}&quot;,
-         &quot;timestamp&quot;: &quot;2022-02-03T10:17:51.020+0000&quot;
+   &#34;detail&#34;: {
+      &#34;alarmName&#34;: &#34;CPU_Utilization_Test&#34;,
+      &#34;state&#34;: {
+         &#34;value&#34;: &#34;ALARM&#34;,
+         &#34;reason&#34;: &#34;Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/02/22 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -&gt; ALARM transition).&#34;,
+         &#34;reasonData&#34;: &#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2022-02-03T10:17:51.018+0000\&#34;,\&#34;startDate\&#34;:\&#34;2022-02-03T10:11:00.000+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[100.0],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2022-02-03T10:11:00.000+0000\&#34;,\&#34;sampleCount\&#34;:5.0,\&#34;value\&#34;:100.0}]}&#34;,
+         &#34;timestamp&#34;: &#34;2022-02-03T10:17:51.020+0000&#34;
       },
-      &quot;previousState&quot;: {
-         &quot;value&quot;: &quot;INSUFFICIENT_DATA&quot;,
-         &quot;reason&quot;: &quot;Insufficient Data: 1 datapoint was unknown.&quot;,
-         &quot;reasonData&quot;: &quot;{\&quot;version\&quot;:\&quot;1.0\&quot;,\&quot;queryDate\&quot;:\&quot;2022-02-03T10:13:51.019+0000\&quot;,\&quot;statistic\&quot;:\&quot;Maximum\&quot;,\&quot;period\&quot;:60,\&quot;recentDatapoints\&quot;:[],\&quot;threshold\&quot;:10.0,\&quot;evaluatedDatapoints\&quot;:[{\&quot;timestamp\&quot;:\&quot;2022-02-03T10:13:00.000+0000\&quot;}]}&quot;,
-         &quot;timestamp&quot;: &quot;2022-02-03T10:13:51.023+0000&quot;
+      &#34;previousState&#34;: {
+         &#34;value&#34;: &#34;INSUFFICIENT_DATA&#34;,
+         &#34;reason&#34;: &#34;Insufficient Data: 1 datapoint was unknown.&#34;,
+         &#34;reasonData&#34;: &#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2022-02-03T10:13:51.019+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2022-02-03T10:13:00.000+0000\&#34;}]}&#34;,
+         &#34;timestamp&#34;: &#34;2022-02-03T10:13:51.023+0000&#34;
       },
-      &quot;configuration&quot;: {
-         &quot;metrics&quot;: [
+      &#34;configuration&#34;: {
+         &#34;metrics&#34;: [
             {
-               &quot;id&quot;: &quot;4cbe7286-d70f-fcb9-4a0a-758612d568db&quot;,
-               &quot;metricStat&quot;: {
-                  &quot;metric&quot;: {
-                     &quot;namespace&quot;: &quot;AWS/EC2&quot;,
-                     &quot;name&quot;: &quot;CPUUtilization&quot;,
-                     &quot;dimensions&quot;: {
-                        &quot;InstanceId&quot;: &quot;i-01234567891012345&quot;
+               &#34;id&#34;: &#34;4cbe7286-d70f-fcb9-4a0a-758612d568db&#34;,
+               &#34;metricStat&#34;: {
+                  &#34;metric&#34;: {
+                     &#34;namespace&#34;: &#34;AWS/EC2&#34;,
+                     &#34;name&#34;: &#34;CPUUtilization&#34;,
+                     &#34;dimensions&#34;: {
+                        &#34;InstanceId&#34;: &#34;i-01234567891012345&#34;
                      }
                   },
-                  &quot;period&quot;: 60,
-                  &quot;stat&quot;: &quot;Maximum&quot;
+                  &#34;period&#34;: 60,
+                  &#34;stat&#34;: &#34;Maximum&#34;
                },
-               &quot;returnData&quot;: true
+               &#34;returnData&#34;: true
             }
          ]
       }
    }
 }
-
 </code></pre><p> </p>
 <p>イベントの中身を抽出するためにやってるんだけど、JSONの保存形式に不正があるとエラーになったりして面倒くさい。Lambdaにイベント渡している場合、LambdaのロググループをLogs Insightsでクエリかけると項目毎に見やすく整型されて画面表示してくれる。だからそっちで確認してもいいのだが&hellip;、やはりJSONデータとして見たい時もあるんだよな。</p>
 <p> </p>
@@ -288,6 +286,7 @@
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
@@ -295,12 +294,12 @@
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>グリシン酸マグネシウムが入手困難！</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-10/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「愛と幻想のファシズム」より(7)</span>
   </a>
@@ -309,27 +308,28 @@
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -383,12 +383,12 @@
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

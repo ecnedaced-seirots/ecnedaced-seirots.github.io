@@ -1,85 +1,71 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CodePipeline on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/codepipeline/</link>
     <description>Recent content in CodePipeline on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 02 May 2022 11:44:04 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/codepipeline/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 May 2022 11:44:04 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/codepipeline/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - 要追加作業</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
       <pubDate>Wed, 06 Apr 2022 15:19:11 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>
       <pubDate>Mon, 04 Apr 2022 20:56:07 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成する時のオプション&amp;quot;PollForSourceChanges&amp;quot;の注意点。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでVPCエンドポイント使用時の注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</guid>
       <description>&lt;p&gt;AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeploy備忘録</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</link>
       <pubDate>Sat, 29 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</guid>
       <description>&lt;p&gt;簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(3) - Event rule</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</link>
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</guid>
       <description>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &amp;quot;aws_cloudwatch_event_rule&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.events_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) description = &amp;quot;Start the pipeline when detect CodeCommit repository state change.&amp;quot; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;quot;source&amp;quot;: [&amp;quot;aws.codecommit&amp;quot;], &amp;quot;detail-type&amp;quot;: [&amp;quot;CodeCommit Repository State Change&amp;quot;], &amp;quot;resources&amp;quot;: [&amp;quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;quot;repo_name&amp;quot;)}&amp;quot;], &amp;quot;detail&amp;quot;: { &amp;quot;event&amp;quot;: [&amp;quot;referenceCreated&amp;quot;, &amp;quot;referenceUpdated&amp;quot;], &amp;quot;referenceType&amp;quot;: [&amp;quot;branch&amp;quot;], &amp;quot;referenceName&amp;quot; : [&amp;quot;master&amp;quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;quot;aws_cloudwatch_event_target&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.</description>
+######################################## # EventBridge rule ######################################## resource &amp;#34;aws_cloudwatch_event_rule&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.events_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) description = &amp;#34;Start the pipeline when detect CodeCommit repository state change.&amp;#34; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;#34;source&amp;#34;: [&amp;#34;aws.codecommit&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;CodeCommit Repository State Change&amp;#34;], &amp;#34;resources&amp;#34;: [&amp;#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;#34;repo_name&amp;#34;)}&amp;#34;], &amp;#34;detail&amp;#34;: { &amp;#34;event&amp;#34;: [&amp;#34;referenceCreated&amp;#34;, &amp;#34;referenceUpdated&amp;#34;], &amp;#34;referenceType&amp;#34;: [&amp;#34;branch&amp;#34;], &amp;#34;referenceName&amp;#34; : [&amp;#34;master&amp;#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;#34;aws_cloudwatch_event_target&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</guid>
       <description>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &amp;quot;aws_codecommit_repository&amp;quot; &amp;quot;codecommit_repos&amp;quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;quot;repository_name&amp;quot;) description = lookup(each.value, &amp;quot;description&amp;quot;) } #################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
+cicd.tf
+#################################### # CodeCommit #################################### resource &amp;#34;aws_codecommit_repository&amp;#34; &amp;#34;codecommit_repos&amp;#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;#34;repository_name&amp;#34;) description = lookup(each.value, &amp;#34;description&amp;#34;) } #################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</link>
       <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</guid>
       <description>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
 前回投稿
@@ -88,44 +74,42 @@ AWS CodeDeployでクロスアカウントデプロイ実行（パイプライン
 やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
+主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
 ③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
- 2-資材配布先（アカウントB）
+2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
+上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
 2-① CodeDeploy定義
 アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
 2-② ec2用のIAMロール
 KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
 KMS用インラインポリシー
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] }  S3用インラインポリシー</description>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] } S3用インラインポリシー</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</link>
       <pubDate>Sun, 03 Oct 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</guid>
       <description>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&amp;hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild + パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -133,15 +117,15 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].</description>
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。</description>
     </item>
-    
   </channel>
 </rss>

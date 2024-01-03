@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2) | Go Buddy Go</title>
-<meta name="keywords" content="monitoring, amazon sns, lambda, eventbridge, AWS" />
+<meta name="keywords" content="monitoring, amazon sns, lambda, eventbridge, AWS">
 <meta name="description" content="以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -24,24 +24,59 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" />
 <meta property="og:description" content="以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-21T00:30:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-11-21T00:30:00&#43;09:00" />
+<meta property="article:published_time" content="2021-11-21T00:30:00+09:00" />
+<meta property="article:modified_time" content="2021-11-21T00:30:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)"/>
 <meta name="twitter:description" content="以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3."/>
 
 
@@ -71,12 +106,12 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   "@type": "BlogPosting",
   "headline": "AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)",
   "name": "AWSイベント監視 - CloudTrail \u002b EventBridge \u002b Lambdaでメールカスタマイズ(2)",
-  "description": "以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ\n とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。\n lambda_function.py （イベント監視メール通知用）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(\u0026#39;Loading function\u0026#39;) sns_arn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[\u0026#39;detail\u0026#39;] #詳細(detail)を定義 e_type = e[\u0026#39;detail-type\u0026#39;] # イベントタイプ 例：\u0026#39;AWS API Call via CloudTrail\u0026#39; t = e[\u0026#39;time\u0026#39;] # 発生時刻 evt_name = dtl[\u0026#39;eventName\u0026#39;] # イベント名 例：DeleteBucket evt_src = dtl[\u0026#39;eventSource\u0026#39;] # イベントソース 例：s3.",
+  "description": "以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ\nとういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。\nlambda_function.py （イベント監視メール通知用）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(\u0026#39;Loading function\u0026#39;) sns_arn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[\u0026#39;detail\u0026#39;] #詳細(detail)を定義 e_type = e[\u0026#39;detail-type\u0026#39;] # イベントタイプ 例：\u0026#39;AWS API Call via CloudTrail\u0026#39; t = e[\u0026#39;time\u0026#39;] # 発生時刻 evt_name = dtl[\u0026#39;eventName\u0026#39;] # イベント名 例：DeleteBucket evt_src = dtl[\u0026#39;eventSource\u0026#39;] # イベントソース 例：s3.",
   "keywords": [
     "monitoring", "amazon sns", "lambda", "eventbridge", "AWS"
   ],
-  "articleBody": "以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ\n とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。\n lambda_function.py （イベント監視メール通知用）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e['detail'] #詳細(detail)を定義 e_type = e['detail-type'] # イベントタイプ 例：'AWS API Call via CloudTrail' t = e['time'] # 発生時刻 evt_name = dtl['eventName'] # イベント名 例：DeleteBucket evt_src = dtl['eventSource'] # イベントソース 例：s3.amazonaws.com evt_usr = dtl['userIdentity']['arn'] # 実行ユーザ 例：arn:aws:iam::012345678910:user/hoge_user evt_ip = dtl['sourceIPAddress'] # ソースIPアドレス #123.123.123.123 # 時刻変換 JST = timezone(timedelta(hours=+9), 'JST') utcstr_parsed = parser.parse(t) ux_time = utcstr_parsed.timestamp() epoch = int(ux_time) # unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) # dtを整形 dt_str = dt.strftime('%Y-%m-%d%H:%M:%S') # イベントリクエスト 例：{'bucketName': 'hoge-test-bucket-0001', 'Host': 's3-ap-northeast-1.amazonaws.com'} evt_req_d = e['detail']['requestParameters'] req_str = json.dumps(evt_req_d) evt_req = re.sub(r\"[{}\\\"]\", \"\", req_str) # 件名整形 subject_str = \"本番環境イベント監視 \" + evt_name + \" - \" + evt_src # メッセージ本文整形 fix_msg = \"以下のイベントが発生しました\" + \"\\n\" type_msg = \"イベントタイプ:\" + \"\\n\" + e_type time_msg = \"発生時刻(JST):\" + \"\\n\" + dt_str ename_msg = \"イベント名:\" + \"\\n\" + evt_name esrc_msg =\"イベントソース:\" \"\\n\" + evt_src ereq_msg =\"イベントリクエスト:\" \"\\n\" + evt_req eusr_msg =\"実行ユーザ:\" \"\\n\" + evt_usr eip_msg =\"ソースIPアドレス:\" \"\\n\" + evt_ip msg = fix_msg + \"\\n\\n\" + type_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + ename_msg + \"\\n\\n\" + esrc_msg + \"\\n\\n\" + ereq_msg + \"\\n\\n\" + eusr_msg + \"\\n\\n\" + eip_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  テスト用にサンプルデータを貼り付けて、エラーが出ない状態にまでもっていった。これでもういいかと思ったがやはりちゃんとしたメールが届くのが見たい…ということで、再びCloudTrailを有効にしてイベントを発生させることにした。前回無効にしたCloudTrailログ用の残骸バケットが残っていたのでそれを削除したら、まさにその行為がイベントとして検知され、メールが届いた。よしよし。\n 上記はテストデータ残骸の内容が表示されているが、実際のイベント発生時のメールも別途ちゃんと届いている。上記画面では「APIタイプ」が含まれているがこれはいらないと判断したため、この後コードから削除した。\n ちなみに、JSON生データからkey:valueの抽出を行うときはこんなんでやった。JSONデータをファイルに保存してから：\n import json  event_file = open('event_msg_sample.json','r')  event = json.load(event_file)  for k,v in event.items(): ... print(k,v)  （追記）以下でもよい。先にこれをやって、階層が深くて分かりにくい場合は上記を併用すればいいかと。\n msg = json.dumps(event, indent=3)  print(msg)  ",
-  "wordCount" : "284",
+  "articleBody": "以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ\nとういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。\nlambda_function.py （イベント監視メール通知用）\nimport boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e['detail'] #詳細(detail)を定義 e_type = e['detail-type'] # イベントタイプ 例：'AWS API Call via CloudTrail' t = e['time'] # 発生時刻 evt_name = dtl['eventName'] # イベント名 例：DeleteBucket evt_src = dtl['eventSource'] # イベントソース 例：s3.amazonaws.com evt_usr = dtl['userIdentity']['arn'] # 実行ユーザ 例：arn:aws:iam::012345678910:user/hoge_user evt_ip = dtl['sourceIPAddress'] # ソースIPアドレス #123.123.123.123 # 時刻変換 JST = timezone(timedelta(hours=+9), 'JST') utcstr_parsed = parser.parse(t) ux_time = utcstr_parsed.timestamp() epoch = int(ux_time) # unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) # dtを整形 dt_str = dt.strftime('%Y-%m-%d %H:%M:%S') # イベントリクエスト 例：{'bucketName': 'hoge-test-bucket-0001', 'Host': 's3-ap-northeast-1.amazonaws.com'} evt_req_d = e['detail']['requestParameters'] req_str = json.dumps(evt_req_d) evt_req = re.sub(r\"[{}\\\"]\", \"\", req_str) # 件名整形 subject_str = \"本番環境イベント監視 \" + evt_name + \" - \" + evt_src # メッセージ本文整形 fix_msg = \"以下のイベントが発生しました\" + \"\\n\" type_msg = \"イベントタイプ:\" + \"\\n\" + e_type time_msg = \"発生時刻(JST):\" + \"\\n\" + dt_str ename_msg = \"イベント名:\" + \"\\n\" + evt_name esrc_msg =\"イベントソース:\" \"\\n\" + evt_src ereq_msg =\"イベントリクエスト:\" \"\\n\" + evt_req eusr_msg =\"実行ユーザ:\" \"\\n\" + evt_usr eip_msg =\"ソースIPアドレス:\" \"\\n\" + evt_ip msg = fix_msg + \"\\n\\n\" + type_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + ename_msg + \"\\n\\n\" + esrc_msg + \"\\n\\n\" + ereq_msg + \"\\n\\n\" + eusr_msg + \"\\n\\n\" + eip_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e) テスト用にサンプルデータを貼り付けて、エラーが出ない状態にまでもっていった。これでもういいかと思ったがやはりちゃんとしたメールが届くのが見たい…ということで、再びCloudTrailを有効にしてイベントを発生させることにした。前回無効にしたCloudTrailログ用の残骸バケットが残っていたのでそれを削除したら、まさにその行為がイベントとして検知され、メールが届いた。よしよし。\n上記はテストデータ残骸の内容が表示されているが、実際のイベント発生時のメールも別途ちゃんと届いている。上記画面では「APIタイプ」が含まれているがこれはいらないと判断したため、この後コードから削除した。\nちなみに、JSON生データからkey:valueの抽出を行うときはこんなんでやった。JSONデータをファイルに保存してから：\n\u003e\u003e\u003e import json \u003e\u003e\u003e event_file = open('event_msg_sample.json','r') \u003e\u003e\u003e event = json.load(event_file) \u003e\u003e\u003e for k,v in event.items(): ... print(k,v) （追記）以下でもよい。先にこれをやって、階層が深くて分かりにくい場合は上記を併用すればいいかと。\n\u003e\u003e\u003e msg = json.dumps(event, indent=3) \u003e\u003e\u003e print(msg) ",
+  "wordCount" : "285",
   "inLanguage": "en",
   "datePublished": "2021-11-21T00:30:00+09:00",
   "dateModified": "2021-11-21T00:30:00+09:00",
@@ -107,56 +142,19 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -170,7 +168,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -201,10 +199,11 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
     </h1>
-    <div class="post-meta">November 21, 2021
+    <div class="post-meta"><span title='2021-11-21 00:30:00 +0900 JST'>November 21, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。<br>
@@ -213,75 +212,75 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <p>とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。</p>
 <p> </p>
 <p>lambda_function.py （イベント監視メール通知用）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> boto3
-<span style="color:#f92672">import</span> json
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> re
-<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
-<span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timezone, timedelta
-<span style="color:#f92672">from</span> dateutil <span style="color:#f92672">import</span> parser
-
-print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
-
-sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
-    data <span style="color:#f92672">=</span> event
-    s <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(data)
-    e <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(s)
-    print(e)
-    
-    <span style="color:#75715e"># eventから項目を抽出</span>
-    dtl <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>] <span style="color:#75715e">#詳細(detail)を定義</span>
-    e_type <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail-type&#39;</span>] <span style="color:#75715e"># イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39;</span>
-    t <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;time&#39;</span>] <span style="color:#75715e"># 発生時刻</span>
-    evt_name <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;eventName&#39;</span>] <span style="color:#75715e"># イベント名 例：DeleteBucket</span>
-    evt_src <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;eventSource&#39;</span>] <span style="color:#75715e"># イベントソース 例：s3.amazonaws.com</span>
-    evt_usr <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;userIdentity&#39;</span>][<span style="color:#e6db74">&#39;arn&#39;</span>] <span style="color:#75715e"># 実行ユーザ 例：arn:aws:iam::012345678910:user/hoge_user</span>
-    evt_ip <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;sourceIPAddress&#39;</span>] <span style="color:#75715e"># ソースIPアドレス #123.123.123.123</span>
-
-    <span style="color:#75715e"># 時刻変換</span>
-    JST <span style="color:#f92672">=</span> timezone(timedelta(hours<span style="color:#f92672">=+</span><span style="color:#ae81ff">9</span>), <span style="color:#e6db74">&#39;JST&#39;</span>)
-    utcstr_parsed <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse(t)
-    ux_time <span style="color:#f92672">=</span> utcstr_parsed<span style="color:#f92672">.</span>timestamp()
-    epoch <span style="color:#f92672">=</span> int(ux_time)
-    <span style="color:#75715e"># unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型</span>
-    dt <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromtimestamp(epoch)<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)<span style="color:#f92672">.</span>astimezone(tz<span style="color:#f92672">=</span>JST)
-    <span style="color:#75715e"># dtを整形</span>
-    dt_str <span style="color:#f92672">=</span> dt<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
-    
-    <span style="color:#75715e"># イベントリクエスト 例：{&#39;bucketName&#39;: &#39;hoge-test-bucket-0001&#39;, &#39;Host&#39;: &#39;s3-ap-northeast-1.amazonaws.com&#39;}</span>
-    evt_req_d <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;requestParameters&#39;</span>]
-    req_str <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(evt_req_d)
-    evt_req <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, req_str)
-
-    <span style="color:#75715e"># 件名整形</span>
-    subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境イベント監視 &#34;</span> <span style="color:#f92672">+</span> evt_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> evt_src
-
-    <span style="color:#75715e"># メッセージ本文整形</span>
-    fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のイベントが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-    type_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;イベントタイプ:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> e_type
-    time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻(JST):&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dt_str
-    ename_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;イベント名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_name
-    esrc_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;イベントソース:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_src
-    ereq_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;イベントリクエスト:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_req
-    eusr_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;実行ユーザ:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_usr
-    eip_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ソースIPアドレス:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_ip
-    msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> type_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> ename_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> esrc_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> ereq_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> eusr_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> eip_msg
-    
-    <span style="color:#66d9ef">try</span>:
-        sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
-        
-        <span style="color:#75715e">#SNS Publish</span>
-        publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
-            TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
-            Message <span style="color:#f92672">=</span> msg,
-            Subject <span style="color:#f92672">=</span> subject_str
-        )
-    
-    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-        print(e)
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> boto3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timezone, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dateutil <span style="color:#f92672">import</span> parser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> event
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(data)
+</span></span><span style="display:flex;"><span>    e <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(s)
+</span></span><span style="display:flex;"><span>    print(e)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># eventから項目を抽出</span>
+</span></span><span style="display:flex;"><span>    dtl <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>] <span style="color:#75715e">#詳細(detail)を定義</span>
+</span></span><span style="display:flex;"><span>    e_type <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail-type&#39;</span>] <span style="color:#75715e"># イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39;</span>
+</span></span><span style="display:flex;"><span>    t <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;time&#39;</span>] <span style="color:#75715e"># 発生時刻</span>
+</span></span><span style="display:flex;"><span>    evt_name <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;eventName&#39;</span>] <span style="color:#75715e"># イベント名 例：DeleteBucket</span>
+</span></span><span style="display:flex;"><span>    evt_src <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;eventSource&#39;</span>] <span style="color:#75715e"># イベントソース 例：s3.amazonaws.com</span>
+</span></span><span style="display:flex;"><span>    evt_usr <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;userIdentity&#39;</span>][<span style="color:#e6db74">&#39;arn&#39;</span>] <span style="color:#75715e"># 実行ユーザ 例：arn:aws:iam::012345678910:user/hoge_user</span>
+</span></span><span style="display:flex;"><span>    evt_ip <span style="color:#f92672">=</span> dtl[<span style="color:#e6db74">&#39;sourceIPAddress&#39;</span>] <span style="color:#75715e"># ソースIPアドレス #123.123.123.123</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 時刻変換</span>
+</span></span><span style="display:flex;"><span>    JST <span style="color:#f92672">=</span> timezone(timedelta(hours<span style="color:#f92672">=+</span><span style="color:#ae81ff">9</span>), <span style="color:#e6db74">&#39;JST&#39;</span>)
+</span></span><span style="display:flex;"><span>    utcstr_parsed <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse(t)
+</span></span><span style="display:flex;"><span>    ux_time <span style="color:#f92672">=</span> utcstr_parsed<span style="color:#f92672">.</span>timestamp()
+</span></span><span style="display:flex;"><span>    epoch <span style="color:#f92672">=</span> int(ux_time)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># unixタイムスタンプをJSTに変換。dtはこの時点でdatetime.datetime型</span>
+</span></span><span style="display:flex;"><span>    dt <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromtimestamp(epoch)<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)<span style="color:#f92672">.</span>astimezone(tz<span style="color:#f92672">=</span>JST)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># dtを整形</span>
+</span></span><span style="display:flex;"><span>    dt_str <span style="color:#f92672">=</span> dt<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># イベントリクエスト 例：{&#39;bucketName&#39;: &#39;hoge-test-bucket-0001&#39;, &#39;Host&#39;: &#39;s3-ap-northeast-1.amazonaws.com&#39;}</span>
+</span></span><span style="display:flex;"><span>    evt_req_d <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;requestParameters&#39;</span>]
+</span></span><span style="display:flex;"><span>    req_str <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(evt_req_d)
+</span></span><span style="display:flex;"><span>    evt_req <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, req_str)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 件名整形</span>
+</span></span><span style="display:flex;"><span>    subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境イベント監視 &#34;</span> <span style="color:#f92672">+</span> evt_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> evt_src
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># メッセージ本文整形</span>
+</span></span><span style="display:flex;"><span>    fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のイベントが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    type_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;イベントタイプ:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> e_type
+</span></span><span style="display:flex;"><span>    time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻(JST):&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dt_str
+</span></span><span style="display:flex;"><span>    ename_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;イベント名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_name
+</span></span><span style="display:flex;"><span>    esrc_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;イベントソース:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_src
+</span></span><span style="display:flex;"><span>    ereq_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;イベントリクエスト:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_req
+</span></span><span style="display:flex;"><span>    eusr_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;実行ユーザ:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_usr
+</span></span><span style="display:flex;"><span>    eip_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ソースIPアドレス:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> evt_ip
+</span></span><span style="display:flex;"><span>    msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> type_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> ename_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> esrc_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> ereq_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> eusr_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> eip_msg
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#SNS Publish</span>
+</span></span><span style="display:flex;"><span>        publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+</span></span><span style="display:flex;"><span>            TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+</span></span><span style="display:flex;"><span>            Message <span style="color:#f92672">=</span> msg,
+</span></span><span style="display:flex;"><span>            Subject <span style="color:#f92672">=</span> subject_str
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(e)
+</span></span></code></pre></div><p> </p>
 <p>テスト用にサンプルデータを貼り付けて、エラーが出ない状態にまでもっていった。これでもういいかと思ったがやはりちゃんとしたメールが届くのが見たい&hellip;ということで、再びCloudTrailを有効にしてイベントを発生させることにした。前回無効にしたCloudTrailログ用の残骸バケットが残っていたのでそれを削除したら、まさにその行為がイベントとして検知され、メールが届いた。よしよし。</p>
 <p><img loading="lazy" src="/img/a/event_mail_sample.jpg" alt="AWSイベントメールサンプル"  />
 </p>
@@ -289,14 +288,14 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
 <p>上記はテストデータ残骸の内容が表示されているが、実際のイベント発生時のメールも別途ちゃんと届いている。上記画面では「APIタイプ」が含まれているがこれはいらないと判断したため、この後コードから削除した。</p>
 <p> </p>
 <p>ちなみに、JSON生データからkey:valueの抽出を行うときはこんなんでやった。JSONデータをファイルに保存してから：</p>
-<pre><code>&gt;&gt;&gt; import json
-&gt;&gt;&gt; event_file = open('event_msg_sample.json','r')
+<pre tabindex="0"><code>&gt;&gt;&gt; import json
+&gt;&gt;&gt; event_file = open(&#39;event_msg_sample.json&#39;,&#39;r&#39;)
 &gt;&gt;&gt; event = json.load(event_file)
 &gt;&gt;&gt; for k,v in event.items():
 ...   print(k,v)
 </code></pre><p> </p>
 <p>（追記）以下でもよい。先にこれをやって、階層が深くて分かりにくい場合は上記を併用すればいいかと。</p>
-<pre><code>&gt;&gt;&gt; msg = json.dumps(event, indent=3)
+<pre tabindex="0"><code>&gt;&gt;&gt; msg = json.dumps(event, indent=3)
 &gt;&gt;&gt; print(msg)
 </code></pre><p> </p>
 <p><img loading="lazy" src="/img/a/numazu_0001.JPG" alt="Park"  />
@@ -324,6 +323,7 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
@@ -334,12 +334,12 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Terraform loop処理のリンク集</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</span>
   </a>
@@ -348,27 +348,28 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -422,12 +423,12 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

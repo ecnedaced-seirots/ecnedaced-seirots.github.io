@@ -1,129 +1,107 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>english on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/english/</link>
     <description>Recent content in english on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 19 Feb 2022 00:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/english/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 Feb 2022 00:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/english/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>英語メモ - I&#39;d be glad to.</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</link>
       <pubDate>Sat, 19 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</guid>
       <description>&lt;p&gt;技術記事書きたいけどいろいろありすぎて書けない。ここしばらく憂鬱なネタばかり触れてるから、少しでも上向きなことを。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Coin Locker Babies-2, Ryu Murakami</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/</link>
       <pubDate>Sun, 23 Jan 2022 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/</guid>
       <description>&lt;p&gt;「コインロッカーベイビーズ」(村上龍）の英語翻訳版 “Coin Locker Babies&amp;quot;より、クライマックスに近づくあたりのシーン。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Coin Locker Babies-1, Ryu Murakami</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-6/</link>
       <pubDate>Wed, 19 Jan 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-6/</guid>
       <description>&lt;p&gt;「コインロッカーベイビーズ」(村上龍）の英語翻訳版 &amp;ldquo;Coin Locker Babies&amp;quot;より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - boredom</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-boredom/</link>
       <pubDate>Fri, 14 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/english-boredom/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;But Anemone had finally seen through all this talk; all Sachiko&amp;rsquo;s trips and lovers and &amp;ldquo;experiences&amp;rdquo; amounted to the same thing: boredom.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - murmur</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-murmur/</link>
       <pubDate>Thu, 23 Dec 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-murmur/</guid>
       <description>murmur：ぶつぶつ言う、不満をつぶやく
 類：grumble
-&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。
- </description>
+&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。</description>
     </item>
-    
     <item>
       <title>Quotes - タランティーノ小説より(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</link>
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</guid>
-      <description> Some say luck is when preparation meets opportunity.
- - Once Upon a Time in Hollywood&amp;quot;の小説版 (Quentin Tarantino) より。
- わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど&amp;hellip;
-個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？
-   </description>
+      <description>Some say luck is when preparation meets opportunity.
+- Once Upon a Time in Hollywood&amp;quot;の小説版 (Quentin Tarantino) より。
+わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど&amp;hellip;
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？</description>
     </item>
-    
     <item>
       <title>英語メモ - into the bargain</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</link>
       <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</guid>
       <description>into the bargain = in addition
-&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より
- </description>
+&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より</description>
     </item>
-    
     <item>
       <title>英語メモ - elaborate</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-elaborate/</link>
       <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-elaborate/</guid>
-      <description>elaborate   複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の  他動詞としては「〜を詳しく調べる」
- Irvine Welshの&amp;quot;Trainspotting&amp;quot;読書中に登場した単語だと思うが、何ページかはもう覚えていない。
-  </description>
+      <description>elaborate 複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の 他動詞としては「〜を詳しく調べる」
+Irvine Welshの&amp;quot;Trainspotting&amp;quot;読書中に登場した単語だと思うが、何ページかはもう覚えていない。</description>
     </item>
-    
     <item>
       <title>middle finger周辺の表現など</title>
       <link>https://ecnedaced-seirots.github.io/post/a/the-finger/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/the-finger/</guid>
       <description>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
- &amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
+&amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
 以下はすべて同じ意味。&amp;ldquo;the finger&amp;quot;でも同じ意味になるとは知らなかった。
- middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
- give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
- flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
+middle finger second finger the finger 侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+give the middle finger give the finger 以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+flip the bird fly the bird しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
     </item>
-    
     <item>
       <title>単語rageを覚えたきっかけはディラン・トーマスの詩だった</title>
       <link>https://ecnedaced-seirots.github.io/post/a/dylan-thomas/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/dylan-thomas/</guid>
       <description>&amp;ldquo;rage&amp;quot;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
- Do not go gentle into that good night.
+Do not go gentle into that good night.
 Rage, rage against the dying of the light.
-  パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。&amp;ldquo;rage&amp;quot;という単語を初めて見たので調べたところ、意味は先述の通り。
+パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。&amp;ldquo;rage&amp;quot;という単語を初めて見たので調べたところ、意味は先述の通り。
 これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
 それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
-  Do not go gentle into that good night,
+Do not go gentle into that good night,
 Old age should burn and rage at close of day;
 Rage, rage against the dying of the light.
 Though wise men at their end know dark is right,
-Because their words had forked no lightning they</description>
+Because their words had forked no lightning they
+Do not go gentle into that good night.</description>
     </item>
-    
   </channel>
 </rss>

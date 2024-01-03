@@ -1,128 +1,103 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
     <description>Recent content in golang on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 06 Feb 2022 23:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Feb 2022 23:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go入門(13) - Switch文による条件分岐</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-switch/</link>
       <pubDate>Sun, 06 Feb 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-switch/</guid>
       <description>&lt;p&gt;Go言語のSwitch文による条件分岐例など。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門 (12) - Goで文字列を連結するいくつかの方法</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-append-string/</link>
       <pubDate>Sat, 05 Feb 2022 17:52:48 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-append-string/</guid>
       <description>&lt;p&gt;Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(11) - 型変換(str-int, int-str)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</link>
       <pubDate>Wed, 02 Feb 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</guid>
       <description>&lt;p&gt;文字列から数値 or 数値から文字列。Goでこのように型を変更するには、&lt;code&gt;strconv&lt;/code&gt;を使う。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(10) - コマンドライン引数の処理</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</link>
       <pubDate>Sun, 30 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</guid>
       <description>&lt;p&gt;コマンドライン引数を受け取って処理。どの言語でもやるけどGoはどうするんだろう、と思って軽く調べてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(9) - if else文</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</link>
       <pubDate>Sun, 30 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</guid>
       <description>&lt;p&gt;Go言語におけるif-else文の覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(8) - if文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</link>
       <pubDate>Wed, 26 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</guid>
       <description>&lt;p&gt;Go言語におけるif文の基本覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(7) - mapのrange,deleteなど</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</link>
       <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</guid>
       <description>&lt;p&gt;Goのmap操作続き。range, 追加やdeleteなど。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(6) - mapの基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>
       <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</guid>
       <description>&lt;p&gt;Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(5) - for文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</link>
       <pubDate>Mon, 17 Jan 2022 23:51:03 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</guid>
       <description>&lt;p&gt;Go言語におけるfor文の基本覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(4) - 現在時刻の出力</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-time/</link>
       <pubDate>Sun, 16 Jan 2022 17:08:18 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-time/</guid>
       <description>&lt;p&gt;Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(3) - スライス(Slice)の扱い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</link>
       <pubDate>Sun, 16 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</guid>
       <description>&lt;p&gt;Goには配列と似た「スライス(Slice)」というデータ構造の概念がある。要素数の指定が不要で、配列より柔軟にデータを扱うことができる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(2) - 配列の扱い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</link>
       <pubDate>Sat, 15 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</guid>
       <description>&lt;p&gt;Goの配列は要素数を宣言する。宣言した数を超える要素は格納できない。少ない分には可能。Goは配列よりスライスの方がよく使われるらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(1) - 変数の定義</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</link>
       <pubDate>Sat, 15 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</guid>
       <description>&lt;p&gt;Go言語の学習を始めることにした。シンプルで学びやすい。セミコロンは使わない。try-catchがサポートされていない。&lt;code&gt;:=&lt;/code&gt;をよく使う。とのことだ。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

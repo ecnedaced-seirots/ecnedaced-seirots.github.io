@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RDS on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/categories/rds/</link>
     <description>Recent content in RDS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/rds/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/rds/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</title>
       <link>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</guid>
       <description>&lt;p&gt;EC2またはクライアントPCから簡単にRDSへ疎通確認したい時に便利なコマンドがある。（長年この業界にいながら最近知ったという）&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

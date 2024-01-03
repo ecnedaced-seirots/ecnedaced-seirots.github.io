@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>EKS Container InsightsのFluent Bit設定 | Go Buddy Go</title>
-<meta name="keywords" content="fluentbit, ContainerInsights, EKS, kubernetes, AWS" />
+<meta name="keywords" content="fluentbit, ContainerInsights, EKS, kubernetes, AWS">
 <meta name="description" content="AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="EKS Container InsightsのFluent Bit設定" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="EKS Container InsightsのFluent Bit設定" />
 <meta property="og:description" content="AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-09-12T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-09-12T00:00:00&#43;00:00" />
+<meta property="article:published_time" content="2021-09-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-12T00:00:00+00:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="EKS Container InsightsのFluent Bit設定"/>
@@ -63,8 +98,8 @@
   "keywords": [
     "fluentbit", "ContainerInsights", "EKS", "kubernetes", "AWS"
   ],
-  "articleBody": "AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。\nしかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。\n 参照\nFluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）\nFluent Bit Documentation\nContainer Insights全般\nAmazon EKS と Kubernetes での Container Insights のセットアップ\nFluent Bit on Container Insights\nCloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する\nサンプルマニフェスト\nfluent-bit-compatible.yaml\n※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。\n 共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。\nfluentbit-cluster.yaml\napiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: \"On\" read.tail: \"Off\" --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRole metadata: name: fluent-bit-role rules: - nonResourceURLs: - /metrics verbs: - get - apiGroups: [\"\"] resources: - namespaces - pods - pods/logs verbs: [\"get\", \"list\", \"watch\"] --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRoleBinding metadata: name: fluent-bit-role-binding roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: fluent-bit-role subjects: - kind: ServiceAccount name: fluent-bit namespace: amazon-cloudwatch  個別マニフェスト例 「個別のマニフェスト」というのはアプリの種類が複数存在して、各種別ごとに送信先（ロググループ/ログストリーム）を振り分けたいケースを想定している。しかしAWS公式サンプルをそのまま使うと要件的に期待値にならない。現状ネットにわかりやすい事例がなく大分迷ったが、最終的に以下のような形に落とした。詳細は後述。\n最初に骨組みを説明すると、前半がFluent Bitの設定であるConfigMap、後半がワーカーノード上で起動するDaemonSetの定義となっている。冒頭の[SERVICE]で全体共通の設定を行う。@INCLUDEで3種類のConfig名を指定しているが名称は適当でよい。各Config内に[INPUT] [FILTER] [OUTPUT] を定義していく。\n confの種類 containers.conf\nfluentbit, cloudwatch-agentやアプリ個別ログを定義。簡素化のため対象を絞っているが、aws-node, kube-proxy, corednsのログを送信する場合もここに含める。\nkube-systemd.conf\ndocker,kubeletのログを定義。\nhost.conf\nOS上のログ（基本的に/var/log/配下の各種ログ）を定義。簡素化のためここではmessagesのみ定義している。他に送信したい種別は同様に設定する。\nparsers.conf\nログフォーマットのパースの定義\n fluentbit-sample-app.yaml\napiVersion: v1 kind: ConfigMap metadata: name: fluent-bit-config namespace: amazon-cloudwatch labels: k8s-app: fluent-bit-sample data: fluent-bit.conf: |[SERVICE] Flush 5 Log_Level info Daemon off Parsers_File parsers.conf storage.path /var/fluent-bit/state/flb-storage/ storage.sync normal storage.checksum off storage.backlog.mem_limit 5M @INCLUDE containers.conf @INCLUDE kube-systemd.conf @INCLUDE host.conf # containers.confの定義 containers.conf: |[INPUT] Name tail Tag fluentbit.* Path /var/log/containers/fluentbit* Parser docker DB /var/fluent-bit/state/flb_log.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} [INPUT] Name tail Tag cloudwatch-agent.* Path /var/log/containers/cloudwatch-agent* Docker_Mode On Docker_Mode_Flush 5 Docker_Mode_Parser cwagent_firstline Parser docker DB /var/fluent-bit/state/flb_cwagent.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} [INPUT] Name tail Tag sample-app.* Path /var/log/containers/sample-app* Parser docker DB /var/fluent-bit/state/flb_sample-app.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} # 各INPUTに対応するFILTERを定義する [FILTER] Name kubernetes Match fluentbit.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix fluentbit.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off [FILTER] Name kubernetes Match cloudwatch-agent.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix cloudwatch-agent.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off [FILTER] Name kubernetes Match sample-app.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix sample-app.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off # アイテムの変換や不要なメタデータ送信抑止を定義 [FILTER] Name nest Match * Operation lift Nested_under kubernetes Add_prefix Nested. [FILTER] Name modify Match * Rename Nested.docker_id Docker.container_id [FILTER] Name nest Match * Operation nest Wildcard Nested.* Nested_under kubernetes Remove_prefix Nested. [FILTER] Name nest Match * Operation nest Wildcard Docker.* Nested_under docker Remove_prefix Docker. [FILTER] Name nest Match * Operation lift Nested_under kubernetes Add_prefix Kube. [FILTER] Name modify Match * Remove Kube.container_hash  Remove Kube.container_image Remove Kube.pod_id [FILTER] Name nest Match * Operation nest Wildcard Kube.* Nested_under Kubernetes Remove_prefix Kube. # 送信時の定義 # ロググループ名例：/eks/stg/sample-app_fluentbit # ログストリーム名例：ip-10-1-2-3.ap-northeast-1.compute.internal_[Pod名]_[ネームスペース]_[コンテナ名] # $(tag[4])とした場合、上記のようなkubeのタグ定義が投入され、ユニークなログストリーム名になる。 [OUTPUT] Name cloudwatch Match fluentbit.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_fluentbit log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 [OUTPUT] Name cloudwatch Match cloudwatch-agent.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_cwagent log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 # 個別アプリログ送信用定義 [OUTPUT] Name cloudwatch Match sample-app.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_application log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 # docker,kubenetesログ定義 kube-systemd.conf: |[INPUT] Name systemd Tag dockerlog.systemd.* Systemd_Filter _SYSTEMD_UNIT=docker.service DB /var/fluent-bit/state/systemd.db Path /var/log/journal Read_From_Head ${READ_FROM_HEAD} [INPUT] Name systemd Tag kubelet.systemd.* Systemd_Filter _SYSTEMD_UNIT=kubelet.service DB /var/fluent-bit/state/systemd.db Path /var/log/journal Read_From_Head ${READ_FROM_HEAD} [FILTER] Name modify Match dockerlog.systemd.* Rename _HOSTNAME hostname Rename _SYSTEMD_UNIT systemd_unit Rename MESSAGE message Remove_regex ^((?!hostname|systemd_unit|message).)*$ [FILTER] Name modify Match kubelet.systemd.* Rename _HOSTNAME hostname Rename _SYSTEMD_UNIT systemd_unit Rename MESSAGE message Remove_regex ^((?!hostname|systemd_unit|message).)*$ [OUTPUT] Name cloudwatch Match kubelet.systemd.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_docker log_stream_name ${HOST_NODE_NAME}_$(tag[2]) auto_create_group true extra_user_agent container-insight [OUTPUT] Name cloudwatch Match kubelet.systemd.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_kubelet log_stream_name ${HOST_NODE_NAME}_$(tag[2]) auto_create_group true extra_user_agent container-insight # messages等、OSのログ定義 host-log.conf: | [INPUT] Name tail Tag host.messages Path /var/log/messages Parser syslog DB /var/fluent-bit/state/flb_messages.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} # host.confの[OUTPUT]定義は、複数のINPUTがあっても1つでよい。 # $(tag[1]) にはこの場合messagesが入る。 [OUTPUT] Name cloudwatch Match host.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_$(tag[1]) log_stream_name ${HOST_NODE_NAME}_$(tag[1]) auto_create_group true extra_user_agent container-insights Retry _Limit 5 parsers.conf: |[PARSER] Name docker Format json Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ [PARSER] Name syslog-rfc5424 Format regex Regex ^(?[^ ]* {1.2}[^ ]* [^ ]*) (?[^ ]*) (?[a-zA-Z0-9_¥/¥.¥-]*) (?:¥[?[-0-9]+)¥])?(?:[^¥:]*¥:)? * (?.*)$ Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%L Time_Strict Off [PARSER] Name container_firstline Format regex Regex (?(?(?\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}\\.\\w*).*(?=}) Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ [PARSER] Name cwagent_firstline Format regex Regex (?(?(?\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}\\.\\w*).*(?=}) Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ --- apiVersion: apps/v1 kind: DaemonSet metadata: name: fluent-bit-sample namespace: amazon-cloudwatch labels: k8s-app: fluent-bit-sample version: v1 kubernetes.io/cluster-service: \"true\" spec: selector: matchLabels: k8s-app: fluent-bit-sample template: metadata: labels: k8s-app: fluent-bit-sample version: v1 kubernetes.io/cluster-service: \"true\" spec: affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: - matchExpressions: - key: nodelabel operator: In values: - STG-NODELABEL-APP-001 containers: - name: fluent-bit-sample image: amazon/aws-for-fluent-bit:2.12.0 imagePullPolicy: Always env: - name: AWS_REGION valueFrom: configMapKeyRef: name: fluentbit-cluster key: logs.region - name: CLUSTER_NAME valueFrom: configMapKeyRef: name: fluentbit-cluster key: cluster.name - name: READ_FROM_HEAD valueFrom: configMapKeyRef: name: fluentbit-cluster key: read.head - name: READ_FROM_TAIL valueFrom: configMapKeyRef: name: fluentbit-cluster key: read.tail - name: HOST_NODE_NAME valueFrom: fieldRef: fieldPath: spec.nodeName - name: CI_VERSION value: \"k8s/1.3.8\" # これ以降独自に設定追加。設定項目はユースケースに合わせてください。 - name: ENVIRONMENT value: \"stg\" - name: NODEGROUP value: \"sample-app\" - name: MASTER_URL value: \"https://kubernetes.default.svc:443\" resources: limits: cpu: 200m memory: 200Mi requests: cpu: 200m memory: 100Mi volumeMounts: # Please don't change below read-only permissions - name: fluentbitstate mountPath: /var/fluent-bit/state - name: varlog mountPath: /var/log readOnly: true - name: varlibdockercontainers mountPath: /var/lib/docker/containers readOnly: true - name: fluent-bit-config mountPath: /fluent-bit/etc/ - name: runlogjournal mountPath: /run/log/journal readOnly: true - name: dmesg mountPath: /var/log/dmesg readOnly: true terminationGracePeriodSeconds: 90 volumes: - name: fluentbitstate hostPath: path: /var/fluent-bit/state - name: varlog hostPath: path: /var/log - name: varlibdockercontainers hostPath: path: /var/lib/docker/containers - name: fluent-bit-config configMap: name: fluent-bit-config - name: runlogjournal hostPath: path: /run/log/journal - name: dmesg hostPath: path: /var/log/dmesg serviceAccountName: fluent-bit tolerations: - key: node-role.kubernetes.io/master operator: Exists effect: NoSchedule - operator: \"Exists\" effect: \"NoExecute\" - operator: \"Exists\" effect: \"NoSchedule\"  補足説明 imageパスの指定\n上記ではコンテナイメージをインターネットを通って都度落とすようになっているが、業務利用時はECRに格納してプライベートな通信で完結させるのが望ましい。ECRに格納した場合は以下のように指定する。\nimage: [AWS-AccoundID].dkr.ecr.ap-northeast-1.amazon.com/[repo-name]:2.12.0  nodeAffinityで起動するノードを指定\n今回の事例では、sample-appのPodが起動するワーカーノード上にsample-appログ送信用のDaemonSetを起動させる必要がある。そのためnodeAffinityを定義する。EKSノードグループのラベルにkey:nodelabel values:STG-SAMPLE-APPを設定している前提の場合以下の様になる。sample-app用のマニフェストにも同様の記述をする。\n spec: affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: - matchExpressions: - key: nodelabel operator: In values: - STG-SAMPLE-APP  停止時のGracePeriod\nDaemonSetがKillシグナル受信後に削除されるまでの猶予時間を指定。公式サンプル10秒だと、コンテナログを送信しきる前に削除されてしまう可能性がある。ここでは余裕を持たせて90秒。\nterminationGracePeriodSeconds: 90  syslogのPARSER\nAWS公式の設定だとTime_FormatがダメらしきエラーがでるのでFluent Bit公式の例を適用した。Fluent Bit公式ではsyslogではなくsyslog-rfc5424。ではINPUTのParserはsyslogではなくsyslog-rfc5424とするのが正ではないか？と思ったが、そうすると動作しない。謎だが深追いはしない。Time_StrictはOffにしておく。しかしそれでもまだエラーになるので調べると、Regexの正規表現が原因らしいのでそこも直した。参照サイトは失念。\n DaemonSetの起動〜ログ送信\n今回cloudwatch-agentについては触れていないが、cloudwatch-agentネームスペースが存在している状態でマニフェストをapplyする。この時点ではノードグループは停止中でもよい。\n$ kubectl apply -f fluentbit-cluster.yaml $ kubectl apply -f fluentbit-sample-app.yaml  ノードグループが起動すると、各種ログがCloudWatchLogsに送信される。アプリ用マニフェストをapplyすればアプリログも送信される。\nあとresourceのcpuはデフォルトが500mになっていたが、そこまで割り当てなくてもちゃんと動作する。よほどのことがなければ100mでもいい気がする。メモリもFlunetdに比べて全然余裕。さすが軽量版。その他細かいチューニング項目もあるにはあるのだが、これ以上の長文は避けたいのでまた別の機会に投稿しようと思う。\n ",
-  "wordCount" : "930",
+  "articleBody": "AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。\nしかし、元々組み込みLinux用に開発されて軽量リソースで動作するFluent Bitの方がコンテナログ送信に向いていると思う。ということで、この記事ではFluent Bitに焦点を当てる。\n参照\nFluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配下のメニュー参照）\nFluent Bit Documentation\nContainer Insights全般\nAmazon EKS と Kubernetes での Container Insights のセットアップ\nFluent Bit on Container Insights\nCloudWatch Logs へログを送信する DaemonSet として Fluent Bit を設定する\nサンプルマニフェスト\nfluent-bit-compatible.yaml\n※AWSがサンプルとして提供しているFluent BitのマニフェストはFluent Bit最適化用とFluentd互換用がある。今回は過去にFluentd使用事例があることから、Fluentd互換用マニフェストをDLしてカスタマイズした。\n共通マニフェスト例 クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。\nfluentbit-cluster.yaml\napiVersion: v1 kind: ConfigMap metadata: name: fluentbit-cluster namespace: amazon-cloudwatch selfLink: /api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster data: cluster.name: EKS-SAMPLE-CLUSTER log.region: ap-northeast-1 read.head: \"On\" read.tail: \"Off\" --- apiVersion: v1 kind: ServiceAccount metadata: name: fluent-bit namespace: amazon-cloudwatch --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRole metadata: name: fluent-bit-role rules: - nonResourceURLs: - /metrics verbs: - get - apiGroups: [\"\"] resources: - namespaces - pods - pods/logs verbs: [\"get\", \"list\", \"watch\"] --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRoleBinding metadata: name: fluent-bit-role-binding roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: fluent-bit-role subjects: - kind: ServiceAccount name: fluent-bit namespace: amazon-cloudwatch 個別マニフェスト例 「個別のマニフェスト」というのはアプリの種類が複数存在して、各種別ごとに送信先（ロググループ/ログストリーム）を振り分けたいケースを想定している。しかしAWS公式サンプルをそのまま使うと要件的に期待値にならない。現状ネットにわかりやすい事例がなく大分迷ったが、最終的に以下のような形に落とした。詳細は後述。\n最初に骨組みを説明すると、前半がFluent Bitの設定であるConfigMap、後半がワーカーノード上で起動するDaemonSetの定義となっている。冒頭の[SERVICE]で全体共通の設定を行う。@INCLUDEで3種類のConfig名を指定しているが名称は適当でよい。各Config内に[INPUT] [FILTER] [OUTPUT] を定義していく。\nconfの種類 containers.conf\nfluentbit, cloudwatch-agentやアプリ個別ログを定義。簡素化のため対象を絞っているが、aws-node, kube-proxy, corednsのログを送信する場合もここに含める。\nkube-systemd.conf\ndocker,kubeletのログを定義。\nhost.conf\nOS上のログ（基本的に/var/log/配下の各種ログ）を定義。簡素化のためここではmessagesのみ定義している。他に送信したい種別は同様に設定する。\nparsers.conf\nログフォーマットのパースの定義\nfluentbit-sample-app.yaml\napiVersion: v1 kind: ConfigMap metadata: name: fluent-bit-config namespace: amazon-cloudwatch labels: k8s-app: fluent-bit-sample data: fluent-bit.conf: | [SERVICE] Flush 5 Log_Level info Daemon off Parsers_File parsers.conf storage.path /var/fluent-bit/state/flb-storage/ storage.sync normal storage.checksum off storage.backlog.mem_limit 5M @INCLUDE containers.conf @INCLUDE kube-systemd.conf @INCLUDE host.conf # containers.confの定義 containers.conf: | [INPUT] Name tail Tag fluentbit.* Path /var/log/containers/fluentbit* Parser docker DB /var/fluent-bit/state/flb_log.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} [INPUT] Name tail Tag cloudwatch-agent.* Path /var/log/containers/cloudwatch-agent* Docker_Mode On Docker_Mode_Flush 5 Docker_Mode_Parser cwagent_firstline Parser docker DB /var/fluent-bit/state/flb_cwagent.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} [INPUT] Name tail Tag sample-app.* Path /var/log/containers/sample-app* Parser docker DB /var/fluent-bit/state/flb_sample-app.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} # 各INPUTに対応するFILTERを定義する [FILTER] Name kubernetes Match fluentbit.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix fluentbit.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off [FILTER] Name kubernetes Match cloudwatch-agent.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix cloudwatch-agent.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off [FILTER] Name kubernetes Match sample-app.* Kube_URL ${MASTER_URL} Kube_Tag_Prefix sample-app.var.log.containers. Merge_Log On Merge_Log_Key log_processed K8S-Logging.Parser On K8S-Logging.Exclude Off Annotations Off # アイテムの変換や不要なメタデータ送信抑止を定義 [FILTER] Name nest Match * Operation lift Nested_under kubernetes Add_prefix Nested. [FILTER] Name modify Match * Rename Nested.docker_id Docker.container_id [FILTER] Name nest Match * Operation nest Wildcard Nested.* Nested_under kubernetes Remove_prefix Nested. [FILTER] Name nest Match * Operation nest Wildcard Docker.* Nested_under docker Remove_prefix Docker. [FILTER] Name nest Match * Operation lift Nested_under kubernetes Add_prefix Kube. [FILTER] Name modify Match * Remove Kube.container_hash Remove Kube.container_image Remove Kube.pod_id [FILTER] Name nest Match * Operation nest Wildcard Kube.* Nested_under Kubernetes Remove_prefix Kube. # 送信時の定義 # ロググループ名例：/eks/stg/sample-app_fluentbit # ログストリーム名例：ip-10-1-2-3.ap-northeast-1.compute.internal_[Pod名]_[ネームスペース]_[コンテナ名] # $(tag[4])とした場合、上記のようなkubeのタグ定義が投入され、ユニークなログストリーム名になる。 [OUTPUT] Name cloudwatch Match fluentbit.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_fluentbit log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 [OUTPUT] Name cloudwatch Match cloudwatch-agent.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_cwagent log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 # 個別アプリログ送信用定義 [OUTPUT] Name cloudwatch Match sample-app.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_application log_stream_name ${HOST_NODE_NAME}_$(tag[4]) auto_create_group true extra_user_agent container-insights Retry_Limit 5 # docker,kubenetesログ定義 kube-systemd.conf: | [INPUT] Name systemd Tag dockerlog.systemd.* Systemd_Filter _SYSTEMD_UNIT=docker.service DB /var/fluent-bit/state/systemd.db Path /var/log/journal Read_From_Head ${READ_FROM_HEAD} [INPUT] Name systemd Tag kubelet.systemd.* Systemd_Filter _SYSTEMD_UNIT=kubelet.service DB /var/fluent-bit/state/systemd.db Path /var/log/journal Read_From_Head ${READ_FROM_HEAD} [FILTER] Name modify Match dockerlog.systemd.* Rename _HOSTNAME hostname Rename _SYSTEMD_UNIT systemd_unit Rename MESSAGE message Remove_regex ^((?!hostname|systemd_unit|message).)*$ [FILTER] Name modify Match kubelet.systemd.* Rename _HOSTNAME hostname Rename _SYSTEMD_UNIT systemd_unit Rename MESSAGE message Remove_regex ^((?!hostname|systemd_unit|message).)*$ [OUTPUT] Name cloudwatch Match kubelet.systemd.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_docker log_stream_name ${HOST_NODE_NAME}_$(tag[2]) auto_create_group true extra_user_agent container-insight [OUTPUT] Name cloudwatch Match kubelet.systemd.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_kubelet log_stream_name ${HOST_NODE_NAME}_$(tag[2]) auto_create_group true extra_user_agent container-insight # messages等、OSのログ定義 host-log.conf: | [INPUT] Name tail Tag host.messages Path /var/log/messages Parser syslog DB /var/fluent-bit/state/flb_messages.db Mem_Buf_Limit 5MB Skip_Long_Lines On Refresh_Interval 10 Read_from_Head ${READ_FROM_HEAD} # host.confの[OUTPUT]定義は、複数のINPUTがあっても1つでよい。 # $(tag[1]) にはこの場合messagesが入る。 [OUTPUT] Name cloudwatch Match host.* region ${AWS_REGION} log_group_name /eks/${ENVIRONMENT}/${NODEGROUP}_$(tag[1]) log_stream_name ${HOST_NODE_NAME}_$(tag[1]) auto_create_group true extra_user_agent container-insights Retry _Limit 5 parsers.conf: | [PARSER] Name docker Format json Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ [PARSER] Name syslog-rfc5424 Format regex Regex ^(?[^ ]* {1.2}[^ ]* [^ ]*) (?[^ ]*) (?[a-zA-Z0-9_¥/¥.¥-]*) (?:¥[?[-0-9]+)¥])?(?:[^¥:]*¥:)? * (?.*)$ Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%L Time_Strict Off [PARSER] Name container_firstline Format regex Regex (?(?\u003c=\"log\":\")\\S(?!\\.).*?)(?\u003c!\\\\)\".*(?(?\u003c=\"stream\":\").*?)\".*(?\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}\\.\\w*).*(?=}) Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ [PARSER] Name cwagent_firstline Format regex Regex (?(?\u003c=\"log\":\")\\d{4}[\\/-]\\d{1,2}[\\/-]\\d{1,2}[ T]\\d{2}:\\d{2}:\\d{2}(?!\\.).*?)(?\u003c!\\\\)\".*(?(?\u003c=\"stream\":\").*?)\".*(?\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}\\.\\w*).*(?=}) Time_Key time Time_Format %Y-%m-%dT%H:%M:%S.%LZ --- apiVersion: apps/v1 kind: DaemonSet metadata: name: fluent-bit-sample namespace: amazon-cloudwatch labels: k8s-app: fluent-bit-sample version: v1 kubernetes.io/cluster-service: \"true\" spec: selector: matchLabels: k8s-app: fluent-bit-sample template: metadata: labels: k8s-app: fluent-bit-sample version: v1 kubernetes.io/cluster-service: \"true\" spec: affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: - matchExpressions: - key: nodelabel operator: In values: - STG-NODELABEL-APP-001 containers: - name: fluent-bit-sample image: amazon/aws-for-fluent-bit:2.12.0 imagePullPolicy: Always env: - name: AWS_REGION valueFrom: configMapKeyRef: name: fluentbit-cluster key: logs.region - name: CLUSTER_NAME valueFrom: configMapKeyRef: name: fluentbit-cluster key: cluster.name - name: READ_FROM_HEAD valueFrom: configMapKeyRef: name: fluentbit-cluster key: read.head - name: READ_FROM_TAIL valueFrom: configMapKeyRef: name: fluentbit-cluster key: read.tail - name: HOST_NODE_NAME valueFrom: fieldRef: fieldPath: spec.nodeName - name: CI_VERSION value: \"k8s/1.3.8\" # これ以降独自に設定追加。設定項目はユースケースに合わせてください。 - name: ENVIRONMENT value: \"stg\" - name: NODEGROUP value: \"sample-app\" - name: MASTER_URL value: \"https://kubernetes.default.svc:443\" resources: limits: cpu: 200m memory: 200Mi requests: cpu: 200m memory: 100Mi volumeMounts: # Please don't change below read-only permissions - name: fluentbitstate mountPath: /var/fluent-bit/state - name: varlog mountPath: /var/log readOnly: true - name: varlibdockercontainers mountPath: /var/lib/docker/containers readOnly: true - name: fluent-bit-config mountPath: /fluent-bit/etc/ - name: runlogjournal mountPath: /run/log/journal readOnly: true - name: dmesg mountPath: /var/log/dmesg readOnly: true terminationGracePeriodSeconds: 90 volumes: - name: fluentbitstate hostPath: path: /var/fluent-bit/state - name: varlog hostPath: path: /var/log - name: varlibdockercontainers hostPath: path: /var/lib/docker/containers - name: fluent-bit-config configMap: name: fluent-bit-config - name: runlogjournal hostPath: path: /run/log/journal - name: dmesg hostPath: path: /var/log/dmesg serviceAccountName: fluent-bit tolerations: - key: node-role.kubernetes.io/master operator: Exists effect: NoSchedule - operator: \"Exists\" effect: \"NoExecute\" - operator: \"Exists\" effect: \"NoSchedule\" 補足説明 imageパスの指定\n上記ではコンテナイメージをインターネットを通って都度落とすようになっているが、業務利用時はECRに格納してプライベートな通信で完結させるのが望ましい。ECRに格納した場合は以下のように指定する。\nimage: [AWS-AccoundID].dkr.ecr.ap-northeast-1.amazon.com/[repo-name]:2.12.0 nodeAffinityで起動するノードを指定\n今回の事例では、sample-appのPodが起動するワーカーノード上にsample-appログ送信用のDaemonSetを起動させる必要がある。そのためnodeAffinityを定義する。EKSノードグループのラベルにkey:nodelabel values:STG-SAMPLE-APPを設定している前提の場合以下の様になる。sample-app用のマニフェストにも同様の記述をする。\nspec: affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: - matchExpressions: - key: nodelabel operator: In values: - STG-SAMPLE-APP 停止時のGracePeriod\nDaemonSetがKillシグナル受信後に削除されるまでの猶予時間を指定。公式サンプル10秒だと、コンテナログを送信しきる前に削除されてしまう可能性がある。ここでは余裕を持たせて90秒。\nterminationGracePeriodSeconds: 90 syslogのPARSER\nAWS公式の設定だとTime_FormatがダメらしきエラーがでるのでFluent Bit公式の例を適用した。Fluent Bit公式ではsyslogではなくsyslog-rfc5424。ではINPUTのParserはsyslogではなくsyslog-rfc5424とするのが正ではないか？と思ったが、そうすると動作しない。謎だが深追いはしない。Time_StrictはOffにしておく。しかしそれでもまだエラーになるので調べると、Regexの正規表現が原因らしいのでそこも直した。参照サイトは失念。\nDaemonSetの起動〜ログ送信\n今回cloudwatch-agentについては触れていないが、cloudwatch-agentネームスペースが存在している状態でマニフェストをapplyする。この時点ではノードグループは停止中でもよい。\n$ kubectl apply -f fluentbit-cluster.yaml $ kubectl apply -f fluentbit-sample-app.yaml ノードグループが起動すると、各種ログがCloudWatchLogsに送信される。アプリ用マニフェストをapplyすればアプリログも送信される。\nあとresourceのcpuはデフォルトが500mになっていたが、そこまで割り当てなくてもちゃんと動作する。よほどのことがなければ100mでもいい気がする。メモリもFlunetdに比べて全然余裕。さすが軽量版。その他細かいチューニング項目もあるにはあるのだが、これ以上の長文は避けたいのでまた別の機会に投稿しようと思う。\n",
+  "wordCount" : "934",
   "inLanguage": "en",
   "datePublished": "2021-09-12T00:00:00Z",
   "dateModified": "2021-09-12T00:00:00Z",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       EKS Container InsightsのFluent Bit設定
     </h1>
-    <div class="post-meta">September 12, 2021
+    <div class="post-meta"><span title='2021-09-12 00:00:00 +0000 UTC'>September 12, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。</p>
@@ -212,53 +211,53 @@ Fluent Bit ドキュメント（設定詳細は画面左「DATA PIPELINE」配�
 <h3 id="共通マニフェスト例">共通マニフェスト例<a hidden class="anchor" aria-hidden="true" href="#共通マニフェスト例">#</a></h3>
 <p>クラスタの全般的な設定と、アプリ個別のケースでマニフェストを二つに分けた。AWS公式では基本となるEKSクラスタの定義をコマンドでセットしているが、運用の際はマニフェストに落とし込むのが普通だと思う。以下のようなマニフェストを共通用として作成し、個別のマニフェストから参照させる。EKSクラスタ名はdata:cluster.nameで指定している。</p>
 <p><strong>fluentbit-cluster.yaml</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-YAML" data-lang="YAML"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
-  <span style="color:#f92672">selfLink</span>: <span style="color:#ae81ff">/api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster</span>
-<span style="color:#f92672">data</span>:
-  <span style="color:#f92672">cluster.name</span>: <span style="color:#ae81ff">EKS-SAMPLE-CLUSTER</span>
-  <span style="color:#f92672">log.region</span>: <span style="color:#ae81ff">ap-northeast-1</span>
-  <span style="color:#f92672">read.head</span>: <span style="color:#e6db74">&#34;On&#34;</span>
-  <span style="color:#f92672">read.tail</span>: <span style="color:#e6db74">&#34;Off&#34;</span>
----
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
----
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io/v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRole</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role</span>
-<span style="color:#f92672">rules</span>:
-  - <span style="color:#f92672">nonResourceURLs</span>:
-      - <span style="color:#ae81ff">/metrics</span>
-    <span style="color:#f92672">verbs</span>:
-      - <span style="color:#ae81ff">get</span>
-  - <span style="color:#f92672">apiGroups</span>: [<span style="color:#e6db74">&#34;&#34;</span>]
-    <span style="color:#f92672">resources</span>:
-      - <span style="color:#ae81ff">namespaces</span>
-      - <span style="color:#ae81ff">pods</span>
-      - <span style="color:#ae81ff">pods/logs</span>
-    <span style="color:#f92672">verbs</span>: [<span style="color:#e6db74">&#34;get&#34;</span>, <span style="color:#e6db74">&#34;list&#34;</span>, <span style="color:#e6db74">&#34;watch&#34;</span>]
----
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io/v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRoleBinding</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role-binding</span>
-<span style="color:#f92672">roleRef</span>:
-  <span style="color:#f92672">apiGroup</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io</span>
-  <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRole</span>
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role</span>
-<span style="color:#f92672">subjects</span>:
-  - <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
-    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit</span>
-    <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-YAML" data-lang="YAML"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selfLink</span>: <span style="color:#ae81ff">/api/v1/namespaces/amazone-cloudwatch/configmaps/fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cluster.name</span>: <span style="color:#ae81ff">EKS-SAMPLE-CLUSTER</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">log.region</span>: <span style="color:#ae81ff">ap-northeast-1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">read.head</span>: <span style="color:#e6db74">&#34;On&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">read.tail</span>: <span style="color:#e6db74">&#34;Off&#34;</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRole</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">nonResourceURLs</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/metrics</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">verbs</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">get</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">apiGroups</span>: [<span style="color:#e6db74">&#34;&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">namespaces</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">pods</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">pods/logs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">verbs</span>: [<span style="color:#e6db74">&#34;get&#34;</span>, <span style="color:#e6db74">&#34;list&#34;</span>, <span style="color:#e6db74">&#34;watch&#34;</span>]
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRoleBinding</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role-binding</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">roleRef</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">apiGroup</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRole</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-role</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">subjects</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
+</span></span></code></pre></div><p> </p>
 <h3 id="個別マニフェスト例">個別マニフェスト例<a hidden class="anchor" aria-hidden="true" href="#個別マニフェスト例">#</a></h3>
 <p>「個別のマニフェスト」というのはアプリの種類が複数存在して、各種別ごとに送信先（ロググループ/ログストリーム）を振り分けたいケースを想定している。しかしAWS公式サンプルをそのまま使うと要件的に期待値にならない。現状ネットにわかりやすい事例がなく大分迷ったが、最終的に以下のような形に落とした。詳細は後述。</p>
 <p>最初に骨組みを説明すると、前半がFluent Bitの設定であるConfigMap、後半がワーカーノード上で起動するDaemonSetの定義となっている。冒頭の[SERVICE]で全体共通の設定を行う。<code>@INCLUDE</code>で3種類のConfig名を指定しているが名称は適当でよい。各Config内に[INPUT] [FILTER] [OUTPUT] を定義していく。</p>
@@ -274,434 +273,433 @@ OS上のログ（基本的に/var/log/配下の各種ログ）を定義。簡素
 ログフォーマットのパースの定義</p>
 <p> </p>
 <p><strong>fluentbit-sample-app.yaml</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-YAML" data-lang="YAML"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-<span style="color:#f92672">data</span>:
-  <span style="color:#f92672">fluent-bit.conf</span>: |<span style="color:#e6db74">
-</span><span style="color:#e6db74">    [SERVICE]
-</span><span style="color:#e6db74">        Flush                     5
-</span><span style="color:#e6db74">        Log_Level                 info
-</span><span style="color:#e6db74">        Daemon                    off
-</span><span style="color:#e6db74">        Parsers_File              parsers.conf
-</span><span style="color:#e6db74">        storage.path              /var/fluent-bit/state/flb-storage/
-</span><span style="color:#e6db74">        storage.sync              normal
-</span><span style="color:#e6db74">        storage.checksum          off
-</span><span style="color:#e6db74">        storage.backlog.mem_limit 5M
-</span><span style="color:#e6db74">        
-</span><span style="color:#e6db74">    @INCLUDE containers.conf
-</span><span style="color:#e6db74">    @INCLUDE kube-systemd.conf
-</span><span style="color:#e6db74">    @INCLUDE host.conf</span>    
-
-<span style="color:#75715e"># containers.confの定義</span>
-
-  <span style="color:#f92672">containers.conf</span>: |<span style="color:#e6db74">
-</span><span style="color:#e6db74">    [INPUT]
-</span><span style="color:#e6db74">        Name                tail
-</span><span style="color:#e6db74">        Tag                 fluentbit.*
-</span><span style="color:#e6db74">        Path                /var/log/containers/fluentbit*
-</span><span style="color:#e6db74">        Parser              docker
-</span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_log.db
-</span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
-</span><span style="color:#e6db74">        Skip_Long_Lines     On
-</span><span style="color:#e6db74">        Refresh_Interval    10
-</span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [INPUT]
-</span><span style="color:#e6db74">        Name                tail
-</span><span style="color:#e6db74">        Tag                 cloudwatch-agent.*
-</span><span style="color:#e6db74">        Path                /var/log/containers/cloudwatch-agent*
-</span><span style="color:#e6db74">        Docker_Mode         On
-</span><span style="color:#e6db74">        Docker_Mode_Flush   5
-</span><span style="color:#e6db74">        Docker_Mode_Parser  cwagent_firstline
-</span><span style="color:#e6db74">        Parser              docker
-</span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_cwagent.db
-</span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
-</span><span style="color:#e6db74">        Skip_Long_Lines     On
-</span><span style="color:#e6db74">        Refresh_Interval    10
-</span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [INPUT]
-</span><span style="color:#e6db74">        Name                tail
-</span><span style="color:#e6db74">        Tag                 sample-app.*
-</span><span style="color:#e6db74">        Path                /var/log/containers/sample-app*
-</span><span style="color:#e6db74">        Parser              docker
-</span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_sample-app.db
-</span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
-</span><span style="color:#e6db74">        Skip_Long_Lines     On
-</span><span style="color:#e6db74">        Refresh_Interval    10
-</span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}</span>    
-
-<span style="color:#75715e"># 各INPUTに対応するFILTERを定義する</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                kubernetes</span>
-        <span style="color:#ae81ff">Match               fluentbit.*</span>
-        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
-        <span style="color:#ae81ff">Kube_Tag_Prefix     fluentbit.var.log.containers.</span>
-        <span style="color:#ae81ff">Merge_Log           On</span>
-        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
-        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
-        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
-        <span style="color:#ae81ff">Annotations         Off</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                kubernetes</span>
-        <span style="color:#ae81ff">Match               cloudwatch-agent.*</span>
-        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
-        <span style="color:#ae81ff">Kube_Tag_Prefix     cloudwatch-agent.var.log.containers.</span>
-        <span style="color:#ae81ff">Merge_Log           On</span>
-        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
-        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
-        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
-        <span style="color:#ae81ff">Annotations         Off</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                kubernetes</span>
-        <span style="color:#ae81ff">Match               sample-app.*</span>
-        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
-        <span style="color:#ae81ff">Kube_Tag_Prefix     sample-app.var.log.containers.</span>
-        <span style="color:#ae81ff">Merge_Log           On</span>
-        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
-        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
-        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
-        <span style="color:#ae81ff">Annotations         Off</span>
-
-<span style="color:#75715e"># アイテムの変換や不要なメタデータ送信抑止を定義</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                nest</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Operation           lift</span>
-        <span style="color:#ae81ff">Nested_under        kubernetes</span>
-        <span style="color:#ae81ff">Add_prefix          Nested.</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                modify</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Rename              Nested.docker_id            Docker.container_id</span>
-    
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                nest</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Operation           nest</span>
-        <span style="color:#ae81ff">Wildcard            Nested.*</span>
-        <span style="color:#ae81ff">Nested_under        kubernetes</span>
-        <span style="color:#ae81ff">Remove_prefix       Nested.</span>
-    
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                nest</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Operation           nest</span>
-        <span style="color:#ae81ff">Wildcard            Docker.*</span>
-        <span style="color:#ae81ff">Nested_under        docker</span>
-        <span style="color:#ae81ff">Remove_prefix       Docker.</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                nest</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Operation           lift</span>
-        <span style="color:#ae81ff">Nested_under        kubernetes</span>
-        <span style="color:#ae81ff">Add_prefix          Kube.</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                modify</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Remove              Kube.container_hash </span>
-        <span style="color:#ae81ff">Remove              Kube.container_image</span>
-        <span style="color:#ae81ff">Remove              Kube.pod_id</span>
-
-    [<span style="color:#ae81ff">FILTER]</span>
-        <span style="color:#ae81ff">Name                nest</span>
-        <span style="color:#ae81ff">Match               *</span>
-        <span style="color:#ae81ff">Operation           nest</span>
-        <span style="color:#ae81ff">Wildcard            Kube.*</span>
-        <span style="color:#ae81ff">Nested_under        Kubernetes</span>
-        <span style="color:#ae81ff">Remove_prefix       Kube.</span>
-
-<span style="color:#75715e"># 送信時の定義</span>
-<span style="color:#75715e"># ロググループ名例：/eks/stg/sample-app_fluentbit</span>
-<span style="color:#75715e"># ログストリーム名例：ip-10-1-2-3.ap-northeast-1.compute.internal_[Pod名]_[ネームスペース]_[コンテナ名]</span>
-<span style="color:#75715e"># $(tag[4])とした場合、上記のようなkubeのタグ定義が投入され、ユニークなログストリーム名になる。</span>
-
-    [<span style="color:#ae81ff">OUTPUT]</span>
-        <span style="color:#ae81ff">Name                cloudwatch</span>
-        <span style="color:#ae81ff">Match               fluentbit.*</span>
-        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
-        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_fluentbit</span>
-        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
-        <span style="color:#ae81ff">auto_create_group   true</span>
-        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
-        <span style="color:#ae81ff">Retry_Limit         5</span>
-
-    [<span style="color:#ae81ff">OUTPUT]</span>
-        <span style="color:#ae81ff">Name                cloudwatch</span>
-        <span style="color:#ae81ff">Match               cloudwatch-agent.*</span>
-        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
-        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_cwagent</span>
-        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
-        <span style="color:#ae81ff">auto_create_group   true</span>
-        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
-        <span style="color:#ae81ff">Retry_Limit         5</span>
-
-<span style="color:#75715e"># 個別アプリログ送信用定義</span>
-
-    [<span style="color:#ae81ff">OUTPUT]</span>
-        <span style="color:#ae81ff">Name                cloudwatch</span>
-        <span style="color:#ae81ff">Match               sample-app.*</span>
-        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
-        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_application</span>
-        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
-        <span style="color:#ae81ff">auto_create_group   true</span>
-        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
-        <span style="color:#ae81ff">Retry_Limit         5</span>
-
-<span style="color:#75715e"># docker,kubenetesログ定義</span>
-
-  <span style="color:#f92672">kube-systemd.conf</span>: |<span style="color:#e6db74">
-</span><span style="color:#e6db74">    [INPUT]
-</span><span style="color:#e6db74">        Name                systemd
-</span><span style="color:#e6db74">        Tag                 dockerlog.systemd.*
-</span><span style="color:#e6db74">        Systemd_Filter      _SYSTEMD_UNIT=docker.service
-</span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/systemd.db
-</span><span style="color:#e6db74">        Path                /var/log/journal
-</span><span style="color:#e6db74">        Read_From_Head      ${READ_FROM_HEAD}
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [INPUT]
-</span><span style="color:#e6db74">        Name                systemd
-</span><span style="color:#e6db74">        Tag                 kubelet.systemd.*
-</span><span style="color:#e6db74">        Systemd_Filter      _SYSTEMD_UNIT=kubelet.service
-</span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/systemd.db
-</span><span style="color:#e6db74">        Path                /var/log/journal
-</span><span style="color:#e6db74">        Read_From_Head      ${READ_FROM_HEAD}
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [FILTER]
-</span><span style="color:#e6db74">        Name                modify
-</span><span style="color:#e6db74">        Match               dockerlog.systemd.*
-</span><span style="color:#e6db74">        Rename              _HOSTNAME                   hostname
-</span><span style="color:#e6db74">        Rename              _SYSTEMD_UNIT               systemd_unit
-</span><span style="color:#e6db74">        Rename              MESSAGE                     message
-</span><span style="color:#e6db74">        Remove_regex        ^((?!hostname|systemd_unit|message).)*$
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [FILTER]
-</span><span style="color:#e6db74">        Name                modify
-</span><span style="color:#e6db74">        Match               kubelet.systemd.*
-</span><span style="color:#e6db74">        Rename              _HOSTNAME                   hostname
-</span><span style="color:#e6db74">        Rename              _SYSTEMD_UNIT               systemd_unit
-</span><span style="color:#e6db74">        Rename              MESSAGE                     message
-</span><span style="color:#e6db74">        Remove_regex        ^((?!hostname|systemd_unit|message).)*$
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [OUTPUT]
-</span><span style="color:#e6db74">        Name                cloudwatch
-</span><span style="color:#e6db74">        Match               kubelet.systemd.*
-</span><span style="color:#e6db74">        region              ${AWS_REGION}
-</span><span style="color:#e6db74">        log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_docker
-</span><span style="color:#e6db74">        log_stream_name     ${HOST_NODE_NAME}_$(tag[2])
-</span><span style="color:#e6db74">        auto_create_group   true
-</span><span style="color:#e6db74">        extra_user_agent    container-insight
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [OUTPUT]
-</span><span style="color:#e6db74">        Name                cloudwatch
-</span><span style="color:#e6db74">        Match               kubelet.systemd.*
-</span><span style="color:#e6db74">        region              ${AWS_REGION}
-</span><span style="color:#e6db74">        log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_kubelet
-</span><span style="color:#e6db74">        log_stream_name     ${HOST_NODE_NAME}_$(tag[2])
-</span><span style="color:#e6db74">        auto_create_group   true
-</span><span style="color:#e6db74">        extra_user_agent    container-insight</span>    
-
-<span style="color:#75715e"># messages等、OSのログ定義</span>
-
-  <span style="color:#f92672">host-log.conf</span>: <span style="color:#ae81ff">|</span>
-
-    [<span style="color:#ae81ff">INPUT]</span>
-        <span style="color:#ae81ff">Name                tail</span>
-        <span style="color:#ae81ff">Tag                 host.messages</span>
-        <span style="color:#ae81ff">Path                /var/log/messages</span>
-        <span style="color:#ae81ff">Parser              syslog</span>
-        <span style="color:#ae81ff">DB                  /var/fluent-bit/state/flb_messages.db</span>
-        <span style="color:#ae81ff">Mem_Buf_Limit       5MB</span>
-        <span style="color:#ae81ff">Skip_Long_Lines     On</span>
-        <span style="color:#ae81ff">Refresh_Interval    10</span>
-        <span style="color:#ae81ff">Read_from_Head      ${READ_FROM_HEAD}</span>
-
-<span style="color:#75715e"># host.confの[OUTPUT]定義は、複数のINPUTがあっても1つでよい。</span>
-<span style="color:#75715e"># $(tag[1]) にはこの場合messagesが入る。</span>
-
-    [<span style="color:#ae81ff">OUTPUT]</span>
-        <span style="color:#ae81ff">Name                cloudwatch</span>
-        <span style="color:#ae81ff">Match               host.*</span>
-        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
-        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_$(tag[1])</span>
-        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[1])</span>
-        <span style="color:#ae81ff">auto_create_group   true</span>
-        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
-        <span style="color:#ae81ff">Retry _Limit        5</span>
-
-  <span style="color:#f92672">parsers.conf</span>: |<span style="color:#e6db74">
-</span><span style="color:#e6db74">    [PARSER]
-</span><span style="color:#e6db74">        Name                docker
-</span><span style="color:#e6db74">        Format              json
-</span><span style="color:#e6db74">        Time_Key            time
-</span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [PARSER]
-</span><span style="color:#e6db74">        Name                syslog-rfc5424
-</span><span style="color:#e6db74">        Format              regex
-</span><span style="color:#e6db74">        Regex               ^(?&lt;time&gt;[^ ]* {1.2}[^ ]* [^ ]*) (?&lt;host&gt;[^ ]*) (?&lt;ident&gt;[a-zA-Z0-9_¥/¥.¥-]*) (?:¥[?&lt;pid&gt;[-0-9]+)¥])?(?:[^¥:]*¥:)? * (?&lt;message&gt;.*)$
-</span><span style="color:#e6db74">        Time_Key            time
-</span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%L
-</span><span style="color:#e6db74">        Time_Strict         Off
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [PARSER]
-</span><span style="color:#e6db74">        Name                container_firstline
-</span><span style="color:#e6db74">        Format              regex
-</span><span style="color:#e6db74">        Regex               (?&lt;log&gt;(?&lt;=&#34;log&#34;:&#34;)\S(?!\.).*?)(?&lt;!\\)&#34;.*(?&lt;stream&gt;(?&lt;=&#34;stream&#34;:&#34;).*?)&#34;.*(?&lt;time&gt;\d{4}-\d{1,2}-\d{1,2}T\d{2}:\d{2}:\d{2}\.\w*).*(?=})
-</span><span style="color:#e6db74">        Time_Key            time
-</span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    [PARSER]
-</span><span style="color:#e6db74">        Name                cwagent_firstline
-</span><span style="color:#e6db74">        Format              regex
-</span><span style="color:#e6db74">        Regex               (?&lt;log&gt;(?&lt;=&#34;log&#34;:&#34;)\d{4}[\/-]\d{1,2}[\/-]\d{1,2}[ T]\d{2}:\d{2}:\d{2}(?!\.).*?)(?&lt;!\\)&#34;.*(?&lt;stream&gt;(?&lt;=&#34;stream&#34;:&#34;).*?)&#34;.*(?&lt;time&gt;\d{4}-\d{1,2}-\d{1,2}T\d{2}:\d{2}:\d{2}\.\w*).*(?=})
-</span><span style="color:#e6db74">        Time_Key            time
-</span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ</span>    
----
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">DaemonSet</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-    <span style="color:#f92672">version</span>: <span style="color:#ae81ff">v1</span>
-    <span style="color:#f92672">kubernetes.io/cluster-service</span>: <span style="color:#e6db74">&#34;true&#34;</span>
-<span style="color:#f92672">spec</span>:
-  <span style="color:#f92672">selector</span>:
-    <span style="color:#f92672">matchLabels</span>:
-      <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-  <span style="color:#f92672">template</span>:
-    <span style="color:#f92672">metadata</span>:
-      <span style="color:#f92672">labels</span>:
-        <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-        <span style="color:#f92672">version</span>: <span style="color:#ae81ff">v1</span>
-        <span style="color:#f92672">kubernetes.io/cluster-service</span>: <span style="color:#e6db74">&#34;true&#34;</span>
-    <span style="color:#f92672">spec</span>:
-      <span style="color:#f92672">affinity</span>:
-        <span style="color:#f92672">nodeAffinity</span>:
-          <span style="color:#f92672">requiredDuringSchedulingIgnoredDuringExecution</span>:
-            <span style="color:#f92672">nodeSelectorTerms</span>:
-            - <span style="color:#f92672">matchExpressions</span>:
-              - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">nodelabel</span>
-                <span style="color:#f92672">operator</span>: <span style="color:#ae81ff">In</span>
-                <span style="color:#f92672">values</span>:
-                - <span style="color:#ae81ff">STG-NODELABEL-APP-001</span>
-      <span style="color:#f92672">containers</span>:
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
-        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">amazon/aws-for-fluent-bit:2.12.0</span>
-        <span style="color:#f92672">imagePullPolicy</span>: <span style="color:#ae81ff">Always</span>
-        <span style="color:#f92672">env</span>:
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">AWS_REGION</span>
-              <span style="color:#f92672">valueFrom</span>:
-                <span style="color:#f92672">configMapKeyRef</span>:
-                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
-                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">logs.region</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">CLUSTER_NAME</span>
-              <span style="color:#f92672">valueFrom</span>:
-                <span style="color:#f92672">configMapKeyRef</span>:
-                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
-                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">cluster.name</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">READ_FROM_HEAD</span>
-              <span style="color:#f92672">valueFrom</span>:
-                <span style="color:#f92672">configMapKeyRef</span>:
-                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
-                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">read.head</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">READ_FROM_TAIL</span>
-              <span style="color:#f92672">valueFrom</span>:
-                <span style="color:#f92672">configMapKeyRef</span>:
-                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
-                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">read.tail</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">HOST_NODE_NAME</span>
-              <span style="color:#f92672">valueFrom</span>:
-                <span style="color:#f92672">fieldRef</span>:
-                  <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">spec.nodeName</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI_VERSION</span>
-              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;k8s/1.3.8&#34;</span>
-
-<span style="color:#75715e"># これ以降独自に設定追加。設定項目はユースケースに合わせてください。</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">ENVIRONMENT</span>
-              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;stg&#34;</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">NODEGROUP</span>
-              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;sample-app&#34;</span>
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MASTER_URL</span>
-              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;https://kubernetes.default.svc:443&#34;</span>
-        <span style="color:#f92672">resources</span>:
-            <span style="color:#f92672">limits</span>:
-              <span style="color:#f92672">cpu</span>: <span style="color:#ae81ff">200m</span>
-              <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">200Mi</span>
-            <span style="color:#f92672">requests</span>:
-              <span style="color:#f92672">cpu</span>: <span style="color:#ae81ff">200m</span>
-              <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">100Mi</span>
-        <span style="color:#f92672">volumeMounts</span>:
-        <span style="color:#75715e"># Please don&#39;t change below read-only permissions</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbitstate</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/fluent-bit/state</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlog</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/log</span>
-          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlibdockercontainers</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/lib/docker/containers</span>
-          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/fluent-bit/etc/</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">runlogjournal</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/run/log/journal</span>
-          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
-        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dmesg</span>
-          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/log/dmesg</span>
-          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
-      <span style="color:#f92672">terminationGracePeriodSeconds</span>: <span style="color:#ae81ff">90</span>
-      <span style="color:#f92672">volumes</span>:
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbitstate</span>
-        <span style="color:#f92672">hostPath</span>:
-          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/fluent-bit/state</span>
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlog</span>
-        <span style="color:#f92672">hostPath</span>:
-          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/log</span>
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlibdockercontainers</span>
-        <span style="color:#f92672">hostPath</span>:
-          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/lib/docker/containers</span>
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
-        <span style="color:#f92672">configMap</span>:
-          <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">runlogjournal</span>
-        <span style="color:#f92672">hostPath</span>:
-          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/run/log/journal</span>
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dmesg</span>
-        <span style="color:#f92672">hostPath</span>:
-          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/log/dmesg</span>
-      <span style="color:#f92672">serviceAccountName</span>: <span style="color:#ae81ff">fluent-bit</span>
-      <span style="color:#f92672">tolerations</span>:
-      - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">node-role.kubernetes.io/master</span>
-        <span style="color:#f92672">operator</span>: <span style="color:#ae81ff">Exists</span>
-        <span style="color:#f92672">effect</span>: <span style="color:#ae81ff">NoSchedule</span>
-      - <span style="color:#f92672">operator</span>: <span style="color:#e6db74">&#34;Exists&#34;</span>
-        <span style="color:#f92672">effect</span>: <span style="color:#e6db74">&#34;NoExecute&#34;</span>
-      - <span style="color:#f92672">operator</span>: <span style="color:#e6db74">&#34;Exists&#34;</span>
-        <span style="color:#f92672">effect</span>: <span style="color:#e6db74">&#34;NoSchedule&#34;</span>
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-YAML" data-lang="YAML"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">fluent-bit.conf</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [SERVICE]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Flush                     5
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Log_Level                 info
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Daemon                    off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Parsers_File              parsers.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        storage.path              /var/fluent-bit/state/flb-storage/
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        storage.sync              normal
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        storage.checksum          off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        storage.backlog.mem_limit 5M
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    @INCLUDE containers.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    @INCLUDE kube-systemd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    @INCLUDE host.conf</span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># containers.confの定義</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers.conf</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [INPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                tail
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Tag                 fluentbit.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Path                /var/log/containers/fluentbit*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Parser              docker
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_log.db
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Skip_Long_Lines     On
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Refresh_Interval    10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [INPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                tail
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Tag                 cloudwatch-agent.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Path                /var/log/containers/cloudwatch-agent*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Docker_Mode         On
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Docker_Mode_Flush   5
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Docker_Mode_Parser  cwagent_firstline
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Parser              docker
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_cwagent.db
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Skip_Long_Lines     On
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Refresh_Interval    10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [INPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                tail
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Tag                 sample-app.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Path                /var/log/containers/sample-app*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Parser              docker
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/flb_sample-app.db
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Mem_Buf_Limit       5MB
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Skip_Long_Lines     On
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Refresh_Interval    10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Read_from_Head      ${READ_FROM_HEAD}</span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 各INPUTに対応するFILTERを定義する</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               fluentbit.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_Tag_Prefix     fluentbit.var.log.containers.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log           On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Annotations         Off</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               cloudwatch-agent.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_Tag_Prefix     cloudwatch-agent.var.log.containers.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log           On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Annotations         Off</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               sample-app.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_URL            ${MASTER_URL}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Kube_Tag_Prefix     sample-app.var.log.containers.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log           On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Merge_Log_Key       log_processed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Parser  On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">K8S-Logging.Exclude Off</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Annotations         Off</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># アイテムの変換や不要なメタデータ送信抑止を定義</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Operation           lift</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Nested_under        kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Add_prefix          Nested.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                modify</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Rename              Nested.docker_id            Docker.container_id</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Operation           nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Wildcard            Nested.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Nested_under        kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove_prefix       Nested.</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Operation           nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Wildcard            Docker.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Nested_under        docker</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove_prefix       Docker.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Operation           lift</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Nested_under        kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Add_prefix          Kube.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                modify</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove              Kube.container_hash </span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove              Kube.container_image</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove              Kube.pod_id</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">FILTER]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Operation           nest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Wildcard            Kube.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Nested_under        Kubernetes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Remove_prefix       Kube.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 送信時の定義</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ロググループ名例：/eks/stg/sample-app_fluentbit</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ログストリーム名例：ip-10-1-2-3.ap-northeast-1.compute.internal_[Pod名]_[ネームスペース]_[コンテナ名]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># $(tag[4])とした場合、上記のようなkubeのタグ定義が投入され、ユニークなログストリーム名になる。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">OUTPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                cloudwatch</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               fluentbit.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_fluentbit</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">auto_create_group   true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Retry_Limit         5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">OUTPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                cloudwatch</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               cloudwatch-agent.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_cwagent</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">auto_create_group   true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Retry_Limit         5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 個別アプリログ送信用定義</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">OUTPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                cloudwatch</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               sample-app.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_application</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[4])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">auto_create_group   true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Retry_Limit         5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># docker,kubenetesログ定義</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kube-systemd.conf</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [INPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                systemd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Tag                 dockerlog.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Systemd_Filter      _SYSTEMD_UNIT=docker.service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/systemd.db
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Path                /var/log/journal
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Read_From_Head      ${READ_FROM_HEAD}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [INPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                systemd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Tag                 kubelet.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Systemd_Filter      _SYSTEMD_UNIT=kubelet.service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        DB                  /var/fluent-bit/state/systemd.db
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Path                /var/log/journal
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Read_From_Head      ${READ_FROM_HEAD}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [FILTER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                modify
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Match               dockerlog.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              _HOSTNAME                   hostname
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              _SYSTEMD_UNIT               systemd_unit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              MESSAGE                     message
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Remove_regex        ^((?!hostname|systemd_unit|message).)*$
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [FILTER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                modify
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Match               kubelet.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              _HOSTNAME                   hostname
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              _SYSTEMD_UNIT               systemd_unit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Rename              MESSAGE                     message
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Remove_regex        ^((?!hostname|systemd_unit|message).)*$
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [OUTPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                cloudwatch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Match               kubelet.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        region              ${AWS_REGION}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_docker
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        log_stream_name     ${HOST_NODE_NAME}_$(tag[2])
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        auto_create_group   true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        extra_user_agent    container-insight
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [OUTPUT]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                cloudwatch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Match               kubelet.systemd.*
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        region              ${AWS_REGION}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_kubelet
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        log_stream_name     ${HOST_NODE_NAME}_$(tag[2])
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        auto_create_group   true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        extra_user_agent    container-insight</span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># messages等、OSのログ定義</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">host-log.conf</span>: <span style="color:#ae81ff">|</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">INPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                tail</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Tag                 host.messages</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Path                /var/log/messages</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Parser              syslog</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">DB                  /var/fluent-bit/state/flb_messages.db</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Mem_Buf_Limit       5MB</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Skip_Long_Lines     On</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Refresh_Interval    10</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Read_from_Head      ${READ_FROM_HEAD}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># host.confの[OUTPUT]定義は、複数のINPUTがあっても1つでよい。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># $(tag[1]) にはこの場合messagesが入る。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">OUTPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name                cloudwatch</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match               host.*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">region              ${AWS_REGION}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_group_name      /eks/${ENVIRONMENT}/${NODEGROUP}_$(tag[1])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_stream_name     ${HOST_NODE_NAME}_$(tag[1])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">auto_create_group   true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">extra_user_agent    container-insights</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Retry _Limit        5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">parsers.conf</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [PARSER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                docker
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Format              json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Key            time
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [PARSER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                syslog-rfc5424
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Format              regex
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Regex               ^(?&lt;time&gt;[^ ]* {1.2}[^ ]* [^ ]*) (?&lt;host&gt;[^ ]*) (?&lt;ident&gt;[a-zA-Z0-9_¥/¥.¥-]*) (?:¥[?&lt;pid&gt;[-0-9]+)¥])?(?:[^¥:]*¥:)? * (?&lt;message&gt;.*)$
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Key            time
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%L
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Strict         Off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [PARSER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                container_firstline
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Format              regex
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Regex               (?&lt;log&gt;(?&lt;=&#34;log&#34;:&#34;)\S(?!\.).*?)(?&lt;!\\)&#34;.*(?&lt;stream&gt;(?&lt;=&#34;stream&#34;:&#34;).*?)&#34;.*(?&lt;time&gt;\d{4}-\d{1,2}-\d{1,2}T\d{2}:\d{2}:\d{2}\.\w*).*(?=})
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Key            time
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    [PARSER]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Name                cwagent_firstline
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Format              regex
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Regex               (?&lt;log&gt;(?&lt;=&#34;log&#34;:&#34;)\d{4}[\/-]\d{1,2}[\/-]\d{1,2}[ T]\d{2}:\d{2}:\d{2}(?!\.).*?)(?&lt;!\\)&#34;.*(?&lt;stream&gt;(?&lt;=&#34;stream&#34;:&#34;).*?)&#34;.*(?&lt;time&gt;\d{4}-\d{1,2}-\d{1,2}T\d{2}:\d{2}:\d{2}\.\w*).*(?=})
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Key            time
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Time_Format         %Y-%m-%dT%H:%M:%S.%LZ</span>    
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">DaemonSet</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">amazon-cloudwatch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">version</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">kubernetes.io/cluster-service</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">k8s-app</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">version</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">kubernetes.io/cluster-service</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">affinity</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">nodeAffinity</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">requiredDuringSchedulingIgnoredDuringExecution</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">nodeSelectorTerms</span>:
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>              - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">nodelabel</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">operator</span>: <span style="color:#ae81ff">In</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">values</span>:
+</span></span><span style="display:flex;"><span>                - <span style="color:#ae81ff">STG-NODELABEL-APP-001</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-sample</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">amazon/aws-for-fluent-bit:2.12.0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">imagePullPolicy</span>: <span style="color:#ae81ff">Always</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">AWS_REGION</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">configMapKeyRef</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">logs.region</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">CLUSTER_NAME</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">configMapKeyRef</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">cluster.name</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">READ_FROM_HEAD</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">configMapKeyRef</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">read.head</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">READ_FROM_TAIL</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">configMapKeyRef</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbit-cluster</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">key</span>: <span style="color:#ae81ff">read.tail</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">HOST_NODE_NAME</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">fieldRef</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">spec.nodeName</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI_VERSION</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;k8s/1.3.8&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># これ以降独自に設定追加。設定項目はユースケースに合わせてください。</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">ENVIRONMENT</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;stg&#34;</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">NODEGROUP</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;sample-app&#34;</span>
+</span></span><span style="display:flex;"><span>            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MASTER_URL</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;https://kubernetes.default.svc:443&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">limits</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">cpu</span>: <span style="color:#ae81ff">200m</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">200Mi</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">requests</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">cpu</span>: <span style="color:#ae81ff">200m</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">100Mi</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">volumeMounts</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Please don&#39;t change below read-only permissions</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbitstate</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/fluent-bit/state</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlog</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/log</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlibdockercontainers</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/lib/docker/containers</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/fluent-bit/etc/</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">runlogjournal</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/run/log/journal</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dmesg</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/var/log/dmesg</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">readOnly</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">terminationGracePeriodSeconds</span>: <span style="color:#ae81ff">90</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluentbitstate</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">hostPath</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/fluent-bit/state</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlog</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">hostPath</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/log</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">varlibdockercontainers</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">hostPath</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/lib/docker/containers</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">configMap</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fluent-bit-config</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">runlogjournal</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">hostPath</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/run/log/journal</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dmesg</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">hostPath</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/var/log/dmesg</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">serviceAccountName</span>: <span style="color:#ae81ff">fluent-bit</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">tolerations</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">node-role.kubernetes.io/master</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">operator</span>: <span style="color:#ae81ff">Exists</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">effect</span>: <span style="color:#ae81ff">NoSchedule</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">operator</span>: <span style="color:#e6db74">&#34;Exists&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">effect</span>: <span style="color:#e6db74">&#34;NoExecute&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">operator</span>: <span style="color:#e6db74">&#34;Exists&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">effect</span>: <span style="color:#e6db74">&#34;NoSchedule&#34;</span>
+</span></span></code></pre></div><p> </p>
 <h3 id="補足説明">補足説明<a hidden class="anchor" aria-hidden="true" href="#補足説明">#</a></h3>
 <p><strong>imageパスの指定</strong><br>
 上記ではコンテナイメージをインターネットを通って都度落とすようになっているが、業務利用時はECRに格納してプライベートな通信で完結させるのが望ましい。ECRに格納した場合は以下のように指定する。</p>
-<pre><code>image: [AWS-AccoundID].dkr.ecr.ap-northeast-1.amazon.com/[repo-name]:2.12.0
+<pre tabindex="0"><code>image: [AWS-AccoundID].dkr.ecr.ap-northeast-1.amazon.com/[repo-name]:2.12.0
 </code></pre><p> </p>
 <p><strong>nodeAffinityで起動するノードを指定</strong><br>
 今回の事例では、sample-appのPodが起動するワーカーノード上にsample-appログ送信用のDaemonSetを起動させる必要がある。そのためnodeAffinityを定義する。EKSノードグループのラベルに<code>key:nodelabel</code> <code>values:STG-SAMPLE-APP</code>を設定している前提の場合以下の様になる。sample-app用のマニフェストにも同様の記述をする。</p>
-<pre><code>    spec:
+<pre tabindex="0"><code>    spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -714,14 +712,14 @@ OS上のログ（基本的に/var/log/配下の各種ログ）を定義。簡素
 </code></pre><p> </p>
 <p><strong>停止時のGracePeriod</strong><br>
 DaemonSetがKillシグナル受信後に削除されるまでの猶予時間を指定。公式サンプル10秒だと、コンテナログを送信しきる前に削除されてしまう可能性がある。ここでは余裕を持たせて90秒。</p>
-<pre><code>terminationGracePeriodSeconds: 90
+<pre tabindex="0"><code>terminationGracePeriodSeconds: 90
 </code></pre><p> </p>
 <p><strong>syslogのPARSER</strong><br>
 AWS公式の設定だと<code>Time_Format</code>がダメらしきエラーがでるのでFluent Bit公式の例を適用した。Fluent Bit公式では<code>syslog</code>ではなく<code>syslog-rfc5424</code>。ではINPUTの<code>Parser</code>は<code>syslog</code>ではなく<code>syslog-rfc5424</code>とするのが正ではないか？と思ったが、そうすると動作しない。謎だが深追いはしない。<code>Time_Strict</code>はOffにしておく。しかしそれでもまだエラーになるので調べると、Regexの正規表現が原因らしいのでそこも直した。参照サイトは失念。</p>
 <p> </p>
 <p><strong>DaemonSetの起動〜ログ送信</strong><br>
 今回cloudwatch-agentについては触れていないが、cloudwatch-agentネームスペースが存在している状態でマニフェストをapplyする。この時点ではノードグループは停止中でもよい。</p>
-<pre><code>$ kubectl apply -f fluentbit-cluster.yaml
+<pre tabindex="0"><code>$ kubectl apply -f fluentbit-cluster.yaml
 $ kubectl apply -f fluentbit-sample-app.yaml
 </code></pre><p> </p>
 <p>ノードグループが起動すると、各種ログがCloudWatchLogsに送信される。アプリ用マニフェストをapplyすればアプリログも送信される。</p>
@@ -731,6 +729,7 @@ $ kubectl apply -f fluentbit-sample-app.yaml
     
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/fluentbit/">fluentbit</a></li>
@@ -741,12 +740,12 @@ $ kubectl apply -f fluentbit-sample-app.yaml
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/inokashira-park/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>井の頭公園 - 2018年4月</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/markdown/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>マークダウン記法</span>
   </a>
@@ -755,27 +754,28 @@ $ kubectl apply -f fluentbit-sample-app.yaml
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -829,12 +829,12 @@ $ kubectl apply -f fluentbit-sample-app.yaml
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

@@ -1,155 +1,129 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lifelog on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/lifelog/</link>
     <description>Recent content in Lifelog on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 02 Jun 2022 22:26:14 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/lifelog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Jun 2022 22:26:14 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/lifelog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>6月の過ごし方</title>
       <link>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</link>
       <pubDate>Thu, 02 Jun 2022 22:26:14 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</guid>
       <description>&lt;p&gt;6月は、とても大事なんだと。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>小休止</title>
       <link>https://ecnedaced-seirots.github.io/post/b/travel-0001/</link>
       <pubDate>Thu, 24 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/travel-0001/</guid>
       <description>&lt;p&gt;ここしばらくワクネタやらその周辺やら追ってばかりいて、憂鬱になってしまう。ちょっと離れないとな。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>カナダ及び各国のFreedom Convoyに注目</title>
       <link>https://ecnedaced-seirots.github.io/post/b/freedom-convoy/</link>
       <pubDate>Sat, 12 Feb 2022 19:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/freedom-convoy/</guid>
       <description>&lt;p&gt;&amp;ldquo;Freedom Convoy&amp;quot;はひと言で言うと、カナダのトラック運転手のワクチン強制接種反対の運動。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>イタリアの現状と、リュック・モンタニエ博士の急逝</title>
       <link>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</link>
       <pubDate>Sat, 12 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</guid>
       <description>&lt;p&gt;2022年2月イタリアの現実を、現地在住日本人が伝えている。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Non Title</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lgs/</link>
       <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/lgs/</guid>
       <description>&lt;p&gt;過去LGS（リーキーガット症候群:Leaky gut syndrome) に罹ったことがあるから、腸内の日和見菌が凶暴化するとどれほど身体と脳が破壊されるか身に染みてわかる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>飛行機画像ブログのリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</guid>
       <description>&lt;p&gt;I miss the aiport and airplane vibes.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Non title</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1214/</link>
       <pubDate>Tue, 14 Dec 2021 00:45:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1214/</guid>
       <description>あーあ、今日も、疲れた。気がついたら20時なんだもん、ひっでぇな。
 そして本来やるべきことの、半分もできていない。雑用の波が押し寄せる。言いたいことは多々あるが、ぶちまけ大会するわけにはいかない。このモヤモヤを一体どうしたらいいのか。
-  ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</description>
+ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</description>
     </item>
-    
     <item>
       <title>ソーシャルな反応に対する反応とか</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sns/</link>
       <pubDate>Sat, 11 Dec 2021 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sns/</guid>
       <description>&amp;ldquo;SNS&amp;quot;は&amp;quot;Social Networking Service&amp;quot;の略だ。この言葉の上では、プラットフォーム自体がサービスなのだ。しかし、そこに参加した途端に、自分自身が他者にサービスせざるを得なくなる。俗に言う、フォロバとかいいね返しとか、そういうことだ。
 そういうのは嫌いだ、しかしそこに参加している限り、鍵垢でもない限り、その渦から完全に逃れることはできない、この、人付き合いが嫌いな俺様であってもだ、しかし嫌いなものは嫌いなんだ、反応に対していちいち反応してたら自分のやりたいことができないし、余計にエネルギーを使うことになる。つまり、反応した相手の投稿をチェックするという作業自体が余剰作業なのだ、他人にサービスするためにやってるんじゃないからね。
 これは、SNSの面倒で嫌いな部分だが、いいこともある、「反応に対する反応」により、センスがいいナイスなアカウントを発見することも多々あるからだ。tumblrの場合、ナイスなポストがあればreblogするし、この人は光る何かを持っている、とピピっときたらフォローせざるを得ない。相手が素晴らしいセンスの持ち主だと、サービスを通り越して夢中になってしまうこともある。
-  でも最近疲れてきたな、夢中になりすぎて疲れたのか、疲れたから夢中になれなくなったのか知らんが、あまり楽しくない。結局「お付き合い」の比重が多くなると、本来の目的からずれてしまうんだ、リアルワールドでやることのプライオリティが上がっているせいもあるな。
+でも最近疲れてきたな、夢中になりすぎて疲れたのか、疲れたから夢中になれなくなったのか知らんが、あまり楽しくない。結局「お付き合い」の比重が多くなると、本来の目的からずれてしまうんだ、リアルワールドでやることのプライオリティが上がっているせいもあるな。
 しかしよく考えると、SNSとの付き合いなんてそれくらいか、それより低程度がいいのである、本来は。リアルワールドで重要なことが多いほど、SNSにかまけていられる時間やエネルギーは減る。つまり、「あんまり楽しくない」程度に捉えている方が自然なのである。
-そういう意味では、俺もやっと自然に戻れたんだろうか。
- </description>
+そういう意味では、俺もやっと自然に戻れたんだろうか。</description>
     </item>
-    
     <item>
       <title>ひとり言 - 10月27日</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1027/</link>
       <pubDate>Wed, 27 Oct 2021 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1027/</guid>
       <description>あー、マジやべぇ、息が詰まりそうだ、いろいろと、勘弁してくれよもう的な動きが多くてさ、めっちゃやり辛い。まじで、10月入ってからすげえやり辛くなった。鬱屈がたまってどうしようもねぇ。
 しばらく前から通勤時に英文小説読む余力もないし、Tumblrやり過ぎるとDVT症候群で頭痛と目眩がするし、イヤホンで大音量で音楽聴きすぎて耳がイカレそうだし、もう何を支えにしていいかわからないな、オレは生き延びることができるんだろうか？
 そりゃ仕事があるだけありがたい立場だってことは忘れちゃいけないけどね、もし今「戦争」状態じゃなかったらいつでも出ていけるんだからな、なにせ俺様能力高いからな。
- うん、そのつもりでやっていくしかねぇ。
- </description>
+うん、そのつもりでやっていくしかねぇ。</description>
     </item>
-    
     <item>
       <title>Eye Candyがいるんだ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1025/</link>
       <pubDate>Tue, 26 Oct 2021 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1025/</guid>
       <description>10月25日の明け方に見た夢。コンサート会場みたいなところ。そこはロンドンである。観客が大勢いて賑わっている。そしてノーマスク。「あぁ、マスク圧解禁されたのか！」と嬉しい。よく見ると数人はマスクしている、でもほぼノーマスク。あぁ。
- もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ&amp;hellip;.
- </description>
+もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ&amp;hellip;.</description>
     </item>
-    
     <item>
       <title>middle finger周辺の表現など</title>
       <link>https://ecnedaced-seirots.github.io/post/a/the-finger/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/the-finger/</guid>
       <description>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
- &amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
+&amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
 以下はすべて同じ意味。&amp;ldquo;the finger&amp;quot;でも同じ意味になるとは知らなかった。
- middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
- give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
- flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
+middle finger second finger the finger 侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+give the middle finger give the finger 以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+flip the bird fly the bird しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
     </item>
-    
     <item>
       <title>Tumblrについて、ひとり言</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sns-influence/</link>
       <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sns-influence/</guid>
       <description>SNSって誰をフォローするかも大きいけど誰にフォローされるか、も相当影響でかいんだなと思う。
 もともとSNS嫌いだからほとんどやってないけど、Tumblrは例外で、ここしばらく依存症に近いくらい使っている。全然使っていなかった時期もあるんだけどね。今は諸事情によりヘビーユーザー。
 当初はフォロワー僅か、だったが逆に好き勝手なことが書けた。Tumblrってテキスト投稿には向いてないと思うけど、それすら気にせずに画像だろうが音声だろうがテキストだろうが、好きなように投稿する。それがTumblrの良さ。
 当初投稿するのは自分の写真が中心で、たまにテキストあり、リブログはあまりしていなかった。特にフォローしたいアカウントもなかったけどたまに癒し系とか懐かし系画像投稿したいから適当に複数アカウントフォローしてた。でも、楽しくはなかったんだよね。「たまにこっち系の画像ポストするのはいいけどそれメインでやりたいわけじゃないし、なんか違う気がするなぁ」と違和感を覚え始めて、フォロー解除した。
-  しかしその後、何がきっかけか覚えていないのだが、あるアカウントとその周辺アカウントをフォロー開始してから、めっちゃ楽しくなってしまった。それらのアカウントは毎日投稿しているけど、リブログせずにいられないような、何かしらカッコイイポストが必ずある。経由されたポストやソースをポストしたアカウントを追うとこれまたセンスが良くて、芋づる式に夢中でlike,reblogしてしまうのである。
+しかしその後、何がきっかけか覚えていないのだが、あるアカウントとその周辺アカウントをフォロー開始してから、めっちゃ楽しくなってしまった。それらのアカウントは毎日投稿しているけど、リブログせずにいられないような、何かしらカッコイイポストが必ずある。経由されたポストやソースをポストしたアカウントを追うとこれまたセンスが良くて、芋づる式に夢中でlike,reblogしてしまうのである。
 Tumblrのすごいところは、オリジナルのポスト作成者じゃなくても、センスのいいポストで構成されたブログが甚大な価値を持つことだ。「あなたのセンスは素晴らしい、本当に尊敬する！」と叫びたくなるようなアカウントが複数存在する。まだ出会えていないブログもあるかもしれない。実際最近になっても、「こんなセンスいいブログがあったんだ！」と新たに発見することがある。（もちろんそんなときに直接メッセージを送ったりはしない。1%程度の例外はあるだろうが、Tumblrでは誰もそんなこと望んでいないのだから）
 いいポストを集めたブログは自然にいいブログになる。オリジナルの作者かどうか、の区別はもはや意味をなさなくなる。いいものを発見してコレクションする、そのエネルギーが、見る人にインスピレーションや刺激を与えるのだ。それがTumblrの良さ。（二度目）
 このことに気づいてから、俺は夢中になってしまった。Tumblr自体はずっと前からやっているのに、こんなに楽しいと感じたのは初めてといってもいい。
-  以上は「誰をフォローするか」による影響の話。ここから先、「誰にフォローされるか」について書いてみる。
+以上は「誰をフォローするか」による影響の話。ここから先、「誰にフォローされるか」について書いてみる。
 少し前のある日、これまで細々とした件数だった、零細アカウントの俺の通知が飛躍的に伸びた。たまに特定のポストのリアクションが増加することはあったが、その日は過去にない規模の反響だった。「何かあったか？」と追ってみると、ある人気アカウントが自分のポストを複数リブログしてた。そこから雪だるま式にリアクションが増えたわけである。これにより、自分のブログのフォロワーも増加した。増加といってもその日に十人くらい、その後日に数人ずつ程度のペースだが。ちなみに先の人気アカウントにもフォローされていた。
 しかし、正直あまりうれしくないし、逆に困る。「ある誰かが自分の投稿を見ている」ことを意識していると、書きにくいことが出てくるのである。画像のポストだけでみても、フォロワーにインフルエンサーとそのフォロワーがいると「何を投稿するか」について、これまで以上に他人を意識せざるを得なくなってしまうのである。それまでは「とにかく自分がポストしたいものをポストする」スタンスだったのに、他人にサービスするようなポストを挟んでしまうとか。実際その日以降、しばらくそんな状況が続いた。引き摺られてはいけない、と自覚しつつも、どこかで引き摺られてしまうのだ。
 で、この状況はストレスなのである。つまり楽しくないのである。楽しくないTumblrなんかやりなくない。自分が楽しむためにやっているんだから、プライオリティの優位をそっちに戻す必要がある。&amp;hellip;と、そのことを明確に言語化するためのこの投稿を書いた。
 実はこの件と前後して、先の方に書いたセンス抜群のアカウントからフォローしてもらった。これは嬉しかったね。俺のポストはそんなにリブログしてもらってないけど、たまにリブログしてもらうとやはり反響がすごい。まぁこの反響ってのも良し悪しだけどね、まったく反応がないと寂しいけどデカすぎても疲れる、さっき書いたように、よくない影響受けることがあるからね。まぁこれって、リアルライフで人混みに出ると疲れるのと同じことだと思う。
-  で、最終的に言いたいことは。
+で、最終的に言いたいことは。
 リアルライフでもSNSでも、「自分の周囲に誰がいるか」の影響は非常に大きいのだ、と。
 人間は誰でもエネルギーを持っている。エネルギーは、良くも悪くも他者に影響を与える。ある人間が、良いエネルギーを放出している集団の中にいればおのずとよい影響を受ける。逆もまた然りである。リアルライフだとそのことを如実に実感するが、ネット上でもそれは同様だ。実際物事はそう単純ではないから、他者からの影響の方向や質はモザイクのように絡み合っているイメージではあるが&amp;hellip;
 TwitterとかFacebookみたいにガチで言葉の応酬をするようなSNSは当然その傾向が強いと思うが、Tumblrのように非常に関係性が薄いSNSでもそういうことがあるんだな、と今更ながら実感した次第。
 結論としては、Tumblrではいくつかのアカウントを本当にリスペクトしているけれど、自分の軸をずらさずにかつ一定の距離を保つ姿勢を貫くのが、長く楽しむコツだね。</description>
     </item>
-    
   </channel>
 </rss>

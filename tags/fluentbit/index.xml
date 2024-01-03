@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fluentbit on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/fluentbit/</link>
     <description>Recent content in fluentbit on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 10 Jan 2022 20:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/fluentbit/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Jan 2022 20:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/fluentbit/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EKS FargateからFluent BitでCloudWatchにログ送信する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</guid>
       <description>&lt;p&gt;過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
       <link>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</guid>
       <description>&lt;p&gt;AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

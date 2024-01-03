@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Github on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/categories/github/</link>
     <description>Recent content in Github on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 23 Oct 2021 00:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/github/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Oct 2021 00:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/github/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Github Actionsメモ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/github-actions/</link>
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/github-actions/</guid>
       <description>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
 Hugo + GitHub Pages + GitHub Actions で独自ドメインのウェブサイトを構築する
-  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
+今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
     </item>
-    
   </channel>
 </rss>

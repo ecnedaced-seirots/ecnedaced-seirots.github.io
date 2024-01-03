@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Italy on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/italy/</link>
     <description>Recent content in Italy on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 12 Feb 2022 00:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/italy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Feb 2022 00:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/italy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>イタリアの現状と、リュック・モンタニエ博士の急逝</title>
       <link>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</link>
       <pubDate>Sat, 12 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</guid>
       <description>&lt;p&gt;2022年2月イタリアの現実を、現地在住日本人が伝えている。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

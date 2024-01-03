@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aviation on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/aviation/</link>
     <description>Recent content in Aviation on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 25 Dec 2021 09:00:00 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/aviation/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Dec 2021 09:00:00 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/aviation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>飛行機画像ブログのリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</guid>
       <description>&lt;p&gt;I miss the aiport and airplane vibes.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1） | Go Buddy Go</title>
-<meta name="keywords" content="CodePipeline, CodeDeploy, AWS, IAM" />
+<meta name="keywords" content="CodePipeline, CodeDeploy, AWS, IAM">
 <meta name="description" content="前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild &#43; パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -25,18 +25,19 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].">
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -45,19 +46,54 @@ $ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[�
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" />
 <meta property="og:description" content="前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild &#43; パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -65,32 +101,33 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名]." />
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-10-03T10:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-10-03T10:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-10-03T10:00:00+09:00" />
+<meta property="article:modified_time" content="2021-10-03T10:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）"/>
 <meta name="twitter:description" content="前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild &#43; パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -98,14 +135,15 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名]."/>
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。"/>
 
 
 <script type="application/ld+json">
@@ -134,11 +172,11 @@ $ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[�
   "@type": "BlogPosting",
   "headline": "AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）",
   "name": "AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）",
-  "description": "前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。\n やりたいこと\nAWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい\u0026hellip;）\n 主な参考ページ\n他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント\n 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。\n参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。\nクロスアカウントCodeBuild + パイプライン例\nCodePipelineでアカウントをまたいだパイプラインを作成してみる\n 制約事項\n クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。\n1-資材配布元（アカウントA）\n① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）\n② KMSキー (両方のアカウントにアクセス許可する)\n③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）\n④ CodePipelineが使用するサービスロール\n⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）\nJSON取得コマンド\n$ aws codepipeline get-pipeline --name [パイプライン名] \u0026gt; [パイプライン名].json  2-資材配布先（アカウントB）\n① CodeDeploy定義（アプリケーション/デプロイメントグループ）\n② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）\n③ ②のIAMロールをアタッチしたデプロイ先ec2\n④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）\n 作業概要 上記各リソースを作成済として、以下の作業を行う。\nアカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする\n$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].",
+  "description": "前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。\nやりたいこと\nAWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい\u0026hellip;）\n主な参考ページ\n他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント\n基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。\n参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。\nクロスアカウントCodeBuild + パイプライン例\nCodePipelineでアカウントをまたいだパイプラインを作成してみる\n制約事項\nクロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。\n1-資材配布元（アカウントA）\n① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）\n② KMSキー (両方のアカウントにアクセス許可する)\n③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）\n④ CodePipelineが使用するサービスロール\n⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）\nJSON取得コマンド\n$ aws codepipeline get-pipeline --name [パイプライン名] \u0026gt; [パイプライン名].json 2-資材配布先（アカウントB）\n① CodeDeploy定義（アプリケーション/デプロイメントグループ）\n② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）\n③ ②のIAMロールをアタッチしたデプロイ先ec2\n④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）\n作業概要 上記各リソースを作成済として、以下の作業を行う。\nアカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする\n$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する\n$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。",
   "keywords": [
     "CodePipeline", "CodeDeploy", "AWS", "IAM"
   ],
-  "articleBody": "前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。\n やりたいこと\nAWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい…）\n 主な参考ページ\n他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント\n 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。\n参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。\nクロスアカウントCodeBuild + パイプライン例\nCodePipelineでアカウントをまたいだパイプラインを作成してみる\n 制約事項\n クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。\n1-資材配布元（アカウントA）\n① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）\n② KMSキー (両方のアカウントにアクセス許可する)\n③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）\n④ CodePipelineが使用するサービスロール\n⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）\nJSON取得コマンド\n$ aws codepipeline get-pipeline --name [パイプライン名]  [パイプライン名].json  2-資材配布先（アカウントB）\n① CodeDeploy定義（アプリケーション/デプロイメントグループ）\n② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）\n③ ②のIAMロールをアタッチしたデプロイ先ec2\n④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）\n 作業概要 上記各リソースを作成済として、以下の作業を行う。\nアカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする\n$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json  アップデートしたパイプラインを実行する\n$ aws codepipeline start-pipeline-execution --name [パイプライン名]  アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。\nクロスアカウントパイプラインの処理中の見え方\nアカウントAのマネジメントコンソール：パイプライン全体の処理状況は見える。デプロイステージの詳細は見れない。\nアカウントBのコンソール : デプロイの詳細が見れる\n 各種アイテムのサンプル AWS公式でも基本内容は網羅されているが自分用メモとしてここにも載せておく。\nアカウントA側アイテム\n1-② KMSキーポリシー\nアーティファクト用S3バケットの暗号化キーポリシー\n{ \"Version\": \"2012-10-17\", \"Id\": \"[key-policy-name]\", \"Statement\": [ { \"Sid\": \"Enable IAM User Permissions\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントAのID]:root\" }, \"Action\": \"kms:*\", \"Resource\": \"*\" }, { \"Sid\": \"Allow access for Key Administrators\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"[KMSの暗号化キーの管理ユーザのARN]\" #アカウントA側のキーのオーナーを指定 }, \"Action\": [ \"kms:Create*\", \"kms:Describe*\", \"kms:Enable*\", \"kms:List*\", \"kms:Put*\", \"kms:Update*\", \"kms:Revoke*\", \"kms:Disable*\", \"kms:Get*\", \"kms:Delete*\", \"kms:TagResource\", \"kms:UntagResource\", \"kms:ScheduleKeyDeletion\", \"kms:CancelKeyDeletion\" ], \"Resource\": \"*\" }, { \"Sid\": \"Allow use of the key\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": [ \"[アカウントAのパイプライン用サービスロールのARN]\", #(注1) \"arn:aws:iam::[アカウントBのID]:root\" ] }, \"Action\": [ \"kms:Encrypt\", \"kms:Decrypt\", \"kms:ReEncrypt*\", \"kms:GenerateDataKey*\", \"kms:DescribeKey\" ], \"Resource\": \"*\" }, { \"Sid\": \"Allow attachment of persistent resources\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": [ \"[アカウントAのパイプライン用サービスロールのARN]\", #(注1) \"arn:aws:iam::[アカウントBのID]:root\" ] }, \"Action\": [ \"kms:CreateGrant\", \"kms:ListGrants\", \"kms:RevokeGrant\" ], \"Resource\": \"*\", \"Condition\": { \"Bool\": { \"kms:GrantIsForAWSResource\": \"true\" } } } ] } (注1) 構文\narn:aws:iam::[アカウントAのID]:role/[パイプラインロール名]\n 1-③ S3バケットポリシー\n{ \"Version\": \"2012-10-17\", \"Id\": \"SSEAndSSLPolicy\", \"Statement\": [ { \"Sid\": \"DenyUnEncryptedObjectUploads\", \"Effect\": \"Deny\", \"Principal\": \"*\", \"Action\": \"s3:PutObject\", \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\", \"Condition\": { \"StringNotEquals\": { \"s3:x-amz-server-side-encryption\": \"aws:kms\" } } }, { \"Sid\": \"DenyInsecureConnections\", \"Effect\": \"Deny\", \"Principal\": \"*\", \"Action\": \"s3:*\", \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\", \"Condition\": { \"Bool\": { \"aws:SecureTransport\": false } } }, { \"Sid\": \"\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントBのID]:root\" }, \"Action\": [ \"s3:Get*\", \"s3:Put*\" ], \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\" }, { \"Sid\": \"\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントBのID]:root\" }, \"Action\": \"s3:ListBucket\", \"Resource\": \"arn:aws:s3:::[S3バケット名]\" } ] }  1-④ CodePipelineが使用するサービスロール(IAM)\nこのロールには以下のポリシーを割り当てる。1.はロール作成前に作成可能。コンソールからロール作成する時に選択可能なサービスにCodePipelineがないので一旦CodeDeployで作成して、後から信頼ポリシー編集した。\n 通常のCodePipeline作業用ポリシー アカウントBのassume用インラインポリシー 信頼ポリシー（編集）  以下CodePipeline作業用ポリシー。AWSが自動で付与するポリシーは他のパーミッションも多く含まれているがそこから削って最小限にしたのがこれ。autoscalingは使わないんだけど一応残す。\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Action\": [ \"iam:PassRole\" ], \"Resource\": \"*\", \"Effect\": \"Allow\", \"Condition\": { \"StringEqualsIfExists\": { \"iam:PassedToService\": [ \"ec2.amazonaws.com\" ] } } }, { \"Action\": [ \"codecommit:CancelUploadArchive\", \"codecommit:GetBranch\", \"codecommit:GetCommit\", \"codecommit:GetUploadArchiveStatus\", \"codecommit:UploadArchive\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" }, { \"Action\": [ \"codedeploy:CreateDeployment\", \"codedeploy:GetApplication\", \"codedeploy:GetApplicationRevision\", \"codedeploy:GetDeployment\", \"codedeploy:GetDeploymentConfig\", \"codedeploy:RegisterApplicationRevision\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" }, { \"Action\": [ \"ec2:*\", \"elasticloadbalancing:*\", \"autoscaling:*\", \"cloudwatch:*\", \"s3:*\", \"tag:*\", \"logs:*\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" } ] }  アカウントBのassume用インラインポリシー\n{ \"Version\": \"2012-10-17\", \"Statement\": { \"Effect\": \"Allow\", \"Action\": \"sts:AssumeRole\", \"Resource\": [ \"arn:aws:iam::[アカウントBのID]:role/*\" ] } }  信頼ポリシー\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"codepipeline.amazonaws.com\", \"codedeploy.amazonaws.com\", \"ec2.amazonaws.com\" ] }, \"Action\": \"sts:AssumeRole\" } ] }  1-⑤ CodePiplelineのJSON定義\n冒頭のAWS公式ページにもポイントは記載されているが、今回のケースでまとめたのがこれ。繰り返しになるが、「1.コンソールで単体アカウント用にパイプラインを作成 2. そのJSON定義を取得してクロスアカウント向けに編集 3. パイプラインをアップデート」という流れになる。最初にパイプラインを作成するときにCodeDeploy用定義が必要なため、事前にアカウントA内で適当なCodeDeployアプリケーション/デプロイメントグループのペアを用意しておく。\n以下のJSON後半でアカウントB側のアイテム定義名をいくつか記載しており、当然アカウントB側に実体が存在する前提だが、編集時点では存在していなくても構わない。\n{ \"pipeline\": { \"name\": \"A_crossdeploy_pipeline\", \"roleArn\": \"arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]\", \"artifactStore\": { \"type\": \"S3\", \"location\": \"[S3バケット名]\" \"encryptionKey\": { \"id\": \"arn:aws:kms:us-east-1:[アカウントAのID]:key/[キーのID]\", #KMSキーのARN \"type\": \"KMS\" }, \"stages\": [ { \"name\": \"Source\", \"actions\": [ { \"name\": \"Source\", \"actionTypeId\": { \"category\": \"Source\", \"owner\": \"AWS\", \"provider\": \"CodeCommit\", \"version\": \"1\" }, \"runOrder\": 1, \"configuration\": { \"BranchName\": \"master\", \"OutputArtifactFormat\": \"CODE_ZIP\", \"PollForSourceChanges\": \"true\", \"RepositoryName\": \"[ソースリポジトリ名]\" }, \"outputArtifacts\": [ { \"name\": \"SourceArtifact\" } ], \"roleArn\" : \"arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]\", #冒頭で指定したIAMと同じ \"inputArtifacts\": [], \"region\": \"ap-northeast-1\", \"namespace\": \"SourceVariables\" } ] }, { \"name\": \"Deploy\", \"actions\": [ { \"name\": \"ExternalDeploy\", #Deploy --＞ ExternalDeployに変更 \"actionTypeId\": { \"category\": \"Deploy\", \"owner\": \"AWS\", \"provider\": \"CodeDeploy\", \"version\": \"1\" }, \"runOrder\": 1, \"configuration\": { \"ApplicationName\": \"[アカウントBのコードデプロイアプリケーション名]\", \"DeploymentGroupName\": \"[アカウントBのコードデプロイデプロイメントグループ名]\" }, \"outputArtifacts\": [], \"inputArtifacts\": [ { \"name\": \"SourceArtifact\" } ], \"roleArn\" : \"arn:aws:iam::[アカウントBのID]:role/[アカウントBのクロスデプロイ用IAMロール名]\", \"region\": \"ap-northeast-1\", \"namespace\": \"DeployVariables\" } ] } ], \"version\": 1 } }  やっとここまできた…長かった。しかしまだ道は続く。次回、アカウントB側の設定内容を書く。\n続き\nAWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）\n",
+  "articleBody": "前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。\nやりたいこと\nAWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい…）\n主な参考ページ\n他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント\n基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。\n参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。\nクロスアカウントCodeBuild + パイプライン例\nCodePipelineでアカウントをまたいだパイプラインを作成してみる\n制約事項\nクロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。\n1-資材配布元（アカウントA）\n① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）\n② KMSキー (両方のアカウントにアクセス許可する)\n③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）\n④ CodePipelineが使用するサービスロール\n⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）\nJSON取得コマンド\n$ aws codepipeline get-pipeline --name [パイプライン名] \u003e [パイプライン名].json 2-資材配布先（アカウントB）\n① CodeDeploy定義（アプリケーション/デプロイメントグループ）\n② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）\n③ ②のIAMロールをアタッチしたデプロイ先ec2\n④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）\n作業概要 上記各リソースを作成済として、以下の作業を行う。\nアカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする\n$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する\n$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。\nクロスアカウントパイプラインの処理中の見え方\nアカウントAのマネジメントコンソール：パイプライン全体の処理状況は見える。デプロイステージの詳細は見れない。\nアカウントBのコンソール : デプロイの詳細が見れる\n各種アイテムのサンプル AWS公式でも基本内容は網羅されているが自分用メモとしてここにも載せておく。\nアカウントA側アイテム\n1-② KMSキーポリシー\nアーティファクト用S3バケットの暗号化キーポリシー\n{ \"Version\": \"2012-10-17\", \"Id\": \"[key-policy-name]\", \"Statement\": [ { \"Sid\": \"Enable IAM User Permissions\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントAのID]:root\" }, \"Action\": \"kms:*\", \"Resource\": \"*\" }, { \"Sid\": \"Allow access for Key Administrators\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"[KMSの暗号化キーの管理ユーザのARN]\" #アカウントA側のキーのオーナーを指定 }, \"Action\": [ \"kms:Create*\", \"kms:Describe*\", \"kms:Enable*\", \"kms:List*\", \"kms:Put*\", \"kms:Update*\", \"kms:Revoke*\", \"kms:Disable*\", \"kms:Get*\", \"kms:Delete*\", \"kms:TagResource\", \"kms:UntagResource\", \"kms:ScheduleKeyDeletion\", \"kms:CancelKeyDeletion\" ], \"Resource\": \"*\" }, { \"Sid\": \"Allow use of the key\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": [ \"[アカウントAのパイプライン用サービスロールのARN]\", #(注1) \"arn:aws:iam::[アカウントBのID]:root\" ] }, \"Action\": [ \"kms:Encrypt\", \"kms:Decrypt\", \"kms:ReEncrypt*\", \"kms:GenerateDataKey*\", \"kms:DescribeKey\" ], \"Resource\": \"*\" }, { \"Sid\": \"Allow attachment of persistent resources\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": [ \"[アカウントAのパイプライン用サービスロールのARN]\", #(注1) \"arn:aws:iam::[アカウントBのID]:root\" ] }, \"Action\": [ \"kms:CreateGrant\", \"kms:ListGrants\", \"kms:RevokeGrant\" ], \"Resource\": \"*\", \"Condition\": { \"Bool\": { \"kms:GrantIsForAWSResource\": \"true\" } } } ] } (注1) 構文\narn:aws:iam::[アカウントAのID]:role/[パイプラインロール名]\n1-③ S3バケットポリシー\n{ \"Version\": \"2012-10-17\", \"Id\": \"SSEAndSSLPolicy\", \"Statement\": [ { \"Sid\": \"DenyUnEncryptedObjectUploads\", \"Effect\": \"Deny\", \"Principal\": \"*\", \"Action\": \"s3:PutObject\", \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\", \"Condition\": { \"StringNotEquals\": { \"s3:x-amz-server-side-encryption\": \"aws:kms\" } } }, { \"Sid\": \"DenyInsecureConnections\", \"Effect\": \"Deny\", \"Principal\": \"*\", \"Action\": \"s3:*\", \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\", \"Condition\": { \"Bool\": { \"aws:SecureTransport\": false } } }, { \"Sid\": \"\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントBのID]:root\" }, \"Action\": [ \"s3:Get*\", \"s3:Put*\" ], \"Resource\": \"arn:aws:s3:::[S3バケット名]/*\" }, { \"Sid\": \"\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::[アカウントBのID]:root\" }, \"Action\": \"s3:ListBucket\", \"Resource\": \"arn:aws:s3:::[S3バケット名]\" } ] } 1-④ CodePipelineが使用するサービスロール(IAM)\nこのロールには以下のポリシーを割り当てる。1.はロール作成前に作成可能。コンソールからロール作成する時に選択可能なサービスにCodePipelineがないので一旦CodeDeployで作成して、後から信頼ポリシー編集した。\n通常のCodePipeline作業用ポリシー アカウントBのassume用インラインポリシー 信頼ポリシー（編集） 以下CodePipeline作業用ポリシー。AWSが自動で付与するポリシーは他のパーミッションも多く含まれているがそこから削って最小限にしたのがこれ。autoscalingは使わないんだけど一応残す。\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Action\": [ \"iam:PassRole\" ], \"Resource\": \"*\", \"Effect\": \"Allow\", \"Condition\": { \"StringEqualsIfExists\": { \"iam:PassedToService\": [ \"ec2.amazonaws.com\" ] } } }, { \"Action\": [ \"codecommit:CancelUploadArchive\", \"codecommit:GetBranch\", \"codecommit:GetCommit\", \"codecommit:GetUploadArchiveStatus\", \"codecommit:UploadArchive\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" }, { \"Action\": [ \"codedeploy:CreateDeployment\", \"codedeploy:GetApplication\", \"codedeploy:GetApplicationRevision\", \"codedeploy:GetDeployment\", \"codedeploy:GetDeploymentConfig\", \"codedeploy:RegisterApplicationRevision\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" }, { \"Action\": [ \"ec2:*\", \"elasticloadbalancing:*\", \"autoscaling:*\", \"cloudwatch:*\", \"s3:*\", \"tag:*\", \"logs:*\" ], \"Resource\": \"*\", \"Effect\": \"Allow\" } ] } アカウントBのassume用インラインポリシー\n{ \"Version\": \"2012-10-17\", \"Statement\": { \"Effect\": \"Allow\", \"Action\": \"sts:AssumeRole\", \"Resource\": [ \"arn:aws:iam::[アカウントBのID]:role/*\" ] } } 信頼ポリシー\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"codepipeline.amazonaws.com\", \"codedeploy.amazonaws.com\", \"ec2.amazonaws.com\" ] }, \"Action\": \"sts:AssumeRole\" } ] } 1-⑤ CodePiplelineのJSON定義\n冒頭のAWS公式ページにもポイントは記載されているが、今回のケースでまとめたのがこれ。繰り返しになるが、「1.コンソールで単体アカウント用にパイプラインを作成 2. そのJSON定義を取得してクロスアカウント向けに編集 3. パイプラインをアップデート」という流れになる。最初にパイプラインを作成するときにCodeDeploy用定義が必要なため、事前にアカウントA内で適当なCodeDeployアプリケーション/デプロイメントグループのペアを用意しておく。\n以下のJSON後半でアカウントB側のアイテム定義名をいくつか記載しており、当然アカウントB側に実体が存在する前提だが、編集時点では存在していなくても構わない。\n{ \"pipeline\": { \"name\": \"A_crossdeploy_pipeline\", \"roleArn\": \"arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]\", \"artifactStore\": { \"type\": \"S3\", \"location\": \"[S3バケット名]\" \"encryptionKey\": { \"id\": \"arn:aws:kms:us-east-1:[アカウントAのID]:key/[キーのID]\", #KMSキーのARN \"type\": \"KMS\" }, \"stages\": [ { \"name\": \"Source\", \"actions\": [ { \"name\": \"Source\", \"actionTypeId\": { \"category\": \"Source\", \"owner\": \"AWS\", \"provider\": \"CodeCommit\", \"version\": \"1\" }, \"runOrder\": 1, \"configuration\": { \"BranchName\": \"master\", \"OutputArtifactFormat\": \"CODE_ZIP\", \"PollForSourceChanges\": \"true\", \"RepositoryName\": \"[ソースリポジトリ名]\" }, \"outputArtifacts\": [ { \"name\": \"SourceArtifact\" } ], \"roleArn\" : \"arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]\", #冒頭で指定したIAMと同じ \"inputArtifacts\": [], \"region\": \"ap-northeast-1\", \"namespace\": \"SourceVariables\" } ] }, { \"name\": \"Deploy\", \"actions\": [ { \"name\": \"ExternalDeploy\", #Deploy --＞ ExternalDeployに変更 \"actionTypeId\": { \"category\": \"Deploy\", \"owner\": \"AWS\", \"provider\": \"CodeDeploy\", \"version\": \"1\" }, \"runOrder\": 1, \"configuration\": { \"ApplicationName\": \"[アカウントBのコードデプロイアプリケーション名]\", \"DeploymentGroupName\": \"[アカウントBのコードデプロイデプロイメントグループ名]\" }, \"outputArtifacts\": [], \"inputArtifacts\": [ { \"name\": \"SourceArtifact\" } ], \"roleArn\" : \"arn:aws:iam::[アカウントBのID]:role/[アカウントBのクロスデプロイ用IAMロール名]\", \"region\": \"ap-northeast-1\", \"namespace\": \"DeployVariables\" } ] } ], \"version\": 1 } } やっとここまできた…長かった。しかしまだ道は続く。次回、アカウントB側の設定内容を書く。\n続き\nAWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）\n",
   "wordCount" : "557",
   "inLanguage": "en",
   "datePublished": "2021-10-03T10:00:00+09:00",
@@ -170,56 +208,19 @@ $ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[�
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -233,7 +234,7 @@ $ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[�
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -264,10 +265,11 @@ $ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[�
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）
     </h1>
-    <div class="post-meta">October 3, 2021
+    <div class="post-meta"><span title='2021-10-03 10:00:00 +0900 JST'>October 3, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p><a href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/">前回投稿</a>ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。</p>
@@ -299,7 +301,7 @@ AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2�
 ④ CodePipelineが使用するサービスロール<br>
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）</p>
 <p>JSON取得コマンド</p>
-<pre><code>$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json
+<pre tabindex="0"><code>$ aws codepipeline get-pipeline --name [パイプライン名] &gt; [パイプライン名].json
 </code></pre><p> </p>
 <p><strong>2-資材配布先（アカウントB）</strong><br>
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）<br>
@@ -310,11 +312,11 @@ AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2�
 <h3 id="作業概要">作業概要<a hidden class="anchor" aria-hidden="true" href="#作業概要">#</a></h3>
 <p>上記各リソースを作成済として、以下の作業を行う。</p>
 <p>アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする</p>
-<pre><code>$ cd /path/to/json
+<pre tabindex="0"><code>$ cd /path/to/json
 $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json
 </code></pre><p> </p>
 <p>アップデートしたパイプラインを実行する</p>
-<pre><code>$ aws codepipeline start-pipeline-execution --name [パイプライン名]
+<pre tabindex="0"><code>$ aws codepipeline start-pipeline-execution --name [パイプライン名]
 </code></pre><p> </p>
 <p>アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。</p>
 <p><strong>クロスアカウントパイプラインの処理中の見え方</strong><br>
@@ -326,140 +328,140 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
 <p><strong>アカウントA側アイテム</strong></p>
 <p>1-② KMSキーポリシー<br>
 アーティファクト用S3バケットの暗号化キーポリシー</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-  <span style="color:#f92672">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;[key-policy-name]&#34;</span>,
-  <span style="color:#f92672">&#34;Statement&#34;</span>: [
-    {
-      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Enable IAM User Permissions&#34;</span>,
-      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-      <span style="color:#f92672">&#34;Principal&#34;</span>: {
-        <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:root&#34;</span>
-      },
-      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;kms:*&#34;</span>,
-      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
-    },
-    {
-      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow access for Key Administrators&#34;</span>,
-      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-      <span style="color:#f92672">&#34;Principal&#34;</span>: {
-        <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;[KMSの暗号化キーの管理ユーザのARN]&#34;</span> <span style="color:#960050;background-color:#1e0010">#アカウントA側のキーのオーナーを指定</span>
-      },
-      <span style="color:#f92672">&#34;Action&#34;</span>: [
-        <span style="color:#e6db74">&#34;kms:Create*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Describe*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Enable*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:List*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Put*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Update*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Revoke*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Disable*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Get*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Delete*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:TagResource&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:UntagResource&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:ScheduleKeyDeletion&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:CancelKeyDeletion&#34;</span>
-      ],
-      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
-    },
-    {
-      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow use of the key&#34;</span>,
-      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-      <span style="color:#f92672">&#34;Principal&#34;</span>: {
-        <span style="color:#f92672">&#34;AWS&#34;</span>: [
-          <span style="color:#e6db74">&#34;[アカウントAのパイプライン用サービスロールのARN]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#(注</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">)</span>
-          <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
-        ]
-      },
-      <span style="color:#f92672">&#34;Action&#34;</span>: [
-        <span style="color:#e6db74">&#34;kms:Encrypt&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:Decrypt&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:ReEncrypt*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:GenerateDataKey*&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:DescribeKey&#34;</span>
-      ],
-      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
-    },
-    {
-      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow attachment of persistent resources&#34;</span>,
-      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-      <span style="color:#f92672">&#34;Principal&#34;</span>: {
-        <span style="color:#f92672">&#34;AWS&#34;</span>: [
-          <span style="color:#e6db74">&#34;[アカウントAのパイプライン用サービスロールのARN]&#34;</span>,  <span style="color:#960050;background-color:#1e0010">#(注</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">)</span>
-          <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
-        ]
-      },
-      <span style="color:#f92672">&#34;Action&#34;</span>: [
-        <span style="color:#e6db74">&#34;kms:CreateGrant&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:ListGrants&#34;</span>,
-        <span style="color:#e6db74">&#34;kms:RevokeGrant&#34;</span>
-      ],
-      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-      <span style="color:#f92672">&#34;Condition&#34;</span>: {
-        <span style="color:#f92672">&#34;Bool&#34;</span>: {
-          <span style="color:#f92672">&#34;kms:GrantIsForAWSResource&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>
-        }
-      }
-    }
-  ]
-}
-</code></pre></div><p>(注1) 構文</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;[key-policy-name]&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Enable IAM User Permissions&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:root&#34;</span>
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;kms:*&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow access for Key Administrators&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;[KMSの暗号化キーの管理ユーザのARN]&#34;</span> <span style="color:#960050;background-color:#1e0010">#アカウントA側のキーのオーナーを指定</span>
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Create*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Describe*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Enable*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:List*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Put*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Update*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Revoke*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Disable*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Get*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Delete*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:TagResource&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:UntagResource&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:ScheduleKeyDeletion&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:CancelKeyDeletion&#34;</span>
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow use of the key&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;AWS&#34;</span>: [
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;[アカウントAのパイプライン用サービスロールのARN]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#(注</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Encrypt&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:Decrypt&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:ReEncrypt*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:GenerateDataKey*&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:DescribeKey&#34;</span>
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Allow attachment of persistent resources&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;AWS&#34;</span>: [
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;[アカウントAのパイプライン用サービスロールのARN]&#34;</span>,  <span style="color:#960050;background-color:#1e0010">#(注</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:CreateGrant&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:ListGrants&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;kms:RevokeGrant&#34;</span>
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Condition&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;Bool&#34;</span>: {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;kms:GrantIsForAWSResource&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>(注1) 構文</p>
 <p><code>arn:aws:iam::[アカウントAのID]:role/[パイプラインロール名]</code></p>
 <p> </p>
 <p>1-③ S3バケットポリシー</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON"> {
-  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-  <span style="color:#f92672">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;SSEAndSSLPolicy&#34;</span>,
-  <span style="color:#f92672">&#34;Statement&#34;</span>: [
-	{
-  	<span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;DenyUnEncryptedObjectUploads&#34;</span>,
-	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Deny&#34;</span>,
-	  <span style="color:#f92672">&#34;Principal&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
-	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>,
-	  <span style="color:#f92672">&#34;Condition&#34;</span>: {
-		<span style="color:#f92672">&#34;StringNotEquals&#34;</span>: {
-		<span style="color:#f92672">&#34;s3:x-amz-server-side-encryption&#34;</span>: <span style="color:#e6db74">&#34;aws:kms&#34;</span>
-		}
-	   }
-	 },
-	{
-	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;DenyInsecureConnections&#34;</span>,
-	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Deny&#34;</span>,
-	  <span style="color:#f92672">&#34;Principal&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:*&#34;</span>,
-	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>,
-	  <span style="color:#f92672">&#34;Condition&#34;</span>: {
-		<span style="color:#f92672">&#34;Bool&#34;</span>: {
-	  		<span style="color:#f92672">&#34;aws:SecureTransport&#34;</span>: <span style="color:#66d9ef">false</span>
-			}
-		}
-	  },
-	{
-	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
-	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-	  <span style="color:#f92672">&#34;Principal&#34;</span>: {
-		<span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
-		},
-	  <span style="color:#f92672">&#34;Action&#34;</span>: [
-            <span style="color:#e6db74">&#34;s3:Get*&#34;</span>,
-            <span style="color:#e6db74">&#34;s3:Put*&#34;</span>
-        ],
-	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>
-	},
-	{
-	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
-	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-	  <span style="color:#f92672">&#34;Principal&#34;</span>: {
-	      <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
-			},
-	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:ListBucket&#34;</span>,
-  	<span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]&#34;</span>
-	}
-   ]
-} 
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;SSEAndSSLPolicy&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>  	<span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;DenyUnEncryptedObjectUploads&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Deny&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Principal&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Condition&#34;</span>: {
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&#34;StringNotEquals&#34;</span>: {
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&#34;s3:x-amz-server-side-encryption&#34;</span>: <span style="color:#e6db74">&#34;aws:kms&#34;</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	   }
+</span></span><span style="display:flex;"><span>	 },
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;DenyInsecureConnections&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Deny&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Principal&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:*&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Condition&#34;</span>: {
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&#34;Bool&#34;</span>: {
+</span></span><span style="display:flex;"><span>	  		<span style="color:#f92672">&#34;aws:SecureTransport&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	  },
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;s3:Get*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;s3:Put*&#34;</span>
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]/*&#34;</span>
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>	      <span style="color:#f92672">&#34;AWS&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:root&#34;</span>
+</span></span><span style="display:flex;"><span>			},
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:ListBucket&#34;</span>,
+</span></span><span style="display:flex;"><span>  	<span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::[S3バケット名]&#34;</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>   ]
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><p> </p>
 <p>1-④ CodePipelineが使用するサービスロール(IAM)</p>
 <p>このロールには以下のポリシーを割り当てる。1.はロール作成前に作成可能。コンソールからロール作成する時に選択可能なサービスにCodePipelineがないので一旦CodeDeployで作成して、後から信頼ポリシー編集した。</p>
 <ol>
@@ -468,170 +470,170 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
 <li>信頼ポリシー（編集）</li>
 </ol>
 <p>以下CodePipeline作業用ポリシー。AWSが自動で付与するポリシーは他のパーミッションも多く含まれているがそこから削って最小限にしたのがこれ。autoscalingは使わないんだけど一応残す。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-    <span style="color:#f92672">&#34;Statement&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-            <span style="color:#f92672">&#34;Condition&#34;</span>: {
-                <span style="color:#f92672">&#34;StringEqualsIfExists&#34;</span>: {
-                    <span style="color:#f92672">&#34;iam:PassedToService&#34;</span>: [
-                        <span style="color:#e6db74">&#34;ec2.amazonaws.com&#34;</span>
-                    ]
-                }
-            }
-        },
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;codecommit:CancelUploadArchive&#34;</span>,
-                <span style="color:#e6db74">&#34;codecommit:GetBranch&#34;</span>,
-                <span style="color:#e6db74">&#34;codecommit:GetCommit&#34;</span>,
-                <span style="color:#e6db74">&#34;codecommit:GetUploadArchiveStatus&#34;</span>,
-                <span style="color:#e6db74">&#34;codecommit:UploadArchive&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;codedeploy:CreateDeployment&#34;</span>,
-                <span style="color:#e6db74">&#34;codedeploy:GetApplication&#34;</span>,
-                <span style="color:#e6db74">&#34;codedeploy:GetApplicationRevision&#34;</span>,
-                <span style="color:#e6db74">&#34;codedeploy:GetDeployment&#34;</span>,
-                <span style="color:#e6db74">&#34;codedeploy:GetDeploymentConfig&#34;</span>,
-                <span style="color:#e6db74">&#34;codedeploy:RegisterApplicationRevision&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;ec2:*&#34;</span>,
-                <span style="color:#e6db74">&#34;elasticloadbalancing:*&#34;</span>,
-                <span style="color:#e6db74">&#34;autoscaling:*&#34;</span>,
-                <span style="color:#e6db74">&#34;cloudwatch:*&#34;</span>,
-                <span style="color:#e6db74">&#34;s3:*&#34;</span>,
-                <span style="color:#e6db74">&#34;tag:*&#34;</span>,
-                <span style="color:#e6db74">&#34;logs:*&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
-        }
-    ]
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Condition&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;StringEqualsIfExists&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;iam:PassedToService&#34;</span>: [
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;ec2.amazonaws.com&#34;</span>
+</span></span><span style="display:flex;"><span>                    ]
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codecommit:CancelUploadArchive&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codecommit:GetBranch&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codecommit:GetCommit&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codecommit:GetUploadArchiveStatus&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codecommit:UploadArchive&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:CreateDeployment&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:GetApplication&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:GetApplicationRevision&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:GetDeployment&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:GetDeploymentConfig&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;codedeploy:RegisterApplicationRevision&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;elasticloadbalancing:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;autoscaling:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;cloudwatch:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;s3:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;tag:*&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;logs:*&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>アカウントBのassume用インラインポリシー</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-   <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-   <span style="color:#f92672">&#34;Statement&#34;</span>: {
-       <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-       <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>,
-       <span style="color:#f92672">&#34;Resource&#34;</span>: [
-           <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:role/*&#34;</span>
-       ]
-   }
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;Statement&#34;</span>: {
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>,
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&#34;Resource&#34;</span>: [
+</span></span><span style="display:flex;"><span>           <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:role/*&#34;</span>
+</span></span><span style="display:flex;"><span>       ]
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>信頼ポリシー</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-  <span style="color:#f92672">&#34;Statement&#34;</span>: [
-    {
-      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-      <span style="color:#f92672">&#34;Principal&#34;</span>: {
-        <span style="color:#f92672">&#34;Service&#34;</span>: [
-          <span style="color:#e6db74">&#34;codepipeline.amazonaws.com&#34;</span>,
-          <span style="color:#e6db74">&#34;codedeploy.amazonaws.com&#34;</span>,
-          <span style="color:#e6db74">&#34;ec2.amazonaws.com&#34;</span>
-          ]
-      },
-      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>
-    }
-  ]
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;Service&#34;</span>: [
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;codepipeline.amazonaws.com&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;codedeploy.amazonaws.com&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;ec2.amazonaws.com&#34;</span>
+</span></span><span style="display:flex;"><span>          ]
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;sts:AssumeRole&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>1-⑤ CodePiplelineのJSON定義</p>
 <p>冒頭のAWS公式ページにもポイントは記載されているが、今回のケースでまとめたのがこれ。繰り返しになるが、「1.コンソールで単体アカウント用にパイプラインを作成 2. そのJSON定義を取得してクロスアカウント向けに編集 3. パイプラインをアップデート」という流れになる。最初にパイプラインを作成するときにCodeDeploy用定義が必要なため、事前にアカウントA内で適当なCodeDeployアプリケーション/デプロイメントグループのペアを用意しておく。</p>
 <p>以下のJSON後半でアカウントB側のアイテム定義名をいくつか記載しており、当然アカウントB側に実体が存在する前提だが、編集時点では存在していなくても構わない。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-    <span style="color:#f92672">&#34;pipeline&#34;</span>: {
-        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;A_crossdeploy_pipeline&#34;</span>,
-        <span style="color:#f92672">&#34;roleArn&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]&#34;</span>,
-        <span style="color:#f92672">&#34;artifactStore&#34;</span>: {
-            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;S3&#34;</span>,
-            <span style="color:#f92672">&#34;location&#34;</span>: <span style="color:#e6db74">&#34;[S3バケット名]&#34;</span>
-            <span style="color:#e6db74">&#34;encryptionKey&#34;</span>: {
-               <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[キーのID]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#KMSキーのARN</span>
-               <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;KMS&#34;</span>
-        },
-        <span style="color:#f92672">&#34;stages&#34;</span>: [
-            {
-                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
-                <span style="color:#f92672">&#34;actions&#34;</span>: [
-                    {
-                        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
-                        <span style="color:#f92672">&#34;actionTypeId&#34;</span>: {
-                            <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
-                            <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;AWS&#34;</span>,
-                            <span style="color:#f92672">&#34;provider&#34;</span>: <span style="color:#e6db74">&#34;CodeCommit&#34;</span>,
-                            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>
-                        },
-                        <span style="color:#f92672">&#34;runOrder&#34;</span>: <span style="color:#ae81ff">1</span>,
-                        <span style="color:#f92672">&#34;configuration&#34;</span>: {
-                            <span style="color:#f92672">&#34;BranchName&#34;</span>: <span style="color:#e6db74">&#34;master&#34;</span>,
-                            <span style="color:#f92672">&#34;OutputArtifactFormat&#34;</span>: <span style="color:#e6db74">&#34;CODE_ZIP&#34;</span>,
-                            <span style="color:#f92672">&#34;PollForSourceChanges&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>,
-                            <span style="color:#f92672">&#34;RepositoryName&#34;</span>: <span style="color:#e6db74">&#34;[ソースリポジトリ名]&#34;</span>
-                        },
-                        <span style="color:#f92672">&#34;outputArtifacts&#34;</span>: [
-                            {
-                                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;SourceArtifact&#34;</span>
-                            }
-                        ],
-                        <span style="color:#f92672">&#34;roleArn&#34;</span> : <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#冒頭で指定したIAMと同じ</span>
-                        <span style="color:#f92672">&#34;inputArtifacts&#34;</span>: [],
-                        <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>,
-                        <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;SourceVariables&#34;</span>
-                    }
-                ]
-            },
-            {
-                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Deploy&#34;</span>,
-                <span style="color:#f92672">&#34;actions&#34;</span>: [
-                    {
-                        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;ExternalDeploy&#34;</span>, <span style="color:#960050;background-color:#1e0010">#Deploy</span> <span style="color:#960050;background-color:#1e0010">--＞</span> <span style="color:#960050;background-color:#1e0010">ExternalDeployに変更</span>
-                        <span style="color:#f92672">&#34;actionTypeId&#34;</span>: {
-                            <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Deploy&#34;</span>,
-                            <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;AWS&#34;</span>,
-                            <span style="color:#f92672">&#34;provider&#34;</span>: <span style="color:#e6db74">&#34;CodeDeploy&#34;</span>,
-                            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>
-                        },
-                        <span style="color:#f92672">&#34;runOrder&#34;</span>: <span style="color:#ae81ff">1</span>,
-                        <span style="color:#f92672">&#34;configuration&#34;</span>: {
-                            <span style="color:#f92672">&#34;ApplicationName&#34;</span>: <span style="color:#e6db74">&#34;[アカウントBのコードデプロイアプリケーション名]&#34;</span>,
-                            <span style="color:#f92672">&#34;DeploymentGroupName&#34;</span>: <span style="color:#e6db74">&#34;[アカウントBのコードデプロイデプロイメントグループ名]&#34;</span>
-                        },
-                        <span style="color:#f92672">&#34;outputArtifacts&#34;</span>: [],
-                        <span style="color:#f92672">&#34;inputArtifacts&#34;</span>: [
-                            {
-                                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;SourceArtifact&#34;</span>
-                            }
-                        ],
-                        <span style="color:#f92672">&#34;roleArn&#34;</span> : <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:role/[アカウントBのクロスデプロイ用IAMロール名]&#34;</span>, 
-                        <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>,
-                        <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;DeployVariables&#34;</span>
-                    }
-                ]
-            }
-        ],
-        <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#ae81ff">1</span>
-    }
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;pipeline&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;A_crossdeploy_pipeline&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;roleArn&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;artifactStore&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;S3&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;location&#34;</span>: <span style="color:#e6db74">&#34;[S3バケット名]&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;encryptionKey&#34;</span>: {
+</span></span><span style="display:flex;"><span>               <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[キーのID]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#KMSキーのARN</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;KMS&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;stages&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;actions&#34;</span>: [
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;actionTypeId&#34;</span>: {
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Source&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;AWS&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;provider&#34;</span>: <span style="color:#e6db74">&#34;CodeCommit&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>
+</span></span><span style="display:flex;"><span>                        },
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;runOrder&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;configuration&#34;</span>: {
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;BranchName&#34;</span>: <span style="color:#e6db74">&#34;master&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;OutputArtifactFormat&#34;</span>: <span style="color:#e6db74">&#34;CODE_ZIP&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;PollForSourceChanges&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;RepositoryName&#34;</span>: <span style="color:#e6db74">&#34;[ソースリポジトリ名]&#34;</span>
+</span></span><span style="display:flex;"><span>                        },
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;outputArtifacts&#34;</span>: [
+</span></span><span style="display:flex;"><span>                            {
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;SourceArtifact&#34;</span>
+</span></span><span style="display:flex;"><span>                            }
+</span></span><span style="display:flex;"><span>                        ],
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;roleArn&#34;</span> : <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントAのID]:role/[クロスアカウントパイプライン用IAMロール名]&#34;</span>, <span style="color:#960050;background-color:#1e0010">#冒頭で指定したIAMと同じ</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;inputArtifacts&#34;</span>: [],
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;SourceVariables&#34;</span>
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                ]
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Deploy&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;actions&#34;</span>: [
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;ExternalDeploy&#34;</span>, <span style="color:#960050;background-color:#1e0010">#Deploy</span> <span style="color:#960050;background-color:#1e0010">--＞</span> <span style="color:#960050;background-color:#1e0010">ExternalDeployに変更</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;actionTypeId&#34;</span>: {
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Deploy&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;AWS&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;provider&#34;</span>: <span style="color:#e6db74">&#34;CodeDeploy&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>
+</span></span><span style="display:flex;"><span>                        },
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;runOrder&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;configuration&#34;</span>: {
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;ApplicationName&#34;</span>: <span style="color:#e6db74">&#34;[アカウントBのコードデプロイアプリケーション名]&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;DeploymentGroupName&#34;</span>: <span style="color:#e6db74">&#34;[アカウントBのコードデプロイデプロイメントグループ名]&#34;</span>
+</span></span><span style="display:flex;"><span>                        },
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;outputArtifacts&#34;</span>: [],
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;inputArtifacts&#34;</span>: [
+</span></span><span style="display:flex;"><span>                            {
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;SourceArtifact&#34;</span>
+</span></span><span style="display:flex;"><span>                            }
+</span></span><span style="display:flex;"><span>                        ],
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;roleArn&#34;</span> : <span style="color:#e6db74">&#34;arn:aws:iam::[アカウントBのID]:role/[アカウントBのクロスデプロイ用IAMロール名]&#34;</span>, 
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;DeployVariables&#34;</span>
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                ]
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>やっとここまできた&hellip;長かった。しかしまだ道は続く。次回、アカウントB側の設定内容を書く。</p>
 <p>続き<br>
 <a href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/">AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</a></p>
@@ -650,6 +652,7 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/codepipeline/">CodePipeline</a></li>
@@ -659,12 +662,12 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</span>
   </a>
@@ -673,27 +676,28 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -747,12 +751,12 @@ $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン�
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

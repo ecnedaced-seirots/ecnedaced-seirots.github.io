@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Terraform loop処理の応用編(5) - Metric Alarm | Go Buddy Go</title>
-<meta name="keywords" content="terraform, AWS, IaC, cloudwatchalarm" />
+<meta name="keywords" content="terraform, AWS, IaC, cloudwatchalarm">
 <meta name="description" content="大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Terraform loop処理の応用編(5) - Metric Alarm" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Terraform loop処理の応用編(5) - Metric Alarm" />
 <meta property="og:description" content="大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-31T21:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-12-31T21:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-12-31T21:00:00+09:00" />
+<meta property="article:modified_time" content="2021-12-31T21:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Terraform loop処理の応用編(5) - Metric Alarm"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "terraform", "AWS", "IaC", "cloudwatchalarm"
   ],
-  "articleBody": "大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。\n最初は定数バージョンのサンプルから。EventBridgeでアラームを検知する想定のためalarm_actionsは設定しない。\n（補足）SNSと直接連携する場合は以下のように記述する。\nalarm_actions = [aws_sns_topic.sns.arn]  ################################################ # CloudWatch metric alarm # 定数版 ################################################ resource \"aws_cloudwatch_metric_alarm\" \"alarm_001\" { alarm_name = \"ec2-alarm-cpu-001\" comparison_operator = \"GreaterThanThreshold\" evaluation_periods = \"1\" metric_name = \"CPUUtilization\" namespace = \"AWS/EC2\" period = \"60\" statistic = \"Average\" threshold = \"80\" alarm_description = \"CPU Usage Check Alarm\" datapoints_to_alarm = \"1\" treat_missing_data = \"missing\" dimensions = { InstanceId = \"i-xxxxxxxxxxxxxxxxx\" } }  上記はインスタンスi-xxxxxxxxxxxxxxxxxに対するCPU使用率監視のアラームを作成する。しかし実際にはひとつのインスタンスに対してメモリ、ディスク、複数のプロセス監視等を行うだろう。（あーEC2面倒くせぇ…）それらを繰り返し記述するのはありえないのでloopにする。\nちなみにここではTerraformで作成していないインスタンスを指定したのでインスタンスIDを直接指定しているが、インスタンスもTerraformで作成する場合は以下のように記述する。\n  dimensions = { InstanceId = aws_instance.instance_001.id }  以下がloopバージョン。インスタンスが複数ある場合、loopの固まりをその分追加で作成し、aws_instance.instance_002.id, aws_instance.instance_003.id …など指定すればよいかと。EC2インスタンス側もloopで作成する場合はまた参照方法が異なってくるが、EC2はlookupで参照するのは不可能と思われる。他のアラーム用パラメータとEC2のloopの順番は一致しないはずだから。（上手く言い表せない）\n metric_alarm.tf\n################################################ # CloudWatch metric alarm # loop版 ################################################ resource \"aws_cloudwatch_metric_alarm\" \"alarm_001\" { for_each = var.ec2_alarm001_param_list alarm_name = lookup(each.value, \"alarm_name\") comparison_operator = lookup(each.value, \"comparison_operator\") evaluation_periods = \"1\" metric_name = lookup(each.value, \"metric_name\") namespace = lookup(each.value, \"namespace\") period = lookup(each.value, \"period\") statistic = lookup(each.value, \"statistic\") threshold = lookup(each.value, \"threshold\") alarm_description = lookup(each.value, \"alarm_description\") datapoints_to_alarm = \"1\" treat_missing_data = lookup(each.value, \"treat_missing_data\") dimensions = { InstanceId = \"i-xxxxxxxxxxxxxxxxx\" } }  以下は参照する変数リストとなる。\nmetric_alarm.auto.tfvars\n########################################### # CloudWatch alarm vars ########################################### ec2_alarm001_param_list = { param1 = { alarm_name = \"ec2-alarm-system-001\" comparison_operator = \"GreaterThanOrEqualToThreshold\" metric_name = \"StatusCheckFailed_System\" namespace = \"AWS/EC2\" period = \"300\" statistic = \"Maximum\" threshold = \"1\" alarm_description = \"Node Status Monitoring\" treat_missing_data = \"missing\" } param2 = { alarm_name = \"ec2-alarm-status-001\" comparison_operator = \"GreaterThanOrEqualToThreshold\" metric_name = \"StatusCheckFailed_Instance\" namespace = \"AWS/EC2\" period = \"300\" statistic = \"Maximum\" threshold = \"1\" alarm_description = \"Node Status Monitoring\" treat_missing_data = \"missing\" } param3 = { alarm_name = \"ec2-alarm-cpu-001\" comparison_operator = \"GreaterThanThreshold\" metric_name = \"CPUUtilization\" namespace = \"AWS/EC2\" period = \"60\" statistic = \"Average\" threshold = \"80\" alarm_description = \"CPU Usage Monitoring\" treat_missing_data = \"missing\" } param4 = { alarm_name = \"ec2-alarm-process-001\" comparison_operator = \"LessThanThreshold\" metric_name = \"procstat_lookup_pid_count\" namespace = \"Prosess\" period = \"60\" statistic = \"Average\" threshold = \"1\" alarm_description = \"Process Monitoring\" treat_missing_data = \"missing\" } }  こんなやっつけコードだがあっさり期待値になった。\n  ちなみにこれはloop回数が4つ分だけだから手動で書いたが、実際にはもっと多くの監視項目が並ぶ。過去記事に書いたように変数リストを自動生成する仕組みを作った方がよい。\nTerraformのtfvarsファイルを自動生成する\n ということでこれまでTerraformのloop処理方式をいくつか探ってきたが、どのような構成にすべきかはそれなりに頭を捻る必要がある。構成というのは、全体的な範囲と、リソース毎の構成。tfコード本体と変数リストの組み合わせとか。loop処理にすべきかどうかはリソースの数にもよる。また、loopか否かによって参照するリソース側の記述も変わってくる。回答はひとつではないのである。\nまぁ頭を捻る場面があるからこそ、面白いとも言えるけど。\n ",
+  "articleBody": "大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。\n最初は定数バージョンのサンプルから。EventBridgeでアラームを検知する想定のためalarm_actionsは設定しない。\n（補足）SNSと直接連携する場合は以下のように記述する。\nalarm_actions = [aws_sns_topic.sns.arn] ################################################ # CloudWatch metric alarm # 定数版 ################################################ resource \"aws_cloudwatch_metric_alarm\" \"alarm_001\" { alarm_name = \"ec2-alarm-cpu-001\" comparison_operator = \"GreaterThanThreshold\" evaluation_periods = \"1\" metric_name = \"CPUUtilization\" namespace = \"AWS/EC2\" period = \"60\" statistic = \"Average\" threshold = \"80\" alarm_description = \"CPU Usage Check Alarm\" datapoints_to_alarm = \"1\" treat_missing_data = \"missing\" dimensions = { InstanceId = \"i-xxxxxxxxxxxxxxxxx\" } } 上記はインスタンスi-xxxxxxxxxxxxxxxxxに対するCPU使用率監視のアラームを作成する。しかし実際にはひとつのインスタンスに対してメモリ、ディスク、複数のプロセス監視等を行うだろう。（あーEC2面倒くせぇ…）それらを繰り返し記述するのはありえないのでloopにする。\nちなみにここではTerraformで作成していないインスタンスを指定したのでインスタンスIDを直接指定しているが、インスタンスもTerraformで作成する場合は以下のように記述する。\ndimensions = { InstanceId = aws_instance.instance_001.id } 以下がloopバージョン。インスタンスが複数ある場合、loopの固まりをその分追加で作成し、aws_instance.instance_002.id, aws_instance.instance_003.id …など指定すればよいかと。EC2インスタンス側もloopで作成する場合はまた参照方法が異なってくるが、EC2はlookupで参照するのは不可能と思われる。他のアラーム用パラメータとEC2のloopの順番は一致しないはずだから。（上手く言い表せない）\nmetric_alarm.tf\n################################################ # CloudWatch metric alarm # loop版 ################################################ resource \"aws_cloudwatch_metric_alarm\" \"alarm_001\" { for_each = var.ec2_alarm001_param_list alarm_name = lookup(each.value, \"alarm_name\") comparison_operator = lookup(each.value, \"comparison_operator\") evaluation_periods = \"1\" metric_name = lookup(each.value, \"metric_name\") namespace = lookup(each.value, \"namespace\") period = lookup(each.value, \"period\") statistic = lookup(each.value, \"statistic\") threshold = lookup(each.value, \"threshold\") alarm_description = lookup(each.value, \"alarm_description\") datapoints_to_alarm = \"1\" treat_missing_data = lookup(each.value, \"treat_missing_data\") dimensions = { InstanceId = \"i-xxxxxxxxxxxxxxxxx\" } } 以下は参照する変数リストとなる。\nmetric_alarm.auto.tfvars\n########################################### # CloudWatch alarm vars ########################################### ec2_alarm001_param_list = { param1 = { alarm_name = \"ec2-alarm-system-001\" comparison_operator = \"GreaterThanOrEqualToThreshold\" metric_name = \"StatusCheckFailed_System\" namespace = \"AWS/EC2\" period = \"300\" statistic = \"Maximum\" threshold = \"1\" alarm_description = \"Node Status Monitoring\" treat_missing_data = \"missing\" } param2 = { alarm_name = \"ec2-alarm-status-001\" comparison_operator = \"GreaterThanOrEqualToThreshold\" metric_name = \"StatusCheckFailed_Instance\" namespace = \"AWS/EC2\" period = \"300\" statistic = \"Maximum\" threshold = \"1\" alarm_description = \"Node Status Monitoring\" treat_missing_data = \"missing\" } param3 = { alarm_name = \"ec2-alarm-cpu-001\" comparison_operator = \"GreaterThanThreshold\" metric_name = \"CPUUtilization\" namespace = \"AWS/EC2\" period = \"60\" statistic = \"Average\" threshold = \"80\" alarm_description = \"CPU Usage Monitoring\" treat_missing_data = \"missing\" } param4 = { alarm_name = \"ec2-alarm-process-001\" comparison_operator = \"LessThanThreshold\" metric_name = \"procstat_lookup_pid_count\" namespace = \"Prosess\" period = \"60\" statistic = \"Average\" threshold = \"1\" alarm_description = \"Process Monitoring\" treat_missing_data = \"missing\" } } こんなやっつけコードだがあっさり期待値になった。\nちなみにこれはloop回数が4つ分だけだから手動で書いたが、実際にはもっと多くの監視項目が並ぶ。過去記事に書いたように変数リストを自動生成する仕組みを作った方がよい。\nTerraformのtfvarsファイルを自動生成する\nということでこれまでTerraformのloop処理方式をいくつか探ってきたが、どのような構成にすべきかはそれなりに頭を捻る必要がある。構成というのは、全体的な範囲と、リソース毎の構成。tfコード本体と変数リストの組み合わせとか。loop処理にすべきかどうかはリソースの数にもよる。また、loopか否かによって参照するリソース側の記述も変わってくる。回答はひとつではないのである。\nまぁ頭を捻る場面があるからこそ、面白いとも言えるけど。\n",
   "wordCount" : "290",
   "inLanguage": "en",
   "datePublished": "2021-12-31T21:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,123 +187,124 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Terraform loop処理の応用編(5) - Metric Alarm
     </h1>
-    <div class="post-meta">December 31, 2021
+    <div class="post-meta"><span title='2021-12-31 21:00:00 +0900 JST'>December 31, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。</p>
 <p>最初は定数バージョンのサンプルから。EventBridgeでアラームを検知する想定のためalarm_actionsは設定しない。</p>
 <p>（補足）SNSと直接連携する場合は以下のように記述する。</p>
-<pre><code>alarm_actions       = [aws_sns_topic.sns.arn]
+<pre tabindex="0"><code>alarm_actions       = [aws_sns_topic.sns.arn]
 </code></pre><p> </p>
-<pre><code>################################################
+<pre tabindex="0"><code>################################################
 # CloudWatch metric alarm
 # 定数版
 ################################################
 
-resource &quot;aws_cloudwatch_metric_alarm&quot; &quot;alarm_001&quot; {
-  alarm_name             = &quot;ec2-alarm-cpu-001&quot;
-  comparison_operator    = &quot;GreaterThanThreshold&quot;
-  evaluation_periods     = &quot;1&quot;
-  metric_name            = &quot;CPUUtilization&quot;
-  namespace              = &quot;AWS/EC2&quot;
-  period                 = &quot;60&quot;
-  statistic              = &quot;Average&quot;
-  threshold              = &quot;80&quot;
-  alarm_description      = &quot;CPU Usage Check Alarm&quot;
-  datapoints_to_alarm    = &quot;1&quot;
-  treat_missing_data     = &quot;missing&quot;
+resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;alarm_001&#34; {
+  alarm_name             = &#34;ec2-alarm-cpu-001&#34;
+  comparison_operator    = &#34;GreaterThanThreshold&#34;
+  evaluation_periods     = &#34;1&#34;
+  metric_name            = &#34;CPUUtilization&#34;
+  namespace              = &#34;AWS/EC2&#34;
+  period                 = &#34;60&#34;
+  statistic              = &#34;Average&#34;
+  threshold              = &#34;80&#34;
+  alarm_description      = &#34;CPU Usage Check Alarm&#34;
+  datapoints_to_alarm    = &#34;1&#34;
+  treat_missing_data     = &#34;missing&#34;
   dimensions             = {
-    InstanceId = &quot;i-xxxxxxxxxxxxxxxxx&quot;
+    InstanceId = &#34;i-xxxxxxxxxxxxxxxxx&#34;
   }
 }
 </code></pre><p> </p>
 <p>上記はインスタンスi-xxxxxxxxxxxxxxxxxに対するCPU使用率監視のアラームを作成する。しかし実際にはひとつのインスタンスに対してメモリ、ディスク、複数のプロセス監視等を行うだろう。（あーEC2面倒くせぇ&hellip;）それらを繰り返し記述するのはありえないのでloopにする。</p>
 <p>ちなみにここではTerraformで作成していないインスタンスを指定したのでインスタンスIDを直接指定しているが、インスタンスもTerraformで作成する場合は以下のように記述する。</p>
 <p> </p>
-<pre><code>  dimensions             = {
+<pre tabindex="0"><code>  dimensions             = {
     InstanceId = aws_instance.instance_001.id
 }
 </code></pre><p> </p>
 <p>以下がloopバージョン。インスタンスが複数ある場合、loopの固まりをその分追加で作成し、aws_instance.instance_002.id, aws_instance.instance_003.id &hellip;など指定すればよいかと。EC2インスタンス側もloopで作成する場合はまた参照方法が異なってくるが、EC2はlookupで参照するのは不可能と思われる。他のアラーム用パラメータとEC2のloopの順番は一致しないはずだから。（上手く言い表せない）</p>
 <p> </p>
 <p>metric_alarm.tf</p>
-<pre><code>################################################
+<pre tabindex="0"><code>################################################
 # CloudWatch metric alarm
 # loop版
 ################################################
 
-resource &quot;aws_cloudwatch_metric_alarm&quot; &quot;alarm_001&quot; {
+resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;alarm_001&#34; {
   for_each = var.ec2_alarm001_param_list
   
-  alarm_name             = lookup(each.value, &quot;alarm_name&quot;)
-  comparison_operator    = lookup(each.value, &quot;comparison_operator&quot;)
-  evaluation_periods     = &quot;1&quot;
-  metric_name            = lookup(each.value, &quot;metric_name&quot;)
-  namespace              = lookup(each.value, &quot;namespace&quot;)
-  period                 = lookup(each.value, &quot;period&quot;)
-  statistic              = lookup(each.value, &quot;statistic&quot;)
-  threshold              = lookup(each.value, &quot;threshold&quot;)
-  alarm_description      = lookup(each.value, &quot;alarm_description&quot;)
-  datapoints_to_alarm    = &quot;1&quot;
-  treat_missing_data     = lookup(each.value, &quot;treat_missing_data&quot;)
+  alarm_name             = lookup(each.value, &#34;alarm_name&#34;)
+  comparison_operator    = lookup(each.value, &#34;comparison_operator&#34;)
+  evaluation_periods     = &#34;1&#34;
+  metric_name            = lookup(each.value, &#34;metric_name&#34;)
+  namespace              = lookup(each.value, &#34;namespace&#34;)
+  period                 = lookup(each.value, &#34;period&#34;)
+  statistic              = lookup(each.value, &#34;statistic&#34;)
+  threshold              = lookup(each.value, &#34;threshold&#34;)
+  alarm_description      = lookup(each.value, &#34;alarm_description&#34;)
+  datapoints_to_alarm    = &#34;1&#34;
+  treat_missing_data     = lookup(each.value, &#34;treat_missing_data&#34;)
   dimensions             = {
-    InstanceId = &quot;i-xxxxxxxxxxxxxxxxx&quot;
+    InstanceId = &#34;i-xxxxxxxxxxxxxxxxx&#34;
   }
 }
 </code></pre><p> </p>
 <p>以下は参照する変数リストとなる。</p>
 <p>metric_alarm.auto.tfvars</p>
-<pre><code>###########################################
+<pre tabindex="0"><code>###########################################
 # CloudWatch alarm vars
 ###########################################
 
 ec2_alarm001_param_list = {
     param1 = {
-      alarm_name          = &quot;ec2-alarm-system-001&quot;
-      comparison_operator = &quot;GreaterThanOrEqualToThreshold&quot;
-      metric_name         = &quot;StatusCheckFailed_System&quot;
-      namespace           = &quot;AWS/EC2&quot;
-      period              = &quot;300&quot;
-      statistic           = &quot;Maximum&quot;
-      threshold           = &quot;1&quot;
-      alarm_description   = &quot;Node Status Monitoring&quot;
-      treat_missing_data  = &quot;missing&quot;
+      alarm_name          = &#34;ec2-alarm-system-001&#34;
+      comparison_operator = &#34;GreaterThanOrEqualToThreshold&#34;
+      metric_name         = &#34;StatusCheckFailed_System&#34;
+      namespace           = &#34;AWS/EC2&#34;
+      period              = &#34;300&#34;
+      statistic           = &#34;Maximum&#34;
+      threshold           = &#34;1&#34;
+      alarm_description   = &#34;Node Status Monitoring&#34;
+      treat_missing_data  = &#34;missing&#34;
     }
     param2 = {
-      alarm_name          = &quot;ec2-alarm-status-001&quot;
-      comparison_operator = &quot;GreaterThanOrEqualToThreshold&quot;
-      metric_name         = &quot;StatusCheckFailed_Instance&quot;
-      namespace           = &quot;AWS/EC2&quot;
-      period              = &quot;300&quot;
-      statistic           = &quot;Maximum&quot;
-      threshold           = &quot;1&quot;
-      alarm_description   = &quot;Node Status Monitoring&quot;
-      treat_missing_data  = &quot;missing&quot;
+      alarm_name          = &#34;ec2-alarm-status-001&#34;
+      comparison_operator = &#34;GreaterThanOrEqualToThreshold&#34;
+      metric_name         = &#34;StatusCheckFailed_Instance&#34;
+      namespace           = &#34;AWS/EC2&#34;
+      period              = &#34;300&#34;
+      statistic           = &#34;Maximum&#34;
+      threshold           = &#34;1&#34;
+      alarm_description   = &#34;Node Status Monitoring&#34;
+      treat_missing_data  = &#34;missing&#34;
     }
     param3 = {
-      alarm_name          = &quot;ec2-alarm-cpu-001&quot;
-      comparison_operator = &quot;GreaterThanThreshold&quot;
-      metric_name         = &quot;CPUUtilization&quot;
-      namespace           = &quot;AWS/EC2&quot;
-      period              = &quot;60&quot;
-      statistic           = &quot;Average&quot;
-      threshold           = &quot;80&quot;
-      alarm_description   = &quot;CPU Usage Monitoring&quot;
-      treat_missing_data  = &quot;missing&quot;
+      alarm_name          = &#34;ec2-alarm-cpu-001&#34;
+      comparison_operator = &#34;GreaterThanThreshold&#34;
+      metric_name         = &#34;CPUUtilization&#34;
+      namespace           = &#34;AWS/EC2&#34;
+      period              = &#34;60&#34;
+      statistic           = &#34;Average&#34;
+      threshold           = &#34;80&#34;
+      alarm_description   = &#34;CPU Usage Monitoring&#34;
+      treat_missing_data  = &#34;missing&#34;
     }
     param4 = {
-      alarm_name          = &quot;ec2-alarm-process-001&quot;
-      comparison_operator = &quot;LessThanThreshold&quot;
-      metric_name         = &quot;procstat_lookup_pid_count&quot;
-      namespace           = &quot;Prosess&quot;
-      period              = &quot;60&quot;
-      statistic           = &quot;Average&quot;
-      threshold           = &quot;1&quot;
-      alarm_description   = &quot;Process Monitoring&quot;
-      treat_missing_data  = &quot;missing&quot;
+      alarm_name          = &#34;ec2-alarm-process-001&#34;
+      comparison_operator = &#34;LessThanThreshold&#34;
+      metric_name         = &#34;procstat_lookup_pid_count&#34;
+      namespace           = &#34;Prosess&#34;
+      period              = &#34;60&#34;
+      statistic           = &#34;Average&#34;
+      threshold           = &#34;1&#34;
+      alarm_description   = &#34;Process Monitoring&#34;
+      treat_missing_data  = &#34;missing&#34;
     }
 }
 </code></pre><p> </p>
@@ -344,6 +343,7 @@ ec2_alarm001_param_list = {
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
@@ -353,12 +353,12 @@ ec2_alarm001_param_list = {
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/delete-aws-config/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>AWS ConfigをCLIから削除する</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/lgs/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Non Title</span>
   </a>
@@ -367,27 +367,28 @@ ec2_alarm001_param_list = {
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -441,12 +442,12 @@ ec2_alarm001_param_list = {
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

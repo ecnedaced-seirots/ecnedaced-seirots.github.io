@@ -1,101 +1,82 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>BCN on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
     <description>Recent content in BCN on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/bcn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/bcn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</title>
       <link>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</guid>
       <description>&lt;p&gt;EC2またはクライアントPCから簡単にRDSへ疎通確認したい時に便利なコマンドがある。（長年この業界にいながら最近知ったという）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像を横に連結する</title>
       <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
       <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
       <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>
       <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-icon/</guid>
       <description>&lt;p&gt;AWSアイコンのURL。間が空くと最新のが入れ替わってることがあるからメモ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>6月の過ごし方</title>
       <link>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</link>
       <pubDate>Thu, 02 Jun 2022 22:26:14 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</guid>
       <description>&lt;p&gt;6月は、とても大事なんだと。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>振動、周波数、霊性</title>
       <link>https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/</link>
       <pubDate>Sat, 28 May 2022 18:01:35 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/</guid>
       <description>&lt;p&gt;例の注射に含まれている成分の、ヒトの霊性への介入。人の意識や精神における、物理的な振動・周波数との関係。この辺が気になる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>SNSメトリクスの監視を作成するTerraformコード</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
       <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</guid>
       <description>&lt;p&gt;AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - 要追加作業</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
       <pubDate>Wed, 06 Apr 2022 15:19:11 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>
       <pubDate>Mon, 04 Apr 2022 20:56:07 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成する時のオプション&amp;quot;PollForSourceChanges&amp;quot;の注意点。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - I&#39;d be glad to.</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</link>
       <pubDate>Sat, 19 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</guid>
       <description>&lt;p&gt;技術記事書きたいけどいろいろありすぎて書けない。ここしばらく憂鬱なネタばかり触れてるから、少しでも上向きなことを。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

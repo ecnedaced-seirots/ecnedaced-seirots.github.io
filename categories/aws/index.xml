@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AWS on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/categories/aws/</link>
     <description>Recent content in AWS on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 13 Jun 2023 22:38:53 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jun 2023 22:38:53 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS VPCエンドポイントサービス一覧</title>
       <link>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</link>
       <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</guid>
       <description>&lt;p&gt;AWS VPCエンドポイントに対応するサービス一覧。いざという時に見つからなくて困るのでここにリンク貼っておく。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>
       <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-icon/</guid>
       <description>&lt;p&gt;AWSアイコンのURL。間が空くと最新のが入れ替わってることがあるからメモ。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

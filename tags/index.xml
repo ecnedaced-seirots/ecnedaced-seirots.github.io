@@ -1,641 +1,502 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/</link>
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 03 Jan 2024 15:48:23 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>S3</title>
+      <link>https://ecnedaced-seirots.github.io/tags/s3/</link>
+      <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/s3/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Amazon RDS</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-rds/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-rds/</guid>
       <description></description>
     </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
-      <description></description>
-    </item>
-    
     <item>
       <title>BCN</title>
       <link>https://ecnedaced-seirots.github.io/tags/bcn/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/bcn/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>VPCE</title>
       <link>https://ecnedaced-seirots.github.io/tags/vpce/</link>
       <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/vpce/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>opencv</title>
       <link>https://ecnedaced-seirots.github.io/tags/opencv/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/opencv/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>python</title>
       <link>https://ecnedaced-seirots.github.io/tags/python/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>API Gateway</title>
       <link>https://ecnedaced-seirots.github.io/tags/api-gateway/</link>
       <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/api-gateway/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>amazon sns</title>
       <link>https://ecnedaced-seirots.github.io/tags/amazon-sns/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/amazon-sns/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>cloudwachlogs</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwachlogs/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwachlogs/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>cloudwatch</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwatch/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatch/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>lambda</title>
       <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>monitoring</title>
       <link>https://ecnedaced-seirots.github.io/tags/monitoring/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/monitoring/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Tips</title>
       <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
       <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/tips/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>vibes</title>
       <link>https://ecnedaced-seirots.github.io/tags/vibes/</link>
       <pubDate>Wed, 29 Jun 2022 16:54:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/vibes/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Lifelog</title>
       <link>https://ecnedaced-seirots.github.io/tags/lifelog/</link>
       <pubDate>Thu, 02 Jun 2022 22:26:14 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/lifelog/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>EC2</title>
       <link>https://ecnedaced-seirots.github.io/tags/ec2/</link>
       <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/ec2/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>eventbrigde</title>
       <link>https://ecnedaced-seirots.github.io/tags/eventbrigde/</link>
       <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/eventbrigde/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>literature</title>
       <link>https://ecnedaced-seirots.github.io/tags/literature/</link>
       <pubDate>Sat, 07 May 2022 11:51:58 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/literature/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>ryu murakami</title>
       <link>https://ecnedaced-seirots.github.io/tags/ryu-murakami/</link>
       <pubDate>Sat, 07 May 2022 11:51:58 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/ryu-murakami/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>CodePipeline</title>
       <link>https://ecnedaced-seirots.github.io/tags/codepipeline/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/codepipeline/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>terraform</title>
       <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/terraform/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>git</title>
       <link>https://ecnedaced-seirots.github.io/tags/git/</link>
       <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/git/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>memo</title>
       <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
       <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/memo/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Firefox</title>
       <link>https://ecnedaced-seirots.github.io/tags/firefox/</link>
       <pubDate>Mon, 28 Mar 2022 17:11:08 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/firefox/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>RWC</title>
       <link>https://ecnedaced-seirots.github.io/tags/rwc/</link>
       <pubDate>Sat, 26 Mar 2022 10:43:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/rwc/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>尾道</title>
       <link>https://ecnedaced-seirots.github.io/tags/%E5%B0%BE%E9%81%93/</link>
       <pubDate>Thu, 24 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/%E5%B0%BE%E9%81%93/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>english</title>
       <link>https://ecnedaced-seirots.github.io/tags/english/</link>
       <pubDate>Sat, 19 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/english/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Italy</title>
       <link>https://ecnedaced-seirots.github.io/tags/italy/</link>
       <pubDate>Sat, 12 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/italy/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>health hacks</title>
       <link>https://ecnedaced-seirots.github.io/tags/health-hacks/</link>
       <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/health-hacks/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>supplement</title>
       <link>https://ecnedaced-seirots.github.io/tags/supplement/</link>
       <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/supplement/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>json</title>
       <link>https://ecnedaced-seirots.github.io/tags/json/</link>
       <pubDate>Thu, 10 Feb 2022 18:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/json/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>golang</title>
       <link>https://ecnedaced-seirots.github.io/tags/golang/</link>
       <pubDate>Sun, 06 Feb 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/golang/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>CodeDeploy</title>
       <link>https://ecnedaced-seirots.github.io/tags/codedeploy/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/codedeploy/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>cloudwatchlogs</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
       <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>logsinsights</title>
       <link>https://ecnedaced-seirots.github.io/tags/logsinsights/</link>
       <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/logsinsights/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>network</title>
       <link>https://ecnedaced-seirots.github.io/tags/network/</link>
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/network/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>mac</title>
       <link>https://ecnedaced-seirots.github.io/tags/mac/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/mac/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>井の頭公園</title>
       <link>https://ecnedaced-seirots.github.io/tags/%E4%BA%95%E3%81%AE%E9%A0%AD%E5%85%AC%E5%9C%92/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/%E4%BA%95%E3%81%AE%E9%A0%AD%E5%85%AC%E5%9C%92/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>homebrew</title>
       <link>https://ecnedaced-seirots.github.io/tags/homebrew/</link>
       <pubDate>Sat, 15 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/homebrew/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>EKS</title>
       <link>https://ecnedaced-seirots.github.io/tags/eks/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/eks/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>fargate</title>
       <link>https://ecnedaced-seirots.github.io/tags/fargate/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/fargate/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>fluentbit</title>
       <link>https://ecnedaced-seirots.github.io/tags/fluentbit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/fluentbit/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>kubernetes</title>
       <link>https://ecnedaced-seirots.github.io/tags/kubernetes/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>brain hacks</title>
       <link>https://ecnedaced-seirots.github.io/tags/brain-hacks/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/brain-hacks/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>mind hacks</title>
       <link>https://ecnedaced-seirots.github.io/tags/mind-hacks/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/mind-hacks/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>aws cli</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws-cli/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/aws-cli/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>AWS Config</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws-config/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/aws-config/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>cloudwatchalarm</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/</link>
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>IaC</title>
       <link>https://ecnedaced-seirots.github.io/tags/iac/</link>
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/iac/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>LGS</title>
       <link>https://ecnedaced-seirots.github.io/tags/lgs/</link>
       <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/lgs/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>eventbridge</title>
       <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Aviation</title>
       <link>https://ecnedaced-seirots.github.io/tags/aviation/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/aviation/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Tumblr</title>
       <link>https://ecnedaced-seirots.github.io/tags/tumblr/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/tumblr/</guid>
       <description></description>
     </item>
-    
-    <item>
-      <title>S3</title>
-      <link>https://ecnedaced-seirots.github.io/tags/s3/</link>
-      <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      
-      <guid>https://ecnedaced-seirots.github.io/tags/s3/</guid>
-      <description></description>
-    </item>
-    
     <item>
       <title>SNS</title>
       <link>https://ecnedaced-seirots.github.io/tags/sns/</link>
       <pubDate>Sat, 11 Dec 2021 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/sns/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>jinja2</title>
       <link>https://ecnedaced-seirots.github.io/tags/jinja2/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/jinja2/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>pandas</title>
       <link>https://ecnedaced-seirots.github.io/tags/pandas/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/pandas/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Quentin Tarantino</title>
       <link>https://ecnedaced-seirots.github.io/tags/quentin-tarantino/</link>
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/quentin-tarantino/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>quotes</title>
       <link>https://ecnedaced-seirots.github.io/tags/quotes/</link>
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/quotes/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>eye candy</title>
       <link>https://ecnedaced-seirots.github.io/tags/eye-candy/</link>
       <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/eye-candy/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>aws systems manager</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws-systems-manager/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/aws-systems-manager/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>psychology</title>
       <link>https://ecnedaced-seirots.github.io/tags/psychology/</link>
       <pubDate>Wed, 03 Nov 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/psychology/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>github</title>
       <link>https://ecnedaced-seirots.github.io/tags/github/</link>
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/github/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>the finger</title>
       <link>https://ecnedaced-seirots.github.io/tags/the-finger/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/the-finger/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>IAM</title>
       <link>https://ecnedaced-seirots.github.io/tags/iam/</link>
       <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/iam/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Chrome</title>
       <link>https://ecnedaced-seirots.github.io/tags/chrome/</link>
       <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/chrome/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>吉祥寺</title>
       <link>https://ecnedaced-seirots.github.io/tags/%E5%90%89%E7%A5%A5%E5%AF%BA/</link>
       <pubDate>Wed, 15 Sep 2021 23:53:34 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/%E5%90%89%E7%A5%A5%E5%AF%BA/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>ContainerInsights</title>
       <link>https://ecnedaced-seirots.github.io/tags/containerinsights/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/containerinsights/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Markdown</title>
       <link>https://ecnedaced-seirots.github.io/tags/markdown/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/markdown/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>none</title>
       <link>https://ecnedaced-seirots.github.io/tags/none/</link>
       <pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/tags/none/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

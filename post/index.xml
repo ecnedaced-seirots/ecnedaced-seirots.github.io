@@ -1,677 +1,538 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/post/</link>
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Sep 2023 21:34:36 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 03 Jan 2024 15:48:23 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>異なるアカウント間のS3レプリケーション設定</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</link>
+      <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</guid>
+      <description>&lt;p&gt;S3レプリケーションのポイントとして重要なのが、ソース/レプリケート先両方のバケットでバージョニングを有効にすること。異なるアカウントへのレプリケーションの場合、レプリケート先のバケットポリシーでソースバケットからのアクセスを許可すること。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</title>
       <link>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/rds-connection-check-from-ec2/</guid>
       <description>&lt;p&gt;EC2またはクライアントPCから簡単にRDSへ疎通確認したい時に便利なコマンドがある。（長年この業界にいながら最近知ったという）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS VPCエンドポイントサービス一覧</title>
       <link>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</link>
       <pubDate>Tue, 13 Jun 2023 22:38:53 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/aws-vpc-endpoint-service/</guid>
       <description>&lt;p&gt;AWS VPCエンドポイントに対応するサービス一覧。いざという時に見つからなくて困るのでここにリンク貼っておく。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像をリサイズして横に連結する</title>
       <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</guid>
       <description>&lt;p&gt;前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像を横に連結する</title>
       <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
       <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
       <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>ECSをAmazon API Gatewayのバックエンドにするケース</title>
       <link>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</link>
       <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/</guid>
       <description>&lt;p&gt;API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
       <description>&lt;p&gt;約1年前の記事 &lt;a href=&#34;https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/&#34;&gt;CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)&lt;/a&gt; の改良版の話。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSアーキテクチャアイコンのURL</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-icon/</link>
       <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-icon/</guid>
       <description>&lt;p&gt;AWSアイコンのURL。間が空くと最新のが入れ替わってることがあるからメモ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「すべては振動であり、エネルギー」概念の共鳴</title>
       <link>https://ecnedaced-seirots.github.io/post/b/everything-is-energy/</link>
       <pubDate>Wed, 29 Jun 2022 16:54:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/everything-is-energy/</guid>
       <description>&lt;p&gt;「すべては振動であり、エネルギーである」という概念が浮上してきているが、最近そのシンクロ具合をひしと感じるんだよなぁ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>ヒューマン・エネルギー・フィールド（HEF）周辺のこと</title>
       <link>https://ecnedaced-seirots.github.io/post/b/human-energy-field/</link>
       <pubDate>Sat, 25 Jun 2022 12:06:33 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/human-energy-field/</guid>
       <description>&lt;p&gt;ヒューマン・エネルギー・フィールド（HEF）は心臓から発生している。&amp;hellip;といってもまだ全然生齧りでよくわかっていないので、備忘として知るきっかけになった記事をあげておく。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>6月の過ごし方</title>
       <link>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</link>
       <pubDate>Thu, 02 Jun 2022 22:26:14 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/how-to-spent-june-2022/</guid>
       <description>&lt;p&gt;6月は、とても大事なんだと。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>振動、周波数、霊性</title>
       <link>https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/</link>
       <pubDate>Sat, 28 May 2022 18:01:35 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/</guid>
       <description>&lt;p&gt;例の注射に含まれている成分の、ヒトの霊性への介入。人の意識や精神における、物理的な振動・周波数との関係。この辺が気になる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EC2のノード監視はEventBridgeだけで可能だった</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</link>
       <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</guid>
       <description>&lt;p&gt;タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Coin Locker Babies-3, Ryu Murakami </title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-13/</link>
       <pubDate>Sat, 07 May 2022 11:51:58 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-13/</guid>
       <description>&lt;p&gt;「コインロッカーベイビーズ」(村上龍）の英語翻訳版 “Coin Locker Babies&amp;quot;より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>SNSメトリクスの監視を作成するTerraformコード</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
       <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</guid>
       <description>&lt;p&gt;AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>周波数・量子物理学周辺に注目したい</title>
       <link>https://ecnedaced-seirots.github.io/post/b/quantal-physics-frequency/</link>
       <pubDate>Thu, 21 Apr 2022 00:24:25 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/quantal-physics-frequency/</guid>
       <description>&lt;p&gt;最近の身の回りの問題を突き詰めていくと、周波数、波長、波動、振動、といったものが重要なタームになってくる気がしている。「量子物理学」の領域で語られるようなやつ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(8)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-12/</link>
       <pubDate>Tue, 12 Apr 2022 21:47:45 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-12/</guid>
       <description>&lt;p&gt;村上龍「愛と幻想のファシズム」より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Gitで所定のリソースを管理対象外にする</title>
       <link>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</link>
       <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</guid>
       <description>&lt;p&gt;Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - 要追加作業</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
       <pubDate>Wed, 06 Apr 2022 15:19:11 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>
       <pubDate>Mon, 04 Apr 2022 20:56:07 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成する時のオプション&amp;quot;PollForSourceChanges&amp;quot;の注意点。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>リモートデスクトップのショートカット</title>
       <link>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</link>
       <pubDate>Fri, 01 Apr 2022 14:59:44 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</guid>
       <description>&lt;p&gt;ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Firefoxでソースを表示</title>
       <link>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</link>
       <pubDate>Mon, 28 Mar 2022 17:11:08 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</guid>
       <description>&lt;p&gt;Firefoxでソースを表示するには。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>サクラエディタで先頭列を置換する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</link>
       <pubDate>Sat, 26 Mar 2022 10:43:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</guid>
       <description>&lt;p&gt;サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「アメリカン★ドリーム」より (1)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/</link>
       <pubDate>Fri, 11 Mar 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/</guid>
       <description>&lt;p&gt;村上龍初期エッセイ「アメリカン★ドリーム」より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>小休止</title>
       <link>https://ecnedaced-seirots.github.io/post/b/travel-0001/</link>
       <pubDate>Thu, 24 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/travel-0001/</guid>
       <description>&lt;p&gt;ここしばらくワクネタやらその周辺やら追ってばかりいて、憂鬱になってしまう。ちょっと離れないとな。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - I&#39;d be glad to.</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</link>
       <pubDate>Sat, 19 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/english-glad-to/</guid>
       <description>&lt;p&gt;技術記事書きたいけどいろいろありすぎて書けない。ここしばらく憂鬱なネタばかり触れてるから、少しでも上向きなことを。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Pythonで区切り文字の最後の要素を取得</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</link>
       <pubDate>Wed, 16 Feb 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</guid>
       <description>&lt;p&gt;Pythonで、区切り文字の最後の要素を取得する。「要素」と言ってるのは、一旦リストにする必要があるため。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatch Agent: LinuxとWindowsの違い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</link>
       <pubDate>Sun, 13 Feb 2022 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/</guid>
       <description>&lt;p&gt;Amazon CloudWatch AgentはLinuxとWindowsでかなり仕組みが異なるところがあるので注意がいる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>カナダ及び各国のFreedom Convoyに注目</title>
       <link>https://ecnedaced-seirots.github.io/post/b/freedom-convoy/</link>
       <pubDate>Sat, 12 Feb 2022 19:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/freedom-convoy/</guid>
       <description>&lt;p&gt;&amp;ldquo;Freedom Convoy&amp;quot;はひと言で言うと、カナダのトラック運転手のワクチン強制接種反対の運動。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>イタリアの現状と、リュック・モンタニエ博士の急逝</title>
       <link>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</link>
       <pubDate>Sat, 12 Feb 2022 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/italy-now-and-luc-montagnier/</guid>
       <description>&lt;p&gt;2022年2月イタリアの現実を、現地在住日本人が伝えている。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>グリシン酸マグネシウムが入手困難！</title>
       <link>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</link>
       <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</guid>
       <description>&lt;p&gt;数年前からずっと飲んできた、ソラレー社(Solaray)のマグネシウム・グリシネートが生産停止になってしまった。最後に購入したのは去年の11月だ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Pythonの辞書・文字列変換とJSON処理</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</link>
       <pubDate>Thu, 10 Feb 2022 18:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</guid>
       <description>&lt;p&gt;Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&amp;hellip;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(7)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-10/</link>
       <pubDate>Wed, 09 Feb 2022 00:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-10/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(13) - Switch文による条件分岐</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-switch/</link>
       <pubDate>Sun, 06 Feb 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-switch/</guid>
       <description>&lt;p&gt;Go言語のSwitch文による条件分岐例など。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像ファイルを保存する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</link>
       <pubDate>Sun, 06 Feb 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</guid>
       <description>&lt;p&gt;OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門 (12) - Goで文字列を連結するいくつかの方法</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-append-string/</link>
       <pubDate>Sat, 05 Feb 2022 17:52:48 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-append-string/</guid>
       <description>&lt;p&gt;Goで文字列を連結したい場合、複数のやり方があるがパフォーマンスの良し悪しが関連してくる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>MS Officeの邪魔なサジェストを無効にする</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</link>
       <pubDate>Sat, 05 Feb 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</guid>
       <description>&lt;h3 id=&#34;迷惑サジェスト-その１&#34;&gt;迷惑サジェスト その１&lt;/h3&gt;
 &lt;p&gt;Outlookで「登録名の先頭の数文字の入力で候補を表示する」を無効にしたい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでVPCエンドポイント使用時の注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-vpc-endpoint/</guid>
       <description>&lt;p&gt;AWS CodeDeployでVPCエンドポイントを使用する場合は一手間必要なのでその辺のネタを。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Logs Insightsで秒毎のログイベント数をカウントするクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</link>
       <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</guid>
       <description>&lt;p&gt;CloudWatch Logs Insightsで、秒毎のログイベント数をカウントしたい時。すっげぇ簡単なんだけどすぐ忘れるから。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(11) - 型変換(str-int, int-str)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</link>
       <pubDate>Wed, 02 Feb 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-changetype/</guid>
       <description>&lt;p&gt;文字列から数値 or 数値から文字列。Goでこのように型を変更するには、&lt;code&gt;strconv&lt;/code&gt;を使う。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>村上龍 対談集「最前線」より</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-9/</link>
       <pubDate>Wed, 02 Feb 2022 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-9/</guid>
       <description>&lt;p&gt;村上龍 対談集「最前線」〜「サッカーを通して見える日本と世界」より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(10) - コマンドライン引数の処理</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</link>
       <pubDate>Sun, 30 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-command-args/</guid>
       <description>&lt;p&gt;コマンドライン引数を受け取って処理。どの言語でもやるけどGoはどうするんだろう、と思って軽く調べてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform - EC2インスタンス作成時のAMI参照</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</link>
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</guid>
       <description>&lt;p&gt;今時あまり流行らないが、「AMIを作り込んでEC2を起動」というサイクルを繰り返す運用があるとする。それをTerraformに組み込む場合の、AMIの参照方法。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(9) - if else文</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</link>
       <pubDate>Sun, 30 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</guid>
       <description>&lt;p&gt;Go言語におけるif-else文の覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Logs Insightsでロギングタイプを指定するクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</link>
       <pubDate>Sat, 29 Jan 2022 23:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/</guid>
       <description>&lt;p&gt;CloudWatch Logs Insightsでログメッセージを抽出する時に一番よく使うのはキーワードでフィルタをかけるパターンだと思うが、ロギングタイプを指定することも可能と最近知った。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CodeDeploy備忘録</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</link>
       <pubDate>Sat, 29 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/</guid>
       <description>&lt;p&gt;簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(6)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-8/</link>
       <pubDate>Thu, 27 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-8/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(8) - if文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</link>
       <pubDate>Wed, 26 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</guid>
       <description>&lt;p&gt;Go言語におけるif文の基本覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>PythonでOpenCV始めてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</link>
       <pubDate>Tue, 25 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</guid>
       <description>&lt;p&gt;画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(7) - mapのrange,deleteなど</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</link>
       <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</guid>
       <description>&lt;p&gt;Goのmap操作続き。range, 追加やdeleteなど。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Coin Locker Babies-2, Ryu Murakami</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/</link>
       <pubDate>Sun, 23 Jan 2022 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/</guid>
       <description>&lt;p&gt;「コインロッカーベイビーズ」(村上龍）の英語翻訳版 “Coin Locker Babies&amp;quot;より、クライマックスに近づくあたりのシーン。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS Lambdaのログ監視方法を考えてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</link>
       <pubDate>Sun, 23 Jan 2022 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</guid>
       <description>&lt;p&gt;AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでNATゲートウェイを作成する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
       <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(6) - mapの基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>
       <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</guid>
       <description>&lt;p&gt;Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Macでファイルをデフォルトで開くアプリを設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</guid>
       <description>&lt;p&gt;Macで、特定の拡張子がつくファイルを開く時のデフォルトアプリケーションを設定したい時。例えばスクリプト系は一律mi.appとしたいが、最近始めたGoはまだ設定されていない。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Coin Locker Babies-1, Ryu Murakami</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-6/</link>
       <pubDate>Wed, 19 Jan 2022 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-6/</guid>
       <description>&lt;p&gt;「コインロッカーベイビーズ」(村上龍）の英語翻訳版 &amp;ldquo;Coin Locker Babies&amp;quot;より。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(5) - for文の基本</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</link>
       <pubDate>Mon, 17 Jan 2022 23:51:03 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</guid>
       <description>&lt;p&gt;Go言語におけるfor文の基本覚書。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(4) - 現在時刻の出力</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-time/</link>
       <pubDate>Sun, 16 Jan 2022 17:08:18 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-time/</guid>
       <description>&lt;p&gt;Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(3) - スライス(Slice)の扱い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</link>
       <pubDate>Sun, 16 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</guid>
       <description>&lt;p&gt;Goには配列と似た「スライス(Slice)」というデータ構造の概念がある。要素数の指定が不要で、配列より柔軟にデータを扱うことができる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(2) - 配列の扱い</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</link>
       <pubDate>Sat, 15 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-array/</guid>
       <description>&lt;p&gt;Goの配列は要素数を宣言する。宣言した数を超える要素は格納できない。少ない分には可能。Goは配列よりスライスの方がよく使われるらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go入門(1) - 変数の定義</title>
       <link>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</link>
       <pubDate>Sat, 15 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-install/</guid>
       <description>&lt;p&gt;Go言語の学習を始めることにした。シンプルで学びやすい。セミコロンは使わない。try-catchがサポートされていない。&lt;code&gt;:=&lt;/code&gt;をよく使う。とのことだ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - boredom</title>
       <link>https://ecnedaced-seirots.github.io/post/b/english-boredom/</link>
       <pubDate>Fri, 14 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/english-boredom/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;But Anemone had finally seen through all this talk; all Sachiko&amp;rsquo;s trips and lovers and &amp;ldquo;experiences&amp;rdquo; amounted to the same thing: boredom.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(5) </title>
       <link>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-5/</link>
       <pubDate>Tue, 11 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ryu-quotes-5/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateからFluent BitでCloudWatchにログ送信する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/</guid>
       <description>&lt;p&gt;過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
       <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
       <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
       <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</guid>
       <description>&lt;p&gt;Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</link>
       <pubDate>Mon, 03 Jan 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</guid>
       <description>&lt;p&gt;前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</link>
       <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</guid>
       <description>&lt;p&gt;一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>レム睡眠と夢と記憶</title>
       <link>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</guid>
       <description>&lt;p&gt;今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS ConfigをCLIから削除する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</guid>
       <description>&lt;p&gt;イベント監視通知のためにAWS Configを設定して検証したが、個人PoCであり普段は必要ないため削除しようと思った。微々たる金額だが課金対象だし。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(5) - Metric Alarm</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</link>
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</guid>
       <description>&lt;p&gt;大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Non Title</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lgs/</link>
       <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/lgs/</guid>
       <description>&lt;p&gt;過去LGS（リーキーガット症候群:Leaky gut syndrome) に罹ったことがあるから、腸内の日和見菌が凶暴化するとどれほど身体と脳が破壊されるか身に染みてわかる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
       <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(4)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/</link>
       <pubDate>Thu, 30 Dec 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-4/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
 &lt;p&gt; &lt;/p&gt;
@@ -679,51 +540,40 @@
 &lt;p&gt;「危機が生じると、弱者がくっきりと浮かび上がるもんだ」&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>AWS Lambda関数をダウンロードする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
       <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
       <description>&lt;p&gt;AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</guid>
       <description>&lt;p&gt;過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>飛行機画像ブログのリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</guid>
       <description>&lt;p&gt;I miss the aiport and airplane vibes.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>英語メモ - murmur</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-murmur/</link>
       <pubDate>Thu, 23 Dec 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-murmur/</guid>
       <description>murmur：ぶつぶつ言う、不満をつぶやく
 類：grumble
-&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。
- </description>
+&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）から拾ったが、他の英文小説にも割と頻繁に登場する単語。それだけ普遍的な行為ということか。</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/</link>
       <pubDate>Thu, 23 Dec 2021 01:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
 &lt;p&gt; &lt;/p&gt;
@@ -731,29 +581,25 @@
 &lt;p&gt;俺達は何も知らない。快楽もない。十万人の哀れな日本人が俺を恐れ、あがめるのは、俺が日本人の中では、生態系の情報と快楽を知っているからだ。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] }  Lambdaコード(Python3.</description>
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::log-export-xxxxxxxx/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-2/</link>
       <pubDate>Sat, 18 Dec 2021 08:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-2/</guid>
       <description>&lt;p&gt;村上龍著「愛と幻想のファシズム」より&lt;/p&gt;
 &lt;p&gt; &lt;/p&gt;
@@ -761,12 +607,10 @@ CloudWatchLogsからS3へログをエクスポートする
 &lt;p&gt;強者は嫌われない。ゴミのような人間達は、強者と同化したがるのだ。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>「愛と幻想のファシズム」より(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-1/</link>
       <pubDate>Thu, 16 Dec 2021 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/ryu-quotes-1/</guid>
       <description>&lt;p&gt;何日か前に読了した、村上龍著「愛と幻想のファシズム」より。&lt;/p&gt;
 &lt;p&gt; &lt;/p&gt;
@@ -774,564 +618,505 @@ CloudWatchLogsからS3へログをエクスポートする
 &lt;p&gt;「それで、人間というのは、他の動物でもそうだけど、嫌いなことをやり続けると拒絶反応を起こすんだ、病気になるんだよ、トウジお前IBMのセールスマンになれるか？」&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
-    
     <item>
       <title>Non title</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1214/</link>
       <pubDate>Tue, 14 Dec 2021 00:45:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1214/</guid>
       <description>あーあ、今日も、疲れた。気がついたら20時なんだもん、ひっでぇな。
 そして本来やるべきことの、半分もできていない。雑用の波が押し寄せる。言いたいことは多々あるが、ぶちまけ大会するわけにはいかない。このモヤモヤを一体どうしたらいいのか。
-  ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</description>
+ま、でも今日も上手い寿司が食えたからな。寿司だ。寿司が今のオレのプライドを支えてるんだ。</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
       <pubDate>Sun, 12 Dec 2021 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</guid>
       <description>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
 この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
-work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
 lambda_logs.tf（定数バージョン）
-################################################# # Lambda archive data ################################################# data &amp;quot;archive_file&amp;quot; &amp;quot;data-lambda-func001&amp;quot; { type = &amp;quot;zip&amp;quot; source_dir = &amp;quot;lambda/code/func001&amp;quot; output_path = &amp;quot;lambda/upload/lambda-func001.</description>
+################################################# # Lambda archive data ################################################# data &amp;#34;archive_file&amp;#34; &amp;#34;data-lambda-func001&amp;#34; { type = &amp;#34;zip&amp;#34; source_dir = &amp;#34;lambda/code/func001&amp;#34; output_path = &amp;#34;lambda/upload/lambda-func001.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(3) - Event rule</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</link>
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</guid>
       <description>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &amp;quot;aws_cloudwatch_event_rule&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.events_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) description = &amp;quot;Start the pipeline when detect CodeCommit repository state change.&amp;quot; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;quot;source&amp;quot;: [&amp;quot;aws.codecommit&amp;quot;], &amp;quot;detail-type&amp;quot;: [&amp;quot;CodeCommit Repository State Change&amp;quot;], &amp;quot;resources&amp;quot;: [&amp;quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;quot;repo_name&amp;quot;)}&amp;quot;], &amp;quot;detail&amp;quot;: { &amp;quot;event&amp;quot;: [&amp;quot;referenceCreated&amp;quot;, &amp;quot;referenceUpdated&amp;quot;], &amp;quot;referenceType&amp;quot;: [&amp;quot;branch&amp;quot;], &amp;quot;referenceName&amp;quot; : [&amp;quot;master&amp;quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;quot;aws_cloudwatch_event_target&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.</description>
+######################################## # EventBridge rule ######################################## resource &amp;#34;aws_cloudwatch_event_rule&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.events_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) description = &amp;#34;Start the pipeline when detect CodeCommit repository state change.&amp;#34; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;#34;source&amp;#34;: [&amp;#34;aws.codecommit&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;CodeCommit Repository State Change&amp;#34;], &amp;#34;resources&amp;#34;: [&amp;#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;#34;repo_name&amp;#34;)}&amp;#34;], &amp;#34;detail&amp;#34;: { &amp;#34;event&amp;#34;: [&amp;#34;referenceCreated&amp;#34;, &amp;#34;referenceUpdated&amp;#34;], &amp;#34;referenceType&amp;#34;: [&amp;#34;branch&amp;#34;], &amp;#34;referenceName&amp;#34; : [&amp;#34;master&amp;#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;#34;aws_cloudwatch_event_target&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.</description>
     </item>
-    
     <item>
       <title>ソーシャルな反応に対する反応とか</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sns/</link>
       <pubDate>Sat, 11 Dec 2021 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sns/</guid>
       <description>&amp;ldquo;SNS&amp;quot;は&amp;quot;Social Networking Service&amp;quot;の略だ。この言葉の上では、プラットフォーム自体がサービスなのだ。しかし、そこに参加した途端に、自分自身が他者にサービスせざるを得なくなる。俗に言う、フォロバとかいいね返しとか、そういうことだ。
 そういうのは嫌いだ、しかしそこに参加している限り、鍵垢でもない限り、その渦から完全に逃れることはできない、この、人付き合いが嫌いな俺様であってもだ、しかし嫌いなものは嫌いなんだ、反応に対していちいち反応してたら自分のやりたいことができないし、余計にエネルギーを使うことになる。つまり、反応した相手の投稿をチェックするという作業自体が余剰作業なのだ、他人にサービスするためにやってるんじゃないからね。
 これは、SNSの面倒で嫌いな部分だが、いいこともある、「反応に対する反応」により、センスがいいナイスなアカウントを発見することも多々あるからだ。tumblrの場合、ナイスなポストがあればreblogするし、この人は光る何かを持っている、とピピっときたらフォローせざるを得ない。相手が素晴らしいセンスの持ち主だと、サービスを通り越して夢中になってしまうこともある。
-  でも最近疲れてきたな、夢中になりすぎて疲れたのか、疲れたから夢中になれなくなったのか知らんが、あまり楽しくない。結局「お付き合い」の比重が多くなると、本来の目的からずれてしまうんだ、リアルワールドでやることのプライオリティが上がっているせいもあるな。
+でも最近疲れてきたな、夢中になりすぎて疲れたのか、疲れたから夢中になれなくなったのか知らんが、あまり楽しくない。結局「お付き合い」の比重が多くなると、本来の目的からずれてしまうんだ、リアルワールドでやることのプライオリティが上がっているせいもあるな。
 しかしよく考えると、SNSとの付き合いなんてそれくらいか、それより低程度がいいのである、本来は。リアルワールドで重要なことが多いほど、SNSにかまけていられる時間やエネルギーは減る。つまり、「あんまり楽しくない」程度に捉えている方が自然なのである。
-そういう意味では、俺もやっと自然に戻れたんだろうか。
- </description>
+そういう意味では、俺もやっと自然に戻れたんだろうか。</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</guid>
       <description>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &amp;quot;aws_codecommit_repository&amp;quot; &amp;quot;codecommit_repos&amp;quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;quot;repository_name&amp;quot;) description = lookup(each.value, &amp;quot;description&amp;quot;) } #################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
+cicd.tf
+#################################### # CodeCommit #################################### resource &amp;#34;aws_codecommit_repository&amp;#34; &amp;#34;codecommit_repos&amp;#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;#34;repository_name&amp;#34;) description = lookup(each.value, &amp;#34;description&amp;#34;) } #################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</link>
       <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</guid>
       <description>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
 前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
 作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) service_role_arn = var.deploy_role deployment_config_name = &amp;quot;CodeDeployDefault.AllAtOnce&amp;quot; ec2_tag_set { ec2_tag_filter { key = &amp;quot;Name&amp;quot; type = &amp;quot;KEY_AND_VALUE&amp;quot; value = lookup(each.</description>
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) service_role_arn = var.deploy_role deployment_config_name = &amp;#34;CodeDeployDefault.AllAtOnce&amp;#34; ec2_tag_set { ec2_tag_filter { key = &amp;#34;Name&amp;#34; type = &amp;#34;KEY_AND_VALUE&amp;#34; value = lookup(each.</description>
     </item>
-    
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
       <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
-Terraform loop処理の超シンプルな例 
-Python - Jinja2テンプレートで連続データを処理したい
- 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
-work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
-script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv  codecommit.tmpl
- param{{ num }} = { repository_name = &amp;quot;{{ repo_name }}&amp;quot; description = &amp;quot;{{ des }}&amp;quot; }  data.csv （今回の例ではヘッダーありの前提）
-num,repo_name,des 1,&amp;quot;my-repo001&amp;quot;,&amp;quot;my-repo001の説明&amp;quot; 2,&amp;quot;my-repo002&amp;quot;,&amp;quot;my-repo002の説明&amp;quot; 3,&amp;quot;my-repo003&amp;quot;,&amp;quot;my-repo003の説明&amp;quot;  create_vars.py
+Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
+実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
+work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
+script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv codecommit.tmpl
+param{{ num }} = { repository_name = &amp;#34;{{ repo_name }}&amp;#34; description = &amp;#34;{{ des }}&amp;#34; } data.csv （今回の例ではヘッダーありの前提）
+num,repo_name,des 1,&amp;#34;my-repo001&amp;#34;,&amp;#34;my-repo001の説明&amp;#34; 2,&amp;#34;my-repo002&amp;#34;,&amp;#34;my-repo002の説明&amp;#34; 3,&amp;#34;my-repo003&amp;#34;,&amp;#34;my-repo003の説明&amp;#34; create_vars.py
 import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&amp;#39;.</description>
     </item>
-    
     <item>
       <title>Quotes - タランティーノ小説より(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</link>
       <pubDate>Sat, 27 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/</guid>
-      <description> Some say luck is when preparation meets opportunity.
- - Once Upon a Time in Hollywood&amp;quot;の小説版 (Quentin Tarantino) より。
- わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど&amp;hellip;
-個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？
-   </description>
+      <description>Some say luck is when preparation meets opportunity.
+- Once Upon a Time in Hollywood&amp;quot;の小説版 (Quentin Tarantino) より。
+わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど&amp;hellip;
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？</description>
     </item>
-    
     <item>
       <title>Python - Jinja2テンプレートで連続データを処理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
       <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
       <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
 とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
-  【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた   </description>
+【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた </description>
     </item>
-    
     <item>
       <title>Terraform loop処理の超シンプルな例</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
       <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</guid>
       <description>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
 前回投稿
 Terraform loop処理のリンク集
 参考記事
 Terraformで配列をloopする時はfor_eachを使った方がいい
- やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
-work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf 以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
 init.tf
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } } terraform { required_version = &amp;quot;1.0.11&amp;quot; backend &amp;quot;s3&amp;quot; { bucket = &amp;quot;my-terraform-poc-repository&amp;quot; key = &amp;quot;poc/poc.tfstate&amp;quot; region = &amp;quot;ap-northeast-1&amp;quot; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+terraform { required_providers { aws = { source = &amp;#34;hashicorp/aws&amp;#34; version = &amp;#34;3.66.0&amp;#34; } } } terraform { required_version = &amp;#34;1.0.11&amp;#34; backend &amp;#34;s3&amp;#34; { bucket = &amp;#34;my-terraform-poc-repository&amp;#34; key = &amp;#34;poc/poc.tfstate&amp;#34; region = &amp;#34;ap-northeast-1&amp;#34; } } で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
 variable.tf
-variable &amp;quot;codecommit_param_list&amp;quot; { type = map(map(string)) default = { param1 = { repository_name = &amp;quot;repo001&amp;quot; description = &amp;quot;desciption for repo001&amp;quot; } param2 = { repository_name = &amp;quot;repo002&amp;quot; description = &amp;quot;desciption for repo002&amp;quot; } param3 = { repository_name = &amp;quot;repo003&amp;quot; description = &amp;quot;desciption for repo003&amp;quot; } } }  codecommit.</description>
+variable &amp;#34;codecommit_param_list&amp;#34; { type = map(map(string)) default = { param1 = { repository_name = &amp;#34;repo001&amp;#34; description = &amp;#34;desciption for repo001&amp;#34; } param2 = { repository_name = &amp;#34;repo002&amp;#34; description = &amp;#34;desciption for repo002&amp;#34; } param3 = { repository_name = &amp;#34;repo003&amp;#34; description = &amp;#34;desciption for repo003&amp;#34; } } } codecommit.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理のリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</link>
       <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</guid>
       <description>Terraformでループ処理ってどうするんだっけ&amp;hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
-  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
-  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
- Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
- Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&amp;hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
- Terraform職人再入門2020   </description>
+for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
+Terraformで配列をloopする時はfor_eachを使った方がいい 以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
+Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法 これはcountを使う方法。多分使わないけど比較用にメモ。
+Terraformで超サクッとループでリソースを用意する方法 上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
+新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
+terraform { required_providers { aws = { source = &amp;#34;hashicorp/aws&amp;#34; version = &amp;#34;3.66.0&amp;#34; } } } 以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&amp;hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
+Terraform職人再入門2020 </description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</link>
       <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</guid>
       <description>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ
- とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
- lambda_function.py （イベント監視メール通知用）
+とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
+lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&amp;#39;detail&amp;#39;] #詳細(detail)を定義 e_type = e[&amp;#39;detail-type&amp;#39;] # イベントタイプ 例：&amp;#39;AWS API Call via CloudTrail&amp;#39; t = e[&amp;#39;time&amp;#39;] # 発生時刻 evt_name = dtl[&amp;#39;eventName&amp;#39;] # イベント名 例：DeleteBucket evt_src = dtl[&amp;#39;eventSource&amp;#39;] # イベントソース 例：s3.</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</link>
       <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</guid>
       <description>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
- 過去記事
+過去記事
 CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)
 CloudWatchアラーム + SNSからのメール件名をカスタマイズする
- CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&amp;rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
+CloudWatchアラームから渡されるeventの、元データの時刻表示は例えば&#39;2021-10-24T09:35:10Z&amp;rsquo;となっている。これをJSTにするのに手っ取り早いのはpytzを使う方法だが、諸事情により標準ライブラリの範囲でやる必要がある。
 で、試行錯誤。当初datetime型にしてからJSTに変換しようとしたがいいやり方が見つからなかったため「unixタイムスタンプに変換後、JSTに変換」とすることにした。
-from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), &#39;JST&#39;) utcstr = &#39;2021-10-24T09:35:10Z&#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00  当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
+from datetime import datetime, timezone, timedelta from dateutil import parser JST = timezone(timedelta(hours=+9), &amp;#39;JST&amp;#39;) utcstr = &amp;#39;2021-10-24T09:35:10Z&amp;#39; utcstr_parsed = parser.parse(utcstr) #UNIXタイムスタンプに変換 ux_time = utcstr_parsed.timestamp() #int型にする epoch = int(ux_time) #JSTに変換 dt = datetime.fromtimestamp(epoch).replace(tzinfo=timezone.utc).astimezone(tz=JST) print(dt) 2021-10-25 03:35:10+09:00 当初JSTに変換した後の時間が変だ+18時間になってる何故だ、と悩んだが、拠点にした時間から+18時間になるのはおそらく実行環境がJSTだから。UTCの環境でやれば+9時間になるんだろう。くそ、こんなことで数時間週末を無駄にした。俺の休息時間はいつなんだ？
 ともあれ、修正したのが以下。コメントの「時刻変換」と、「件名に投入するアラーム名を抽出」を追加した。前回はメール件名規則を「任意の文字列 + 発生契機 + 対象リソース(dimention)」としていたが、発生契機はいらないから代わりにアラーム名にした。
- lambda_function.py （時刻表示JSTバージョン）
+lambda_function.py （時刻表示JSTバージョン）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&amp;#39;Loading function&amp;#39;) sns_arn = os.</description>
     </item>
-    
     <item>
       <title>英語メモ - into the bargain</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</link>
       <pubDate>Fri, 19 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/</guid>
       <description>into the bargain = in addition
-&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より
- </description>
+&amp;ldquo;Zazie in the Metro&amp;rdquo;(Raymond Queneau) / 地下鉄のザジ（レーモン・クノー）より</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
       <pubDate>Sun, 14 Nov 2021 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</guid>
       <description>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム + SNSからのメール件名をカスタマイズする
- lambda_function.py
+lambda_function.py
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) sns_arn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&amp;#39;time&amp;#39;] trig = e[&amp;#39;detail-type&amp;#39;] alarm = e[&amp;#39;resources&amp;#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&amp;#39;detail&amp;#39;][&amp;#39;state&amp;#39;][&amp;#39;reason&amp;#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&amp;#39;detail&amp;#39;][&amp;#39;configuration&amp;#39;][&amp;#39;metrics&amp;#39;][0][&amp;#39;metricStat&amp;#39;][&amp;#39;metric&amp;#39;][&amp;#39;dimensions&amp;#39;] res_str = json.dumps(resource) res = re.sub(r&amp;#34;[{}\&amp;#34;]&amp;#34;, &amp;#34;&amp;#34;, res_str) # 件名整形 subject_str = &amp;#34;本番環境 - アラーム &amp;#34; + trig + &amp;#34; - &amp;#34; + res # メッセージ本文整形 fix_msg = &amp;#34;以下のアラームが発生しました&amp;#34; + &amp;#34;\n&amp;#34; trig_msg = &amp;#34;発生契機:&amp;#34; + &amp;#34;\n&amp;#34; + trig time_msg = &amp;#34;発生時刻:&amp;#34; + &amp;#34;\n&amp;#34; + t alm_msg = &amp;#34;アラーム:&amp;#34; + &amp;#34;\n&amp;#34; + alarm[0] res_msg =&amp;#34;対象リソース:&amp;#34; &amp;#34;\n&amp;#34; + res dtl_msg =&amp;#34;理由:&amp;#34; &amp;#34;\n&amp;#34; + reason msg = fix_msg + &amp;#34;\n\n&amp;#34; + trig_msg + &amp;#34;\n\n&amp;#34; + time_msg + &amp;#34;\n\n&amp;#34; + alm_msg + &amp;#34;\n\n&amp;#34; + res_msg + &amp;#34;\n\n&amp;#34; + dtl_msg try: sns = boto3.</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>
       <pubDate>Sun, 14 Nov 2021 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</guid>
       <description>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
 変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&amp;#39;awslogs&amp;#39;][&amp;#39;data&amp;#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;][i], ensure_ascii=False)) try: sns = boto3.client(&amp;#39;sns&amp;#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;], Message = log_json[&amp;#39;message&amp;#39;], Subject = os.</description>
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&amp;#39;Loading function&amp;#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&amp;#39;awslogs&amp;#39;][&amp;#39;data&amp;#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&amp;#34;logEvents&amp;#34;][i], ensure_ascii=False)) try: sns = boto3.client(&amp;#39;sns&amp;#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&amp;#39;SNS_TOPIC_ARN&amp;#39;], Message = log_json[&amp;#39;message&amp;#39;], Subject = os.environ[&amp;#39;ALARM_SUBJECT&amp;#39;] ) except Exception as e: print(e) 参考</description>
     </item>
-    
     <item>
       <title>英語メモ - elaborate</title>
       <link>https://ecnedaced-seirots.github.io/post/a/english-elaborate/</link>
       <pubDate>Sat, 13 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/english-elaborate/</guid>
-      <description>elaborate   複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の  他動詞としては「〜を詳しく調べる」
- Irvine Welshの&amp;quot;Trainspotting&amp;quot;読書中に登場した単語だと思うが、何ページかはもう覚えていない。
-  </description>
+      <description>elaborate 複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の 他動詞としては「〜を詳しく調べる」
+Irvine Welshの&amp;quot;Trainspotting&amp;quot;読書中に登場した単語だと思うが、何ページかはもう覚えていない。</description>
     </item>
-    
     <item>
       <title>AWS監視の方式を整理したい</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</guid>
       <description>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&amp;hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-  監視方式大枠  ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
+監視方式大枠 ノード監視
+CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
 閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
+CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
 ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信  ※これだけEventBridgeを使用しない。
+CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※これだけEventBridgeを使用しない。
 プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。  CWエージェント + SSM + インスタンス停止、Lamabdaなし
+EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。 CWエージェント + SSM + インスタンス停止、Lamabdaなし
 EC2上のプロセスを監視し自動復旧する
 CWエージェント + SSM + 自動再起動、Lamabdaなし
 AWSでプロセス監視を実装したい
 CWエージェント + Lamabda + SSM + 自動再起動
 EC2のプロセス監視と自動再起動
- procstat事例
+procstat事例
 以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
 CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる</description>
+SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる
+以下は途中まで参照したところ（後半は有料サービスの案内）、アラームを作成するところまでわかりやすかった。であれば、閾値監視と同様にEBルールを挟んでLambdaをターゲットに指定 ー＞ SNSトピックに渡されてメール送信、でいけるはず。
+CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく紹介
+イベント監視
+イベント発生 ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※1.</description>
     </item>
-    
     <item>
       <title>タウリン(Taurine)の効能いろいろ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</link>
       <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</guid>
       <description>タウリンの効果。過去に見つけたネタをバラバラにメモっていたのをまとめておく。
- タウリンとは、一言で言うと。
+タウリンとは、一言で言うと。
 タウリンは分子量124の含硫アミノ酸。タンパク質の構成成分にはならないが、細胞内の遊離アミノ酸としてはグルタミンと並んでもっとも高濃度に存在し、かつグルタミンに類似する成分。またタウリンは脳内のアミノ酸の中では2番目に多く存在する。
 タウリンは疲れが溜まっていると多く消費される、年齢を重ねると減少、男性より女性が不足しがち、とも言われている。
 タウリンの効果としてはアセトアルデヒトの代謝促進による肝機能サポートがよく知られているが、記憶力や認知能力の改善、目の網膜の保護、便通の改善等、意外な効能もある様子。
 そんなタウリンの効果について、とりあえず箇条書きで。
-  神経伝達、海馬の増強や安定化をサポート。 記憶力に関与するグリア細胞の活性化を促進する。(注1) アルコールや有害物質から発生するアセトアルデヒトの代謝を促進する。 心筋を強くして疲労回復を促す。（ただし即効性はないらしい？） 心臓のポンプ作用を高めて筋肉により多くの血液を送り込み、持久力を高める。（ドイツの研究より） 細胞のミトコンドリアの数を増やす（ミトコンドリアのタンパク質合成に必須）(注2) 目の網膜や角膜を保護する。 腸管の抗炎症作用 血圧や血糖値のバランスをサポート。 肝臓・心臓の機能強化 胆汁を生成し、コレステロールや中性脂肪の代謝をコントロール インスリン分泌促進 便の水分を増やし、便秘を改善する。 ニューロンのカリウム除去をサポートし、ニューロンが過度に活発化することを防ぐ。 タウリンはレシチンと併用することで細胞の細胞膜を丈夫にし、細胞が正常な形状を保つようにサポートをする。 髪の毛の成長にも不可欠なタンパク質IGF-1(インスリン様成長因子)を増やす   (注1) 記憶を司ると言われる海馬にはグリア細胞が多く存在する。
+神経伝達、海馬の増強や安定化をサポート。 記憶力に関与するグリア細胞の活性化を促進する。(注1) アルコールや有害物質から発生するアセトアルデヒトの代謝を促進する。 心筋を強くして疲労回復を促す。（ただし即効性はないらしい？） 心臓のポンプ作用を高めて筋肉により多くの血液を送り込み、持久力を高める。（ドイツの研究より） 細胞のミトコンドリアの数を増やす（ミトコンドリアのタンパク質合成に必須）(注2) 目の網膜や角膜を保護する。 腸管の抗炎症作用 血圧や血糖値のバランスをサポート。 肝臓・心臓の機能強化 胆汁を生成し、コレステロールや中性脂肪の代謝をコントロール インスリン分泌促進 便の水分を増やし、便秘を改善する。 ニューロンのカリウム除去をサポートし、ニューロンが過度に活発化することを防ぐ。 タウリンはレシチンと併用することで細胞の細胞膜を丈夫にし、細胞が正常な形状を保つようにサポートをする。 髪の毛の成長にも不可欠なタンパク質IGF-1(インスリン様成長因子)を増やす (注1) 記憶を司ると言われる海馬にはグリア細胞が多く存在する。
 また以下のように認知機能の改善を示す研究がある。
- 迷路試験（Y-maze test）と受動的回避試験（passive avoidance test）で、タウリンを摂取したマウスの認知機能が正常な状態に回復することが確認された。さらに、アルツハイマー病の症状である大脳皮質の炎症が抑えられたほか、脳の海馬から分泌されるアミロイドベータの量も減り、記憶力に深く関与するグリア細胞の活性化が促進されることが確認された。
+迷路試験（Y-maze test）と受動的回避試験（passive avoidance test）で、タウリンを摂取したマウスの認知機能が正常な状態に回復することが確認された。さらに、アルツハイマー病の症状である大脳皮質の炎症が抑えられたほか、脳の海馬から分泌されるアミロイドベータの量も減り、記憶力に深く関与するグリア細胞の活性化が促進されることが確認された。
 注目すべき特徴は、タウリンの脳機能改善効果がアルツハイマー病において選択的に表れるということだ。従来の治療薬物が正常のマウスでは脳機能の異常を来たしたのに対し、タウリンは正常のマウスで脳機能の異常を来たすことはなかった。タウリンの持つもう一つの特性は、タウリンが脳の血管壁を透過しやすいため、口から摂取しても脳にうまく吸収されることだ。別途の複雑な投与過程を経る必要がなく、飲料水などの食物からタウリンを摂っても効果が高い。
- タウリンがアルツハイマー病治療に有効だと判明
+タウリンがアルツハイマー病治療に有効だと判明
 (注2) 「ただしタウリンが細胞内のエネルギー生産組織であるミトコンドリアの数を増やすのは、タウリン サプリを継続的に数か月～半年ほど摂取した場合に限られます。」（参照リンクは消滅）
- タウリンを多く含む食材
- 貝・甲殻類（サザエ、牡蠣、帆立、蛤、あさり、しじみ、タコ、イカ、カニ等） ブリやカツオの血合い 鯵や鯖などの近海魚  タウリンを多く含む食材としてはタコ・イカのイメージが強かったのだが、ダントツで多いのは牡蠣だった。100g中1180mg。サザエの方が100g1500mgで含有量としては多いが、摂取量・摂取回数は一般的に考えて少ない。
+タウリンを多く含む食材
+貝・甲殻類（サザエ、牡蠣、帆立、蛤、あさり、しじみ、タコ、イカ、カニ等） ブリやカツオの血合い 鯵や鯖などの近海魚 タウリンを多く含む食材としてはタコ・イカのイメージが強かったのだが、ダントツで多いのは牡蠣だった。100g中1180mg。サザエの方が100g1500mgで含有量としては多いが、摂取量・摂取回数は一般的に考えて少ない。
 余談だが牡蠣は亜鉛も多く含んでいて、その亜鉛はグルタミン酸興奮毒性（神経細胞死の一因）から脳を守る機能を果たす。また、記憶を司る海馬には最高濃度の亜鉛が存在する。脳の海馬をサポートするタウリンと亜鉛を両方含む牡蠣は、最強ブレインフードだった！
 タウリンを多く含む食品一覧 ポイントは魚介類と血合肉
- タウリン摂取時の注意
- 食間・空腹時の摂取が有効。 アスピリンと併用しないこと。（薬理作用を増強させてしまうため余計な負担がかかる。バファリンは原材料としてアスピリンを含む）   &amp;hellip;と、万能選手的なタウリンではあるが、日本国内ではタウリン単体のサプリメントは販売されていない。このためタウリンのサプリはiHerbで時々購入しているが、在庫切れのことが多く割と入手困難ではある。日本の薬事法に規制があって、一回で購入可能な量・個数が制限されているから、まとめ買いもできないのだ。（おそらく鷲のマークの製薬会社の圧力）
+タウリン摂取時の注意
+食間・空腹時の摂取が有効。 アスピリンと併用しないこと。（薬理作用を増強させてしまうため余計な負担がかかる。バファリンは原材料としてアスピリンを含む） &amp;hellip;と、万能選手的なタウリンではあるが、日本国内ではタウリン単体のサプリメントは販売されていない。このためタウリンのサプリはiHerbで時々購入しているが、在庫切れのことが多く割と入手困難ではある。日本の薬事法に規制があって、一回で購入可能な量・個数が制限されているから、まとめ買いもできないのだ。（おそらく鷲のマークの製薬会社の圧力）
 iHerb独自ブランドのタウリンサプリが安価で嬉しいけど、数ヶ月前から在庫切れ状態が続いている。しょうがないから、今日別の高いやつをポチってしまった。</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
       <pubDate>Wed, 03 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</guid>
       <description>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &amp;quot;CPU_Utilization_Test&amp;quot; \ --metric-name &amp;quot;CPUUtilization&amp;quot; \ --namespace &amp;quot;AWS/EC2&amp;quot; \ --statistic &amp;quot;Maximum&amp;quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;quot;GreaterThanThreshold&amp;quot; \ --dimensions &amp;quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;quot;  EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
+$ aws cloudwatch put-metric-alarm --alarm-name &amp;#34;CPU_Utilization_Test&amp;#34; \ --metric-name &amp;#34;CPUUtilization&amp;#34; \ --namespace &amp;#34;AWS/EC2&amp;#34; \ --statistic &amp;#34;Maximum&amp;#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &amp;#34;GreaterThanThreshold&amp;#34; \ --dimensions &amp;#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&amp;#34; EventBridgeルールの作成。以下の場合、&amp;ldquo;CPU_Utilization_&amp;ldquo;を含むアラームと関連付けられる</description>
     </item>
-    
     <item>
       <title>「いてくれるだけでいい人」の理由</title>
       <link>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</link>
       <pubDate>Wed, 03 Nov 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</guid>
       <description>職場とか、いろんなチーム・グループの中で、「この人がいてくれると安心」「いてくれるだけでいい」と思える人が稀にいる。本当に、稀に、だが。そういう人と、その他の人々の違いは一体何なのか、とモヤっと不思議に思っていた。若干解明できそうなのが、以下の記事。ここに書かれている要因だけではないと思うが、理由の一部としては納得できる。
 「いるだけでチームの雰囲気をよくする人」の口癖4つ。“ど” から始まるあの言葉がかなり使える
- （以降軽くNSFW画像あり。閲覧注意）
- 記事では「いるだけでチームの雰囲気をよくする人」の4つの要素を述べている。
- 「ちょうどよかった」悪い状況にある時でもポジティブに捉える 「ありがとう」を言う時に別途感謝の言葉を添える どの、どのように、どちらか、等「ど」ではじまる質問で相手の話を引き出す 「教えてください」で相手へのリスペクトの気持ちを表す   上記のうち、1.と2.は他の自己啓発系コンテンツでもよく目にする話なので割愛する。まぁ「感謝の言葉を出し惜しみしない」、これは確かに大事だよ、俺も実践してる。相手によるけどね。
+（以降軽くNSFW画像あり。閲覧注意）
+記事では「いるだけでチームの雰囲気をよくする人」の4つの要素を述べている。
+「ちょうどよかった」悪い状況にある時でもポジティブに捉える 「ありがとう」を言う時に別途感謝の言葉を添える どの、どのように、どちらか、等「ど」ではじまる質問で相手の話を引き出す 「教えてください」で相手へのリスペクトの気持ちを表す 上記のうち、1.と2.は他の自己啓発系コンテンツでもよく目にする話なので割愛する。まぁ「感謝の言葉を出し惜しみしない」、これは確かに大事だよ、俺も実践してる。相手によるけどね。
 3.は、俺はこれは実践する気ないけど、要するに聞き上手になって相手の気分をよくしてやれ、つうことだ。
-  ハーバード大学の研究論文（2012年）によると、自分の話をしているとき、おいしい食事をするときや収入を得るときと同じように脳の報酬系という部位が活性化したことが、 約300人の脳をfMRIでスキャンした結果からわかったのだそう。私たちが聞き上手な人に好感を抱くのは、「自分の話をするのが好き！」という人間の本能を満たしてくれるからなのかもしれません。
-  「上手に質問をすれば共感力が上がり、相手に好感を抱かせることができる」につながる、と。俺は「聞き上手ボランティア」をやる気はさらさらないが、興味深いのは先の引用にある「自分の話をするのが好き！という人間の本能」だ。よくいるよな、人の話は全然聞かないで、延々と自分のことを話したがるやつ。（ま、経験上女に多いという傾向は、ある）
+ハーバード大学の研究論文（2012年）によると、自分の話をしているとき、おいしい食事をするときや収入を得るときと同じように脳の報酬系という部位が活性化したことが、 約300人の脳をfMRIでスキャンした結果からわかったのだそう。私たちが聞き上手な人に好感を抱くのは、「自分の話をするのが好き！」という人間の本能を満たしてくれるからなのかもしれません。
+「上手に質問をすれば共感力が上がり、相手に好感を抱かせることができる」につながる、と。俺は「聞き上手ボランティア」をやる気はさらさらないが、興味深いのは先の引用にある「自分の話をするのが好き！という人間の本能」だ。よくいるよな、人の話は全然聞かないで、延々と自分のことを話したがるやつ。（ま、経験上女に多いという傾向は、ある）
 俺は今までそういうやつのことを、ただ自己愛が強くて、その自己愛を充足させるために他人に自分話を押売りして聞かせているもんだと思っていた。しかし上記引用で、「自分の話をしているときに脳の報酬系が活性化する」というのを読んで「そうか！」とひらめいた。脳の報酬系とはドーパミンのことである。ドーパミンは快楽を司る神経伝達物質だ。つまり自分のことを話すのは、人類共通の快感だったのだ！
 まぁ確かに、自分だってそういう面があるのは認めるよ。よく「話を聞いてもらってスッキリした」って言うもんな。何で話すだけでスッキリするのかって、ちゃんと理由があったんだな。しかしこれも度がすぎると聞かされる相手が迷惑だし、みっともないという自覚はある。自分のことを延々と話す人は、その制御が効かなくて、自らの快感原則に従って暴走しているんだろう。プラス自己愛もあるだろうけどね、どっちにしろこの手の人間とは遠い距離を置きたいものである。相手だけ満足して、自分はエネルギー吸い取られるだけだからな&amp;hellip;
-  話が大分脱線した、本来の主旨に戻る。うまい質問の仕方。「ど」で始まる疑問符がキーらしいが、具体的には記事の引用を俺なりにアレンジすると以下のようになる。（仕事関連の想定じゃないとピンと来ないもんで&amp;hellip;）
-   キーワード 質問例     What ー＞「どう、どんな」 どんな理由でこの仕事を始めたんですか？   Who ー＞「どの人、どんな人」 どんな人と仕事してみたいですか？   When ー＞「どんなとき、どのタイミング」 どんなときに達成感を感じますか？   Where ー＞「どこに、どこで」 どこでその分野を学んだのですか？   Why ー＞「どうして」 どうしてその製品に人気が集中するんでしょうね？   Which ー＞「どれ、どっち」 どちらのアイデアが気に入りましたか？   How ー＞「どうやって、どのように」 どのようにしてその課題を解決したんですか？     自己愛満々野郎の自分話を聞かされるのはゴメンだが、まともな相手とのコミュニケーション手法としては頭の片隅においておこう。</description>
+話が大分脱線した、本来の主旨に戻る。うまい質問の仕方。「ど」で始まる疑問符がキーらしいが、具体的には記事の引用を俺なりにアレンジすると以下のようになる。（仕事関連の想定じゃないとピンと来ないもんで&amp;hellip;）
+キーワード 質問例 What ー＞「どう、どんな」 どんな理由でこの仕事を始めたんですか？ Who ー＞「どの人、どんな人」 どんな人と仕事してみたいですか？ When ー＞「どんなとき、どのタイミング」 どんなときに達成感を感じますか？ Where ー＞「どこに、どこで」 どこでその分野を学んだのですか？ Why ー＞「どうして」 どうしてその製品に人気が集中するんでしょうね？ Which ー＞「どれ、どっち」 どちらのアイデアが気に入りましたか？ How ー＞「どうやって、どのように」 どのようにしてその課題を解決したんですか？ 自己愛満々野郎の自分話を聞かされるのはゴメンだが、まともな相手とのコミュニケーション手法としては頭の片隅においておこう。
+人はだれでも、自分に助言を求めてくる人の見識を高く評価する
+（We all admire the wisdom of people who come to us for advice.）
+ー 19世紀のイギリスの作家 アーサー・ヘルプスの言葉
+最後の「教えてください」。これは相手を間接的に褒める手法だそうだ。ほぉぉ。
+ブリガム・ヤング大学助教授で、組織の対人関係を研究するケイティ・リルエンクイスト氏らは、「助言を求められることは、基本的に嬉しいことだ」と言います。 なぜなら、助言を求める行為には、暗黙に「あなたの考えや価値観を支持している」というメッセージが含まれるから。 「教えてください」とアドバイスを求めることは、相手を立てることと同様の意味をもつのです。
+これはわかる気がするな、同じ助言の依頼でも「教えてくれくれ」的に無作法または横暴に聞かれると不愉快でしかないが、リスペクトの気持ちを込めた依頼は、相手の気分をよくすることができる。
+そこには「あなたは私が知らない知見/情報を持っていると思う、あなたのその知恵を私に分けて貰えたら非常にうれしい」という、メタメッセージが込められているんだ。そういうメッセージを受け取って悪い気分になる人間は滅多にいない。
+まぁ自分今もいろいろ思うことがあってこの記事を書いているわけだが&amp;hellip;.、まったく関係なく、ふと別の言葉を思い出した。
+村上龍の小説「5分後の世界」に登場するミズノ少尉は、「絶対に最悪の事態を想像するな」と言った。俺はミズノ少尉のような器ではない。けど、ミズノ少尉のような存在をリスペクトするし、こういう人物と一緒に仕事ができたら嬉しいし、（それこそ、いてくれるだけでいい）少なくとも自分もミズノ少尉に近づけるように努めたいとは思う。
+何か主旨が散逸してしまい、「いてくれるだけでいい人」の理由は解明されていない気がする。まぁ理由は他にもいろいろあるよね、ということで。</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</link>
       <pubDate>Sun, 31 Oct 2021 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</guid>
       <description>AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ</description>
+参考
+CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
+CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
+今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
+過去記事:AWS EventBridge + SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
+とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
+(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore.</description>
     </item>
-    
     <item>
       <title>「ストックホルム症候群」の心理はヒトのデフォルト機能だった</title>
       <link>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</link>
       <pubDate>Sat, 30 Oct 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</guid>
       <description>昨年の過去ツイのスレッドでちょっと気になるのを見つけたので、若干手を入れてここにまとめて書いておく。
-  暴力の加害者に対して被害者が好意を抱く「ストックホルム症候群」と567脳、マスク厨の心理は似てないか？側から見ると、あの人たちは自由や人権を奪われている今の状況を愛しているように見える。
+暴力の加害者に対して被害者が好意を抱く「ストックホルム症候群」と567脳、マスク厨の心理は似てないか？側から見ると、あの人たちは自由や人権を奪われている今の状況を愛しているように見える。
 その裏では「認知的不協和の解消」が発生している可能性がある。これは、自分の内部の矛盾に一貫性を持たせようとする機能。「新しい生活様式」だの、自粛しろマスクつけろだの、不自由で不本意な状況を強いられているが、それを受け入れている自分に葛藤が生じているはずなのだ。
 だからマナーだの何だの言って正当化している。または無意識に自分を麻痺させている。どちらにしても認知に修正を加えて不協和（矛盾）を解消しようとしているわけで、つまり認知に歪みが発生している。だから苦痛さえ感じなくなっているのではないかと想像する。
 それから、「沖縄から貧困がなくならない本当の理由」（樋口耕太郎著）からの引用なのだが、こういった自己防衛の心理も働いているかとも。
- 人間は激しい痛みを感じると、自分の感覚を鈍らせて自己防衛を図る性質があるが、それは絶望の耐え難い痛みを和らげるために、自分自身に打つ麻酔のようなものだ。
-  自分に麻酔を打って思考や身体感覚を麻痺させたり、自ら認知を歪ませれば、見かけ上は苦痛が和らぐ。しかし同時に生きる上でのあらゆる喜びもまた、感じることができなくなる。そして本来あるべき自分の自由と権利を、忘却の彼方に押しやっている。それは虚構の世界を生きているだけなのだ。
-  &amp;hellip;と、まぁ当時はこんなことを思いつくままに呟いてみたが、大半の世間のコロナ恐怖脳はここまで複雑な心理の綾などなく、自分で調べたり考察することもなくひたすら垂れ流される情報を鵜呑みにして怖いね怖いねと決まり文句を言ってるだけのように見える、それが世間の掟だから。
+人間は激しい痛みを感じると、自分の感覚を鈍らせて自己防衛を図る性質があるが、それは絶望の耐え難い痛みを和らげるために、自分自身に打つ麻酔のようなものだ。
+自分に麻酔を打って思考や身体感覚を麻痺させたり、自ら認知を歪ませれば、見かけ上は苦痛が和らぐ。しかし同時に生きる上でのあらゆる喜びもまた、感じることができなくなる。そして本来あるべき自分の自由と権利を、忘却の彼方に押しやっている。それは虚構の世界を生きているだけなのだ。
+&amp;hellip;と、まぁ当時はこんなことを思いつくままに呟いてみたが、大半の世間のコロナ恐怖脳はここまで複雑な心理の綾などなく、自分で調べたり考察することもなくひたすら垂れ流される情報を鵜呑みにして怖いね怖いねと決まり文句を言ってるだけのように見える、それが世間の掟だから。
 もちろん、マスク・アルコール消毒・検温や在宅勤務を強制または半強制されることに疑問を抱くこともない。一切の疑問も抱かずに、受け入れているのだ。昼の外食時に周りから聞こえてくる会話を聞いていると呆れる、それなりに一流と呼ばれる企業に勤めていてある程度の地位についていそうな人たちが、そんな具合なのである。
 まぁ何にせよ、認知の歪みが生じていることは確か、40度近い真夏日に病気でもないのにマスクとか異常でしかないよ。
- それから「家庭内ストックホルム症候群」という言葉もある。児童虐待やDVを受けている被害者が、自分を虐待・無視などで苦しめる親や配偶者（多くの場合夫）に不満や憎しみを抱きつつも、見捨てられたらどうしようと、過剰な不安や恐怖心が芽生える。そこで無意識の内に親や配偶者が気に入られるように「良い子」「良い妻」を演じてしまう&amp;hellip;ということらしい。
+それから「家庭内ストックホルム症候群」という言葉もある。児童虐待やDVを受けている被害者が、自分を虐待・無視などで苦しめる親や配偶者（多くの場合夫）に不満や憎しみを抱きつつも、見捨てられたらどうしようと、過剰な不安や恐怖心が芽生える。そこで無意識の内に親や配偶者が気に入られるように「良い子」「良い妻」を演じてしまう&amp;hellip;ということらしい。
 いやでもこれって別に、ストックホルム症候群という名称を持ち出すまでもなく、より普遍的な事象だと思うな、人間が暴力・抑圧・嫌がらせに対して自分の心を麻痺させて適応を試みる心理が働くのは、きっと人間のデフォルト機能なんだよ、悲しい機能だけど。
 DVの他に大学内の教授と生徒の間に発生する「アカハラ」、職場のパワハラでも同様の状態になるよね、理不尽なハラスメントを受けているのに、それを客観視できない状態にあると、相手に気に入られようとして相手に従い、相手の意に沿うように行動してしまうんだ。
 これには2つの要因がある、生き延びるための生存本能と、他者に愛されたい、承認されたいという、ヒトとしての社会的本能。しかしそれで相手がハラスメントを辞めるかと言ったら逆だ、「こいつはいじめれば何でも言うことをきく」と思われてエスカレートするだけだ、全く本質的な解決にはならず、状況が悪化するだけなんだよ。
-  ここまでの文章は、今年2021年の1月に別のブログに投稿した内容を編集・加筆したものだ。そこに置いておいても塩漬けになるだけだからこっちに持ってきた。文章中に登場するツイは、とうにアカウント削除したので今は存在しない。「家庭内ストックホルム症候群」から先は今回追記したもの。主旨が途中からずれている気がするが、まぁ気にしない。
+ここまでの文章は、今年2021年の1月に別のブログに投稿した内容を編集・加筆したものだ。そこに置いておいても塩漬けになるだけだからこっちに持ってきた。文章中に登場するツイは、とうにアカウント削除したので今は存在しない。「家庭内ストックホルム症候群」から先は今回追記したもの。主旨が途中からずれている気がするが、まぁ気にしない。
 Twitterなんか最低のクソメディアだと思うが、ふと思いついて書いたことでも後でこうして振り返って考察することもあるから、そういう意味では少しはやる価値あったかな。
 結局何が言いたいのかってね、多くの人間は、ハラスメントを受けている最中は、状況を客観視できないんだよ、かつ、生存本能と社会的本能のためにその状況に適応しようとして、自分を押し殺してハラスメントをする相手や周囲に従ったり、意に沿わない行動をとったりしがちなんだ。これは自覚しないといけないし、あらゆるハラスメントには声をあげ、全力で抵抗しなけりゃいけないんだ、それこそ、羊や奴隷ではなく、主権を持った人間として生きるために。
-  過去記事にも書いたDylan Thomasの詩の一部。本来の詩の主旨は違うけど、今のこの世界に対して、全く同じことを言いたいね。
- Do not go gentle into that good night,
+過去記事にも書いたDylan Thomasの詩の一部。本来の詩の主旨は違うけど、今のこの世界に対して、全く同じことを言いたいね。
+Do not go gentle into that good night,
 Rage, rage against the dying of the light.
-  あぁまったく、俺はやっぱりこのまま死ぬわけにはいかねぇ、大人しく従ってちゃダメなんだ、激怒して、憤怒して、死にもの狂いで抵抗しなくちゃいけないんだ。</description>
+あぁまったく、俺はやっぱりこのまま死ぬわけにはいかねぇ、大人しく従ってちゃダメなんだ、激怒して、憤怒して、死にもの狂いで抵抗しなくちゃいけないんだ。</description>
     </item>
-    
     <item>
       <title>MacにPython3を再インストール</title>
       <link>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</link>
       <pubDate>Sat, 30 Oct 2021 12:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</guid>
       <description>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
-$ brew install python3  $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)  pythonだけで実行するとゴニョゴニョ言われる。
-$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &amp;quot;/usr/local/lib/python3.9/site-packages:&amp;quot; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH  で、この後pythonを実行すると2系になってしまう。
+$ brew install python3 $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9) pythonだけで実行するとゴニョゴニョ言われる。
+$ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &amp;#34;/usr/local/lib/python3.9/site-packages:&amp;#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH で、この後pythonを実行すると2系になってしまう。
 $ python WARNING: Python 2.7 is not recommended. This version is included in macOS for compatibility with legacy software.</description>
     </item>
-    
     <item>
       <title>ひとり言 - 10月27日</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1027/</link>
       <pubDate>Wed, 27 Oct 2021 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1027/</guid>
       <description>あー、マジやべぇ、息が詰まりそうだ、いろいろと、勘弁してくれよもう的な動きが多くてさ、めっちゃやり辛い。まじで、10月入ってからすげえやり辛くなった。鬱屈がたまってどうしようもねぇ。
 しばらく前から通勤時に英文小説読む余力もないし、Tumblrやり過ぎるとDVT症候群で頭痛と目眩がするし、イヤホンで大音量で音楽聴きすぎて耳がイカレそうだし、もう何を支えにしていいかわからないな、オレは生き延びることができるんだろうか？
 そりゃ仕事があるだけありがたい立場だってことは忘れちゃいけないけどね、もし今「戦争」状態じゃなかったらいつでも出ていけるんだからな、なにせ俺様能力高いからな。
- うん、そのつもりでやっていくしかねぇ。
- </description>
+うん、そのつもりでやっていくしかねぇ。</description>
     </item>
-    
     <item>
       <title>Eye Candyがいるんだ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/life-1025/</link>
       <pubDate>Tue, 26 Oct 2021 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/life-1025/</guid>
       <description>10月25日の明け方に見た夢。コンサート会場みたいなところ。そこはロンドンである。観客が大勢いて賑わっている。そしてノーマスク。「あぁ、マスク圧解禁されたのか！」と嬉しい。よく見ると数人はマスクしている、でもほぼノーマスク。あぁ。
- もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ&amp;hellip;.
- </description>
+もうずっとリアル世界で不快なものしか見てないから、せめてここだけでも。これくらいいいだろ&amp;hellip;.</description>
     </item>
-    
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
       <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
       <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
- 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
+上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
 各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-   アイテム 名称     SNSトピック custom-event-notification   Lambda用IAMロール custom-event-mail-role   Lambda関数 custom-mail-function   eventルール custom-mail-rule     ではここから作業内容の記録に入る。
+アイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 custom-mail-function eventルール custom-mail-rule ではここから作業内容の記録に入る。
 SNSトピック作成
-$ aws sns create-topic --name custom-event-notification  サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;quot;SubscriptionArn&amp;quot;: &amp;quot;pending confirmation&amp;quot; }  指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
+$ aws sns create-topic --name custom-event-notification サブスク（サブスクリプション）作成
+$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &amp;#34;SubscriptionArn&amp;#34;: &amp;#34;pending confirmation&amp;#34; } 指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
 または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification  ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。</description>
+$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。
+trust-policy.json
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;lambda.amazonaws.com&amp;#34; }, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34; } ] } $ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy.</description>
     </item>
-    
     <item>
       <title>CloudWatchLogsからS3へログをエクスポートする</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</link>
       <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</guid>
       <description>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる&amp;hellip;
 コンソールを使用してログデータを Amazon S3 にエクスポートする
- 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。
- バケットポリシーサンプル
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } }, { &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34; , &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } }, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } } ] }  上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
- 対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行   エクスポート先のS3では確かzip化された状態で格納されていたと思う。
+概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。
+バケットポリシーサンプル
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Action&amp;#34;: &amp;#34;s3:GetBucketAcl&amp;#34;, &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs&amp;#34;, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } }, { &amp;#34;Action&amp;#34;: &amp;#34;s3:PutObject&amp;#34; , &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::my-app-logs/sjh6dert3a/*&amp;#34;, &amp;#34;Condition&amp;#34;: { &amp;#34;StringEquals&amp;#34;: { &amp;#34;s3:x-amz-acl&amp;#34;: &amp;#34;bucket-owner-full-control&amp;#34; } }, &amp;#34;Principal&amp;#34;: { &amp;#34;Service&amp;#34;: &amp;#34;logs.ap-northeast-1.amazonaws.com&amp;#34; } } ] } 上記前提条件が整った上で、以下実行する。カッコ内は英語表記の場合。
+対象のログストリーム画面上で、「アクション」(Actions)のプルダウンから、「データをAmazon S3に エクスポート」(Export data to Amazon S3)を選択。 次画面でバケット名、作成しておいたS3のプレフィクス名、ログストリーム、時間の範囲指定を行い、「エクスポート」実行 エクスポート先のS3では確かzip化された状態で格納されていたと思う。
 ドキュメント中の表現一部「ランダムに生成されたプレフィクス」、これがわかりにくかった。ログエクスポート先のS3にランダム文字列のプレフィクスが存在するのが望ましいようだ。なぜ普通の文字列ではなくランダム値が望ましいのかはよくわからん。「生成されたランダム文字列」と書かれているもんだから、どこで生成してるんだ？と混乱した。これは自分で適当に決めた値でよい。
- 上記に書いた作業は必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するだろう。
- 追記</description>
+上記に書いた作業は必要に応じてアドホック的に行う対応であり、定常的対応であればLambdaなりshellなりでバッチ化するだろう。
+追記
+ということで、Lambdaによるログエクスポートの記事書いた。
+CloudWatch LogsからS3にエクスポート(Lambda/Python) </description>
     </item>
-    
     <item>
       <title>Github Actionsメモ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/github-actions/</link>
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/github-actions/</guid>
       <description>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
 Hugo + GitHub Pages + GitHub Actions で独自ドメインのウェブサイトを構築する
-  今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
+今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
     </item>
-    
     <item>
       <title>middle finger周辺の表現など</title>
       <link>https://ecnedaced-seirots.github.io/post/a/the-finger/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/the-finger/</guid>
       <description>そして俺は相変わらず中指を1000本くらい突き立てたい気分の日々が継続中なのだ。日々アドレナリンが過剰放出されてしまい、心身によろしくない。けど怒りをそのままぶちまけるのは芸がないし、自分にとってプラスにならないからね、俺はプラスになることだけやりたいわけ、だから少しでも勉強になることを書く。
- &amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
+&amp;ldquo;middle finger&amp;quot;って言ったらあれです、特別な意味を持つ「中指」。
 以下はすべて同じ意味。&amp;ldquo;the finger&amp;quot;でも同じ意味になるとは知らなかった。
- middle finger second finger the finger   侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
- give the middle finger give the finger   以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
- flip the bird fly the bird    しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
+middle finger second finger the finger 侮蔑や怒りを示すジェスチャーとなる「中指を立てる」行為は以下の表現。
+give the middle finger give the finger 以下も同じ意味。知らなかった。でもどれだけポピュラーなんだろう？
+flip the bird fly the bird しばらく前までは心の中だけで中指を突き立てていたが、最近もう耐えられなくなって物理的にも公の場で中指を立てている俺様なのだった。</description>
     </item>
-    
     <item>
       <title>単語rageを覚えたきっかけはディラン・トーマスの詩だった</title>
       <link>https://ecnedaced-seirots.github.io/post/a/dylan-thomas/</link>
       <pubDate>Tue, 19 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/dylan-thomas/</guid>
       <description>&amp;ldquo;rage&amp;quot;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
- Do not go gentle into that good night.
+Do not go gentle into that good night.
 Rage, rage against the dying of the light.
-  パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。&amp;ldquo;rage&amp;quot;という単語を初めて見たので調べたところ、意味は先述の通り。
+パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。&amp;ldquo;rage&amp;quot;という単語を初めて見たので調べたところ、意味は先述の通り。
 これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
 それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
-  Do not go gentle into that good night,
+Do not go gentle into that good night,
 Old age should burn and rage at close of day;
 Rage, rage against the dying of the light.
 Though wise men at their end know dark is right,
-Because their words had forked no lightning they</description>
+Because their words had forked no lightning they
+Do not go gentle into that good night.</description>
     </item>
-    
     <item>
       <title>MacにGNU版dateをインストール</title>
       <link>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</link>
       <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</guid>
       <description>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
 このままだとコマンドがgdateなので、gdateを&amp;quot;date&amp;quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; +&#39;%s&#39; 1526482800  参考
+alias date=&amp;#39;/usr/local/bin/gdate&amp;#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &amp;#39;2018/5/17 00:00:00&amp;#39; +&amp;#39;%s&amp;#39; 1526482800 参考
 Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- </description>
+UNIX時間に変換・UNIX時間を取得する方法</description>
     </item>
-    
     <item>
       <title>AWS CLIのページャを無効化する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
       <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&amp;quot;&amp;quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </description>
+configで設定 ~/.aws/configに以下記載する。
+[default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&amp;#34;&amp;#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</description>
     </item>
-    
     <item>
       <title>CloudWatchアラーム作成時のメモ（過去事例）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/</guid>
       <description>AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
 数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが&amp;hellip;
 CloudFormationでCloudWatchAlermを作成する
- ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
+ここで、書いていてうっすら思い出した。過去事例ではオートスケールのアラームだったが、その場合は他のアラームと異なるのかもしれない。（つまりオートスケールのアラームはポリシーを別出しにする）確かASG（オートスケーリンググループ）自体もCFnで作るのは不向きということでCLIで作成してた。CFnだと勝手に変な名前付けられるから、って理由だったかな。しかしハッキリとは思い出せない。
 もやもや感が払拭しきれないが、とりあえず過去のメモ書きをのせておく。
- ここから。
+ここから。
 オートスケーリンググループのCloudWatchアラーム作成時のポイントは、先にSNSトピック、ポリシーを作成する。ポリシー作成のCLIを実行するとARNが出力されるので、その値を定義してアラームを作成する。SNSトピック自体はCFnで作成していた。サブスクリプション作成はコンソールからやったような。グダグダな記憶だが、メールアドレスをサブスクライブする時に手動での承認が発生するのは確か。（設定したメールアドレスに届いたメール内のリンクを押下すると承認が完了する）
 サブスクリプション承認は手動になるが、アラーム作成時に指定するのはトピックARN。承認しないと後続作業ができないわけではない、と思われる。（ただし承認対応は3日以内に実施すること）
 以下、ec2オートスケーリングのスケールアウト/インポリシー作成CLIの例。ec2のオートスケールってパターンもすでにオールドファッション化しているけど&amp;hellip;、数年前の事例なので。
 スケールアウトポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1  スケールインポリシー
-$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1  この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
-snstopic=&amp;quot;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&amp;quot; scaleoutpolicy=&amp;quot;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&amp;quot; $ aws cloudwatch put-metric-alarm \ --alarm-name &amp;quot;test-web-scaleout-alarm&amp;quot; \ --alarm-description &amp;quot;Alarm when CPU exceeds 70%&amp;quot; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&amp;quot;test-web-asg&amp;quot; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1  スケールイン時のアラームも同様に作成する。</description>
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scaleout-policy \ --scaling-adjustment 2 \ --adjustment-type ChangeInCapacity \ --cooldown 300 \ --region ap-northeast-1 スケールインポリシー
+$ aws autoscaling put-scaling-policy \ --auto-scaling-group-name test-web-asg \ --policy-name test-web-scalein-policy \ --scaling-adjustment -2 \ --adjustment-type ChangeInCapacity \ --cooldown 600 \ --region ap-northeast-1 この後、以下のCLIを実行。スケールアウトアラーム作成CLI例。--alarm-actions オプションで 先に作成しておいた$snstopic, $scaleoutpolicy の値を指定している。
+snstopic=&amp;#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&amp;#34; scaleoutpolicy=&amp;#34;arn:aws:autoscaling:ap-northeast-1:[AWSアカウントID]:scalingPolicy:[ランダム値]:autoScalingGroupName/test-web-asg:policyName/test-web-scaleout-policy&amp;#34; $ aws cloudwatch put-metric-alarm \ --alarm-name &amp;#34;test-web-scaleout-alarm&amp;#34; \ --alarm-description &amp;#34;Alarm when CPU exceeds 70%&amp;#34; \ --metric-name CPUUtilization \ --namespace AWS/EC2 \ --statistic Average \ --period 60 \ --threshold 70 \ --comparison-operator GreaterThanThreshold \ --dimensions Name=AutoScalingGroupName,Value=&amp;#34;test-web-asg&amp;#34; \ --evaluation-periods 4 \ --alarm-actions $scaleoutpolicy $snstopic \ --unit Percent \ --region ap-northeast-1 スケールイン時のアラームも同様に作成する。</description>
     </item>
-    
     <item>
       <title>Tumblrについて、ひとり言</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sns-influence/</link>
       <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sns-influence/</guid>
       <description>SNSって誰をフォローするかも大きいけど誰にフォローされるか、も相当影響でかいんだなと思う。
 もともとSNS嫌いだからほとんどやってないけど、Tumblrは例外で、ここしばらく依存症に近いくらい使っている。全然使っていなかった時期もあるんだけどね。今は諸事情によりヘビーユーザー。
 当初はフォロワー僅か、だったが逆に好き勝手なことが書けた。Tumblrってテキスト投稿には向いてないと思うけど、それすら気にせずに画像だろうが音声だろうがテキストだろうが、好きなように投稿する。それがTumblrの良さ。
 当初投稿するのは自分の写真が中心で、たまにテキストあり、リブログはあまりしていなかった。特にフォローしたいアカウントもなかったけどたまに癒し系とか懐かし系画像投稿したいから適当に複数アカウントフォローしてた。でも、楽しくはなかったんだよね。「たまにこっち系の画像ポストするのはいいけどそれメインでやりたいわけじゃないし、なんか違う気がするなぁ」と違和感を覚え始めて、フォロー解除した。
-  しかしその後、何がきっかけか覚えていないのだが、あるアカウントとその周辺アカウントをフォロー開始してから、めっちゃ楽しくなってしまった。それらのアカウントは毎日投稿しているけど、リブログせずにいられないような、何かしらカッコイイポストが必ずある。経由されたポストやソースをポストしたアカウントを追うとこれまたセンスが良くて、芋づる式に夢中でlike,reblogしてしまうのである。
+しかしその後、何がきっかけか覚えていないのだが、あるアカウントとその周辺アカウントをフォロー開始してから、めっちゃ楽しくなってしまった。それらのアカウントは毎日投稿しているけど、リブログせずにいられないような、何かしらカッコイイポストが必ずある。経由されたポストやソースをポストしたアカウントを追うとこれまたセンスが良くて、芋づる式に夢中でlike,reblogしてしまうのである。
 Tumblrのすごいところは、オリジナルのポスト作成者じゃなくても、センスのいいポストで構成されたブログが甚大な価値を持つことだ。「あなたのセンスは素晴らしい、本当に尊敬する！」と叫びたくなるようなアカウントが複数存在する。まだ出会えていないブログもあるかもしれない。実際最近になっても、「こんなセンスいいブログがあったんだ！」と新たに発見することがある。（もちろんそんなときに直接メッセージを送ったりはしない。1%程度の例外はあるだろうが、Tumblrでは誰もそんなこと望んでいないのだから）
 いいポストを集めたブログは自然にいいブログになる。オリジナルの作者かどうか、の区別はもはや意味をなさなくなる。いいものを発見してコレクションする、そのエネルギーが、見る人にインスピレーションや刺激を与えるのだ。それがTumblrの良さ。（二度目）
 このことに気づいてから、俺は夢中になってしまった。Tumblr自体はずっと前からやっているのに、こんなに楽しいと感じたのは初めてといってもいい。
-  以上は「誰をフォローするか」による影響の話。ここから先、「誰にフォローされるか」について書いてみる。
+以上は「誰をフォローするか」による影響の話。ここから先、「誰にフォローされるか」について書いてみる。
 少し前のある日、これまで細々とした件数だった、零細アカウントの俺の通知が飛躍的に伸びた。たまに特定のポストのリアクションが増加することはあったが、その日は過去にない規模の反響だった。「何かあったか？」と追ってみると、ある人気アカウントが自分のポストを複数リブログしてた。そこから雪だるま式にリアクションが増えたわけである。これにより、自分のブログのフォロワーも増加した。増加といってもその日に十人くらい、その後日に数人ずつ程度のペースだが。ちなみに先の人気アカウントにもフォローされていた。
 しかし、正直あまりうれしくないし、逆に困る。「ある誰かが自分の投稿を見ている」ことを意識していると、書きにくいことが出てくるのである。画像のポストだけでみても、フォロワーにインフルエンサーとそのフォロワーがいると「何を投稿するか」について、これまで以上に他人を意識せざるを得なくなってしまうのである。それまでは「とにかく自分がポストしたいものをポストする」スタンスだったのに、他人にサービスするようなポストを挟んでしまうとか。実際その日以降、しばらくそんな状況が続いた。引き摺られてはいけない、と自覚しつつも、どこかで引き摺られてしまうのだ。
 で、この状況はストレスなのである。つまり楽しくないのである。楽しくないTumblrなんかやりなくない。自分が楽しむためにやっているんだから、プライオリティの優位をそっちに戻す必要がある。&amp;hellip;と、そのことを明確に言語化するためのこの投稿を書いた。
 実はこの件と前後して、先の方に書いたセンス抜群のアカウントからフォローしてもらった。これは嬉しかったね。俺のポストはそんなにリブログしてもらってないけど、たまにリブログしてもらうとやはり反響がすごい。まぁこの反響ってのも良し悪しだけどね、まったく反応がないと寂しいけどデカすぎても疲れる、さっき書いたように、よくない影響受けることがあるからね。まぁこれって、リアルライフで人混みに出ると疲れるのと同じことだと思う。
-  で、最終的に言いたいことは。
+で、最終的に言いたいことは。
 リアルライフでもSNSでも、「自分の周囲に誰がいるか」の影響は非常に大きいのだ、と。
 人間は誰でもエネルギーを持っている。エネルギーは、良くも悪くも他者に影響を与える。ある人間が、良いエネルギーを放出している集団の中にいればおのずとよい影響を受ける。逆もまた然りである。リアルライフだとそのことを如実に実感するが、ネット上でもそれは同様だ。実際物事はそう単純ではないから、他者からの影響の方向や質はモザイクのように絡み合っているイメージではあるが&amp;hellip;
 TwitterとかFacebookみたいにガチで言葉の応酬をするようなSNSは当然その傾向が強いと思うが、Tumblrのように非常に関係性が薄いSNSでもそういうことがあるんだな、と今更ながら実感した次第。
 結論としては、Tumblrではいくつかのアカウントを本当にリスペクトしているけれど、自分の軸をずらさずにかつ一定の距離を保つ姿勢を貫くのが、長く楽しむコツだね。</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-2）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</link>
       <pubDate>Sun, 03 Oct 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-2/</guid>
       <description>前回投稿でAWS CodePipelineのクロスアカウント設定（前半）ではリソース配布元のアカウントAの内容中心に書いた。後半は配布先となるアカウントBの設定内容を書いていく。
 前回投稿
@@ -1340,44 +1125,42 @@ AWS CodeDeployでクロスアカウントデプロイ実行（パイプライン
 やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。 主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
+主な構成要素 これも前回書いているが、こっちにも書いておかないとわけわからなくなるので再掲。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
 ③ S3バケット (アカウントBにアクセス許可するバケットポリシーを付与）
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
- 2-資材配布先（アカウントB）
+2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
+上記アイテムを作成済みとして、作業概要は前回記事に記載した。以降、アカウントB側で用意するアイテムの内容を書く。
 2-① CodeDeploy定義
 アカウントBのコンソールにて、アプリケーションとデプロイメントグループを作成する。詳細は割愛。
 2-② ec2用のIAMロール
 KMSとS3用のインラインポリシーを作成する。AWS参考ページでは2つに分けていたが統合しても問題ないと思う。
 KMS用インラインポリシー
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] }  S3用インラインポリシー</description>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;kms:DescribeKey&amp;#34;, &amp;#34;kms:GenerateDataKey*&amp;#34;, &amp;#34;kms:Encrypt&amp;#34;, &amp;#34;kms:ReEncrypt*&amp;#34;, &amp;#34;kms:Decrypt&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;arn:aws:kms:us-east-1:[アカウントAのID]:key/[Key ID]&amp;#34; #KMSのARN ] } ] } S3用インラインポリシー</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</link>
       <pubDate>Sun, 03 Oct 2021 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/</guid>
       <description>前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
- やりたいこと
+やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&amp;hellip;）
- 主な参考ページ
+主な参考ページ
 他のリソースを使用するパイプラインを CodePipeline で作成するAWSアカウント
- 基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
+基本的にこのページの通りにやればOK。アカウントA側で一度単一アカウント用の適当なパイプラインを作成して、そのJSON定義を取得。それをクロスアカウント用に編集してCLIからアップデートする。ちなみに上記リンクは日本語版だが機械翻訳の文章がまともな日本語ではなくイラッとくるので、ほぼオリジナルの英語版を参考にした。
 参考までに、以下クラメソさんの記事。当初これのBuildをDeployに置き換えてやってみたが失敗した。不足か誤りがあるんだろうがいきなりやったこともありわけがわからなすぎて頓挫。先述のAWS公式の方がやりたいことに近かったため仕切り直しした。
 クロスアカウントCodeBuild + パイプライン例
 CodePipelineでアカウントをまたいだパイプラインを作成してみる
- 制約事項
- クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG）   主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
+制約事項
+クロスアカウントのパイプラインはマネジメントコンソールから作成不可のため、aws cliから作成/更新する CodeDeployの定義とデプロイ先のec2は同一アカウントであること クロスアカウントでパイプラインを組む場合、アーティファクト格納用S3バケットの暗号化キーはKMSを使用する（AWS デフォルトの暗号化キーはNG） 主な構成要素 2アカウント間で各種アイテムを用意することになり、混乱しがちなのでまとめておく。前回投稿では配布先となるアカウントB側にS3バケットがある構成だったが、今回は逆。ただし構成的にはこちらの方が自然かと思う。
 1-資材配布元（アカウントA）
 ① CodeCommitリポジトリ（ec2にローカルリポジトリを作成〜資材格納）
 ② KMSキー (両方のアカウントにアクセス許可する)
@@ -1385,127 +1168,107 @@ CodePipelineでアカウントをまたいだパイプラインを作成して�
 ④ CodePipelineが使用するサービスロール
 ⑤ CodePipleline定義（コンソールで作成したパイプライン定義JSONをCLIから更新）
 JSON取得コマンド
-$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json  2-資材配布先（アカウントB）
+$ aws codepipeline get-pipeline --name [パイプライン名] &amp;gt; [パイプライン名].json 2-資材配布先（アカウントB）
 ① CodeDeploy定義（アプリケーション/デプロイメントグループ）
 ② ec2用のIAMロール（CodeDeployがアカウントAのKMSキー、S3にアクセスするためのポリシーを付与）
 ③ ②のIAMロールをアタッチしたデプロイ先ec2
 ④ クロスアカウント用サービスロール（CodeDeployとS3操作にassumeする）
- 作業概要 上記各リソースを作成済として、以下の作業を行う。
+作業概要 上記各リソースを作成済として、以下の作業を行う。
 アカウントAの作業用端末またはec2にログイン。1-⑤のパイプライン定義JSONを適当なパスに配置し、パイプラインをアップデートする
-$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].</description>
+$ cd /path/to/json $ aws codepipeline update-pipeline --cli-input-json file://[パイプライン名].json アップデートしたパイプラインを実行する
+$ aws codepipeline start-pipeline-execution --name [パイプライン名] アカウントBでは特に作業なし。デプロイステータスが成功になったら、ec2に資材がデプロイされていることを確認する。</description>
     </item>
-    
     <item>
       <title>AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）</title>
       <link>https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/</link>
       <pubDate>Sat, 25 Sep 2021 13:28:51 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/</guid>
       <description>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
- 参考
+参考
 異なる AWS アカウントでアプリケーションをデプロイする
 （上記ページにリンクあり。assumeロールの設定は以下参考）
 IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
- 環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
+環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
 ① 配布元(Dev)
 ② 配布先(Stg)
 概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
 基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
- 作業内容   配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
-  配布先②アカウントにて、①がassumeするためのロールAを作成する。
-  ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
+作業内容 配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
+配布先②アカウントにて、①がassumeするためのロールAを作成する。
+ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
 rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
 IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
- インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &amp;ndash;&amp;gt; [アクセス許可の追加] &amp;ndash;&amp;gt; [インラインポリシーの作成] [JSON] タブ選択
+インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ &amp;ndash;&amp;gt; [アクセス許可の追加] &amp;ndash;&amp;gt; [インラインポリシーの作成] [JSON] タブ選択
 以下の内容を設定する。
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&amp;#34; } }  (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;s3:ListAllMyBuckets&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:ListBucket&amp;#34;, &amp;#34;s3:GetBucketLocation&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app&amp;#34; #検証環境の資材格納バケット名 }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:GetObject&amp;#34;, &amp;#34;s3:PutObject&amp;#34;, &amp;#34;s3:DeleteObject&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app/*&amp;#34; } ] }  ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。   ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。  この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。</description>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;sts:AssumeRole&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&amp;#34; } } (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: &amp;#34;s3:ListAllMyBuckets&amp;#34;, &amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34; }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:ListBucket&amp;#34;, &amp;#34;s3:GetBucketLocation&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app&amp;#34; #検証環境の資材格納バケット名 }, { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;s3:GetObject&amp;#34;, &amp;#34;s3:PutObject&amp;#34;, &amp;#34;s3:DeleteObject&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;arn:aws:s3:::staging-app/*&amp;#34; } ] } ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。 ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。 この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。</description>
     </item>
-    
     <item>
       <title>Firefox/Chromeでアドオンなし全画面キャプチャ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</link>
       <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</guid>
       <description>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &amp;hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
 Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+Windows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
 しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</description>
     </item>
-    
     <item>
       <title>Macで必須のショートカット3選</title>
       <link>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</link>
       <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</guid>
-      <description> 私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
-  フルスクリーン解除 control+ command + F
-  アプリケーションの強制終了 command + option + esc
-  スクリーンショット command + shift + 3
-   それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない&amp;hellip;
- 追記
-もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command + D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command + Shift + D。3選といいつつ、思い出したらまた書くかもな&amp;hellip;
- </description>
+      <description>私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
+フルスクリーン解除 control+ command + F
+アプリケーションの強制終了 command + option + esc
+スクリーンショット command + shift + 3
+それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない&amp;hellip;
+追記
+もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command + D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command + Shift + D。3選といいつつ、思い出したらまた書くかもな&amp;hellip;</description>
     </item>
-    
     <item>
       <title>サクラエディタで半角スペースを可視化</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sakura/</link>
       <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sakura/</guid>
       <description>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
- メニューから[設定] 〜 [タイプ別設定] を選択。
- 「カラー」タブ 半角空白 「色分け/表示」にチェック   </description>
+メニューから[設定] 〜 [タイプ別設定] を選択。
+「カラー」タブ 半角空白 「色分け/表示」にチェック </description>
     </item>
-    
     <item>
       <title>井の頭公園 - 2018年4月</title>
       <link>https://ecnedaced-seirots.github.io/post/a/inokashira-park/</link>
       <pubDate>Wed, 15 Sep 2021 23:53:34 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/inokashira-park/</guid>
-      <description>小ネタでもいいからどんどんポストしたいと思っているけどそれもなかなかできないもんだな。写真だけ。2018年4月の東京・井の頭公園。
- </description>
+      <description>小ネタでもいいからどんどんポストしたいと思っているけどそれもなかなかできないもんだな。写真だけ。2018年4月の東京・井の頭公園。</description>
     </item>
-    
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
       <link>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</guid>
       <description>&lt;p&gt;AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>マークダウン記法</title>
       <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
       <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp;amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
-   </description>
+Markdown 早見表 &amp;amp; 詳細
+かんたんMarkdownの記法
+Markdown記法 チートシート
+GitHub Markdownの「シンタックスハイライト」に対応している言語一覧</description>
     </item>
-    
     <item>
       <title>最初の投稿</title>
       <link>https://ecnedaced-seirots.github.io/post/a/first/</link>
       <pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/first/</guid>
-      <description>とりあえず最初の投稿。
- </description>
+      <description>とりあえず最初の投稿。</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>EKS FargateからFluent BitでCloudWatchにログ送信する | Go Buddy Go</title>
-<meta name="keywords" content="fluentbit, EKS, fargate, kubernetes, AWS, cloudwatchlogs" />
+<meta name="keywords" content="fluentbit, EKS, fargate, kubernetes, AWS, cloudwatchlogs">
 <meta name="description" content="過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="EKS FargateからFluent BitでCloudWatchにログ送信する" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="EKS FargateからFluent BitでCloudWatchにログ送信する" />
 <meta property="og:description" content="過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/eks-fargate-fluent-bit/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-10T20:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-10T20:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-01-10T20:00:00+09:00" />
+<meta property="article:modified_time" content="2022-01-10T20:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="EKS FargateからFluent BitでCloudWatchにログ送信する"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "fluentbit", "EKS", "fargate", "kubernetes", "AWS", "cloudwatchlogs"
   ],
-  "articleBody": "過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。\n EKS Fargateの関連記事\nEKS FargateクラスタをTerraformで作成する(1) \nEKS FargateクラスタをTerraformで作成する(2) \n Fargate + Fluent Bitの参考記事\nFluent Bit for Amazon EKS on AWS Fargate をリリース\nAmazon EKS on Fargate上のPodログをCloudWatchLogsに送信する\n EKSクラスタは過去記事同様にTerraformから自動作成とする。で、FluentBit対応に入るが、準備してからクラスタ作成したかったのでドキュメントとは若干順番が異なる。まず過去記事でFargate Pod用のIAMロールを作成したが、CWログ送信にあたって追加で権限が必要なため別途ポリシーを作成して対象ロールにアタッチする。\n# ポリシーファイルをDL。 $ curl -OL https://raw.githubusercontent.com/aws-samples/amazon-eks-fluent-logging-examples/mainline/examples/fargate/cloudwatchlogs/permissions.json # ポリシー作成 $ aws iam create-policy \\ --policy-name eks-fargate-fluent-bit-cloudwatch \\ --policy-document file://permissions.json # 既存のFargate Pod用ロールにポリシーをアタッチする。 $ aws iam attach-role-policy \\ --policy-arn arn:aws:iam::012345678910:policy/eks-fargate-fluent-bit-cloudwatch \\ --role-name AmazonEKSFargatePodExecutionRole  この後terraform applyでEKSクラスタを作成。この間に必要なマニフェストを用意。試行錯誤したが最終的にPoCに使ったマニフェストは以下2種。ファイル名や各種値は任意だが一部変更不可の値があるため注意。\n fargate-logging.yaml（ロギング専用Namespace及びConfigMapの定義） httpd-pod.yaml （Fargate用Namespace及びログ送信用Deploymentの定義）   fargate-logging.yaml\nkind: Namespace apiVersion: v1 metadata: name: aws-observability  #変更不可 labels: aws-observability: enabled --- kind: ConfigMap apiVersion: v1 metadata: name: aws-logging namespace: aws-observability  #変更不可 data: output.conf: |  #変更不可（他に設定可能な値もある） [OUTPUT] Name cloudwatch Match * region ap-northeast-1 log_group_name /aws/eks/fargate-fluent-bit log_stream_prefix fargate-pod-log- auto_create_group true  httpd-pod.yaml\nkind: Namespace apiVersion: v1 metadata: name: fargate-test  #Fargateプロファイルで設定している値 --- apiVersion: apps/v1 kind: Deployment metadata: name: httpd-pod  #任意名称 namespace: fargate-test  #Fargateプロファイルで設定している値 spec: selector: matchLabels: app: nginx replicas: 1 template: metadata: labels: app: nginx spec: containers: - name: main image: nginx ports: - containerPort: 80  クラスタ作成完了後、aws eks update-kubeconfig --name [your cluster name]を実行し、以下コマンドを実行する。\n#ログ送信定義をapply $ kubectl apply -f fargate-logging.yaml namespace/aws-observability created configmap/aws-logging created #Fargate Podを起動 $ kubectl apply -f httpd-pod.yaml namespace/fargate-test created deployment.apps/httpd-pod created #ConfigMapの確認 $ kubectl -n aws-observability get cm NAME DATA AGE aws-logging 1 32s kube-root-ca.crt 1 32s  ここからログ送信のためhttpリクエストを生成していく。ターミナルを3個開いて作業する。\n###ターミナル1 #deploymentをexposeする。 $ kubectl -n fargate-test expose deploy httpd-pod #コネクション生成 kubectl -n fargate-test port-forward svc/httpd-pod 8080:80 Forwarding from 127.0.0.1:8080 - 80 Forwarding from [::1]:8080 - 80 ###ターミナル2 #リクエスト送信。以下コマンドを何度か繰り返す。 $ curl localhost:8080   Welcome to nginx! (snip) For online documentation and support please refer to nginx.org. Commercial support is available at nginx.com.\nThank you for using nginx.\n  ###ターミナル3 #ローカルでログ確認 $ kubectl -n fargate-test logs deploy/httpd-pod -f (snip) 127.0.0.1 - - [10/Jan/2022:09:17:15 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\" 127.0.0.1 - - [10/Jan/2022:09:17:47 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\" 127.0.0.1 - - [10/Jan/2022:09:19:01 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\"  マネコンを覗いてみると、CloudWatch Logsにログが送信されていることを確認できた。\n  しかし実際にはこのようにあっさり成功したのではなく、それなりに試行錯誤があった、変更不可の値を任意の名称に変えたりしてたから。以下はfargate-logging.yamlを2回目にapplyした時のエラー。初回はエラー出なかったんだよ。最初から言ってくれよ…\n Error from server: error when creating “fargate-logging.yaml”: admission webhook “0500-amazon-eks-fargate-configmaps-admission.amazonaws.com” denied the request: fargate.conf is not valid. Please only provide output.conf, filters.conf, parsers.conf or flb_log_cw in the logging configmap\n  素直に公式ドキュメントの通りにしていればつまづくことはなかっただろう。まぁわかったからいいけどね。\nそれと設定が読み込まれていないと思われるケースではPod再起動してみたり。（しかし今回の場合は原因はこれじゃなかった）\n$ kubectl -n fargate-test rollout restart deploy httpd-pod  課題 今回はログストリームのプレフィックスを決め打ちにしているが、本来であれば通常のEKSのように、Kubernetes filterでPod名から拾うとかさせたいのである。FargateでのKubernetes filterは初期の頃はサポートされていなかったが、現在は使用できるようになった。今度やってみよう。\nAmazon EKS on AWS Fargate が Fluent Bit Kubernetes Filter のサポートを開始\n ちなみに通常のEKSのログ送信については以下参照\nEKS Container InsightsのFluent Bit設定\n ",
+  "articleBody": "過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。\nEKS Fargateの関連記事\nEKS FargateクラスタをTerraformで作成する(1) EKS FargateクラスタをTerraformで作成する(2) Fargate + Fluent Bitの参考記事\nFluent Bit for Amazon EKS on AWS Fargate をリリース\nAmazon EKS on Fargate上のPodログをCloudWatchLogsに送信する\nEKSクラスタは過去記事同様にTerraformから自動作成とする。で、FluentBit対応に入るが、準備してからクラスタ作成したかったのでドキュメントとは若干順番が異なる。まず過去記事でFargate Pod用のIAMロールを作成したが、CWログ送信にあたって追加で権限が必要なため別途ポリシーを作成して対象ロールにアタッチする。\n# ポリシーファイルをDL。 $ curl -OL https://raw.githubusercontent.com/aws-samples/amazon-eks-fluent-logging-examples/mainline/examples/fargate/cloudwatchlogs/permissions.json # ポリシー作成 $ aws iam create-policy \\ --policy-name eks-fargate-fluent-bit-cloudwatch \\ --policy-document file://permissions.json # 既存のFargate Pod用ロールにポリシーをアタッチする。 $ aws iam attach-role-policy \\ --policy-arn arn:aws:iam::012345678910:policy/eks-fargate-fluent-bit-cloudwatch \\ --role-name AmazonEKSFargatePodExecutionRole この後terraform applyでEKSクラスタを作成。この間に必要なマニフェストを用意。試行錯誤したが最終的にPoCに使ったマニフェストは以下2種。ファイル名や各種値は任意だが一部変更不可の値があるため注意。\nfargate-logging.yaml（ロギング専用Namespace及びConfigMapの定義） httpd-pod.yaml （Fargate用Namespace及びログ送信用Deploymentの定義） fargate-logging.yaml\nkind: Namespace apiVersion: v1 metadata: name: aws-observability #変更不可 labels: aws-observability: enabled --- kind: ConfigMap apiVersion: v1 metadata: name: aws-logging namespace: aws-observability #変更不可 data: output.conf: | #変更不可（他に設定可能な値もある） [OUTPUT] Name cloudwatch Match * region ap-northeast-1 log_group_name /aws/eks/fargate-fluent-bit log_stream_prefix fargate-pod-log- auto_create_group true httpd-pod.yaml\nkind: Namespace apiVersion: v1 metadata: name: fargate-test #Fargateプロファイルで設定している値 --- apiVersion: apps/v1 kind: Deployment metadata: name: httpd-pod #任意名称 namespace: fargate-test #Fargateプロファイルで設定している値 spec: selector: matchLabels: app: nginx replicas: 1 template: metadata: labels: app: nginx spec: containers: - name: main image: nginx ports: - containerPort: 80 クラスタ作成完了後、aws eks update-kubeconfig --name [your cluster name]を実行し、以下コマンドを実行する。\n#ログ送信定義をapply $ kubectl apply -f fargate-logging.yaml namespace/aws-observability created configmap/aws-logging created #Fargate Podを起動 $ kubectl apply -f httpd-pod.yaml namespace/fargate-test created deployment.apps/httpd-pod created #ConfigMapの確認 $ kubectl -n aws-observability get cm NAME DATA AGE aws-logging 1 32s kube-root-ca.crt 1 32s ここからログ送信のためhttpリクエストを生成していく。ターミナルを3個開いて作業する。\n###ターミナル1 #deploymentをexposeする。 $ kubectl -n fargate-test expose deploy httpd-pod #コネクション生成 kubectl -n fargate-test port-forward svc/httpd-pod 8080:80 Forwarding from 127.0.0.1:8080 -\u003e 80 Forwarding from [::1]:8080 -\u003e 80 ###ターミナル2 #リクエスト送信。以下コマンドを何度か繰り返す。 $ curl localhost:8080 \u003c!DOCTYPE html\u003e Welcome to nginx! (snip) For online documentation and support please refer to nginx.org. Commercial support is available at nginx.com.\nThank you for using nginx.\n###ターミナル3 #ローカルでログ確認 $ kubectl -n fargate-test logs deploy/httpd-pod -f (snip) 127.0.0.1 - - [10/Jan/2022:09:17:15 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\" 127.0.0.1 - - [10/Jan/2022:09:17:47 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\" 127.0.0.1 - - [10/Jan/2022:09:19:01 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/7.64.1\" \"-\" マネコンを覗いてみると、CloudWatch Logsにログが送信されていることを確認できた。\nしかし実際にはこのようにあっさり成功したのではなく、それなりに試行錯誤があった、変更不可の値を任意の名称に変えたりしてたから。以下はfargate-logging.yamlを2回目にapplyした時のエラー。初回はエラー出なかったんだよ。最初から言ってくれよ…\nError from server: error when creating “fargate-logging.yaml”: admission webhook “0500-amazon-eks-fargate-configmaps-admission.amazonaws.com” denied the request: fargate.conf is not valid. Please only provide output.conf, filters.conf, parsers.conf or flb_log_cw in the logging configmap\n素直に公式ドキュメントの通りにしていればつまづくことはなかっただろう。まぁわかったからいいけどね。\nそれと設定が読み込まれていないと思われるケースではPod再起動してみたり。（しかし今回の場合は原因はこれじゃなかった）\n$ kubectl -n fargate-test rollout restart deploy httpd-pod 課題 今回はログストリームのプレフィックスを決め打ちにしているが、本来であれば通常のEKSのように、Kubernetes filterでPod名から拾うとかさせたいのである。FargateでのKubernetes filterは初期の頃はサポートされていなかったが、現在は使用できるようになった。今度やってみよう。\nAmazon EKS on AWS Fargate が Fluent Bit Kubernetes Filter のサポートを開始\nちなみに通常のEKSのログ送信については以下参照\nEKS Container InsightsのFluent Bit設定\n",
   "wordCount" : "369",
   "inLanguage": "en",
   "datePublished": "2022-01-10T20:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       EKS FargateからFluent BitでCloudWatchにログ送信する
     </h1>
-    <div class="post-meta">January 10, 2022
+    <div class="post-meta"><span title='2022-01-10 20:00:00 +0900 JST'>January 10, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>過去記事でEKS FargateのPodを起動するところまでやってみた。今回はFargate PodからFluent Bit経由でCloudWatch Logsにログを送信してみる。</p>
@@ -206,7 +205,7 @@
 <a href="https://blog.mmmcorp.co.jp/blog/2021/08/11/post-1704/">Amazon EKS on Fargate上のPodログをCloudWatchLogsに送信する</a></p>
 <p> </p>
 <p>EKSクラスタは過去記事同様にTerraformから自動作成とする。で、FluentBit対応に入るが、準備してからクラスタ作成したかったのでドキュメントとは若干順番が異なる。まず過去記事でFargate Pod用のIAMロールを作成したが、CWログ送信にあたって追加で権限が必要なため別途ポリシーを作成して対象ロールにアタッチする。</p>
-<pre><code># ポリシーファイルをDL。
+<pre tabindex="0"><code># ポリシーファイルをDL。
 $ curl -OL https://raw.githubusercontent.com/aws-samples/amazon-eks-fluent-logging-examples/mainline/examples/fargate/cloudwatchlogs/permissions.json
 
 # ポリシー作成
@@ -227,57 +226,57 @@ $ aws iam attach-role-policy \
 </ul>
 <p> </p>
 <p>fargate-logging.yaml</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Namespace</span>
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">aws-observability      </span> <span style="color:#75715e">#変更不可</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">aws-observability</span>: <span style="color:#ae81ff">enabled</span>
----
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">aws-logging</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">aws-observability </span> <span style="color:#75715e">#変更不可</span>
-<span style="color:#f92672">data</span>:
-  <span style="color:#f92672">output.conf</span>: <span style="color:#ae81ff">|               </span> <span style="color:#75715e">#変更不可（他に設定可能な値もある）</span>
-    [<span style="color:#ae81ff">OUTPUT]</span>
-        <span style="color:#ae81ff">Name cloudwatch</span>
-        <span style="color:#ae81ff">Match   *</span>
-        <span style="color:#ae81ff">region ap-northeast-1</span>
-        <span style="color:#ae81ff">log_group_name /aws/eks/fargate-fluent-bit</span>
-        <span style="color:#ae81ff">log_stream_prefix fargate-pod-log-</span>
-        <span style="color:#ae81ff">auto_create_group true</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Namespace</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">aws-observability      </span> <span style="color:#75715e">#変更不可</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">aws-observability</span>: <span style="color:#ae81ff">enabled</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">aws-logging</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">aws-observability </span> <span style="color:#75715e">#変更不可</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">output.conf</span>: <span style="color:#ae81ff">|               </span> <span style="color:#75715e">#変更不可（他に設定可能な値もある）</span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">OUTPUT]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Name cloudwatch</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">Match   *</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">region ap-northeast-1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_group_name /aws/eks/fargate-fluent-bit</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">log_stream_prefix fargate-pod-log-</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">auto_create_group true</span>
+</span></span></code></pre></div><p> </p>
 <p>httpd-pod.yaml</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Namespace</span>
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fargate-test       </span> <span style="color:#75715e">#Fargateプロファイルで設定している値</span>
----
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">httpd-pod         </span> <span style="color:#75715e">#任意名称</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">fargate-test </span> <span style="color:#75715e">#Fargateプロファイルで設定している値</span>
-<span style="color:#f92672">spec</span>:
-  <span style="color:#f92672">selector</span>:
-    <span style="color:#f92672">matchLabels</span>:
-      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx</span>
-  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
-  <span style="color:#f92672">template</span>:
-    <span style="color:#f92672">metadata</span>:
-      <span style="color:#f92672">labels</span>:
-        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx</span>
-    <span style="color:#f92672">spec</span>:
-      <span style="color:#f92672">containers</span>:
-      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">main</span>
-        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
-        <span style="color:#f92672">ports</span>:
-        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Namespace</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">fargate-test       </span> <span style="color:#75715e">#Fargateプロファイルで設定している値</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">httpd-pod         </span> <span style="color:#75715e">#任意名称</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">fargate-test </span> <span style="color:#75715e">#Fargateプロファイルで設定している値</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">main</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div><p> </p>
 <p>クラスタ作成完了後、<code>aws eks update-kubeconfig --name [your cluster name]</code>を実行し、以下コマンドを実行する。</p>
-<pre><code>#ログ送信定義をapply
+<pre tabindex="0"><code>#ログ送信定義をapply
 $ kubectl apply -f fargate-logging.yaml 
 namespace/aws-observability created
 configmap/aws-logging created
@@ -294,7 +293,7 @@ aws-logging        1      32s
 kube-root-ca.crt   1      32s
 </code></pre><p> </p>
 <p>ここからログ送信のためhttpリクエストを生成していく。ターミナルを3個開いて作業する。</p>
-<pre><code>###ターミナル1
+<pre tabindex="0"><code>###ターミナル1
 #deploymentをexposeする。
 $ kubectl -n fargate-test expose deploy httpd-pod
 
@@ -302,7 +301,7 @@ $ kubectl -n fargate-test expose deploy httpd-pod
 kubectl -n fargate-test port-forward svc/httpd-pod 8080:80 
 Forwarding from 127.0.0.1:8080 -&gt; 80
 Forwarding from [::1]:8080 -&gt; 80
-</code></pre><pre><code>###ターミナル2
+</code></pre><pre tabindex="0"><code>###ターミナル2
 #リクエスト送信。以下コマンドを何度か繰り返す。
 $ curl localhost:8080
 &lt;!DOCTYPE html&gt;
@@ -312,21 +311,20 @@ $ curl localhost:8080
 (snip)
 
 &lt;p&gt;For online documentation and support please refer to
-&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+&lt;a href=&#34;http://nginx.org/&#34;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
 Commercial support is available at
-&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+&lt;a href=&#34;http://nginx.com/&#34;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><pre><code>###ターミナル3
+</code></pre><pre tabindex="0"><code>###ターミナル3
 #ローカルでログ確認
 $ kubectl -n fargate-test logs deploy/httpd-pod -f
 (snip)
-127.0.0.1 - - [10/Jan/2022:09:17:15 +0000] &quot;GET / HTTP/1.1&quot; 200 615 &quot;-&quot; &quot;curl/7.64.1&quot; &quot;-&quot;
-127.0.0.1 - - [10/Jan/2022:09:17:47 +0000] &quot;GET / HTTP/1.1&quot; 200 615 &quot;-&quot; &quot;curl/7.64.1&quot; &quot;-&quot;
-127.0.0.1 - - [10/Jan/2022:09:19:01 +0000] &quot;GET / HTTP/1.1&quot; 200 615 &quot;-&quot; &quot;curl/7.64.1&quot; &quot;-&quot;
-
+127.0.0.1 - - [10/Jan/2022:09:17:15 +0000] &#34;GET / HTTP/1.1&#34; 200 615 &#34;-&#34; &#34;curl/7.64.1&#34; &#34;-&#34;
+127.0.0.1 - - [10/Jan/2022:09:17:47 +0000] &#34;GET / HTTP/1.1&#34; 200 615 &#34;-&#34; &#34;curl/7.64.1&#34; &#34;-&#34;
+127.0.0.1 - - [10/Jan/2022:09:19:01 +0000] &#34;GET / HTTP/1.1&#34; 200 615 &#34;-&#34; &#34;curl/7.64.1&#34; &#34;-&#34;
 </code></pre><p> </p>
 <p>マネコンを覗いてみると、CloudWatch Logsにログが送信されていることを確認できた。</p>
 <p><img loading="lazy" src="/img/b/fargate-fluentbit-log-001.jpg" alt="Logging"  />
@@ -342,7 +340,7 @@ $ kubectl -n fargate-test logs deploy/httpd-pod -f
 <p> </p>
 <p>素直に公式ドキュメントの通りにしていればつまづくことはなかっただろう。まぁわかったからいいけどね。</p>
 <p>それと設定が読み込まれていないと思われるケースではPod再起動してみたり。（しかし今回の場合は原因はこれじゃなかった）</p>
-<pre><code>$ kubectl -n fargate-test rollout restart deploy httpd-pod
+<pre tabindex="0"><code>$ kubectl -n fargate-test rollout restart deploy httpd-pod
 </code></pre><p> </p>
 <h3 id="課題">課題<a hidden class="anchor" aria-hidden="true" href="#課題">#</a></h3>
 <p>今回はログストリームのプレフィックスを決め打ちにしているが、本来であれば通常のEKSのように、Kubernetes filterでPod名から拾うとかさせたいのである。FargateでのKubernetes filterは初期の頃はサポートされていなかったが、現在は使用できるようになった。今度やってみよう。</p>
@@ -375,6 +373,7 @@ $ kubectl -n fargate-test logs deploy/httpd-pod -f
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/fluentbit/">fluentbit</a></li>
@@ -386,12 +385,12 @@ $ kubectl -n fargate-test logs deploy/httpd-pod -f
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-5/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>「愛と幻想のファシズム」より(5) </span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>AWS NATゲートウェイの作成と設定</span>
   </a>
@@ -400,27 +399,28 @@ $ kubectl -n fargate-test logs deploy/httpd-pod -f
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -474,12 +474,12 @@ $ kubectl -n fargate-test logs deploy/httpd-pod -f
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

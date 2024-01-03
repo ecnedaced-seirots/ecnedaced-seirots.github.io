@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>PythonでOpenCV始めてみる | Go Buddy Go</title>
-<meta name="keywords" content="opencv, python" />
+<meta name="keywords" content="opencv, python">
 <meta name="description" content="画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python &#43; 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-1/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-1/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="PythonでOpenCV始めてみる" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="PythonでOpenCV始めてみる" />
 <meta property="og:description" content="画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python &#43; 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-opencv-1/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-25T22:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-25T22:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-01-25T22:00:00+09:00" />
+<meta property="article:modified_time" content="2022-01-25T22:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PythonでOpenCV始めてみる"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "opencv", "python"
   ],
-  "articleBody": "画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。\n Macにインストールする。インストール方法が複数あり、その時点でどれを選んでいいか分からずつまづく派が多いらしい。とりあえずpipがおすすめらしいのでそれでいく。\n$ pip3 install opencv-python : : $ pip3 freeze boto3==1.18.63 botocore==1.21.63 Jinja2==2.11.2 jmespath==0.10.0 MarkupSafe==1.1.1 numpy==1.21.4 #numpyも一緒に入る opencv-python==4.5.5.62 pandas==1.3.4 python-dateutil==2.8.2 (snip)  適当なディレクトリに画像ファイルと以下コードを格納する。\ninit.py\nimport cv2 img = cv2.imread('img_01.png') #イメージファイルを指定 cv2.imshow('Yellow', img) #ウィンドウ名とイメージファイルを指定 cv2.waitKey(0) #これを記述することで、ファイルオープンの状態が継続する cv2.destroyAllWindows() #キーボード入力があった時点で終了  上記はカレントディレクトリにファイルが存在する前提。それ以外の場合は絶対パスか相対パスで指定する。実行すると以下のように画像が開く。何かキーボート入力すると閉じる。\n 何もしてないに等しいが、今日はここまで。\n参考\n【初心者向け】PythonとOpenCVで画像処理を体験してみよう\n ",
+  "articleBody": "画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。\nMacにインストールする。インストール方法が複数あり、その時点でどれを選んでいいか分からずつまづく派が多いらしい。とりあえずpipがおすすめらしいのでそれでいく。\n$ pip3 install opencv-python : : $ pip3 freeze boto3==1.18.63 botocore==1.21.63 Jinja2==2.11.2 jmespath==0.10.0 MarkupSafe==1.1.1 numpy==1.21.4 #numpyも一緒に入る opencv-python==4.5.5.62 pandas==1.3.4 python-dateutil==2.8.2 (snip) 適当なディレクトリに画像ファイルと以下コードを格納する。\ninit.py\nimport cv2 img = cv2.imread('img_01.png') #イメージファイルを指定 cv2.imshow('Yellow', img) #ウィンドウ名とイメージファイルを指定 cv2.waitKey(0) #これを記述することで、ファイルオープンの状態が継続する cv2.destroyAllWindows() #キーボード入力があった時点で終了 上記はカレントディレクトリにファイルが存在する前提。それ以外の場合は絶対パスか相対パスで指定する。実行すると以下のように画像が開く。何かキーボート入力すると閉じる。\n何もしてないに等しいが、今日はここまで。\n参考\n【初心者向け】PythonとOpenCVで画像処理を体験してみよう\n",
   "wordCount" : "43",
   "inLanguage": "en",
   "datePublished": "2022-01-25T22:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,16 +187,17 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       PythonでOpenCV始めてみる
     </h1>
-    <div class="post-meta">January 25, 2022
+    <div class="post-meta"><span title='2022-01-25 22:00:00 +0900 JST'>January 25, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。</p>
 <p> </p>
 <p>Macにインストールする。インストール方法が複数あり、その時点でどれを選んでいいか分からずつまづく派が多いらしい。とりあえずpipがおすすめらしいのでそれでいく。</p>
-<pre><code>$ pip3 install opencv-python
+<pre tabindex="0"><code>$ pip3 install opencv-python
 :
 :
 $ pip3 freeze
@@ -212,17 +211,15 @@ opencv-python==4.5.5.62
 pandas==1.3.4
 python-dateutil==2.8.2
 (snip)
-
 </code></pre><p> </p>
 <p>適当なディレクトリに画像ファイルと以下コードを格納する。</p>
 <p>init.py</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)    <span style="color:#75715e">#イメージファイルを指定</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img)         <span style="color:#75715e">#ウィンドウ名とイメージファイルを指定</span>
-cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">0</span>)                    <span style="color:#75715e">#これを記述することで、ファイルオープンの状態が継続する</span>
-cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style="color:#75715e">#キーボード入力があった時点で終了</span>
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span>img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)    <span style="color:#75715e">#イメージファイルを指定</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img)         <span style="color:#75715e">#ウィンドウ名とイメージファイルを指定</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">0</span>)                    <span style="color:#75715e">#これを記述することで、ファイルオープンの状態が継続する</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style="color:#75715e">#キーボード入力があった時点で終了</span>
+</span></span></code></pre></div><p> </p>
 <p>上記はカレントディレクトリにファイルが存在する前提。それ以外の場合は絶対パスか相対パスで指定する。実行すると以下のように画像が開く。何かキーボート入力すると閉じる。</p>
 <p><img loading="lazy" src="/img/b/opencv_001.jpg" alt="OpenCV image"  />
 </p>
@@ -253,6 +250,7 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/opencv/">opencv</a></li>
@@ -260,12 +258,12 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-if/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Go入門(8) - if文の基本</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Go入門(7) - mapのrange,deleteなど</span>
   </a>
@@ -274,27 +272,28 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -348,12 +347,12 @@ cv2<span style="color:#f92672">.</span>destroyAllWindows()           <span style
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

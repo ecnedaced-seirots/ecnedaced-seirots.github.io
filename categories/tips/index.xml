@@ -1,118 +1,97 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tips on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/categories/tips/</link>
     <description>Recent content in Tips on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 01 Apr 2022 14:59:44 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Apr 2022 14:59:44 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/tips/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>リモートデスクトップのショートカット</title>
       <link>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</link>
       <pubDate>Fri, 01 Apr 2022 14:59:44 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</guid>
       <description>&lt;p&gt;ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Firefoxでソースを表示</title>
       <link>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</link>
       <pubDate>Mon, 28 Mar 2022 17:11:08 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</guid>
       <description>&lt;p&gt;Firefoxでソースを表示するには。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>サクラエディタで先頭列を置換する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</link>
       <pubDate>Sat, 26 Mar 2022 10:43:37 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</guid>
       <description>&lt;p&gt;サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>MS Officeの邪魔なサジェストを無効にする</title>
       <link>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</link>
       <pubDate>Sat, 05 Feb 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</guid>
       <description>&lt;h3 id=&#34;迷惑サジェスト-その１&#34;&gt;迷惑サジェスト その１&lt;/h3&gt;
 &lt;p&gt;Outlookで「登録名の先頭の数文字の入力で候補を表示する」を無効にしたい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
       <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
       <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS ConfigをCLIから削除する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</guid>
       <description>&lt;p&gt;イベント監視通知のためにAWS Configを設定して検証したが、個人PoCであり普段は必要ないため削除しようと思った。微々たる金額だが課金対象だし。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>AWS CLIのページャを無効化する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
       <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
- configで設定  ~/.aws/configに以下記載する。
-[default] cli_pager=  環境変数で設定  $ export AWS_PAGER=&amp;quot;&amp;quot;  1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。
- </description>
+configで設定 ~/.aws/configに以下記載する。
+[default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&amp;#34;&amp;#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</description>
     </item>
-    
     <item>
       <title>Firefox/Chromeでアドオンなし全画面キャプチャ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</link>
       <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</guid>
       <description>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &amp;hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
 Chromeの場合 Chromeでやる場合は一手間増える。
-Windows  Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。  Mac  command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先）  手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
+Windows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Shift + P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command + option + I 同時押しで開発ツール画面を表示 command + Shift + P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
+（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
 しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</description>
     </item>
-    
     <item>
       <title>サクラエディタで半角スペースを可視化</title>
       <link>https://ecnedaced-seirots.github.io/post/a/sakura/</link>
       <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/sakura/</guid>
       <description>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
- メニューから[設定] 〜 [タイプ別設定] を選択。
- 「カラー」タブ 半角空白 「色分け/表示」にチェック   </description>
+メニューから[設定] 〜 [タイプ別設定] を選択。
+「カラー」タブ 半角空白 「色分け/表示」にチェック </description>
     </item>
-    
     <item>
       <title>マークダウン記法</title>
       <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
       <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp;amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
-   </description>
+Markdown 早見表 &amp;amp; 詳細
+かんたんMarkdownの記法
+Markdown記法 チートシート
+GitHub Markdownの「シンタックスハイライト」に対応している言語一覧</description>
     </item>
-    
   </channel>
 </rss>

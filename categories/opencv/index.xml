@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OpenCV on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/categories/opencv/</link>
     <description>Recent content in OpenCV on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 10 May 2023 23:13:19 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/categories/opencv/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 May 2023 23:13:19 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/opencv/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OpenCVで画像をリサイズして横に連結する</title>
       <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</guid>
       <description>&lt;p&gt;前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像を横に連結する</title>
       <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
       <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
       <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>OpenCVで画像ファイルを保存する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</link>
       <pubDate>Sun, 06 Feb 2022 20:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</guid>
       <description>&lt;p&gt;OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>PythonでOpenCV始めてみる</title>
       <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</link>
       <pubDate>Tue, 25 Jan 2022 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</guid>
       <description>&lt;p&gt;画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>TerraformでCodePipeline - PollForSourceChangesの注意 | Go Buddy Go</title>
-<meta name="keywords" content="terraform, CodePipeline, BCN" />
+<meta name="keywords" content="terraform, CodePipeline, BCN">
 <meta name="description" content="TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="TerraformでCodePipeline - PollForSourceChangesの注意" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="TerraformでCodePipeline - PollForSourceChangesの注意" />
 <meta property="og:description" content="TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-04-04T20:56:07&#43;09:00" />
-<meta property="article:modified_time" content="2022-04-04T20:56:07&#43;09:00" />
+<meta property="article:published_time" content="2022-04-04T20:56:07+09:00" />
+<meta property="article:modified_time" content="2022-04-04T20:56:07+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="TerraformでCodePipeline - PollForSourceChangesの注意"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "terraform", "CodePipeline", "BCN"
   ],
-  "articleBody": "TerraformでCodePipeline作成する時のオプション\"PollForSourceChanges\"の注意点。\nソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。\n 以下は以前の投稿 Terraform loop処理の応用編(2) - CI/CD にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。\n #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"false\" #ここに注意！ RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } }  EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、PollForSourceChanges = \"true\" だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である…。(なんか変だなと思いつつ放置してた)\n （追記） もうひとつ注意点あり。PollForSourceChanges = \"false\" にしてTerraformでパイプラインを作成した。これで二重実行はなくなるはずだ！と思いきや、そうではなかった。まだデプロイが重複している。パイプラインの履歴画面を見ると、同一のコミットに対してEventBridgeが二つ存在する。パラメータを変更したことにより、AWS側が勝手に判断してイベントルールを自動生成したのである。親切でやってるんだろうけどね…、このマネージドルールを削除後にデプロイしたところ、やっと期待値になった。（デプロイは一回のみ）\n今書いてて思い出したけど、このマネージドルールに紐づくIAMロールも自動生成されるはず。そっちも削除する必要があるな。あぁ、面倒くさい。\n ",
+  "articleBody": "TerraformでCodePipeline作成する時のオプション\"PollForSourceChanges\"の注意点。\nソースとなるCodeCommitの所定のブランチに変更がpushされたらパイプラインが走る、という前提。PollForSourceChangesは、ソースステージに対する変更をCodePipelineがポーリングするか or EventBridgeに検知させるかの定義。マネコンから作る場合は自動的に後者になる（関連リソースも自動で作成される）。Terraformの場合は明示的に指定する必要があり、EventBridgeに検知させるならfalseにしなければいけない。\n以下は以前の投稿 Terraform loop処理の応用編(2) - CI/CD にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。\n#################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"false\" #ここに注意！ RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } } EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、PollForSourceChanges = \"true\" だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である…。(なんか変だなと思いつつ放置してた)\n（追記） もうひとつ注意点あり。PollForSourceChanges = \"false\" にしてTerraformでパイプラインを作成した。これで二重実行はなくなるはずだ！と思いきや、そうではなかった。まだデプロイが重複している。パイプラインの履歴画面を見ると、同一のコミットに対してEventBridgeが二つ存在する。パラメータを変更したことにより、AWS側が勝手に判断してイベントルールを自動生成したのである。親切でやってるんだろうけどね…、このマネージドルールを削除後にデプロイしたところ、やっと期待値になった。（デプロイは一回のみ）\n今書いてて思い出したけど、このマネージドルールに紐づくIAMロールも自動生成されるはず。そっちも削除する必要があるな。あぁ、面倒くさい。\n",
   "wordCount" : "153",
   "inLanguage": "en",
   "datePublished": "2022-04-04T20:56:07+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       TerraformでCodePipeline - PollForSourceChangesの注意
     </h1>
-    <div class="post-meta">April 4, 2022
+    <div class="post-meta"><span title='2022-04-04 20:56:07 +0900 JST'>April 4, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>TerraformでCodePipeline作成する時のオプション&quot;PollForSourceChanges&quot;の注意点。</p>
@@ -200,60 +199,59 @@
 <p> </p>
 <p>以下は以前の投稿 <a href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/">Terraform loop処理の応用編(2) - CI/CD</a> にも載せたソース一部。PollForSourceChangesの値だけ変えてる。前回はEventBridgeの設定抜きにしていたから、trueだった。</p>
 <p> </p>
-<pre><code>####################################
+<pre tabindex="0"><code>####################################
 # CodePipeline
 ####################################
 
-resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
+resource &#34;aws_codepipeline&#34; &#34;pipeline&#34; {
   for_each = var.pipeline_param_list
 
-  name     = lookup(each.value, &quot;name&quot;)
+  name     = lookup(each.value, &#34;name&#34;)
   role_arn = var.pipeline_role
   artifact_store {
     location = var.bucket
-    type     = &quot;S3&quot;
+    type     = &#34;S3&#34;
   }
   stage {
-    name = &quot;Source&quot;
+    name = &#34;Source&#34;
     action {
-      category        = &quot;Source&quot;
+      category        = &#34;Source&#34;
       configuration   = {
-        BranchName          = &quot;master&quot;
-        PollForSourceChanges = &quot;false&quot; #ここに注意！
-        RepositoryName      = lookup(each.value, &quot;repository_name&quot;)
+        BranchName          = &#34;master&#34;
+        PollForSourceChanges = &#34;false&#34; #ここに注意！
+        RepositoryName      = lookup(each.value, &#34;repository_name&#34;)
       }
       input_artifacts = []
-      name            = &quot;Source&quot;
-      namespace       = &quot;SourceVariables&quot;
-      output_artifacts = [&quot;SourceArtifact&quot;]
-      owner           = &quot;AWS&quot;
-      provider        = &quot;CodeCommit&quot;
+      name            = &#34;Source&#34;
+      namespace       = &#34;SourceVariables&#34;
+      output_artifacts = [&#34;SourceArtifact&#34;]
+      owner           = &#34;AWS&#34;
+      provider        = &#34;CodeCommit&#34;
       region          = var.region
       run_order       = 1
-      version         = &quot;1&quot;
+      version         = &#34;1&#34;
     }
   }
   stage {
-    name = &quot;Deploy&quot;
+    name = &#34;Deploy&#34;
     action {
-      category        = &quot;Deploy&quot;
+      category        = &#34;Deploy&#34;
       configuration   = {
-        ApplicationName     = lookup(each.value, &quot;app_name&quot;)
-        DeploymentGroupName = lookup(each.value, &quot;deployment_group_name&quot;)
+        ApplicationName     = lookup(each.value, &#34;app_name&#34;)
+        DeploymentGroupName = lookup(each.value, &#34;deployment_group_name&#34;)
       }
-      input_artifacts = [&quot;SourceArtifact&quot;]
-      name            = &quot;Deploy&quot;
-      namespace       = &quot;DeployVariables&quot;
+      input_artifacts = [&#34;SourceArtifact&#34;]
+      name            = &#34;Deploy&#34;
+      namespace       = &#34;DeployVariables&#34;
       output_artifacts = []
-      owner           = &quot;AWS&quot;
-      provider        = &quot;CodeDeploy&quot;
+      owner           = &#34;AWS&#34;
+      provider        = &#34;CodeDeploy&#34;
       region          = var.region
       run_order       = 1
-      version         = &quot;1&quot;
+      version         = &#34;1&#34;
     }
   }
 }
-
 </code></pre><p> </p>
 <p>EventBridgeでソースとなるブランチの変更検知の設定をしている状態で、<code>PollForSourceChanges = &quot;true&quot; </code>だとどうなるか。二重にパイプラインが起動され、2回デプロイが走る。完全に無駄である。CloudWatchLogsでも、所定のブランチが存在しないとポーリング時にエラーとなり、延々とログに出力される。完全に無駄である&hellip;。(なんか変だなと思いつつ放置してた)</p>
 <p> </p>
@@ -283,6 +281,7 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
@@ -291,12 +290,12 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>TerraformでCodePipeline - 要追加作業</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/rdp-connect/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>リモートデスクトップのショートカット</span>
   </a>
@@ -305,27 +304,28 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -379,12 +379,12 @@ resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

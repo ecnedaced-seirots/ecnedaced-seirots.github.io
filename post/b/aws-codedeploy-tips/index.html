@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>AWS CodeDeploy備忘録 | Go Buddy Go</title>
-<meta name="keywords" content="CodeDeploy, CodePipeline, AWS" />
+<meta name="keywords" content="CodeDeploy, CodePipeline, AWS">
 <meta name="description" content="簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="AWS CodeDeploy備忘録" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AWS CodeDeploy備忘録" />
 <meta property="og:description" content="簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-codedeploy-tips/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-29T10:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-29T10:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-01-29T10:00:00+09:00" />
+<meta property="article:modified_time" content="2022-01-29T10:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWS CodeDeploy備忘録"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "CodeDeploy", "CodePipeline", "AWS"
   ],
-  "articleBody": "簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n 単純化しているが以下のサンプルを元にする。\nappspec.yml\nversion: 0.0 os: linux files: - source: /opt/script  #ディレクトリ自体を配布 destination: /opt/script - source: /opt/conf/server.conf  #特定のファイルを配布 destination: /opt/conf file_exists_behavior: OVERWRITE  #既存ファイルの上書き指定 permissions: - object: /opt/script  #/opt/script配下のディレクトリすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/script pattern: \"*.sh\" owner: root group: root mode: 755 type: - file - object: /opt/conf  #/opt/script配下のshファイルはすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/conf  #/opt/conf内のserver.confに対するパーミッションを指定 pattern: \"server.conf\" owner: root group: root mode: 644 type: - file hooks: AfterInstall: - location: ./deploy_task  #hookスクリプトファイルを相対パスで指定 timeout: 300  1.filesセクションの記述 appspec.ymlのfilesセクションがわかっているようでわかっていなかった。ひとつのappspec.ymlに複数のパターンがあると気をつけていても間違える。\nfiles\nsource: ディレクトリ配布の場合はディレクトリ名を、個別ファイルの場合はファイル名を指定。\ndestination: ディレクトリ名を指定。\ndestinationではファイル名は指定しない。（これ重要）\n 2. CodeDeployの上書きオプション OSに最初から入っている既存のファイルやリビジョンに加える前から存在しているファイルを配布したい場合、デフォルトだと以下のエラーにより失敗する。\n  The deployment failed because a specified file already exists at this location\n  CodeDeployエージェント 1.3.2以降のバージョンであれば、appspec.ymlのfilesセクションにfile_exists_behaviorオプションを指定すれば期待値になる。\nfiles: - source: /opt/script destination: /opt/script - source: /opt/conf/server.conf destination: /opt/conf file_exists_behavior: OVERWRITE  #既存リソースに対する動作を上書きとして指定  file_exists_behaviorに指定可能な値は DISALLOW|OVERWRITE|RETAIN のどれか。詳細は以下参考。\n参考\nAppSpecの「files」セクション\n 3. デプロイ後のファイルタイムスタンプ問題 現状の仕様により、CodePipelineでソースアクションとしてCodeCommitをソースにした場合、ファイルのタイムスタンプを取得できないという問題がある。何もしないとデプロイ後のタイムスタンプが1979年12月29日になってしまう。これを是正するため、以下のhookスクリプトによりデプロイ時点の時刻をタイムスタンプとしてセットする。\nミドルウェアの設定ファイルを配布する場合は、この後プロセス再起動の処理を書くこともできる。\ndeploy_task\n#!/bin/bash  touch /opt/script/* touch /opt/conf/*  4. AMIから復旧させたインスタンスのリビジョン 過去のインスタンスで実行した既存のデプロイは、teriminate後にAMIから復旧させたインスタンスでもリビジョン対象として認識される。このためfile_exists_behaviorがなくてもデプロイは可能である。（しかしその後の変更時にエラーを回避したければ、つけておく方が安心）\n 5. リビジョン対象資材削除時の対応 検索したが意外に情報がない。ほぼ皆無だ。以下、仕方ないので自分で検証して判明した結果より。\n(1) ディレクトリ内の資材一部の削除 リポジトリ内の対象資材をGit上から削除する。コミット/pushするとデプロイ時にその資材は削除された状態になる。サンプルymlの例で言うと、/opt/script内に複数のスクリプトがあるとして、その中の一つを削除したければGit上でdeleteし、appspec.ymlは変更なしでよい。\n(2) filesセクションで特定のファイルを削除する appspec.ymlのfilesセクションから対象のsource/destination行を削除する。permissionセクションからも削除。サンプルymlからserver.confを削除する場合、以下2行を削除する。\n- source: /opt/conf/server.conf destination: /opt/conf  さらに以下も削除。\n- object: /opt/conf pattern: \"server.conf\" owner: root group: root mode: 644 type: - file  ただし、これを実行すると「対象のファイルだけリビジョン対象外としてディレクトリは残す」ことができない。（ディレクトリの階層の状況にもよる）デプロイで期待値にならない部分は手動で対応するしかなさそうである。\n  ",
+  "articleBody": "簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。\n単純化しているが以下のサンプルを元にする。\nappspec.yml\nversion: 0.0 os: linux files: - source: /opt/script #ディレクトリ自体を配布 destination: /opt/script - source: /opt/conf/server.conf #特定のファイルを配布 destination: /opt/conf file_exists_behavior: OVERWRITE #既存ファイルの上書き指定 permissions: - object: /opt/script #/opt/script配下のディレクトリすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/script pattern: \"*.sh\" owner: root group: root mode: 755 type: - file - object: /opt/conf #/opt/script配下のshファイルはすべて指定したパーミッションになる pattern: \"**\" owner: root group: root mode: 755 type: - directory - object: /opt/conf #/opt/conf内のserver.confに対するパーミッションを指定 pattern: \"server.conf\" owner: root group: root mode: 644 type: - file hooks: AfterInstall: - location: ./deploy_task #hookスクリプトファイルを相対パスで指定 timeout: 300 1.filesセクションの記述 appspec.ymlのfilesセクションがわかっているようでわかっていなかった。ひとつのappspec.ymlに複数のパターンがあると気をつけていても間違える。\nfiles\nsource: ディレクトリ配布の場合はディレクトリ名を、個別ファイルの場合はファイル名を指定。\ndestination: ディレクトリ名を指定。\ndestinationではファイル名は指定しない。（これ重要）\n2. CodeDeployの上書きオプション OSに最初から入っている既存のファイルやリビジョンに加える前から存在しているファイルを配布したい場合、デフォルトだと以下のエラーにより失敗する。\nThe deployment failed because a specified file already exists at this location\nCodeDeployエージェント 1.3.2以降のバージョンであれば、appspec.ymlのfilesセクションにfile_exists_behaviorオプションを指定すれば期待値になる。\nfiles: - source: /opt/script destination: /opt/script - source: /opt/conf/server.conf destination: /opt/conf file_exists_behavior: OVERWRITE #既存リソースに対する動作を上書きとして指定 file_exists_behaviorに指定可能な値は DISALLOW|OVERWRITE|RETAIN のどれか。詳細は以下参考。\n参考\nAppSpecの「files」セクション\n3. デプロイ後のファイルタイムスタンプ問題 現状の仕様により、CodePipelineでソースアクションとしてCodeCommitをソースにした場合、ファイルのタイムスタンプを取得できないという問題がある。何もしないとデプロイ後のタイムスタンプが1979年12月29日になってしまう。これを是正するため、以下のhookスクリプトによりデプロイ時点の時刻をタイムスタンプとしてセットする。\nミドルウェアの設定ファイルを配布する場合は、この後プロセス再起動の処理を書くこともできる。\ndeploy_task\n#!/bin/bash touch /opt/script/* touch /opt/conf/* 4. AMIから復旧させたインスタンスのリビジョン 過去のインスタンスで実行した既存のデプロイは、teriminate後にAMIから復旧させたインスタンスでもリビジョン対象として認識される。このためfile_exists_behaviorがなくてもデプロイは可能である。（しかしその後の変更時にエラーを回避したければ、つけておく方が安心）\n5. リビジョン対象資材削除時の対応 検索したが意外に情報がない。ほぼ皆無だ。以下、仕方ないので自分で検証して判明した結果より。\n(1) ディレクトリ内の資材一部の削除 リポジトリ内の対象資材をGit上から削除する。コミット/pushするとデプロイ時にその資材は削除された状態になる。サンプルymlの例で言うと、/opt/script内に複数のスクリプトがあるとして、その中の一つを削除したければGit上でdeleteし、appspec.ymlは変更なしでよい。\n(2) filesセクションで特定のファイルを削除する appspec.ymlのfilesセクションから対象のsource/destination行を削除する。permissionセクションからも削除。サンプルymlからserver.confを削除する場合、以下2行を削除する。\n- source: /opt/conf/server.conf destination: /opt/conf さらに以下も削除。\n- object: /opt/conf pattern: \"server.conf\" owner: root group: root mode: 644 type: - file ただし、これを実行すると「対象のファイルだけリビジョン対象外としてディレクトリは残す」ことができない。（ディレクトリの階層の状況にもよる）デプロイで期待値にならない部分は手動で対応するしかなさそうである。\n",
   "wordCount" : "179",
   "inLanguage": "en",
   "datePublished": "2022-01-29T10:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,59 +187,59 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       AWS CodeDeploy備忘録
     </h1>
-    <div class="post-meta">January 29, 2022
+    <div class="post-meta"><span title='2022-01-29 10:00:00 +0900 JST'>January 29, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>簡単そうとなめてかかると罠にはまりがちなAWS CodeDeployについて、いくつか覚書。</p>
 <p> </p>
 <p>単純化しているが以下のサンプルを元にする。</p>
 <p>appspec.yml</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#ae81ff">0.0</span>
-<span style="color:#f92672">os</span>: <span style="color:#ae81ff">linux</span>
-<span style="color:#f92672">files</span>:
-- <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/script               </span> <span style="color:#75715e">#ディレクトリ自体を配布</span>
-    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/script</span>
-  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf   </span> <span style="color:#75715e">#特定のファイルを配布</span>
-    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
-<span style="color:#f92672">file_exists_behavior</span>: <span style="color:#ae81ff">OVERWRITE     </span> <span style="color:#75715e">#既存ファイルの上書き指定</span>
-<span style="color:#f92672">permissions</span>:
-  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/script             </span> <span style="color:#75715e">#/opt/script配下のディレクトリすべて指定したパーミッションになる</span>
-    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;**&#34;</span>
-    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
-    <span style="color:#f92672">type</span>:
-      - <span style="color:#ae81ff">directory</span>
-  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/script</span>
-    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;*.sh&#34;</span>
-    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
-    <span style="color:#f92672">type</span>:
-      - <span style="color:#ae81ff">file</span>
-  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf               </span> <span style="color:#75715e">#/opt/script配下のshファイルはすべて指定したパーミッションになる</span>
-    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;**&#34;</span>
-    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
-    <span style="color:#f92672">type</span>:
-      - <span style="color:#ae81ff">directory</span>
-  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf               </span> <span style="color:#75715e">#/opt/conf内のserver.confに対するパーミッションを指定</span>
-    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;server.conf&#34;</span>
-    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">644</span>
-    <span style="color:#f92672">type</span>:
-      - <span style="color:#ae81ff">file</span>
-<span style="color:#f92672">hooks</span>:
-  <span style="color:#f92672">AfterInstall</span>:
-    - <span style="color:#f92672">location</span>: <span style="color:#ae81ff">./deploy_task       </span> <span style="color:#75715e">#hookスクリプトファイルを相対パスで指定</span>
-      <span style="color:#f92672">timeout</span>: <span style="color:#ae81ff">300</span>
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#ae81ff">0.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">os</span>: <span style="color:#ae81ff">linux</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">files</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/script               </span> <span style="color:#75715e">#ディレクトリ自体を配布</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/script</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf   </span> <span style="color:#75715e">#特定のファイルを配布</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">file_exists_behavior</span>: <span style="color:#ae81ff">OVERWRITE     </span> <span style="color:#75715e">#既存ファイルの上書き指定</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">permissions</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/script             </span> <span style="color:#75715e">#/opt/script配下のディレクトリすべて指定したパーミッションになる</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;**&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">directory</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/script</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;*.sh&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">file</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf               </span> <span style="color:#75715e">#/opt/script配下のshファイルはすべて指定したパーミッションになる</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;**&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">755</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">directory</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf               </span> <span style="color:#75715e">#/opt/conf内のserver.confに対するパーミッションを指定</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;server.conf&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">644</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">file</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">AfterInstall</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">location</span>: <span style="color:#ae81ff">./deploy_task       </span> <span style="color:#75715e">#hookスクリプトファイルを相対パスで指定</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">timeout</span>: <span style="color:#ae81ff">300</span>
+</span></span></code></pre></div><p> </p>
 <h3 id="1filesセクションの記述">1.filesセクションの記述<a hidden class="anchor" aria-hidden="true" href="#1filesセクションの記述">#</a></h3>
 <p>appspec.ymlのfilesセクションがわかっているようでわかっていなかった。ひとつのappspec.ymlに複数のパターンがあると気をつけていても間違える。</p>
 <p><strong>files</strong><br>
@@ -257,13 +255,13 @@ destination: ディレクトリ名を指定。</p>
 </blockquote>
 <p> </p>
 <p>CodeDeployエージェント 1.3.2以降のバージョンであれば、appspec.ymlのfilesセクションにfile_exists_behaviorオプションを指定すれば期待値になる。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">files</span>:
-  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/script</span>
-    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/script</span>
-  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf</span>
-    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
-<span style="color:#f92672">file_exists_behavior</span>: <span style="color:#ae81ff">OVERWRITE   </span> <span style="color:#75715e">#既存リソースに対する動作を上書きとして指定</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">files</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/script</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/script</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">file_exists_behavior</span>: <span style="color:#ae81ff">OVERWRITE   </span> <span style="color:#75715e">#既存リソースに対する動作を上書きとして指定</span>
+</span></span></code></pre></div><p> </p>
 <p>file_exists_behaviorに指定可能な値は DISALLOW|OVERWRITE|RETAIN のどれか。詳細は以下参考。</p>
 <p>参考<br>
 <a href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/reference-appspec-file-structure-files.html">AppSpecの「files」セクション</a></p>
@@ -272,11 +270,11 @@ destination: ディレクトリ名を指定。</p>
 <p>現状の仕様により、CodePipelineでソースアクションとしてCodeCommitをソースにした場合、ファイルのタイムスタンプを取得できないという問題がある。何もしないとデプロイ後のタイムスタンプが1979年12月29日になってしまう。これを是正するため、以下のhookスクリプトによりデプロイ時点の時刻をタイムスタンプとしてセットする。</p>
 <p>ミドルウェアの設定ファイルを配布する場合は、この後プロセス再起動の処理を書くこともできる。</p>
 <p>deploy_task</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-touch /opt/script/*
-touch /opt/conf/*
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>touch /opt/script/*
+</span></span><span style="display:flex;"><span>touch /opt/conf/*
+</span></span></code></pre></div><p> </p>
 <h3 id="4-amiから復旧させたインスタンスのリビジョン">4. AMIから復旧させたインスタンスのリビジョン<a hidden class="anchor" aria-hidden="true" href="#4-amiから復旧させたインスタンスのリビジョン">#</a></h3>
 <p>過去のインスタンスで実行した既存のデプロイは、teriminate後にAMIから復旧させたインスタンスでもリビジョン対象として認識される。このためfile_exists_behaviorがなくてもデプロイは可能である。（しかしその後の変更時にエラーを回避したければ、つけておく方が安心）</p>
 <p> </p>
@@ -286,18 +284,18 @@ touch /opt/conf/*
 リポジトリ内の対象資材をGit上から削除する。コミット/pushするとデプロイ時にその資材は削除された状態になる。サンプルymlの例で言うと、/opt/script内に複数のスクリプトがあるとして、その中の一つを削除したければGit上でdeleteし、appspec.ymlは変更なしでよい。</p>
 <p>(2) filesセクションで特定のファイルを削除する
 appspec.ymlのfilesセクションから対象のsource/destination行を削除する。permissionセクションからも削除。サンプルymlからserver.confを削除する場合、以下2行を削除する。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf</span>
-    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>  - <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/opt/conf/server.conf</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">destination</span>: <span style="color:#ae81ff">/opt/conf</span>
+</span></span></code></pre></div><p> </p>
 <p>さらに以下も削除。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf</span>
-    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;server.conf&#34;</span>
-    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
-    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">644</span>
-    <span style="color:#f92672">type</span>:
-      - <span style="color:#ae81ff">file</span>
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>  - <span style="color:#f92672">object</span>: <span style="color:#ae81ff">/opt/conf</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pattern</span>: <span style="color:#e6db74">&#34;server.conf&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">owner</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">group</span>: <span style="color:#ae81ff">root</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">mode</span>: <span style="color:#ae81ff">644</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">file</span>
+</span></span></code></pre></div><p> </p>
 <p>ただし、これを実行すると「対象のファイルだけリビジョン対象外としてディレクトリは残す」ことができない。（ディレクトリの階層の状況にもよる）デプロイで期待値にならない部分は手動で対応するしかなさそうである。</p>
 <p> </p>
 <p> </p>
@@ -327,6 +325,7 @@ appspec.ymlのfilesセクションから対象のsource/destination行を削除�
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/codedeploy/">CodeDeploy</a></li>
@@ -335,12 +334,12 @@ appspec.ymlのfilesセクションから対象のsource/destination行を削除�
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-tips/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Logs Insightsでロギングタイプを指定するクエリ</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-8/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「愛と幻想のファシズム」より(6)</span>
   </a>
@@ -349,27 +348,28 @@ appspec.ymlのfilesセクションから対象のsource/destination行を削除�
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -423,12 +423,12 @@ appspec.ymlのfilesセクションから対象のsource/destination行を削除�
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

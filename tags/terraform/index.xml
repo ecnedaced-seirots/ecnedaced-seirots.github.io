@@ -1,202 +1,168 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>terraform on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/terraform/</link>
     <description>Recent content in terraform on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 02 May 2022 11:44:04 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 May 2022 11:44:04 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>SNSメトリクスの監視を作成するTerraformコード</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</link>
       <pubDate>Fri, 29 Apr 2022 18:18:09 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/</guid>
       <description>&lt;p&gt;AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - 要追加作業</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</link>
       <pubDate>Wed, 06 Apr 2022 15:19:11 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成時、追加で必要な作業がある。全然意味わかってないけど、とにかくやるものらしい。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでCodePipeline - PollForSourceChangesの注意</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</link>
       <pubDate>Mon, 04 Apr 2022 20:56:07 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/</guid>
       <description>&lt;p&gt;TerraformでCodePipeline作成する時のオプション&amp;quot;PollForSourceChanges&amp;quot;の注意点。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform - EC2インスタンス作成時のAMI参照</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</link>
       <pubDate>Sun, 30 Jan 2022 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/</guid>
       <description>&lt;p&gt;今時あまり流行らないが、「AMIを作り込んでEC2を起動」というサイクルを繰り返す運用があるとする。それをTerraformに組み込む場合の、AMIの参照方法。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformでNATゲートウェイを作成する</title>
       <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
       <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>TerraformのSNSサブスクリプションで複数メールアドレス指定</title>
       <link>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</link>
       <pubDate>Sat, 08 Jan 2022 11:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/</guid>
       <description>&lt;p&gt;Terraformで、「AWS SNSトピックのサブスク + エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(2)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</link>
       <pubDate>Mon, 03 Jan 2022 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform-2/</guid>
       <description>&lt;p&gt;前回投稿の続き。Terraformから構築したEKSクラスタで、Fargate Podを起動してみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>EKS FargateクラスタをTerraformで作成する(1)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</link>
       <pubDate>Mon, 03 Jan 2022 14:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/eks-fargate-by-terraform/</guid>
       <description>&lt;p&gt;一回EKSのFargateを試してみようと思っていたので、新年早々やってみた。せっかくなのでEKS+FargateプロファイルをTerraformから作成する。他の事例だとeksctlから構築するパターンが多いようだが、最近Terraformいじってるし、eksctl嫌いなもんで。（削除時にハマったこともあり）&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(5) - Metric Alarm</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</link>
       <pubDate>Fri, 31 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-6/</guid>
       <description>&lt;p&gt;大晦日も淡々と自宅PoCをし、淡々と記事を書く。Terraform loop処理シリーズ、今回はEC2インスタンスに対するCloudWatch Alarmの作成をやってみる。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
       <pubDate>Sun, 12 Dec 2021 22:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</guid>
       <description>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
 この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
-work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf  最初に、すべて定数で記述したパターン。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
 lambda_logs.tf（定数バージョン）
-################################################# # Lambda archive data ################################################# data &amp;quot;archive_file&amp;quot; &amp;quot;data-lambda-func001&amp;quot; { type = &amp;quot;zip&amp;quot; source_dir = &amp;quot;lambda/code/func001&amp;quot; output_path = &amp;quot;lambda/upload/lambda-func001.</description>
+################################################# # Lambda archive data ################################################# data &amp;#34;archive_file&amp;#34; &amp;#34;data-lambda-func001&amp;#34; { type = &amp;#34;zip&amp;#34; source_dir = &amp;#34;lambda/code/func001&amp;#34; output_path = &amp;#34;lambda/upload/lambda-func001.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(3) - Event rule</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</link>
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/</guid>
       <description>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
-######################################## # EventBridge rule ######################################## resource &amp;quot;aws_cloudwatch_event_rule&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.events_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) description = &amp;quot;Start the pipeline when detect CodeCommit repository state change.&amp;quot; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;quot;source&amp;quot;: [&amp;quot;aws.codecommit&amp;quot;], &amp;quot;detail-type&amp;quot;: [&amp;quot;CodeCommit Repository State Change&amp;quot;], &amp;quot;resources&amp;quot;: [&amp;quot;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;quot;repo_name&amp;quot;)}&amp;quot;], &amp;quot;detail&amp;quot;: { &amp;quot;event&amp;quot;: [&amp;quot;referenceCreated&amp;quot;, &amp;quot;referenceUpdated&amp;quot;], &amp;quot;referenceType&amp;quot;: [&amp;quot;branch&amp;quot;], &amp;quot;referenceName&amp;quot; : [&amp;quot;master&amp;quot;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;quot;aws_cloudwatch_event_target&amp;quot; &amp;quot;pln-rule&amp;quot; { for_each = var.</description>
+######################################## # EventBridge rule ######################################## resource &amp;#34;aws_cloudwatch_event_rule&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.events_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) description = &amp;#34;Start the pipeline when detect CodeCommit repository state change.&amp;#34; event_pattern = &amp;lt;&amp;lt;-EOT { &amp;#34;source&amp;#34;: [&amp;#34;aws.codecommit&amp;#34;], &amp;#34;detail-type&amp;#34;: [&amp;#34;CodeCommit Repository State Change&amp;#34;], &amp;#34;resources&amp;#34;: [&amp;#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &amp;#34;repo_name&amp;#34;)}&amp;#34;], &amp;#34;detail&amp;#34;: { &amp;#34;event&amp;#34;: [&amp;#34;referenceCreated&amp;#34;, &amp;#34;referenceUpdated&amp;#34;], &amp;#34;referenceType&amp;#34;: [&amp;#34;branch&amp;#34;], &amp;#34;referenceName&amp;#34; : [&amp;#34;master&amp;#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &amp;#34;aws_cloudwatch_event_target&amp;#34; &amp;#34;pln-rule&amp;#34; { for_each = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編(2) - CI/CD</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</link>
       <pubDate>Mon, 06 Dec 2021 00:20:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/</guid>
       <description>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &amp;quot;aws_codecommit_repository&amp;quot; &amp;quot;codecommit_repos&amp;quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;quot;repository_name&amp;quot;) description = lookup(each.value, &amp;quot;description&amp;quot;) } #################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
+cicd.tf
+#################################### # CodeCommit #################################### resource &amp;#34;aws_codecommit_repository&amp;#34; &amp;#34;codecommit_repos&amp;#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &amp;#34;repository_name&amp;#34;) description = lookup(each.value, &amp;#34;description&amp;#34;) } #################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の応用編</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</link>
       <pubDate>Sun, 05 Dec 2021 16:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/</guid>
       <description>過去記事Terraform loop処理の超シンプルな例 の続き。loopで作成したTerraformリソースの参照方法を検証したらやはりハマったので記録書いておく。
 前回はCodeCommitリポジトリを作成したが、今回はそれ抜きでCodeDeployのリソースを作成した。CodeDeployは (1)アプリケーションと、(2)デプロイメントグループの2つのリソースを作成する。(2)は(1)に依存している。
 作業ディレクトリ構成
-work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf  cicd.tf （リソース作成用コード）
-#################################### # CodeDeploy Application #################################### resource &amp;quot;aws_codedeploy_app&amp;quot; &amp;quot;codedeploy&amp;quot; { for_each = var.deploy_param_list name = lookup(each.value, &amp;quot;name&amp;quot;) compute_platform = &amp;quot;Server&amp;quot; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;quot;aws_codedeploy_deployment_group&amp;quot; &amp;quot;codedeploy_grp&amp;quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;quot;name&amp;quot;) deployment_group_name = lookup(each.value, &amp;quot;deployment_group_name&amp;quot;) service_role_arn = var.deploy_role deployment_config_name = &amp;quot;CodeDeployDefault.AllAtOnce&amp;quot; ec2_tag_set { ec2_tag_filter { key = &amp;quot;Name&amp;quot; type = &amp;quot;KEY_AND_VALUE&amp;quot; value = lookup(each.</description>
+work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初期化用config ├── terraform.tfvars #regionのみ定義 └── variables.tf cicd.tf （リソース作成用コード）
+#################################### # CodeDeploy Application #################################### resource &amp;#34;aws_codedeploy_app&amp;#34; &amp;#34;codedeploy&amp;#34; { for_each = var.deploy_param_list name = lookup(each.value, &amp;#34;name&amp;#34;) compute_platform = &amp;#34;Server&amp;#34; } #################################### # CodeDeploy Deployment Group #################################### resource &amp;#34;aws_codedeploy_deployment_group&amp;#34; &amp;#34;codedeploy_grp&amp;#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &amp;#34;name&amp;#34;) deployment_group_name = lookup(each.value, &amp;#34;deployment_group_name&amp;#34;) service_role_arn = var.deploy_role deployment_config_name = &amp;#34;CodeDeployDefault.AllAtOnce&amp;#34; ec2_tag_set { ec2_tag_filter { key = &amp;#34;Name&amp;#34; type = &amp;#34;KEY_AND_VALUE&amp;#34; value = lookup(each.</description>
     </item>
-    
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
       <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
-Terraform loop処理の超シンプルな例 
-Python - Jinja2テンプレートで連続データを処理したい
- 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
-work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf  これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
-script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv  codecommit.tmpl
- param{{ num }} = { repository_name = &amp;quot;{{ repo_name }}&amp;quot; description = &amp;quot;{{ des }}&amp;quot; }  data.csv （今回の例ではヘッダーありの前提）
-num,repo_name,des 1,&amp;quot;my-repo001&amp;quot;,&amp;quot;my-repo001の説明&amp;quot; 2,&amp;quot;my-repo002&amp;quot;,&amp;quot;my-repo002の説明&amp;quot; 3,&amp;quot;my-repo003&amp;quot;,&amp;quot;my-repo003の説明&amp;quot;  create_vars.py
+Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
+実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
+work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
+script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv codecommit.tmpl
+param{{ num }} = { repository_name = &amp;#34;{{ repo_name }}&amp;#34; description = &amp;#34;{{ des }}&amp;#34; } data.csv （今回の例ではヘッダーありの前提）
+num,repo_name,des 1,&amp;#34;my-repo001&amp;#34;,&amp;#34;my-repo001の説明&amp;#34; 2,&amp;#34;my-repo002&amp;#34;,&amp;#34;my-repo002の説明&amp;#34; 3,&amp;#34;my-repo003&amp;#34;,&amp;#34;my-repo003の説明&amp;#34; create_vars.py
 import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&amp;#39;.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理の超シンプルな例</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</link>
       <pubDate>Tue, 23 Nov 2021 15:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/</guid>
       <description>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
 前回投稿
 Terraform loop処理のリンク集
 参考記事
 Terraformで配列をloopする時はfor_eachを使った方がいい
- やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
-work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf  以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf 以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
 init.tf
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } } terraform { required_version = &amp;quot;1.0.11&amp;quot; backend &amp;quot;s3&amp;quot; { bucket = &amp;quot;my-terraform-poc-repository&amp;quot; key = &amp;quot;poc/poc.tfstate&amp;quot; region = &amp;quot;ap-northeast-1&amp;quot; } }  で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+terraform { required_providers { aws = { source = &amp;#34;hashicorp/aws&amp;#34; version = &amp;#34;3.66.0&amp;#34; } } } terraform { required_version = &amp;#34;1.0.11&amp;#34; backend &amp;#34;s3&amp;#34; { bucket = &amp;#34;my-terraform-poc-repository&amp;#34; key = &amp;#34;poc/poc.tfstate&amp;#34; region = &amp;#34;ap-northeast-1&amp;#34; } } で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
 variable.tf
-variable &amp;quot;codecommit_param_list&amp;quot; { type = map(map(string)) default = { param1 = { repository_name = &amp;quot;repo001&amp;quot; description = &amp;quot;desciption for repo001&amp;quot; } param2 = { repository_name = &amp;quot;repo002&amp;quot; description = &amp;quot;desciption for repo002&amp;quot; } param3 = { repository_name = &amp;quot;repo003&amp;quot; description = &amp;quot;desciption for repo003&amp;quot; } } }  codecommit.</description>
+variable &amp;#34;codecommit_param_list&amp;#34; { type = map(map(string)) default = { param1 = { repository_name = &amp;#34;repo001&amp;#34; description = &amp;#34;desciption for repo001&amp;#34; } param2 = { repository_name = &amp;#34;repo002&amp;#34; description = &amp;#34;desciption for repo002&amp;#34; } param3 = { repository_name = &amp;#34;repo003&amp;#34; description = &amp;#34;desciption for repo003&amp;#34; } } } codecommit.</description>
     </item>
-    
     <item>
       <title>Terraform loop処理のリンク集</title>
       <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</link>
       <pubDate>Sun, 21 Nov 2021 21:00:00 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/</guid>
       <description>Terraformでループ処理ってどうするんだっけ&amp;hellip;と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
-  for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
-  Terraformで配列をloopする時はfor_eachを使った方がいい   以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
- Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法   これはcountを使う方法。多分使わないけど比較用にメモ。
- Terraformで超サクッとループでリソースを用意する方法   上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
- 新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた   IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
-terraform { required_providers { aws = { source = &amp;quot;hashicorp/aws&amp;quot; version = &amp;quot;3.66.0&amp;quot; } } }  以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&amp;hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
- Terraform職人再入門2020   </description>
+for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
+Terraformで配列をloopする時はfor_eachを使った方がいい 以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
+Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法 これはcountを使う方法。多分使わないけど比較用にメモ。
+Terraformで超サクッとループでリソースを用意する方法 上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
+新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
+terraform { required_providers { aws = { source = &amp;#34;hashicorp/aws&amp;#34; version = &amp;#34;3.66.0&amp;#34; } } } 以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。&amp;hellip;と思ったが、ドキュメント読む限り気にしなくてよさげ。
+Terraform職人再入門2020 </description>
     </item>
-    
   </channel>
 </rss>

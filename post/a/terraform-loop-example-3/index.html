@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Terraform loop処理の応用編(2) - CI/CD | Go Buddy Go</title>
-<meta name="keywords" content="terraform, AWS, IaC, CodeDeploy, CodePipeline" />
+<meta name="keywords" content="terraform, AWS, IaC, CodeDeploy, CodePipeline">
 <meta name="description" content="前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &quot;aws_codecommit_repository&quot; &quot;codecommit_repos&quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &quot;repository_name&quot;) description = lookup(each.value, &quot;description&quot;) } #################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.">
+cicd.tf
+#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -22,21 +22,56 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Terraform loop処理の応用編(2) - CI/CD" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Terraform loop処理の応用編(2) - CI/CD" />
 <meta property="og:description" content="前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &quot;aws_codecommit_repository&quot; &quot;codecommit_repos&quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &quot;repository_name&quot;) description = lookup(each.value, &quot;description&quot;) } #################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var." />
+cicd.tf
+#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-06T00:20:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-12-06T00:20:00&#43;09:00" />
+<meta property="article:published_time" content="2021-12-06T00:20:00+09:00" />
+<meta property="article:modified_time" content="2021-12-06T00:20:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Terraform loop処理の応用編(2) - CI/CD"/>
 <meta name="twitter:description" content="前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
- cicd.tf
-#################################### # CodeCommit #################################### resource &quot;aws_codecommit_repository&quot; &quot;codecommit_repos&quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &quot;repository_name&quot;) description = lookup(each.value, &quot;description&quot;) } #################################### # CodeDeploy Application #################################### resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; { for_each = var.deploy_param_list name = lookup(each.value, &quot;name&quot;) compute_platform = &quot;Server&quot; } #################################### # CodeDeploy Deployment Group #################################### resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; { for_each = var.deploy_param_list app_name = lookup(each.value, &quot;name&quot;) deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var."/>
+cicd.tf
+#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var."/>
 
 
 <script type="application/ld+json">
@@ -65,11 +100,11 @@
   "@type": "BlogPosting",
   "headline": "Terraform loop処理の応用編(2) - CI/CD",
   "name": "Terraform loop処理の応用編(2) - CI\/CD",
-  "description": "前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。\n cicd.tf\n#################################### # CodeCommit #################################### resource \u0026quot;aws_codecommit_repository\u0026quot; \u0026quot;codecommit_repos\u0026quot; { for_each = var.codecommit_param_list repository_name = lookup(each.value, \u0026quot;repository_name\u0026quot;) description = lookup(each.value, \u0026quot;description\u0026quot;) } #################################### # CodeDeploy Application #################################### resource \u0026quot;aws_codedeploy_app\u0026quot; \u0026quot;codedeploy\u0026quot; { for_each = var.deploy_param_list name = lookup(each.value, \u0026quot;name\u0026quot;) compute_platform = \u0026quot;Server\u0026quot; } #################################### # CodeDeploy Deployment Group #################################### resource \u0026quot;aws_codedeploy_deployment_group\u0026quot; \u0026quot;codedeploy_grp\u0026quot; { for_each = var.deploy_param_list app_name = lookup(each.value, \u0026quot;name\u0026quot;) deployment_group_name = lookup(each.value, \u0026quot;deployment_group_name\u0026quot;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.",
+  "description": "前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。\ncicd.tf\n#################################### # CodeCommit #################################### resource \u0026#34;aws_codecommit_repository\u0026#34; \u0026#34;codecommit_repos\u0026#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, \u0026#34;repository_name\u0026#34;) description = lookup(each.value, \u0026#34;description\u0026#34;) } #################################### # CodeDeploy Application #################################### resource \u0026#34;aws_codedeploy_app\u0026#34; \u0026#34;codedeploy\u0026#34; { for_each = var.deploy_param_list name = lookup(each.value, \u0026#34;name\u0026#34;) compute_platform = \u0026#34;Server\u0026#34; } #################################### # CodeDeploy Deployment Group #################################### resource \u0026#34;aws_codedeploy_deployment_group\u0026#34; \u0026#34;codedeploy_grp\u0026#34; { for_each = var.deploy_param_list app_name = lookup(each.value, \u0026#34;name\u0026#34;) deployment_group_name = lookup(each.value, \u0026#34;deployment_group_name\u0026#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.",
   "keywords": [
     "terraform", "AWS", "IaC", "CodeDeploy", "CodePipeline"
   ],
-  "articleBody": "前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。\n cicd.tf\n#################################### # CodeCommit #################################### resource \"aws_codecommit_repository\" \"codecommit_repos\" { for_each = var.codecommit_param_list repository_name = lookup(each.value, \"repository_name\") description = lookup(each.value, \"description\") } #################################### # CodeDeploy Application #################################### resource \"aws_codedeploy_app\" \"codedeploy\" { for_each = var.deploy_param_list name = lookup(each.value, \"name\") compute_platform = \"Server\" } #################################### # CodeDeploy Deployment Group #################################### resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\" { for_each = var.deploy_param_list app_name = lookup(each.value, \"name\") deployment_group_name = lookup(each.value, \"deployment_group_name\") depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.deploy_role deployment_config_name = \"CodeDeployDefault.AllAtOnce\" ec2_tag_set { ec2_tag_filter { key = \"Name\" type = \"KEY_AND_VALUE\" value = lookup(each.value, \"value\") } } deployment_style { deployment_option = \"WITHOUT_TRAFFIC_CONTROL\" deployment_type = \"IN_PLACE\" } auto_rollback_configuration { enabled = true events = [\"DEPLOYMENT_FAILURE\"] } } #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"true\" RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } }  cicd.auto.tfvars\n######################################## # codecommit repos vars ######################################## codecommit_param_list = { param1 = { repository_name = \"repo001\" description = \"desciption for repo001\" } param2 = { repository_name = \"repo002\" description = \"desciption for repo002\" } param3 = { repository_name = \"repo003\" description = \"desciption for repo003\" } } ######################################## # codedeploy vars ######################################## deploy_param_list = { param1 = { name = \"deploy_app001\" deployment_group_name = \"deploy_grp001\" value = \"ec2-tag001\" } param2 = { name = \"deploy_app002\" deployment_group_name = \"deploy_grp002\" value = \"ec2-tag002\" } param3 = { name = \"deploy_app003\" deployment_group_name = \"deploy_grp003\" value = \"ec2-tag003\" } } ######################################## # codedeploy vars ######################################## pipeline_param_list = { param1 = { name = \"pipeline001\" app_name = \"deploy_app001\" deployment_group_name = \"deploy_grp001\" repository_name = \"repo001\" } param2 = { name = \"pipeline002\" app_name = \"deploy_app002\" deployment_group_name = \"deploy_grp002\" repository_name = \"repo002\" } param3 = { name = \"pipeline003\" app_name = \"deploy_app003\" deployment_group_name = \"deploy_grp003\" repository_name = \"repo003\" } } ######################################## # CI/CD IAM role vars ######################################## deploy_role = \"arn:aws:iam::[aws-account-id]:role/CodeDeployRole\" pipeline_role = \"arn:aws:iam::[aws-account-id]:role/PipelineRole\" ######################################## # S3 vars ######################################## bucket = \"codepipeline-bucket-name\"  variables.tf （宣言のみ）\n################# # main ################# variable \"region\" { type = string description = \"\" } ################# # IAM ################# variable \"deploy_role\" { type = string description = \"\" } variable \"pipeline_role\" { type = string description = \"\" } ################# # S3 ################# variable \"bucket\" { type = string description = \"\" } ################# # codecommit ################# variable \"codecommit_param_list\" { type = map(map(string)) description = \"\" } ################# # codedeploy ################# variable \"deploy_param_list\" { type = map(map(string)) description = \"\" } ################# # codepipeline ################# variable \"pipeline_param_list\" { type = map(map(string)) description = \"\" }  cicd.tfのPollForSourceChangesはトリガーの定義だが、EventBridgeルール経由でやるのが望ましいから本来はfalseにする想定。ルールを別途作成する必要があるが、それが面倒なので一旦trueにしておいた。（関連付けたルールが存在しない場合、勝手に作成される）\nこれで実行したところ、一応期待値になった。ルールは、各パイプラインとルールがペアになるように個別に作成する。ルールが使用するIAMロールは共通のひとつでよい。このIAMの権限はコードパイプラインをスタートするだけなのだが、リソースを*にして共通で使えばよい。\n ところでtfvarsでloop処理が参照するmap変数をサービス毎に分割しているが、分ける必要ないんじゃね？と思った。重複している値が複数あって、冗長だ。key名を適当に変えれば、同じparam_listで全部賄えそうな気がしてきた。次回の課題。\n 追記\n後日param_listを全部まとめるバージョンでやってみたところ、期待値になった。だからリソース毎に個別にリストを作成する必要はない。ただし、それは参照されるリストの要素の数が全部揃っている場合。\n例えばloopで作成するCodeCommitリポジトリの数が10でCodeDeploy、CodePipelineの数は8、とかだったら共通のリストにすると失敗する。このようなケースでは、CodeCommitのリストとCodeDeploy/CodePipeline用のリストは別に分ける必要がある。\n",
+  "articleBody": "前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。\ncicd.tf\n#################################### # CodeCommit #################################### resource \"aws_codecommit_repository\" \"codecommit_repos\" { for_each = var.codecommit_param_list repository_name = lookup(each.value, \"repository_name\") description = lookup(each.value, \"description\") } #################################### # CodeDeploy Application #################################### resource \"aws_codedeploy_app\" \"codedeploy\" { for_each = var.deploy_param_list name = lookup(each.value, \"name\") compute_platform = \"Server\" } #################################### # CodeDeploy Deployment Group #################################### resource \"aws_codedeploy_deployment_group\" \"codedeploy_grp\" { for_each = var.deploy_param_list app_name = lookup(each.value, \"name\") deployment_group_name = lookup(each.value, \"deployment_group_name\") depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var.deploy_role deployment_config_name = \"CodeDeployDefault.AllAtOnce\" ec2_tag_set { ec2_tag_filter { key = \"Name\" type = \"KEY_AND_VALUE\" value = lookup(each.value, \"value\") } } deployment_style { deployment_option = \"WITHOUT_TRAFFIC_CONTROL\" deployment_type = \"IN_PLACE\" } auto_rollback_configuration { enabled = true events = [\"DEPLOYMENT_FAILURE\"] } } #################################### # CodePipeline #################################### resource \"aws_codepipeline\" \"pipeline\" { for_each = var.pipeline_param_list name = lookup(each.value, \"name\") role_arn = var.pipeline_role artifact_store { location = var.bucket type = \"S3\" } stage { name = \"Source\" action { category = \"Source\" configuration = { BranchName = \"master\" PollForSourceChanges = \"true\" RepositoryName = lookup(each.value, \"repository_name\") } input_artifacts = [] name = \"Source\" namespace = \"SourceVariables\" output_artifacts = [\"SourceArtifact\"] owner = \"AWS\" provider = \"CodeCommit\" region = var.region run_order = 1 version = \"1\" } } stage { name = \"Deploy\" action { category = \"Deploy\" configuration = { ApplicationName = lookup(each.value, \"app_name\") DeploymentGroupName = lookup(each.value, \"deployment_group_name\") } input_artifacts = [\"SourceArtifact\"] name = \"Deploy\" namespace = \"DeployVariables\" output_artifacts = [] owner = \"AWS\" provider = \"CodeDeploy\" region = var.region run_order = 1 version = \"1\" } } } cicd.auto.tfvars\n######################################## # codecommit repos vars ######################################## codecommit_param_list = { param1 = { repository_name = \"repo001\" description = \"desciption for repo001\" } param2 = { repository_name = \"repo002\" description = \"desciption for repo002\" } param3 = { repository_name = \"repo003\" description = \"desciption for repo003\" } } ######################################## # codedeploy vars ######################################## deploy_param_list = { param1 = { name = \"deploy_app001\" deployment_group_name = \"deploy_grp001\" value = \"ec2-tag001\" } param2 = { name = \"deploy_app002\" deployment_group_name = \"deploy_grp002\" value = \"ec2-tag002\" } param3 = { name = \"deploy_app003\" deployment_group_name = \"deploy_grp003\" value = \"ec2-tag003\" } } ######################################## # codedeploy vars ######################################## pipeline_param_list = { param1 = { name = \"pipeline001\" app_name = \"deploy_app001\" deployment_group_name = \"deploy_grp001\" repository_name = \"repo001\" } param2 = { name = \"pipeline002\" app_name = \"deploy_app002\" deployment_group_name = \"deploy_grp002\" repository_name = \"repo002\" } param3 = { name = \"pipeline003\" app_name = \"deploy_app003\" deployment_group_name = \"deploy_grp003\" repository_name = \"repo003\" } } ######################################## # CI/CD IAM role vars ######################################## deploy_role = \"arn:aws:iam::[aws-account-id]:role/CodeDeployRole\" pipeline_role = \"arn:aws:iam::[aws-account-id]:role/PipelineRole\" ######################################## # S3 vars ######################################## bucket = \"codepipeline-bucket-name\" variables.tf （宣言のみ）\n################# # main ################# variable \"region\" { type = string description = \"\" } ################# # IAM ################# variable \"deploy_role\" { type = string description = \"\" } variable \"pipeline_role\" { type = string description = \"\" } ################# # S3 ################# variable \"bucket\" { type = string description = \"\" } ################# # codecommit ################# variable \"codecommit_param_list\" { type = map(map(string)) description = \"\" } ################# # codedeploy ################# variable \"deploy_param_list\" { type = map(map(string)) description = \"\" } ################# # codepipeline ################# variable \"pipeline_param_list\" { type = map(map(string)) description = \"\" } cicd.tfのPollForSourceChangesはトリガーの定義だが、EventBridgeルール経由でやるのが望ましいから本来はfalseにする想定。ルールを別途作成する必要があるが、それが面倒なので一旦trueにしておいた。（関連付けたルールが存在しない場合、勝手に作成される）\nこれで実行したところ、一応期待値になった。ルールは、各パイプラインとルールがペアになるように個別に作成する。ルールが使用するIAMロールは共通のひとつでよい。このIAMの権限はコードパイプラインをスタートするだけなのだが、リソースを*にして共通で使えばよい。\nところでtfvarsでloop処理が参照するmap変数をサービス毎に分割しているが、分ける必要ないんじゃね？と思った。重複している値が複数あって、冗長だ。key名を適当に変えれば、同じparam_listで全部賄えそうな気がしてきた。次回の課題。\n追記\n後日param_listを全部まとめるバージョンでやってみたところ、期待値になった。だからリソース毎に個別にリストを作成する必要はない。ただし、それは参照されるリストの要素の数が全部揃っている場合。\n例えばloopで作成するCodeCommitリポジトリの数が10でCodeDeploy、CodePipelineの数は8、とかだったら共通のリストにすると失敗する。このようなケースでは、CodeCommitのリストとCodeDeploy/CodePipeline用のリストは別に分ける必要がある。\n",
   "wordCount" : "517",
   "inLanguage": "en",
   "datePublished": "2021-12-06T00:20:00+09:00",
@@ -101,56 +136,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -164,7 +162,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -195,64 +193,65 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Terraform loop処理の応用編(2) - CI/CD
     </h1>
-    <div class="post-meta">December 6, 2021
+    <div class="post-meta"><span title='2021-12-06 00:20:00 +0900 JST'>December 6, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>前回投稿<a href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/">Terraform loop処理の応用編 </a>の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。</p>
 <p> </p>
 <p>cicd.tf</p>
-<pre><code>####################################
+<pre tabindex="0"><code>####################################
 # CodeCommit
 ####################################
 
-resource &quot;aws_codecommit_repository&quot; &quot;codecommit_repos&quot; {
+resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; {
   for_each = var.codecommit_param_list
 
-  repository_name = lookup(each.value, &quot;repository_name&quot;)
-  description     = lookup(each.value, &quot;description&quot;)
+  repository_name = lookup(each.value, &#34;repository_name&#34;)
+  description     = lookup(each.value, &#34;description&#34;)
 }
 
 ####################################
 # CodeDeploy Application
 ####################################
 
-resource &quot;aws_codedeploy_app&quot; &quot;codedeploy&quot; {
+resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; {
   for_each = var.deploy_param_list
 
-  name = lookup(each.value, &quot;name&quot;)
-  compute_platform = &quot;Server&quot;
+  name = lookup(each.value, &#34;name&#34;)
+  compute_platform = &#34;Server&#34;
 }
 
 ####################################
 # CodeDeploy Deployment Group
 ####################################
 
-resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; {
+resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; {
   for_each = var.deploy_param_list
 
-  app_name = lookup(each.value, &quot;name&quot;)
-  deployment_group_name = lookup(each.value, &quot;deployment_group_name&quot;)
+  app_name = lookup(each.value, &#34;name&#34;)
+  deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;)
   depends_on = [aws_codedeploy_app.codedeploy]
 
   service_role_arn       = var.deploy_role
-  deployment_config_name = &quot;CodeDeployDefault.AllAtOnce&quot;
+  deployment_config_name = &#34;CodeDeployDefault.AllAtOnce&#34;
   ec2_tag_set {
     ec2_tag_filter {
-      key   = &quot;Name&quot;
-      type  = &quot;KEY_AND_VALUE&quot;
-      value = lookup(each.value, &quot;value&quot;)
+      key   = &#34;Name&#34;
+      type  = &#34;KEY_AND_VALUE&#34;
+      value = lookup(each.value, &#34;value&#34;)
     }
   }
   deployment_style {
-    deployment_option = &quot;WITHOUT_TRAFFIC_CONTROL&quot;
-    deployment_type   = &quot;IN_PLACE&quot;
+    deployment_option = &#34;WITHOUT_TRAFFIC_CONTROL&#34;
+    deployment_type   = &#34;IN_PLACE&#34;
   }
   auto_rollback_configuration {
     enabled = true
-    events  = [&quot;DEPLOYMENT_FAILURE&quot;]
+    events  = [&#34;DEPLOYMENT_FAILURE&#34;]
   }
 }
 
@@ -260,72 +259,72 @@ resource &quot;aws_codedeploy_deployment_group&quot; &quot;codedeploy_grp&quot; 
 # CodePipeline
 ####################################
 
-resource &quot;aws_codepipeline&quot; &quot;pipeline&quot; {
+resource &#34;aws_codepipeline&#34; &#34;pipeline&#34; {
   for_each = var.pipeline_param_list
 
-  name     = lookup(each.value, &quot;name&quot;)
+  name     = lookup(each.value, &#34;name&#34;)
   role_arn = var.pipeline_role
   artifact_store {
     location = var.bucket
-    type     = &quot;S3&quot;
+    type     = &#34;S3&#34;
   }
   stage {
-    name = &quot;Source&quot;
+    name = &#34;Source&#34;
     action {
-      category        = &quot;Source&quot;
+      category        = &#34;Source&#34;
       configuration   = {
-        BranchName          = &quot;master&quot;
-        PollForSourceChanges = &quot;true&quot;
-        RepositoryName      = lookup(each.value, &quot;repository_name&quot;)
+        BranchName          = &#34;master&#34;
+        PollForSourceChanges = &#34;true&#34;
+        RepositoryName      = lookup(each.value, &#34;repository_name&#34;)
       }
       input_artifacts = []
-      name            = &quot;Source&quot;
-      namespace       = &quot;SourceVariables&quot;
-      output_artifacts = [&quot;SourceArtifact&quot;]
-      owner           = &quot;AWS&quot;
-      provider        = &quot;CodeCommit&quot;
+      name            = &#34;Source&#34;
+      namespace       = &#34;SourceVariables&#34;
+      output_artifacts = [&#34;SourceArtifact&#34;]
+      owner           = &#34;AWS&#34;
+      provider        = &#34;CodeCommit&#34;
       region          = var.region
       run_order       = 1
-      version         = &quot;1&quot;
+      version         = &#34;1&#34;
     }
   }
   stage {
-    name = &quot;Deploy&quot;
+    name = &#34;Deploy&#34;
     action {
-      category        = &quot;Deploy&quot;
+      category        = &#34;Deploy&#34;
       configuration   = {
-        ApplicationName     = lookup(each.value, &quot;app_name&quot;)
-        DeploymentGroupName = lookup(each.value, &quot;deployment_group_name&quot;)
+        ApplicationName     = lookup(each.value, &#34;app_name&#34;)
+        DeploymentGroupName = lookup(each.value, &#34;deployment_group_name&#34;)
       }
-      input_artifacts = [&quot;SourceArtifact&quot;]
-      name            = &quot;Deploy&quot;
-      namespace       = &quot;DeployVariables&quot;
+      input_artifacts = [&#34;SourceArtifact&#34;]
+      name            = &#34;Deploy&#34;
+      namespace       = &#34;DeployVariables&#34;
       output_artifacts = []
-      owner           = &quot;AWS&quot;
-      provider        = &quot;CodeDeploy&quot;
+      owner           = &#34;AWS&#34;
+      provider        = &#34;CodeDeploy&#34;
       region          = var.region
       run_order       = 1
-      version         = &quot;1&quot;
+      version         = &#34;1&#34;
     }
   }
 }
 </code></pre><p> </p>
 <p>cicd.auto.tfvars</p>
-<pre><code>########################################
+<pre tabindex="0"><code>########################################
 # codecommit repos vars
 ########################################
 codecommit_param_list = {
       param1 = {
-        repository_name = &quot;repo001&quot;
-        description = &quot;desciption for repo001&quot;
+        repository_name = &#34;repo001&#34;
+        description = &#34;desciption for repo001&#34;
       }
       param2 = {
-        repository_name = &quot;repo002&quot;
-        description = &quot;desciption for repo002&quot;
+        repository_name = &#34;repo002&#34;
+        description = &#34;desciption for repo002&#34;
       }
       param3 = {
-        repository_name = &quot;repo003&quot;
-        description = &quot;desciption for repo003&quot;
+        repository_name = &#34;repo003&#34;
+        description = &#34;desciption for repo003&#34;
       }
 }
 
@@ -335,19 +334,19 @@ codecommit_param_list = {
 
 deploy_param_list = {
       param1 = {
-        name = &quot;deploy_app001&quot;
-        deployment_group_name = &quot;deploy_grp001&quot;
-        value = &quot;ec2-tag001&quot;
+        name = &#34;deploy_app001&#34;
+        deployment_group_name = &#34;deploy_grp001&#34;
+        value = &#34;ec2-tag001&#34;
       }
       param2 = {
-        name = &quot;deploy_app002&quot;
-        deployment_group_name = &quot;deploy_grp002&quot;
-        value = &quot;ec2-tag002&quot;
+        name = &#34;deploy_app002&#34;
+        deployment_group_name = &#34;deploy_grp002&#34;
+        value = &#34;ec2-tag002&#34;
       }
       param3 = {
-        name = &quot;deploy_app003&quot;
-        deployment_group_name = &quot;deploy_grp003&quot;
-        value = &quot;ec2-tag003&quot;
+        name = &#34;deploy_app003&#34;
+        deployment_group_name = &#34;deploy_grp003&#34;
+        value = &#34;ec2-tag003&#34;
       }
 }
 
@@ -357,22 +356,22 @@ deploy_param_list = {
 
 pipeline_param_list = {
       param1 = {
-        name = &quot;pipeline001&quot;
-        app_name = &quot;deploy_app001&quot;
-        deployment_group_name = &quot;deploy_grp001&quot;
-        repository_name = &quot;repo001&quot;
+        name = &#34;pipeline001&#34;
+        app_name = &#34;deploy_app001&#34;
+        deployment_group_name = &#34;deploy_grp001&#34;
+        repository_name = &#34;repo001&#34;
       }
       param2 = {
-        name = &quot;pipeline002&quot;
-        app_name = &quot;deploy_app002&quot;
-        deployment_group_name = &quot;deploy_grp002&quot;
-        repository_name = &quot;repo002&quot;
+        name = &#34;pipeline002&#34;
+        app_name = &#34;deploy_app002&#34;
+        deployment_group_name = &#34;deploy_grp002&#34;
+        repository_name = &#34;repo002&#34;
       }
       param3 = {
-        name = &quot;pipeline003&quot;
-        app_name = &quot;deploy_app003&quot;
-        deployment_group_name = &quot;deploy_grp003&quot;
-        repository_name = &quot;repo003&quot;
+        name = &#34;pipeline003&#34;
+        app_name = &#34;deploy_app003&#34;
+        deployment_group_name = &#34;deploy_grp003&#34;
+        repository_name = &#34;repo003&#34;
       }
 }
 
@@ -380,68 +379,67 @@ pipeline_param_list = {
 # CI/CD IAM role vars
 ########################################
 
-deploy_role = &quot;arn:aws:iam::[aws-account-id]:role/CodeDeployRole&quot;
-pipeline_role = &quot;arn:aws:iam::[aws-account-id]:role/PipelineRole&quot;
+deploy_role = &#34;arn:aws:iam::[aws-account-id]:role/CodeDeployRole&#34;
+pipeline_role = &#34;arn:aws:iam::[aws-account-id]:role/PipelineRole&#34;
 
 ########################################
 # S3 vars
 ########################################
 
-bucket = &quot;codepipeline-bucket-name&quot;
-
+bucket = &#34;codepipeline-bucket-name&#34;
 </code></pre><p> </p>
 <p>variables.tf （宣言のみ）</p>
-<pre><code>#################
+<pre tabindex="0"><code>#################
 # main
 #################
-variable &quot;region&quot; {
+variable &#34;region&#34; {
   type = string
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
 #################
 # IAM
 #################
-variable &quot;deploy_role&quot; {
+variable &#34;deploy_role&#34; {
   type = string
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
-variable &quot;pipeline_role&quot; {
+variable &#34;pipeline_role&#34; {
   type = string
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
 #################
 # S3
 #################
-variable &quot;bucket&quot; {
+variable &#34;bucket&#34; {
   type = string
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
 #################
 # codecommit
 #################
-variable &quot;codecommit_param_list&quot; {
+variable &#34;codecommit_param_list&#34; {
   type = map(map(string))
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
 #################
 # codedeploy
 #################
-variable &quot;deploy_param_list&quot; {
+variable &#34;deploy_param_list&#34; {
   type = map(map(string))
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 
 #################
 # codepipeline
 #################
-variable &quot;pipeline_param_list&quot; {
+variable &#34;pipeline_param_list&#34; {
   type = map(map(string))
-  description = &quot;&quot;
+  description = &#34;&#34;
 }
 </code></pre><p> </p>
 <p>cicd.tfのPollForSourceChangesはトリガーの定義だが、EventBridgeルール経由でやるのが望ましいから本来はfalseにする想定。ルールを別途作成する必要があるが、それが面倒なので一旦trueにしておいた。（関連付けたルールが存在しない場合、勝手に作成される）</p>
@@ -473,6 +471,7 @@ variable &quot;pipeline_param_list&quot; {
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
@@ -483,12 +482,12 @@ variable &quot;pipeline_param_list&quot; {
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/sns/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>ソーシャルな反応に対する反応とか</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Terraform loop処理の応用編</span>
   </a>
@@ -497,27 +496,28 @@ variable &quot;pipeline_param_list&quot; {
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -571,12 +571,12 @@ variable &quot;pipeline_param_list&quot; {
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

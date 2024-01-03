@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ContainerInsights on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/containerinsights/</link>
     <description>Recent content in ContainerInsights on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 12 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/containerinsights/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/containerinsights/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EKS Container InsightsのFluent Bit設定</title>
       <link>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</link>
       <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/fluentbit-eks-setting/</guid>
       <description>&lt;p&gt;AWS EKSでPodからログを送信する場合、Container Insightsを組み込んでFluentdかFluent Bitを利用するのが一般的と思われる。そしてFluent BitよりFluentdの方がメジャーなのでまずはそこから入る事例が多いと想像する。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

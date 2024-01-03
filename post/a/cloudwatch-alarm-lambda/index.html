@@ -6,17 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする | Go Buddy Go</title>
-<meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, amazon sns, eventbridge, AWS" />
+<meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, amazon sns, eventbridge, AWS">
 <meta name="description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる">
+$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34; EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -25,27 +25,62 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" />
 <meta property="og:description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる" />
+$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34; EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-03T21:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-11-03T21:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-11-03T21:00:00+09:00" />
+<meta property="article:modified_time" content="2021-11-03T21:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする"/>
 <meta name="twitter:description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
- ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
+ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
- 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
+処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
-$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \ --metric-name &quot;CPUUtilization&quot; \ --namespace &quot;AWS/EC2&quot; \ --statistic &quot;Maximum&quot; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &quot;GreaterThanThreshold&quot; \ --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;  EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる"/>
+$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34; EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる"/>
 
 
 <script type="application/ld+json">
@@ -74,11 +109,11 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
   "@type": "BlogPosting",
   "headline": "CloudWatchアラーム + SNSからのメール件名をカスタマイズする",
   "name": "CloudWatchアラーム \u002b SNSからのメール件名をカスタマイズする",
-  "description": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\n ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \u0026quot;CPU_Utilization_Test\u0026quot; \\ --metric-name \u0026quot;CPUUtilization\u0026quot; \\ --namespace \u0026quot;AWS/EC2\u0026quot; \\ --statistic \u0026quot;Maximum\u0026quot; \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \u0026quot;GreaterThanThreshold\u0026quot; \\ --dimensions \u0026quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9\u0026quot;  EventBridgeルールの作成。以下の場合、\u0026ldquo;CPU_Utilization_\u0026ldquo;を含むアラームと関連付けられる",
+  "description": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\nベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \u0026#34;CPU_Utilization_Test\u0026#34; \\ --metric-name \u0026#34;CPUUtilization\u0026#34; \\ --namespace \u0026#34;AWS/EC2\u0026#34; \\ --statistic \u0026#34;Maximum\u0026#34; \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \u0026#34;GreaterThanThreshold\u0026#34; \\ --dimensions \u0026#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9\u0026#34; EventBridgeルールの作成。以下の場合、\u0026ldquo;CPU_Utilization_\u0026ldquo;を含むアラームと関連付けられる",
   "keywords": [
     "cloudwatch", "cloudwatchalarm", "monitoring", "lambda", "amazon sns", "eventbridge", "AWS"
   ],
-  "articleBody": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\n ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n 処理概要  CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認   検証に使用したアイテム    アイテム 名称     SNSトピック alarm-notification-topic   CloudWatchアラーム CPU_Utilization_Test   Lambda関数 cw-alarm-sns-function   EventBridgeルール cw-alarm-rule    やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \"CPU_Utilization_Test\" \\ --metric-name \"CPUUtilization\" \\ --namespace \"AWS/EC2\" \\ --statistic \"Maximum\" \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \"GreaterThanThreshold\" \\ --dimensions \"Name=InstanceId,Value=i-0xxxxxxxxxxx9\"  EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる\n$ AWSREGION=ap-northeast-1 $ AWSACCOUNT=my-account-id $ aws events put-rule --name \"cw-alarm-rule\" \\ --event-pattern \"{\\\"source\\\": [\\\"aws.cloudwatch\\\"],\\\"detail-type\\\": [\\\"CloudWatch Alarm State Change\\\"],\\\"resources\\\": [{\\\"prefix\\\": \\\"arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\\\"}],\\\"detail\\\": {\\\"state\\\": {\\\"value\\\": [\\\"ALARM\\\"]}}}\"  以下の様にルールが作成された。\n { \"source\": [\"aws.cloudwatch\"], \"detail-type\": [\"CloudWatch Alarm State Change\"], \"resources\": [{ \"prefix\": \"arn:aws:cloudwatch:ap-northeast-1:0123456789102:alarm:CPU_Utilization_\" }], \"detail\": { \"state\": { \"value\": [\"ALARM\"] } } }  しかしこの段階ではまだターゲットが存在しない。前回はコマンドでターゲット指定したが、今回はマネコンからやった。対象のルールを選択して「Edit」ー＞ 「Select targets」で作成済みのLambda関数を指定して、「Update」\n すると、以下の様にLambda側のトリガーとして、セットしたルールが設定される。\n ここまでやったら、以下の流れでメール通知される、はず。\n① EC2インスタンスのCPU使用率を上げてアラーム発行させる ② EventBridgeルールでターゲットに指定したLambdaに渡される ③ Lambdaで設定したSNSに渡される\nちなみにCPU使用率UP時はこんなのをshellにしてバックグラウンドで複数実行させた。アラームの設定で閾値10%にしたが、これをt3.microマシン上で3回くらい同時に回せば軽く90%くらいになる。\nCNT=0; while [ $CNT -lt 100000 ]; do CNT=$(( CNT + 1 ));done\n 少し経つとアラームのステータスが変わって、カスタム件名のメールが届いた！しかし本文がひどい…\n サンプルコードではMessage=json.dumps(event) としているから、JSONデータをそのまま吐き出しているだけ。本文をカスタマイズする場合はこのeventをいじる必要がある。冒頭のクラメソさんの事例もはっきりいって面倒くさそうだったが、コードでやるのも面倒だなぁ、何せサンデープログラマだから。\neventに相当するJSONデータ\n{\"version\": \"0\", \"id\": \"86fa8a3f-7470-8c16-ef56-aaba9821771e\", \"detail-type\": \"CloudWatch Alarm State Change\", \"source\": \"aws.cloudwatch\", \"account\": \"123456789101\", \"time\": \"2021-11-03T10:17:51Z\", \"region\": \"ap-northeast-1\", \"resources\": [\"arn:aws:cloudwatch:ap-northeast-1:123456789101:alarm:CPU_Utilization_Test\"], \"detail\": {\"alarmName\": \"CPU_Utilization_Test\", \"state\": {\"value\": \"ALARM\", \"reason\": \"Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/11/21 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK - ALARM transition).\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2021-11-03T10:17:51.018+0000\\\",\\\"startDate\\\":\\\"2021-11-03T10:11:00.000+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[100.0],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2021-11-03T10:11:00.000+0000\\\",\\\"sampleCount\\\":5.0,\\\"value\\\":100.0}]}\", \"timestamp\": \"2021-11-03T10:17:51.020+0000\"}, \"previousState\": {\"value\": \"INSUFFICIENT_DATA\", \"reason\": \"Insufficient Data: 1 datapoint was unknown.\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2021-11-03T10:13:51.019+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2021-11-03T10:13:00.000+0000\\\"}]}\", \"timestamp\": \"2021-11-03T10:13:51.023+0000\"}, \"configuration\": {\"metrics\": [{\"id\": \"4cbe7286-d70f-fcb9-4a0a-758612d568db\", \"metricStat\": {\"metric\": {\"namespace\": \"AWS/EC2\", \"name\": \"CPUUtilization\", \"dimensions\": {\"InstanceId\": \"i-0b22a89b0bb3faf49\"}}, \"period\": 60, \"stat\": \"Maximum\"}, \"returnData\": true}]}}}  と、ここで別途最近実施した、特別カスタマイズをしないアラーム + SNS送信検証時のメールを見たら、英語のみとはいえこっちの方がまだ全然見やすい。そりゃわかりにくいけど、JSON生データよりマシ。もう本文はこれでいいんじゃね？という気もするんだが。件名も、アラーム名が件名に入るんだから識別・フィルタしやすいアラーム名にすればどうにかなりそうな気もする。…と、減速気味になってきた。\n …が！以下の補足事項を思い出した。アラーム単体では無効化・有効化の制御ができない。となると、やはりEventBridgに組み込む方がいいんだよな。うーむ…。頭痛いから明日考えよう。明後日かもしれない。\n 補足 アラームを一時無効化したい場合は、Rule側で制御する。マネコンで対象のルールを選択して、「Distable/無効にする」ボタンを押下。（アラーム単体ではこの機能がない）\n ",
+  "articleBody": "CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。\nベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。\nCloudWatch アラームの通知メールを少しでも読みやすくしたい\n処理概要 CloudWatchアラームのステータスがALARMに変わる。 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ CloudWatchアラーム作成 Lambda関数作成（Lambda用IAMロールは既存流用） EventBridgeルール作成 EventBridgeルールのターゲットに3.のLambda関数を設定する 対象EC2インスタンスのCPU負荷を上げてアラームステータスにする メール通知確認 検証に使用したアイテム アイテム 名称 SNSトピック alarm-notification-topic CloudWatchアラーム CPU_Utilization_Test Lambda関数 cw-alarm-sns-function EventBridgeルール cw-alarm-rule やったこと SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。\nCLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。\n$ aws cloudwatch put-metric-alarm --alarm-name \"CPU_Utilization_Test\" \\ --metric-name \"CPUUtilization\" \\ --namespace \"AWS/EC2\" \\ --statistic \"Maximum\" \\ --period 60 \\ --evaluation-periods 1 \\ --datapoints-to-alarm 1 \\ --threshold 10 \\ --comparison-operator \"GreaterThanThreshold\" \\ --dimensions \"Name=InstanceId,Value=i-0xxxxxxxxxxx9\" EventBridgeルールの作成。以下の場合、“CPU_Utilization_“を含むアラームと関連付けられる\n$ AWSREGION=ap-northeast-1 $ AWSACCOUNT=my-account-id $ aws events put-rule --name \"cw-alarm-rule\" \\ --event-pattern \"{\\\"source\\\": [\\\"aws.cloudwatch\\\"],\\\"detail-type\\\": [\\\"CloudWatch Alarm State Change\\\"],\\\"resources\\\": [{\\\"prefix\\\": \\\"arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\\\"}],\\\"detail\\\": {\\\"state\\\": {\\\"value\\\": [\\\"ALARM\\\"]}}}\" 以下の様にルールが作成された。\n{ \"source\": [\"aws.cloudwatch\"], \"detail-type\": [\"CloudWatch Alarm State Change\"], \"resources\": [{ \"prefix\": \"arn:aws:cloudwatch:ap-northeast-1:0123456789102:alarm:CPU_Utilization_\" }], \"detail\": { \"state\": { \"value\": [\"ALARM\"] } } } しかしこの段階ではまだターゲットが存在しない。前回はコマンドでターゲット指定したが、今回はマネコンからやった。対象のルールを選択して「Edit」ー＞ 「Select targets」で作成済みのLambda関数を指定して、「Update」\nすると、以下の様にLambda側のトリガーとして、セットしたルールが設定される。\nここまでやったら、以下の流れでメール通知される、はず。\n① EC2インスタンスのCPU使用率を上げてアラーム発行させる ② EventBridgeルールでターゲットに指定したLambdaに渡される ③ Lambdaで設定したSNSに渡される\nちなみにCPU使用率UP時はこんなのをshellにしてバックグラウンドで複数実行させた。アラームの設定で閾値10%にしたが、これをt3.microマシン上で3回くらい同時に回せば軽く90%くらいになる。\nCNT=0; while [ $CNT -lt 100000 ]; do CNT=$(( CNT + 1 ));done\n少し経つとアラームのステータスが変わって、カスタム件名のメールが届いた！しかし本文がひどい…\nサンプルコードではMessage=json.dumps(event) としているから、JSONデータをそのまま吐き出しているだけ。本文をカスタマイズする場合はこのeventをいじる必要がある。冒頭のクラメソさんの事例もはっきりいって面倒くさそうだったが、コードでやるのも面倒だなぁ、何せサンデープログラマだから。\neventに相当するJSONデータ\n{\"version\": \"0\", \"id\": \"86fa8a3f-7470-8c16-ef56-aaba9821771e\", \"detail-type\": \"CloudWatch Alarm State Change\", \"source\": \"aws.cloudwatch\", \"account\": \"123456789101\", \"time\": \"2021-11-03T10:17:51Z\", \"region\": \"ap-northeast-1\", \"resources\": [\"arn:aws:cloudwatch:ap-northeast-1:123456789101:alarm:CPU_Utilization_Test\"], \"detail\": {\"alarmName\": \"CPU_Utilization_Test\", \"state\": {\"value\": \"ALARM\", \"reason\": \"Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/11/21 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -\u003e ALARM transition).\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2021-11-03T10:17:51.018+0000\\\",\\\"startDate\\\":\\\"2021-11-03T10:11:00.000+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[100.0],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2021-11-03T10:11:00.000+0000\\\",\\\"sampleCount\\\":5.0,\\\"value\\\":100.0}]}\", \"timestamp\": \"2021-11-03T10:17:51.020+0000\"}, \"previousState\": {\"value\": \"INSUFFICIENT_DATA\", \"reason\": \"Insufficient Data: 1 datapoint was unknown.\", \"reasonData\": \"{\\\"version\\\":\\\"1.0\\\",\\\"queryDate\\\":\\\"2021-11-03T10:13:51.019+0000\\\",\\\"statistic\\\":\\\"Maximum\\\",\\\"period\\\":60,\\\"recentDatapoints\\\":[],\\\"threshold\\\":10.0,\\\"evaluatedDatapoints\\\":[{\\\"timestamp\\\":\\\"2021-11-03T10:13:00.000+0000\\\"}]}\", \"timestamp\": \"2021-11-03T10:13:51.023+0000\"}, \"configuration\": {\"metrics\": [{\"id\": \"4cbe7286-d70f-fcb9-4a0a-758612d568db\", \"metricStat\": {\"metric\": {\"namespace\": \"AWS/EC2\", \"name\": \"CPUUtilization\", \"dimensions\": {\"InstanceId\": \"i-0b22a89b0bb3faf49\"}}, \"period\": 60, \"stat\": \"Maximum\"}, \"returnData\": true}]}}} と、ここで別途最近実施した、特別カスタマイズをしないアラーム + SNS送信検証時のメールを見たら、英語のみとはいえこっちの方がまだ全然見やすい。そりゃわかりにくいけど、JSON生データよりマシ。もう本文はこれでいいんじゃね？という気もするんだが。件名も、アラーム名が件名に入るんだから識別・フィルタしやすいアラーム名にすればどうにかなりそうな気もする。…と、減速気味になってきた。\n…が！以下の補足事項を思い出した。アラーム単体では無効化・有効化の制御ができない。となると、やはりEventBridgに組み込む方がいいんだよな。うーむ…。頭痛いから明日考えよう。明後日かもしれない。\n補足 アラームを一時無効化したい場合は、Rule側で制御する。マネコンで対象のルールを選択して、「Distable/無効にする」ボタンを押下。（アラーム単体ではこの機能がない）\n",
   "wordCount" : "242",
   "inLanguage": "en",
   "datePublished": "2021-11-03T21:00:00+09:00",
@@ -110,56 +145,19 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -173,7 +171,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -204,10 +202,11 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
     </h1>
-    <div class="post-meta">November 3, 2021
+    <div class="post-meta"><span title='2021-11-03 21:00:00 +0900 JST'>November 3, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 <a href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/">AWS EventBridge + SNSからのメール件名をカスタマイズする</a> でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。</p>
@@ -264,23 +263,23 @@ $ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; 
 <h3 id="やったこと">やったこと<a hidden class="anchor" aria-hidden="true" href="#やったこと">#</a></h3>
 <p>SNSトピック作成、Lambda関数作成は冒頭のリンク過去記事でもやったので省略。Lambda関数の環境変数でSNSトピック、メール件名を指定している。一応後半にスクショあり。</p>
 <p>CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。</p>
-<pre><code>$ aws cloudwatch put-metric-alarm --alarm-name &quot;CPU_Utilization_Test&quot; \
-  --metric-name &quot;CPUUtilization&quot; \
-  --namespace &quot;AWS/EC2&quot; \
-  --statistic &quot;Maximum&quot; \
+<pre tabindex="0"><code>$ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \
+  --metric-name &#34;CPUUtilization&#34; \
+  --namespace &#34;AWS/EC2&#34; \
+  --statistic &#34;Maximum&#34; \
   --period 60 \
   --evaluation-periods 1 \
   --datapoints-to-alarm 1 \
   --threshold 10 \
-  --comparison-operator &quot;GreaterThanThreshold&quot; \
-  --dimensions &quot;Name=InstanceId,Value=i-0xxxxxxxxxxx9&quot;
+  --comparison-operator &#34;GreaterThanThreshold&#34; \
+  --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34;
 </code></pre><p> </p>
 <p>EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる</p>
-<pre><code>$ AWSREGION=ap-northeast-1
+<pre tabindex="0"><code>$ AWSREGION=ap-northeast-1
 $ AWSACCOUNT=my-account-id
 
-$ aws events put-rule --name &quot;cw-alarm-rule&quot; \
-  --event-pattern &quot;{\&quot;source\&quot;: [\&quot;aws.cloudwatch\&quot;],\&quot;detail-type\&quot;: [\&quot;CloudWatch Alarm State Change\&quot;],\&quot;resources\&quot;: [{\&quot;prefix\&quot;: \&quot;arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\&quot;}],\&quot;detail\&quot;: {\&quot;state\&quot;: {\&quot;value\&quot;: [\&quot;ALARM\&quot;]}}}&quot;
+$ aws events put-rule --name &#34;cw-alarm-rule&#34; \
+  --event-pattern &#34;{\&#34;source\&#34;: [\&#34;aws.cloudwatch\&#34;],\&#34;detail-type\&#34;: [\&#34;CloudWatch Alarm State Change\&#34;],\&#34;resources\&#34;: [{\&#34;prefix\&#34;: \&#34;arn:aws:cloudwatch:${AWSREGION}:${AWSACCOUNT}:alarm:CPU_Utilization_\&#34;}],\&#34;detail\&#34;: {\&#34;state\&#34;: {\&#34;value\&#34;: [\&#34;ALARM\&#34;]}}}&#34;
 </code></pre><p> </p>
 <p>以下の様にルールが作成された。</p>
 <p><img loading="lazy" src="/img/a/alarm-rule_1.jpg" alt="EventBridgeルール"  />
@@ -288,15 +287,15 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
 <img loading="lazy" src="/img/a/alarm-rule_2.jpg" alt="EventBridgeルール"  />
 </p>
 <p> </p>
-<pre><code>{
-  &quot;source&quot;: [&quot;aws.cloudwatch&quot;],
-  &quot;detail-type&quot;: [&quot;CloudWatch Alarm State Change&quot;],
-  &quot;resources&quot;: [{
-    &quot;prefix&quot;: &quot;arn:aws:cloudwatch:ap-northeast-1:0123456789102:alarm:CPU_Utilization_&quot;
+<pre tabindex="0"><code>{
+  &#34;source&#34;: [&#34;aws.cloudwatch&#34;],
+  &#34;detail-type&#34;: [&#34;CloudWatch Alarm State Change&#34;],
+  &#34;resources&#34;: [{
+    &#34;prefix&#34;: &#34;arn:aws:cloudwatch:ap-northeast-1:0123456789102:alarm:CPU_Utilization_&#34;
   }],
-  &quot;detail&quot;: {
-    &quot;state&quot;: {
-      &quot;value&quot;: [&quot;ALARM&quot;]
+  &#34;detail&#34;: {
+    &#34;state&#34;: {
+      &#34;value&#34;: [&#34;ALARM&#34;]
     }
   }
 }
@@ -322,8 +321,8 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
 <p> </p>
 <p>サンプルコードでは<code>Message=json.dumps(event) </code>としているから、JSONデータをそのまま吐き出しているだけ。本文をカスタマイズする場合はこのeventをいじる必要がある。冒頭のクラメソさんの事例もはっきりいって面倒くさそうだったが、コードでやるのも面倒だなぁ、何せサンデープログラマだから。</p>
 <p>eventに相当するJSONデータ</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{<span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;0&#34;</span>, <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;86fa8a3f-7470-8c16-ef56-aaba9821771e&#34;</span>, <span style="color:#f92672">&#34;detail-type&#34;</span>: <span style="color:#e6db74">&#34;CloudWatch Alarm State Change&#34;</span>, <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;aws.cloudwatch&#34;</span>, <span style="color:#f92672">&#34;account&#34;</span>: <span style="color:#e6db74">&#34;123456789101&#34;</span>, <span style="color:#f92672">&#34;time&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:17:51Z&#34;</span>, <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>, <span style="color:#f92672">&#34;resources&#34;</span>: [<span style="color:#e6db74">&#34;arn:aws:cloudwatch:ap-northeast-1:123456789101:alarm:CPU_Utilization_Test&#34;</span>], <span style="color:#f92672">&#34;detail&#34;</span>: {<span style="color:#f92672">&#34;alarmName&#34;</span>: <span style="color:#e6db74">&#34;CPU_Utilization_Test&#34;</span>, <span style="color:#f92672">&#34;state&#34;</span>: {<span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;ALARM&#34;</span>, <span style="color:#f92672">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/11/21 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -&gt; ALARM transition).&#34;</span>, <span style="color:#f92672">&#34;reasonData&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2021-11-03T10:17:51.018+0000\&#34;,\&#34;startDate\&#34;:\&#34;2021-11-03T10:11:00.000+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[100.0],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2021-11-03T10:11:00.000+0000\&#34;,\&#34;sampleCount\&#34;:5.0,\&#34;value\&#34;:100.0}]}&#34;</span>, <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:17:51.020+0000&#34;</span>}, <span style="color:#f92672">&#34;previousState&#34;</span>: {<span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;INSUFFICIENT_DATA&#34;</span>, <span style="color:#f92672">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;Insufficient Data: 1 datapoint was unknown.&#34;</span>, <span style="color:#f92672">&#34;reasonData&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2021-11-03T10:13:51.019+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2021-11-03T10:13:00.000+0000\&#34;}]}&#34;</span>, <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:13:51.023+0000&#34;</span>}, <span style="color:#f92672">&#34;configuration&#34;</span>: {<span style="color:#f92672">&#34;metrics&#34;</span>: [{<span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;4cbe7286-d70f-fcb9-4a0a-758612d568db&#34;</span>, <span style="color:#f92672">&#34;metricStat&#34;</span>: {<span style="color:#f92672">&#34;metric&#34;</span>: {<span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;AWS/EC2&#34;</span>, <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;CPUUtilization&#34;</span>, <span style="color:#f92672">&#34;dimensions&#34;</span>: {<span style="color:#f92672">&#34;InstanceId&#34;</span>: <span style="color:#e6db74">&#34;i-0b22a89b0bb3faf49&#34;</span>}}, <span style="color:#f92672">&#34;period&#34;</span>: <span style="color:#ae81ff">60</span>, <span style="color:#f92672">&#34;stat&#34;</span>: <span style="color:#e6db74">&#34;Maximum&#34;</span>}, <span style="color:#f92672">&#34;returnData&#34;</span>: <span style="color:#66d9ef">true</span>}]}}}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;0&#34;</span>, <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;86fa8a3f-7470-8c16-ef56-aaba9821771e&#34;</span>, <span style="color:#f92672">&#34;detail-type&#34;</span>: <span style="color:#e6db74">&#34;CloudWatch Alarm State Change&#34;</span>, <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;aws.cloudwatch&#34;</span>, <span style="color:#f92672">&#34;account&#34;</span>: <span style="color:#e6db74">&#34;123456789101&#34;</span>, <span style="color:#f92672">&#34;time&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:17:51Z&#34;</span>, <span style="color:#f92672">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>, <span style="color:#f92672">&#34;resources&#34;</span>: [<span style="color:#e6db74">&#34;arn:aws:cloudwatch:ap-northeast-1:123456789101:alarm:CPU_Utilization_Test&#34;</span>], <span style="color:#f92672">&#34;detail&#34;</span>: {<span style="color:#f92672">&#34;alarmName&#34;</span>: <span style="color:#e6db74">&#34;CPU_Utilization_Test&#34;</span>, <span style="color:#f92672">&#34;state&#34;</span>: {<span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;ALARM&#34;</span>, <span style="color:#f92672">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;Threshold Crossed: 1 out of the last 1 datapoints [100.0 (03/11/21 10:11:00)] was greater than the threshold (10.0) (minimum 1 datapoint for OK -&gt; ALARM transition).&#34;</span>, <span style="color:#f92672">&#34;reasonData&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2021-11-03T10:17:51.018+0000\&#34;,\&#34;startDate\&#34;:\&#34;2021-11-03T10:11:00.000+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[100.0],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2021-11-03T10:11:00.000+0000\&#34;,\&#34;sampleCount\&#34;:5.0,\&#34;value\&#34;:100.0}]}&#34;</span>, <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:17:51.020+0000&#34;</span>}, <span style="color:#f92672">&#34;previousState&#34;</span>: {<span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;INSUFFICIENT_DATA&#34;</span>, <span style="color:#f92672">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;Insufficient Data: 1 datapoint was unknown.&#34;</span>, <span style="color:#f92672">&#34;reasonData&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;version\&#34;:\&#34;1.0\&#34;,\&#34;queryDate\&#34;:\&#34;2021-11-03T10:13:51.019+0000\&#34;,\&#34;statistic\&#34;:\&#34;Maximum\&#34;,\&#34;period\&#34;:60,\&#34;recentDatapoints\&#34;:[],\&#34;threshold\&#34;:10.0,\&#34;evaluatedDatapoints\&#34;:[{\&#34;timestamp\&#34;:\&#34;2021-11-03T10:13:00.000+0000\&#34;}]}&#34;</span>, <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#e6db74">&#34;2021-11-03T10:13:51.023+0000&#34;</span>}, <span style="color:#f92672">&#34;configuration&#34;</span>: {<span style="color:#f92672">&#34;metrics&#34;</span>: [{<span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;4cbe7286-d70f-fcb9-4a0a-758612d568db&#34;</span>, <span style="color:#f92672">&#34;metricStat&#34;</span>: {<span style="color:#f92672">&#34;metric&#34;</span>: {<span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;AWS/EC2&#34;</span>, <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;CPUUtilization&#34;</span>, <span style="color:#f92672">&#34;dimensions&#34;</span>: {<span style="color:#f92672">&#34;InstanceId&#34;</span>: <span style="color:#e6db74">&#34;i-0b22a89b0bb3faf49&#34;</span>}}, <span style="color:#f92672">&#34;period&#34;</span>: <span style="color:#ae81ff">60</span>, <span style="color:#f92672">&#34;stat&#34;</span>: <span style="color:#e6db74">&#34;Maximum&#34;</span>}, <span style="color:#f92672">&#34;returnData&#34;</span>: <span style="color:#66d9ef">true</span>}]}}}
+</span></span></code></pre></div><p> </p>
 <p>と、ここで別途最近実施した、特別カスタマイズをしないアラーム + SNS送信検証時のメールを見たら、英語のみとはいえこっちの方がまだ全然見やすい。そりゃわかりにくいけど、JSON生データよりマシ。もう本文はこれでいいんじゃね？という気もするんだが。件名も、アラーム名が件名に入るんだから識別・フィルタしやすいアラーム名にすればどうにかなりそうな気もする。&hellip;と、減速気味になってきた。</p>
 <p><img loading="lazy" src="/img/a/alarm-mail2.jpg" alt="アラームメール"  />
 
@@ -360,6 +359,7 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
@@ -372,12 +372,12 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>タウリン(Taurine)の効能いろいろ</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「いてくれるだけでいい人」の理由</span>
   </a>
@@ -386,27 +386,28 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -460,12 +461,12 @@ $ aws events put-rule --name &quot;cw-alarm-rule&quot; \
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2) | Go Buddy Go</title>
-<meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, AWS" />
+<meta name="keywords" content="cloudwatch, cloudwatchalarm, monitoring, lambda, AWS">
 <meta name="description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
+lambda_function.py
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -24,24 +24,59 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" />
 <meta property="og:description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
+lambda_function.py
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-14T23:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-11-14T23:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-11-14T23:00:00+09:00" />
+<meta property="article:modified_time" content="2021-11-14T23:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)"/>
 <meta name="twitter:description" content="表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
- lambda_function.py
+lambda_function.py
 import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3."/>
 
 
@@ -71,11 +106,11 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   "@type": "BlogPosting",
   "headline": "CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)",
   "name": "CloudWatchアラーム \u002b SNSからのメール本文をカスタマイズする(2)",
-  "description": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n lambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print(\u0026#39;Loading function\u0026#39;) sns_arn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[\u0026#39;time\u0026#39;] trig = e[\u0026#39;detail-type\u0026#39;] alarm = e[\u0026#39;resources\u0026#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[\u0026#39;detail\u0026#39;][\u0026#39;state\u0026#39;][\u0026#39;reason\u0026#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[\u0026#39;detail\u0026#39;][\u0026#39;configuration\u0026#39;][\u0026#39;metrics\u0026#39;][0][\u0026#39;metricStat\u0026#39;][\u0026#39;metric\u0026#39;][\u0026#39;dimensions\u0026#39;] res_str = json.dumps(resource) res = re.sub(r\u0026#34;[{}\\\u0026#34;]\u0026#34;, \u0026#34;\u0026#34;, res_str) # 件名整形 subject_str = \u0026#34;本番環境 - アラーム \u0026#34; + trig + \u0026#34; - \u0026#34; + res # メッセージ本文整形 fix_msg = \u0026#34;以下のアラームが発生しました\u0026#34; + \u0026#34;\\n\u0026#34; trig_msg = \u0026#34;発生契機:\u0026#34; + \u0026#34;\\n\u0026#34; + trig time_msg = \u0026#34;発生時刻:\u0026#34; + \u0026#34;\\n\u0026#34; + t alm_msg = \u0026#34;アラーム:\u0026#34; + \u0026#34;\\n\u0026#34; + alarm[0] res_msg =\u0026#34;対象リソース:\u0026#34; \u0026#34;\\n\u0026#34; + res dtl_msg =\u0026#34;理由:\u0026#34; \u0026#34;\\n\u0026#34; + reason msg = fix_msg + \u0026#34;\\n\\n\u0026#34; + trig_msg + \u0026#34;\\n\\n\u0026#34; + time_msg + \u0026#34;\\n\\n\u0026#34; + alm_msg + \u0026#34;\\n\\n\u0026#34; + res_msg + \u0026#34;\\n\\n\u0026#34; + dtl_msg try: sns = boto3.",
+  "description": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\nlambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print(\u0026#39;Loading function\u0026#39;) sns_arn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[\u0026#39;time\u0026#39;] trig = e[\u0026#39;detail-type\u0026#39;] alarm = e[\u0026#39;resources\u0026#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[\u0026#39;detail\u0026#39;][\u0026#39;state\u0026#39;][\u0026#39;reason\u0026#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[\u0026#39;detail\u0026#39;][\u0026#39;configuration\u0026#39;][\u0026#39;metrics\u0026#39;][0][\u0026#39;metricStat\u0026#39;][\u0026#39;metric\u0026#39;][\u0026#39;dimensions\u0026#39;] res_str = json.dumps(resource) res = re.sub(r\u0026#34;[{}\\\u0026#34;]\u0026#34;, \u0026#34;\u0026#34;, res_str) # 件名整形 subject_str = \u0026#34;本番環境 - アラーム \u0026#34; + trig + \u0026#34; - \u0026#34; + res # メッセージ本文整形 fix_msg = \u0026#34;以下のアラームが発生しました\u0026#34; + \u0026#34;\\n\u0026#34; trig_msg = \u0026#34;発生契機:\u0026#34; + \u0026#34;\\n\u0026#34; + trig time_msg = \u0026#34;発生時刻:\u0026#34; + \u0026#34;\\n\u0026#34; + t alm_msg = \u0026#34;アラーム:\u0026#34; + \u0026#34;\\n\u0026#34; + alarm[0] res_msg =\u0026#34;対象リソース:\u0026#34; \u0026#34;\\n\u0026#34; + res dtl_msg =\u0026#34;理由:\u0026#34; \u0026#34;\\n\u0026#34; + reason msg = fix_msg + \u0026#34;\\n\\n\u0026#34; + trig_msg + \u0026#34;\\n\\n\u0026#34; + time_msg + \u0026#34;\\n\\n\u0026#34; + alm_msg + \u0026#34;\\n\\n\u0026#34; + res_msg + \u0026#34;\\n\\n\u0026#34; + dtl_msg try: sns = boto3.",
   "keywords": [
     "cloudwatch", "cloudwatchalarm", "monitoring", "lambda", "AWS"
   ],
-  "articleBody": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\n lambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e['time'] trig = e['detail-type'] alarm = e['resources'] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e['detail']['state']['reason'] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e['detail']['configuration']['metrics'][0]['metricStat']['metric']['dimensions'] res_str = json.dumps(resource) res = re.sub(r\"[{}\\\"]\", \"\", res_str) # 件名整形 subject_str = \"本番環境 - アラーム \" + trig + \" - \" + res # メッセージ本文整形 fix_msg = \"以下のアラームが発生しました\" + \"\\n\" trig_msg = \"発生契機:\" + \"\\n\" + trig time_msg = \"発生時刻:\" + \"\\n\" + t alm_msg = \"アラーム:\" + \"\\n\" + alarm[0] res_msg =\"対象リソース:\" \"\\n\" + res dtl_msg =\"理由:\" \"\\n\" + reason msg = fix_msg + \"\\n\\n\" + trig_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + alm_msg + \"\\n\\n\" + res_msg + \"\\n\\n\" + dtl_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e)  マネコン上でテストしたらいくつかエラー出たので対処して、エラー出ないところまでもってきた。で、ec2インスタンスに負荷をかけてアラームステータスにしたが…メールが届かない。あぁ。\n明日以降考えよ。\n 追記\n翌日Lambdaの画面からなんとなくEventBridgeルールのリンクを辿ったら、なんとルールがdisableになっていた！そりゃ何も起こらないわけだ。enableに変更して、改めてインスタンスで負荷をかけたところ、カスタムメールが届いた！大したことじゃないけど、こういうのはいつまでたっても嬉しいもんだ。\n  しかしよく見ると日付が変だ。Lambdaテスト用に使った過去データの値みたいだ。な、なんでこうなるんだ。でももう遅いから寝る…\n 追記2\nさらにその翌日、テストデータ削除して再試行してみたところ、期待値となるまともなメールが届いた。\n 時間はUTC表記。これどうするかな。以下でやれるのはわかったけど。\n from pytz import timezone  from dateutil import parser  time = \"2021-11-03T10:17:51Z\"  utc_string = time  jst_time = parser.parse(utc_string).astimezone(timezone('Asia/Tokyo'))  print(jst_time) 2021-11-03 19:17:51+09:00 参考\nPythonの UTC ⇔ JST、文字列(UTC) ⇒ JST の変換とかのメモ\n しかし、今日はもう寝たいんだ。\n ",
+  "articleBody": "表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。\n類似の過去記事\nCloudWatchアラーム + SNSからのメール件名をカスタマイズする\nlambda_function.py\nimport boto3 import json import os import re from botocore.exceptions import ClientError print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e['time'] trig = e['detail-type'] alarm = e['resources'] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e['detail']['state']['reason'] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e['detail']['configuration']['metrics'][0]['metricStat']['metric']['dimensions'] res_str = json.dumps(resource) res = re.sub(r\"[{}\\\"]\", \"\", res_str) # 件名整形 subject_str = \"本番環境 - アラーム \" + trig + \" - \" + res # メッセージ本文整形 fix_msg = \"以下のアラームが発生しました\" + \"\\n\" trig_msg = \"発生契機:\" + \"\\n\" + trig time_msg = \"発生時刻:\" + \"\\n\" + t alm_msg = \"アラーム:\" + \"\\n\" + alarm[0] res_msg =\"対象リソース:\" \"\\n\" + res dtl_msg =\"理由:\" \"\\n\" + reason msg = fix_msg + \"\\n\\n\" + trig_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + alm_msg + \"\\n\\n\" + res_msg + \"\\n\\n\" + dtl_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e) マネコン上でテストしたらいくつかエラー出たので対処して、エラー出ないところまでもってきた。で、ec2インスタンスに負荷をかけてアラームステータスにしたが…メールが届かない。あぁ。\n明日以降考えよ。\n追記\n翌日Lambdaの画面からなんとなくEventBridgeルールのリンクを辿ったら、なんとルールがdisableになっていた！そりゃ何も起こらないわけだ。enableに変更して、改めてインスタンスで負荷をかけたところ、カスタムメールが届いた！大したことじゃないけど、こういうのはいつまでたっても嬉しいもんだ。\nしかしよく見ると日付が変だ。Lambdaテスト用に使った過去データの値みたいだ。な、なんでこうなるんだ。でももう遅いから寝る…\n追記2\nさらにその翌日、テストデータ削除して再試行してみたところ、期待値となるまともなメールが届いた。\n時間はUTC表記。これどうするかな。以下でやれるのはわかったけど。\n\u003e\u003e\u003e from pytz import timezone \u003e\u003e\u003e from dateutil import parser \u003e\u003e\u003e time = \"2021-11-03T10:17:51Z\" \u003e\u003e\u003e utc_string = time \u003e\u003e\u003e jst_time = parser.parse(utc_string).astimezone(timezone('Asia/Tokyo')) \u003e\u003e\u003e print(jst_time) 2021-11-03 19:17:51+09:00 参考\nPythonの UTC ⇔ JST、文字列(UTC) ⇒ JST の変換とかのメモ\nしかし、今日はもう寝たいんだ。\n",
   "wordCount" : "210",
   "inLanguage": "en",
   "datePublished": "2021-11-14T23:00:00+09:00",
@@ -107,56 +142,19 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -170,7 +168,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -201,10 +199,11 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
     </h1>
-    <div class="post-meta">November 14, 2021
+    <div class="post-meta"><span title='2021-11-14 23:00:00 +0900 JST'>November 14, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。</p>
@@ -212,60 +211,60 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <a href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">CloudWatchアラーム + SNSからのメール件名をカスタマイズする</a></p>
 <p> </p>
 <p>lambda_function.py</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> boto3
-<span style="color:#f92672">import</span> json
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> re
-<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
-
-print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
-
-sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
-    data <span style="color:#f92672">=</span> event
-    s <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(data)
-    e <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(s)
-    print(e)
-    
-    <span style="color:#75715e"># eventから項目を抽出</span>
-    t <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;time&#39;</span>]
-    trig <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail-type&#39;</span>]
-    alarm <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;resources&#39;</span>] <span style="color:#75715e">#これはリスト。文字列にするにはalarm[0]</span>
-    
-    <span style="color:#75715e"># 「理由」となる詳細抽出</span>
-    reason <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;state&#39;</span>][<span style="color:#e6db74">&#39;reason&#39;</span>]
-    
-    <span style="color:#75715e"># リソース（ここではインスタンスID)を抽出し、文字列整形</span>
-    resource <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;configuration&#39;</span>][<span style="color:#e6db74">&#39;metrics&#39;</span>][<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;metricStat&#39;</span>][<span style="color:#e6db74">&#39;metric&#39;</span>][<span style="color:#e6db74">&#39;dimensions&#39;</span>]
-    res_str <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(resource)
-    res <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, res_str)
-    
-    <span style="color:#75715e"># 件名整形</span>
-    subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境 - アラーム &#34;</span> <span style="color:#f92672">+</span> trig <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> res
-    
-    <span style="color:#75715e"># メッセージ本文整形</span>
-    fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のアラームが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-    trig_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生契機:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig
-    time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> t
-    alm_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;アラーム:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alarm[<span style="color:#ae81ff">0</span>]
-    res_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;対象リソース:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res
-    dtl_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;理由:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> reason
-    msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alm_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dtl_msg
-    
-    <span style="color:#66d9ef">try</span>:
-        sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
-        
-        <span style="color:#75715e">#SNS Publish</span>
-        publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
-            TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
-            Message <span style="color:#f92672">=</span> msg,
-            Subject <span style="color:#f92672">=</span> subject_str
-        )
-    
-    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-        print(e)
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> boto3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> event
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(data)
+</span></span><span style="display:flex;"><span>    e <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(s)
+</span></span><span style="display:flex;"><span>    print(e)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># eventから項目を抽出</span>
+</span></span><span style="display:flex;"><span>    t <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;time&#39;</span>]
+</span></span><span style="display:flex;"><span>    trig <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail-type&#39;</span>]
+</span></span><span style="display:flex;"><span>    alarm <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;resources&#39;</span>] <span style="color:#75715e">#これはリスト。文字列にするにはalarm[0]</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 「理由」となる詳細抽出</span>
+</span></span><span style="display:flex;"><span>    reason <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;state&#39;</span>][<span style="color:#e6db74">&#39;reason&#39;</span>]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># リソース（ここではインスタンスID)を抽出し、文字列整形</span>
+</span></span><span style="display:flex;"><span>    resource <span style="color:#f92672">=</span> e[<span style="color:#e6db74">&#39;detail&#39;</span>][<span style="color:#e6db74">&#39;configuration&#39;</span>][<span style="color:#e6db74">&#39;metrics&#39;</span>][<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;metricStat&#39;</span>][<span style="color:#e6db74">&#39;metric&#39;</span>][<span style="color:#e6db74">&#39;dimensions&#39;</span>]
+</span></span><span style="display:flex;"><span>    res_str <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(resource)
+</span></span><span style="display:flex;"><span>    res <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, res_str)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 件名整形</span>
+</span></span><span style="display:flex;"><span>    subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境 - アラーム &#34;</span> <span style="color:#f92672">+</span> trig <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> res
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># メッセージ本文整形</span>
+</span></span><span style="display:flex;"><span>    fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のアラームが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    trig_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生契機:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig
+</span></span><span style="display:flex;"><span>    time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> t
+</span></span><span style="display:flex;"><span>    alm_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;アラーム:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alarm[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    res_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;対象リソース:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res
+</span></span><span style="display:flex;"><span>    dtl_msg <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;理由:&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> reason
+</span></span><span style="display:flex;"><span>    msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> trig_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> alm_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> res_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> dtl_msg
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#SNS Publish</span>
+</span></span><span style="display:flex;"><span>        publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+</span></span><span style="display:flex;"><span>            TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+</span></span><span style="display:flex;"><span>            Message <span style="color:#f92672">=</span> msg,
+</span></span><span style="display:flex;"><span>            Subject <span style="color:#f92672">=</span> subject_str
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(e)
+</span></span></code></pre></div><p> </p>
 <p>マネコン上でテストしたらいくつかエラー出たので対処して、エラー出ないところまでもってきた。で、ec2インスタンスに負荷をかけてアラームステータスにしたが&hellip;メールが届かない。あぁ。</p>
 <p>明日以降考えよ。</p>
 <p> </p>
@@ -283,11 +282,11 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
 </p>
 <p> </p>
 <p>時間はUTC表記。これどうするかな。以下でやれるのはわかったけど。</p>
-<pre><code>&gt;&gt;&gt; from pytz import timezone
+<pre tabindex="0"><code>&gt;&gt;&gt; from pytz import timezone
 &gt;&gt;&gt; from dateutil import parser
-&gt;&gt;&gt; time = &quot;2021-11-03T10:17:51Z&quot;
+&gt;&gt;&gt; time = &#34;2021-11-03T10:17:51Z&#34;
 &gt;&gt;&gt; utc_string = time
-&gt;&gt;&gt; jst_time = parser.parse(utc_string).astimezone(timezone('Asia/Tokyo'))
+&gt;&gt;&gt; jst_time = parser.parse(utc_string).astimezone(timezone(&#39;Asia/Tokyo&#39;))
 &gt;&gt;&gt; print(jst_time)
 2021-11-03 19:17:51+09:00
 </code></pre><p>参考<br>
@@ -318,6 +317,7 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
@@ -328,12 +328,12 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>英語メモ - into the bargain</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</span>
   </a>
@@ -342,27 +342,28 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -416,12 +417,12 @@ sns_arn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</sp
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

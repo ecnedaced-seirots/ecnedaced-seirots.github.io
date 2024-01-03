@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>サクラエディタで先頭列を置換する | Go Buddy Go</title>
-<meta name="keywords" content="memo, RWC" />
+<meta name="keywords" content="memo, RWC">
 <meta name="description" content="サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/sakura-replace/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/sakura-replace/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="サクラエディタで先頭列を置換する" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="サクラエディタで先頭列を置換する" />
 <meta property="og:description" content="サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/sakura-replace/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-03-26T10:43:37&#43;09:00" />
-<meta property="article:modified_time" content="2022-03-26T10:43:37&#43;09:00" />
+<meta property="article:published_time" content="2022-03-26T10:43:37+09:00" />
+<meta property="article:modified_time" content="2022-03-26T10:43:37+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="サクラエディタで先頭列を置換する"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "memo", "RWC"
   ],
-  "articleBody": "サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。\n 1. ファイル全体行をコメントアウトする Ctrl + Rで置換ボックスを開き、入力欄に以下を入力する。\n 置換前：^ 置換後: # （変換したい文字何でも）  下のチェックボックスで「正規表現」にチェックを入れ、「すべて置換」押下。\nこれでファイル全体の行頭に#が入る。\n 戻す時\n 置換前：^# 置換後: （何も入力しない）  同様に「すべて置換」で元に戻る。\n 2. ファイルの一部数行だけをコメントアウトする Altを押しながら、変更したい行の先頭1列分だけ選択する。\nその状態でshift + 「#」押下　-＞ 選択部分のみ#が投入される。\n 戻す時 Altを押しながら戻したい行の先頭1列分だけ選択する。その状態で「Backspace押下」で元に戻る\nあまり使わないと思うが、行末で同じことやりたかったら「$」。\n 参考\n【サクラエディタ】正規表現を使った置換で行頭、行末に文字列を追加する方法\n  ",
+  "articleBody": "サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。\n1. ファイル全体行をコメントアウトする Ctrl + Rで置換ボックスを開き、入力欄に以下を入力する。\n置換前：^ 置換後: # （変換したい文字何でも） 下のチェックボックスで「正規表現」にチェックを入れ、「すべて置換」押下。\nこれでファイル全体の行頭に#が入る。\n戻す時\n置換前：^# 置換後: （何も入力しない） 同様に「すべて置換」で元に戻る。\n2. ファイルの一部数行だけをコメントアウトする Altを押しながら、変更したい行の先頭1列分だけ選択する。\nその状態でshift + 「#」押下　-＞ 選択部分のみ#が投入される。\n戻す時 Altを押しながら戻したい行の先頭1列分だけ選択する。その状態で「Backspace押下」で元に戻る\nあまり使わないと思うが、行末で同じことやりたかったら「$」。\n参考\n【サクラエディタ】正規表現を使った置換で行頭、行末に文字列を追加する方法\n",
   "wordCount" : "30",
   "inLanguage": "en",
   "datePublished": "2022-03-26T10:43:37+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       サクラエディタで先頭列を置換する
     </h1>
-    <div class="post-meta">March 26, 2022
+    <div class="post-meta"><span title='2022-03-26 10:43:37 +0900 JST'>March 26, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。</p>
@@ -251,6 +250,7 @@ Altを押しながら戻したい行の先頭1列分だけ選択する。その�
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
@@ -258,12 +258,12 @@ Altを押しながら戻したい行の先頭1列分だけ選択する。その�
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/firefox-show-source/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Firefoxでソースを表示</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-11/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「アメリカン★ドリーム」より (1)</span>
   </a>
@@ -272,27 +272,28 @@ Altを押しながら戻したい行の先頭1列分だけ選択する。その�
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -346,12 +347,12 @@ Altを押しながら戻したい行の先頭1列分だけ選択する。その�
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Go入門(4) - 現在時刻の出力 | Go Buddy Go</title>
-<meta name="keywords" content="golang" />
+<meta name="keywords" content="golang">
 <meta name="description" content="Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-time/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/golang-init-time/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="Go入門(4) - 現在時刻の出力" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Go入門(4) - 現在時刻の出力" />
 <meta property="og:description" content="Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/golang-init-time/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-16T17:08:18&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-16T17:08:18&#43;09:00" />
+<meta property="article:published_time" content="2022-01-16T17:08:18+09:00" />
+<meta property="article:modified_time" content="2022-01-16T17:08:18+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go入門(4) - 現在時刻の出力"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "golang"
   ],
-  "articleBody": "Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。\n Goにおいて時刻はロケーション情報を持つtime構造体に格納される。timeで定義済みロケーションはtime.UTCと、time.Localの２つ。それ以外のロケーションを呼び出すには一手間必要で、例えば正式にJSTの時刻を定義するならこうするとかあるけれども、日付時刻の扱いを網羅すると(ry …なので今回はスキップ。\ntime1.go\npackage main import ( \"fmt\" \"time\" ) func main() { //現在時刻をUTCで出力  fmt.Println(\"UTCの現在時刻：\", time.Now().UTC()) //ローカルの現在時刻を出力  fmt.Println(\"JSTの現在時刻：\", time.Now().Local()) }  出力結果\n$ go run time1.go UTCの現在時刻： 2022-01-16 07:49:06.70495 +0000 UTC JSTの現在時刻： 2022-01-16 16:49:06.705033 +0900 JST  次に、UNIXタイムスタンプの値を出力してみる。さらにデータ型を出力させる。\ntime2.go\npackage main import ( \"fmt\" \"time\" ) func main() { //時刻定義を変数に格納 t1 := time.Now().UTC() t2 := time.Now().Local() t3 := time.Now().Unix() //通常の時刻で値と型を出力 fmt.Println(\"UTCの現在時刻:\",t1) fmt.Printf(\"%T\\n\", t1) fmt.Println(\"JSTの現在時刻:\",t2) fmt.Printf(\"%T\\n\", t2) //UNIXタイムスタンプの値と型を出力 fmt.Println(\"UNIXタイムスタンプ:\",t3) fmt.Printf(\"%T\\n\", t3) }  出力結果。UNIXタイムスタンプはint64で、他はtime.Timeであると分かる。\n$ go run time2.go UTCの現在時刻: 2022-01-16 07:55:54.772297 +0000 UTC time.Time JSTの現在時刻: 2022-01-16 16:55:54.772298 +0900 JST time.Time UNIXタイムスタンプ: 1642319754 int64  最後にUNIXタイムスタンプをTime型に変換してみる。\ntime3.go\npackage main import ( \"fmt\" \"time\" ) func main() { //UNIXタイムスタンプをTime型に変換し、値と型を出力。  t := time.Unix(1642319638, 0) fmt.Println(t.Format(\"2006-01-02 15:04:05\")) //2022-01-16 16:53:58  fmt.Printf(\"%T\\n\", t) //time.Time }  時刻出力/変換、タイムゾーンの問題はどの言語でも避けて通れない手強い敵なのだが、こればっかりやってもいられないので、まぁボチボチやっていこう。\n参考\nGo言語の時刻演算パッケージ「time」の使い方メモ\n[Go] Unix タイムスタンプを Time 型のデータに変換する\n【Go入門】型（type）を調べる – %T と Printf() \n ",
+  "articleBody": "Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。\nGoにおいて時刻はロケーション情報を持つtime構造体に格納される。timeで定義済みロケーションはtime.UTCと、time.Localの２つ。それ以外のロケーションを呼び出すには一手間必要で、例えば正式にJSTの時刻を定義するならこうするとかあるけれども、日付時刻の扱いを網羅すると(ry …なので今回はスキップ。\ntime1.go\npackage main import ( \"fmt\" \"time\" ) func main() { //現在時刻をUTCで出力 fmt.Println(\"UTCの現在時刻：\", time.Now().UTC()) //ローカルの現在時刻を出力 fmt.Println(\"JSTの現在時刻：\", time.Now().Local()) } 出力結果\n$ go run time1.go UTCの現在時刻： 2022-01-16 07:49:06.70495 +0000 UTC JSTの現在時刻： 2022-01-16 16:49:06.705033 +0900 JST 次に、UNIXタイムスタンプの値を出力してみる。さらにデータ型を出力させる。\ntime2.go\npackage main import ( \"fmt\" \"time\" ) func main() { //時刻定義を変数に格納 t1 := time.Now().UTC() t2 := time.Now().Local() t3 := time.Now().Unix() //通常の時刻で値と型を出力 fmt.Println(\"UTCの現在時刻:\",t1) fmt.Printf(\"%T\\n\", t1) fmt.Println(\"JSTの現在時刻:\",t2) fmt.Printf(\"%T\\n\", t2) //UNIXタイムスタンプの値と型を出力 fmt.Println(\"UNIXタイムスタンプ:\",t3) fmt.Printf(\"%T\\n\", t3) } 出力結果。UNIXタイムスタンプはint64で、他はtime.Timeであると分かる。\n$ go run time2.go UTCの現在時刻: 2022-01-16 07:55:54.772297 +0000 UTC time.Time JSTの現在時刻: 2022-01-16 16:55:54.772298 +0900 JST time.Time UNIXタイムスタンプ: 1642319754 int64 最後にUNIXタイムスタンプをTime型に変換してみる。\ntime3.go\npackage main import ( \"fmt\" \"time\" ) func main() { //UNIXタイムスタンプをTime型に変換し、値と型を出力。 t := time.Unix(1642319638, 0) fmt.Println(t.Format(\"2006-01-02 15:04:05\")) //2022-01-16 16:53:58 fmt.Printf(\"%T\\n\", t) //time.Time } 時刻出力/変換、タイムゾーンの問題はどの言語でも避けて通れない手強い敵なのだが、こればっかりやってもいられないので、まぁボチボチやっていこう。\n参考\nGo言語の時刻演算パッケージ「time」の使い方メモ\n[Go] Unix タイムスタンプを Time 型のデータに変換する\n【Go入門】型（type）を調べる – %T と Printf() ",
   "wordCount" : "128",
   "inLanguage": "en",
   "datePublished": "2022-01-16T17:08:18+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,44 +187,45 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       Go入門(4) - 現在時刻の出力
     </h1>
-    <div class="post-meta">January 16, 2022
+    <div class="post-meta"><span title='2022-01-16 17:08:18 +0900 JST'>January 16, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>Goの時刻扱いについて。しかし日付時刻の扱いを網羅すると果てしない旅路になるので、今回は触りだけ、現在時刻を出力。</p>
 <p> </p>
 <p>Goにおいて時刻はロケーション情報を持つtime構造体に格納される。timeで定義済みロケーションは<code>time.UTC</code>と、<code>time.Local</code>の２つ。それ以外のロケーションを呼び出すには一手間必要で、例えば正式にJSTの時刻を定義するならこうするとかあるけれども、日付時刻の扱いを網羅すると(ry &hellip;なので今回はスキップ。</p>
 <p>time1.go</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">//現在時刻をUTCで出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;UTCの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UTC</span>())
-    
-    <span style="color:#75715e">//ローカルの現在時刻を出力
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;JSTの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Local</span>())
-
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//現在時刻をUTCで出力
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;UTCの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UTC</span>())
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//ローカルの現在時刻を出力
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;JSTの現在時刻：&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Local</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>出力結果</p>
-<pre><code>$ go run time1.go 
+<pre tabindex="0"><code>$ go run time1.go 
 UTCの現在時刻： 2022-01-16 07:49:06.70495 +0000 UTC
 JSTの現在時刻： 2022-01-16 16:49:06.705033 +0900 JST
 </code></pre><p> </p>
 <p>次に、UNIXタイムスタンプの値を出力してみる。さらにデータ型を出力させる。</p>
 <p>time2.go</p>
-<pre><code>package main
+<pre tabindex="0"><code>package main
 
 import (
-    &quot;fmt&quot;
-    &quot;time&quot;
+    &#34;fmt&#34;
+    &#34;time&#34;
 )
 
 func main() {
@@ -237,19 +236,19 @@ func main() {
   t3 := time.Now().Unix()
 
   //通常の時刻で値と型を出力
-  fmt.Println(&quot;UTCの現在時刻:&quot;,t1)
-  fmt.Printf(&quot;%T\n&quot;, t1)
-  fmt.Println(&quot;JSTの現在時刻:&quot;,t2)
-  fmt.Printf(&quot;%T\n&quot;, t2)
+  fmt.Println(&#34;UTCの現在時刻:&#34;,t1)
+  fmt.Printf(&#34;%T\n&#34;, t1)
+  fmt.Println(&#34;JSTの現在時刻:&#34;,t2)
+  fmt.Printf(&#34;%T\n&#34;, t2)
   
   //UNIXタイムスタンプの値と型を出力
-  fmt.Println(&quot;UNIXタイムスタンプ:&quot;,t3)
-  fmt.Printf(&quot;%T\n&quot;, t3)
+  fmt.Println(&#34;UNIXタイムスタンプ:&#34;,t3)
+  fmt.Printf(&#34;%T\n&#34;, t3)
 
 }
 </code></pre><p> </p>
 <p>出力結果。UNIXタイムスタンプは<code>int64</code>で、他は<code>time.Time</code>であると分かる。</p>
-<pre><code>$ go run time2.go 
+<pre tabindex="0"><code>$ go run time2.go 
 UTCの現在時刻: 2022-01-16 07:55:54.772297 +0000 UTC
 time.Time
 JSTの現在時刻: 2022-01-16 16:55:54.772298 +0900 JST
@@ -259,22 +258,21 @@ int64
 </code></pre><p> </p>
 <p>最後にUNIXタイムスタンプをTime型に変換してみる。</p>
 <p>time3.go</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-
-  <span style="color:#75715e">//UNIXタイムスタンプをTime型に変換し、値と型を出力。
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Unix</span>(<span style="color:#ae81ff">1642319638</span>, <span style="color:#ae81ff">0</span>)
-  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006-01-02 15:04:05&#34;</span>))  <span style="color:#75715e">//2022-01-16 16:53:58
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T\n&#34;</span>, <span style="color:#a6e22e">t</span>)                         <span style="color:#75715e">//time.Time
-</span><span style="color:#75715e"></span>}
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//UNIXタイムスタンプをTime型に変換し、値と型を出力。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Unix</span>(<span style="color:#ae81ff">1642319638</span>, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006-01-02 15:04:05&#34;</span>))  <span style="color:#75715e">//2022-01-16 16:53:58
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T\n&#34;</span>, <span style="color:#a6e22e">t</span>)                         <span style="color:#75715e">//time.Time
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p> </p>
 <p>時刻出力/変換、タイムゾーンの問題はどの言語でも避けて通れない手強い敵なのだが、こればっかりやってもいられないので、まぁボチボチやっていこう。</p>
 <p>参考<br>
 <a href="https://www.kwbtblog.com/entry/2020/05/15/190332">Go言語の時刻演算パッケージ「time」の使い方メモ</a><br>
@@ -301,18 +299,19 @@ int64
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/golang/">golang</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-for/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Go入門(5) - for文の基本</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-init-slice/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Go入門(3) - スライス(Slice)の扱い</span>
   </a>
@@ -321,27 +320,28 @@ int64
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -395,12 +395,12 @@ int64
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

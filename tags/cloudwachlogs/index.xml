@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>cloudwachlogs on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/cloudwachlogs/</link>
     <description>Recent content in cloudwachlogs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 25 Dec 2022 15:40:13 +0900</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwachlogs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Dec 2022 15:40:13 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/cloudwachlogs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
       <description>&lt;p&gt;約1年前の記事 &lt;a href=&#34;https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/&#34;&gt;CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)&lt;/a&gt; の改良版の話。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

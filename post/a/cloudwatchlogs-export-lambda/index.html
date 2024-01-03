@@ -6,20 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>CloudWatch LogsからS3にエクスポート(Lambda/Python) | Go Buddy Go</title>
-<meta name="keywords" content="cloudwatchlogs, lambda, S3, AWS, aws cli" />
+<meta name="keywords" content="cloudwatchlogs, lambda, S3, AWS, aws cli">
 <meta name="description" content="CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] }  Lambdaコード(Python3.">
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -28,21 +28,56 @@ CloudWatchLogsからS3へログをエクスポートする
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatch LogsからS3にエクスポート(Lambda/Python)" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="CloudWatch LogsからS3にエクスポート(Lambda/Python)" />
 <meta property="og:description" content="CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] }  Lambdaコード(Python3." />
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-19T12:19:37&#43;09:00" />
-<meta property="article:modified_time" content="2021-12-19T12:19:37&#43;09:00" />
+<meta property="article:published_time" content="2021-12-19T12:19:37+09:00" />
+<meta property="article:modified_time" content="2021-12-19T12:19:37+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CloudWatch LogsからS3にエクスポート(Lambda/Python)"/>
@@ -50,11 +85,11 @@ CloudWatchLogsからS3へログをエクスポートする
 参考
 boto3 API Reference
 LambdaよりCloudWatchログをS3に保存方法紹介
- ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
- S3バケットポリシー（log-export-xxxxxxxx）
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] }  Lambdaコード(Python3."/>
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event."/>
 
 
 <script type="application/ld+json">
@@ -83,11 +118,11 @@ CloudWatchLogsからS3へログをエクスポートする
   "@type": "BlogPosting",
   "headline": "CloudWatch LogsからS3にエクスポート(Lambda/Python)",
   "name": "CloudWatch LogsからS3にエクスポート(Lambda\/Python)",
-  "description": "CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。\n参考\nboto3 API Reference\nLambdaよりCloudWatchログをS3に保存方法紹介\n ちなみに過去マネコンから実行する手順書いた。\nCloudWatchLogsからS3へログをエクスポートする \n 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。\n S3バケットポリシー（log-export-xxxxxxxx）\n{ \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: [ { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: { \u0026#34;Service\u0026#34;: \u0026#34;logs.ap-northeast-1.amazonaws.com\u0026#34; }, \u0026#34;Action\u0026#34;: \u0026#34;s3:GetBucketAcl\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::log-export-xxxxxxxx\u0026#34; }, { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: { \u0026#34;Service\u0026#34;: \u0026#34;logs.ap-northeast-1.amazonaws.com\u0026#34; }, \u0026#34;Action\u0026#34;: \u0026#34;s3:PutObject\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::log-export-xxxxxxxx/*\u0026#34;, \u0026#34;Condition\u0026#34;: { \u0026#34;StringEquals\u0026#34;: { \u0026#34;s3:x-amz-acl\u0026#34;: \u0026#34;bucket-owner-full-control\u0026#34; } } } ] }  Lambdaコード(Python3.",
+  "description": "CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。\n参考\nboto3 API Reference\nLambdaよりCloudWatchログをS3に保存方法紹介\nちなみに過去マネコンから実行する手順書いた。\nCloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。\nS3バケットポリシー（log-export-xxxxxxxx）\n{ \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: [ { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: { \u0026#34;Service\u0026#34;: \u0026#34;logs.ap-northeast-1.amazonaws.com\u0026#34; }, \u0026#34;Action\u0026#34;: \u0026#34;s3:GetBucketAcl\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::log-export-xxxxxxxx\u0026#34; }, { \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: { \u0026#34;Service\u0026#34;: \u0026#34;logs.ap-northeast-1.amazonaws.com\u0026#34; }, \u0026#34;Action\u0026#34;: \u0026#34;s3:PutObject\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::log-export-xxxxxxxx/*\u0026#34;, \u0026#34;Condition\u0026#34;: { \u0026#34;StringEquals\u0026#34;: { \u0026#34;s3:x-amz-acl\u0026#34;: \u0026#34;bucket-owner-full-control\u0026#34; } } } ] } Lambdaコード(Python3.9)\nimport boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.",
   "keywords": [
     "cloudwatchlogs", "lambda", "S3", "AWS", "aws cli"
   ],
-  "articleBody": "CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。\n参考\nboto3 API Reference\nLambdaよりCloudWatchログをS3に保存方法紹介\n ちなみに過去マネコンから実行する手順書いた。\nCloudWatchLogsからS3へログをエクスポートする \n 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     Lambda用IAMロール lambda_basic_execution   Lambda関数 log-export-function   S3バケット log-export-xxxxxxxx     Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。\n S3バケットポリシー（log-export-xxxxxxxx）\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"logs.ap-northeast-1.amazonaws.com\" }, \"Action\": \"s3:GetBucketAcl\", \"Resource\": \"arn:aws:s3:::log-export-xxxxxxxx\" }, { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"logs.ap-northeast-1.amazonaws.com\" }, \"Action\": \"s3:PutObject\", \"Resource\": \"arn:aws:s3:::log-export-xxxxxxxx/*\", \"Condition\": { \"StringEquals\": { \"s3:x-amz-acl\": \"bucket-owner-full-control\" } } } ] }  Lambdaコード(Python3.9)\nimport boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.get('loggrp') key1 = event.get('key_name') # 日付情報取得 yesterday = datetime.combine(date.today()-timedelta(1),time()) today = datetime.combine(date.today(),time()) unix_start = datetime(1970,1,1) # 日付範囲指定。範囲は実行時点を基準としたUNIXタイムスタンプの日本時間(+9h) from_t = int((yesterday-unix_start).total_seconds() * 1000) to_t = int((today-unix_start).total_seconds() * 1000) # S3 bucket + prefix定義（bucket/key1/YYYY/mmDD） bucket = os.environ['S3_BUCKET'] key2 = yesterday.strftime(\"%Y\") key3 = yesterday.strftime(\"%m-%d\") s3_key = key1 + \"/\" + key2 + \"/\" + key3 try: logs = boto3.client('logs') response = logs.create_export_task( logGroupName = log_g, fromTime = from_t, to = to_t, destination = bucket, destinationPrefix = s3_key ) except Exception as e: print(e)  では、Lambda関数をCLIから実行してみる。ま、普通はEventBridge経由とかでやると思うけど。（でもEventBridgeって引数指定できるんかな？）\n--payloadオプションのロググループ名、S3バケットの最初の階層となるサービス種別（ここではEC2)を指定している。これはJSONなので、file://parameter.jsonなどとしてファイル指定でもよい。\n$ aws lambda invoke --function-name log-export-function \\ --payload '{ \"loggrp\" : \"/ec2/var/log/messages\",\"key_name\" : \"EC2\" }' \\ --cli-binary-format raw-in-base64-out \\ response.json  実行すると、Prefixはできていたが中身は書き込みテスト用ファイルしかない。このコード上の仕様は、前日の00:00:00 から当日の00:00:00までをエクスポートの対象としている。指定したロググループのログは、実行した時点で定義された日付範囲に含まれていないためである。\n（つまり、12/18の日中にインスタンスを起動してログが送信されたとする。しかしエクスポート対象は前日の2021-12-17 00:00:00 〜 当日の2021-12-18 00:00:00までとなるため、この期間内にログがなければ対象は存在しないことになる）\nちなみに関数が実行されるEC2のタイムゾーンはUTC。Lamabaの環境変数でタイムゾーンをJSTにするのは非推奨らしいので、コード側で制御するのが望ましい、とのこと。タイムゾーンの問題を考え始めるといつも頭の中がジグソーパズル状態になる。\nLambda のタイムゾーンを環境変数TZで指定してはいけないっていう話\nAWS Lambda でのタイムゾーン変換\n  「コード内での時間は常に UTC で扱い、表示する段階でローカル時間に変換する」を意識していればいいかなと思います。\n  これを当てはめると、「コード内の基準はUTCとし、JSTとして処理する必要になった時点でJSTに変換する」と考えればいいか。\nところでPythonでのタイムゾーン変換で検索すると大抵上記リンクと同様にpytzを使ったコードが紹介されている。pytzを使えば簡単なのだが、それができない事情があったから以下のように別の方法でやった。今回のコードではまた別の方法になっているが…、どこまでも執拗に追ってくるしつこい敵なので、一度タイムゾーン処理単体で記事を書こうかと思う。\nCloudWatchアラーム + SNSからのメール本文をカスタマイズする(3) \n 話がそれたが、翌日再試行して、今度は無事エクスポートが実行された。今回のコード上の指定では以下スクショの階層でログがアップロードされる。（長いランダム文字列のプレフィックス配下に複数のログストリームのプレフィックス、最後に圧縮ログファイル）\n しかし、引数にLambda自体のログを指定するとエクスポートされない。なぜなんだ〜！…と思ったら、数時間後にリトライしたら期待値になった。試しにひとつログをDLして中身を覗いてみる。\n$ gunzip -c 000000.gz 2021-12-18T09:30:45.236Z START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST  このログは、マネコンの画面上ではJST（実際にLambdaを実行した時刻の日本時間）となっている。\n2021-12-18T18:30:45.236+09:00 #Timestamp列の値 START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST  うーん、これでいいのか？コード内でJSTに変換しているけど、逆にしなくていいのか？脳内パズル。\n…だが、Lambda関数が実行されるUTCのTZから、エクスポート対象のログ範囲をUTCのTZで指定すると、実際にログが吐き出されたJSTの時刻とは異なる日付範囲になる。だから関数でJSTに変換するのは正しい、と捉えてよい気がする。\n ",
+  "articleBody": "CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。\n参考\nboto3 API Reference\nLambdaよりCloudWatchログをS3に保存方法紹介\nちなみに過去マネコンから実行する手順書いた。\nCloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。\nS3バケットポリシー（log-export-xxxxxxxx）\n{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"logs.ap-northeast-1.amazonaws.com\" }, \"Action\": \"s3:GetBucketAcl\", \"Resource\": \"arn:aws:s3:::log-export-xxxxxxxx\" }, { \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"logs.ap-northeast-1.amazonaws.com\" }, \"Action\": \"s3:PutObject\", \"Resource\": \"arn:aws:s3:::log-export-xxxxxxxx/*\", \"Condition\": { \"StringEquals\": { \"s3:x-amz-acl\": \"bucket-owner-full-control\" } } } ] } Lambdaコード(Python3.9)\nimport boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event.get('loggrp') key1 = event.get('key_name') # 日付情報取得 yesterday = datetime.combine(date.today()-timedelta(1),time()) today = datetime.combine(date.today(),time()) unix_start = datetime(1970,1,1) # 日付範囲指定。範囲は実行時点を基準としたUNIXタイムスタンプの日本時間(+9h) from_t = int((yesterday-unix_start).total_seconds() * 1000) to_t = int((today-unix_start).total_seconds() * 1000) # S3 bucket + prefix定義（bucket/key1/YYYY/mmDD） bucket = os.environ['S3_BUCKET'] key2 = yesterday.strftime(\"%Y\") key3 = yesterday.strftime(\"%m-%d\") s3_key = key1 + \"/\" + key2 + \"/\" + key3 try: logs = boto3.client('logs') response = logs.create_export_task( logGroupName = log_g, fromTime = from_t, to = to_t, destination = bucket, destinationPrefix = s3_key ) except Exception as e: print(e) では、Lambda関数をCLIから実行してみる。ま、普通はEventBridge経由とかでやると思うけど。（でもEventBridgeって引数指定できるんかな？）\n--payloadオプションのロググループ名、S3バケットの最初の階層となるサービス種別（ここではEC2)を指定している。これはJSONなので、file://parameter.jsonなどとしてファイル指定でもよい。\n$ aws lambda invoke --function-name log-export-function \\ --payload '{ \"loggrp\" : \"/ec2/var/log/messages\",\"key_name\" : \"EC2\" }' \\ --cli-binary-format raw-in-base64-out \\ response.json 実行すると、Prefixはできていたが中身は書き込みテスト用ファイルしかない。このコード上の仕様は、前日の00:00:00 から当日の00:00:00までをエクスポートの対象としている。指定したロググループのログは、実行した時点で定義された日付範囲に含まれていないためである。\n（つまり、12/18の日中にインスタンスを起動してログが送信されたとする。しかしエクスポート対象は前日の2021-12-17 00:00:00 〜 当日の2021-12-18 00:00:00までとなるため、この期間内にログがなければ対象は存在しないことになる）\nちなみに関数が実行されるEC2のタイムゾーンはUTC。Lamabaの環境変数でタイムゾーンをJSTにするのは非推奨らしいので、コード側で制御するのが望ましい、とのこと。タイムゾーンの問題を考え始めるといつも頭の中がジグソーパズル状態になる。\nLambda のタイムゾーンを環境変数TZで指定してはいけないっていう話\nAWS Lambda でのタイムゾーン変換\n「コード内での時間は常に UTC で扱い、表示する段階でローカル時間に変換する」を意識していればいいかなと思います。\nこれを当てはめると、「コード内の基準はUTCとし、JSTとして処理する必要になった時点でJSTに変換する」と考えればいいか。\nところでPythonでのタイムゾーン変換で検索すると大抵上記リンクと同様にpytzを使ったコードが紹介されている。pytzを使えば簡単なのだが、それができない事情があったから以下のように別の方法でやった。今回のコードではまた別の方法になっているが…、どこまでも執拗に追ってくるしつこい敵なので、一度タイムゾーン処理単体で記事を書こうかと思う。\nCloudWatchアラーム + SNSからのメール本文をカスタマイズする(3) 話がそれたが、翌日再試行して、今度は無事エクスポートが実行された。今回のコード上の指定では以下スクショの階層でログがアップロードされる。（長いランダム文字列のプレフィックス配下に複数のログストリームのプレフィックス、最後に圧縮ログファイル）\nしかし、引数にLambda自体のログを指定するとエクスポートされない。なぜなんだ〜！…と思ったら、数時間後にリトライしたら期待値になった。試しにひとつログをDLして中身を覗いてみる。\n$ gunzip -c 000000.gz 2021-12-18T09:30:45.236Z START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST このログは、マネコンの画面上ではJST（実際にLambdaを実行した時刻の日本時間）となっている。\n2021-12-18T18:30:45.236+09:00 #Timestamp列の値 START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST うーん、これでいいのか？コード内でJSTに変換しているけど、逆にしなくていいのか？脳内パズル。\n…だが、Lambda関数が実行されるUTCのTZから、エクスポート対象のログ範囲をUTCのTZで指定すると、実際にログが吐き出されたJSTの時刻とは異なる日付範囲になる。だから関数でJSTに変換するのは正しい、と捉えてよい気がする。\n",
   "wordCount" : "225",
   "inLanguage": "en",
   "datePublished": "2021-12-19T12:19:37+09:00",
@@ -119,56 +154,19 @@ CloudWatchLogsからS3へログをエクスポートする
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -182,7 +180,7 @@ CloudWatchLogsからS3へログをエクスポートする
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -213,10 +211,11 @@ CloudWatchLogsからS3へログをエクスポートする
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       CloudWatch LogsからS3にエクスポート(Lambda/Python)
     </h1>
-    <div class="post-meta">December 19, 2021
+    <div class="post-meta"><span title='2021-12-19 12:19:37 +0900 JST'>December 19, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。</p>
@@ -254,42 +253,42 @@ CloudWatchLogsからS3へログをエクスポートする
 <p>Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。</p>
 <p> </p>
 <p>S3バケットポリシー（log-export-xxxxxxxx）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JSON" data-lang="JSON">{
-    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-    <span style="color:#f92672">&#34;Statement&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-            <span style="color:#f92672">&#34;Principal&#34;</span>: {
-                <span style="color:#f92672">&#34;Service&#34;</span>: <span style="color:#e6db74">&#34;logs.ap-northeast-1.amazonaws.com&#34;</span>
-            },
-            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:GetBucketAcl&#34;</span>,
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::log-export-xxxxxxxx&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
-            <span style="color:#f92672">&#34;Principal&#34;</span>: {
-                <span style="color:#f92672">&#34;Service&#34;</span>: <span style="color:#e6db74">&#34;logs.ap-northeast-1.amazonaws.com&#34;</span>
-            },
-            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
-            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;</span>,
-            <span style="color:#f92672">&#34;Condition&#34;</span>: {
-                <span style="color:#f92672">&#34;StringEquals&#34;</span>: {
-                    <span style="color:#f92672">&#34;s3:x-amz-acl&#34;</span>: <span style="color:#e6db74">&#34;bucket-owner-full-control&#34;</span>
-                }
-            }
-        }
-    ]
-}
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Service&#34;</span>: <span style="color:#e6db74">&#34;logs.ap-northeast-1.amazonaws.com&#34;</span>
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:GetBucketAcl&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::log-export-xxxxxxxx&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Principal&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Service&#34;</span>: <span style="color:#e6db74">&#34;logs.ap-northeast-1.amazonaws.com&#34;</span>
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Condition&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;StringEquals&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;s3:x-amz-acl&#34;</span>: <span style="color:#e6db74">&#34;bucket-owner-full-control&#34;</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>Lambdaコード(Python3.9)</p>
-<pre><code>import boto3
+<pre tabindex="0"><code>import boto3
 import collections
 from datetime import datetime, date, time, timedelta
 import os
 
 def lambda_handler(event, context):
-    log_g = event.get('loggrp')
-    key1 = event.get('key_name')
+    log_g = event.get(&#39;loggrp&#39;)
+    key1 = event.get(&#39;key_name&#39;)
     
     # 日付情報取得
     yesterday = datetime.combine(date.today()-timedelta(1),time())
@@ -301,13 +300,13 @@ def lambda_handler(event, context):
     to_t = int((today-unix_start).total_seconds() * 1000)
 
     # S3 bucket + prefix定義（bucket/key1/YYYY/mmDD）
-    bucket = os.environ['S3_BUCKET']
-    key2 = yesterday.strftime(&quot;%Y&quot;)
-    key3 = yesterday.strftime(&quot;%m-%d&quot;)
-    s3_key = key1 + &quot;/&quot; + key2 + &quot;/&quot; + key3
+    bucket = os.environ[&#39;S3_BUCKET&#39;]
+    key2 = yesterday.strftime(&#34;%Y&#34;)
+    key3 = yesterday.strftime(&#34;%m-%d&#34;)
+    s3_key = key1 + &#34;/&#34; + key2 + &#34;/&#34; + key3
 
     try:
-        logs = boto3.client('logs')
+        logs = boto3.client(&#39;logs&#39;)
 
         response = logs.create_export_task(
             logGroupName = log_g,
@@ -322,8 +321,8 @@ def lambda_handler(event, context):
 </code></pre><p> </p>
 <p>では、Lambda関数をCLIから実行してみる。ま、普通はEventBridge経由とかでやると思うけど。（でもEventBridgeって引数指定できるんかな？）</p>
 <p><code>--payload</code>オプションのロググループ名、S3バケットの最初の階層となるサービス種別（ここではEC2)を指定している。これはJSONなので、file://parameter.jsonなどとしてファイル指定でもよい。</p>
-<pre><code>$ aws lambda invoke --function-name log-export-function \
---payload '{ &quot;loggrp&quot; : &quot;/ec2/var/log/messages&quot;,&quot;key_name&quot; : &quot;EC2&quot; }' \
+<pre tabindex="0"><code>$ aws lambda invoke --function-name log-export-function \
+--payload &#39;{ &#34;loggrp&#34; : &#34;/ec2/var/log/messages&#34;,&#34;key_name&#34; : &#34;EC2&#34; }&#39; \
 --cli-binary-format raw-in-base64-out \
 response.json
 </code></pre><p> </p>
@@ -346,11 +345,11 @@ response.json
 </p>
 <p> </p>
 <p>しかし、引数にLambda自体のログを指定するとエクスポートされない。なぜなんだ〜！&hellip;と思ったら、数時間後にリトライしたら期待値になった。試しにひとつログをDLして中身を覗いてみる。</p>
-<pre><code>$ gunzip -c 000000.gz
+<pre tabindex="0"><code>$ gunzip -c 000000.gz
 2021-12-18T09:30:45.236Z START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
 </code></pre><p> </p>
 <p>このログは、マネコンの画面上ではJST（実際にLambdaを実行した時刻の日本時間）となっている。</p>
-<pre><code>2021-12-18T18:30:45.236+09:00      #Timestamp列の値
+<pre tabindex="0"><code>2021-12-18T18:30:45.236+09:00      #Timestamp列の値
 START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
 </code></pre><p> </p>
 <p>うーん、これでいいのか？コード内でJSTに変換しているけど、逆にしなくていいのか？脳内パズル。</p>
@@ -379,6 +378,7 @@ START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
@@ -389,12 +389,12 @@ START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>「愛と幻想のファシズム」より(3)</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-2/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「愛と幻想のファシズム」より(2)</span>
   </a>
@@ -403,27 +403,28 @@ START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -477,12 +478,12 @@ START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

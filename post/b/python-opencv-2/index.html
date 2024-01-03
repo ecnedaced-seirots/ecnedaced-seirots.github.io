@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>OpenCVで画像ファイルを保存する | Go Buddy Go</title>
-<meta name="keywords" content="opencv, python" />
+<meta name="keywords" content="opencv, python">
 <meta name="description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="OpenCVで画像ファイルを保存する" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="OpenCVで画像ファイルを保存する" />
 <meta property="og:description" content="OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/python-opencv-2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-02-06T20:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-02-06T20:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-02-06T20:00:00+09:00" />
+<meta property="article:modified_time" content="2022-02-06T20:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="OpenCVで画像ファイルを保存する"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "opencv", "python"
   ],
-  "articleBody": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n 1. グレースケールの出力  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 画像を出力 cv2.imshow('Yellow', img) #オリジナル cv2.imshow(\"gray\", gray)　#グレースケール while True: # Escキー入力で終了 if cv2.waitKey(1) == 27: break cv2.destroyAllWindows()  こんな感じになる。escキー入力で閉じる。\n 2. 画像を保存する  import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #別名のファイルとして保存 outfile = cv2.imwrite('img_gray.png', gray) if outfile: print('Image is successfully saved.')  結果、Image is successfully saved.が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな…（遠い昔）\n 参考\nPythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】\nPython OpenCV cv2.imwrite() – Save Image\n  ",
+  "articleBody": "OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。\n1. グレースケールの出力 import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 画像を出力 cv2.imshow('Yellow', img) #オリジナル cv2.imshow(\"gray\", gray)　#グレースケール while True: # Escキー入力で終了 if cv2.waitKey(1) == 27: break cv2.destroyAllWindows() こんな感じになる。escキー入力で閉じる。\n2. 画像を保存する import cv2 #ファイル読み込み img = cv2.imread('img_01.png') #グレースケールの定義 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #別名のファイルとして保存 outfile = cv2.imwrite('img_gray.png', gray) if outfile: print('Image is successfully saved.') 結果、Image is successfully saved.が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな…（遠い昔）\n参考\nPythonによる画像処理に利用するライブラリを現役エンジニアが解説【初心者向け】\nPython OpenCV cv2.imwrite() – Save Image\n",
   "wordCount" : "70",
   "inLanguage": "en",
   "datePublished": "2022-02-06T20:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,56 +187,55 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       OpenCVで画像ファイルを保存する
     </h1>
-    <div class="post-meta">February 6, 2022
+    <div class="post-meta"><span title='2022-02-06 20:00:00 +0900 JST'>February 6, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。</p>
 <p> </p>
 <h3 id="1-グレースケールの出力">1. グレースケールの出力<a hidden class="anchor" aria-hidden="true" href="#1-グレースケールの出力">#</a></h3>
 <p> </p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
-
-<span style="color:#75715e">#ファイル読み込み</span>
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
-
-<span style="color:#75715e">#グレースケールの定義</span>
-gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
-
-<span style="color:#75715e"># 画像を出力</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img) 　　　　<span style="color:#75715e">#オリジナル</span>
-cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;gray&#34;</span>, gray)　　　　　<span style="color:#75715e">#グレースケール</span>
-
-<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-    <span style="color:#75715e"># Escキー入力で終了</span>
-    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">27</span>:
-        <span style="color:#66d9ef">break</span>
-cv2<span style="color:#f92672">.</span>destroyAllWindows()
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ファイル読み込み</span>
+</span></span><span style="display:flex;"><span>img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#グレースケールの定義</span>
+</span></span><span style="display:flex;"><span>gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 画像を出力</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Yellow&#39;</span>, img) 　　　　<span style="color:#75715e">#オリジナル</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;gray&#34;</span>, gray)　　　　　<span style="color:#75715e">#グレースケール</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Escキー入力で終了</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">27</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>destroyAllWindows()
+</span></span></code></pre></div><p> </p>
 <p>こんな感じになる。escキー入力で閉じる。</p>
 <p><img loading="lazy" src="/img/b/opencv_gray.jpg" alt="OpenCV img"  />
 </p>
 <p> </p>
 <h3 id="2-画像を保存する">2. 画像を保存する<a hidden class="anchor" aria-hidden="true" href="#2-画像を保存する">#</a></h3>
 <p> </p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> cv2
-
-<span style="color:#75715e">#ファイル読み込み</span>
-img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
-
-<span style="color:#75715e">#グレースケールの定義</span>
-gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
-
-<span style="color:#75715e">#別名のファイルとして保存</span>
-outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imwrite(<span style="color:#e6db74">&#39;img_gray.png&#39;</span>, gray)
-
-<span style="color:#66d9ef">if</span> outfile:
-    print(<span style="color:#e6db74">&#39;Image is successfully saved.&#39;</span>)
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ファイル読み込み</span>
+</span></span><span style="display:flex;"><span>img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#39;img_01.png&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#グレースケールの定義</span>
+</span></span><span style="display:flex;"><span>gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#別名のファイルとして保存</span>
+</span></span><span style="display:flex;"><span>outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imwrite(<span style="color:#e6db74">&#39;img_gray.png&#39;</span>, gray)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> outfile:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Image is successfully saved.&#39;</span>)
+</span></span></code></pre></div><p> </p>
 <p>結果、<code>Image is successfully saved.</code>が出力され、同じディレクトリにグレースケールに変換された img_gray.pngが保存された。こういうのやってると、ImageMagickをいじっていた頃を思い出すな&hellip;（遠い昔）</p>
 <p> </p>
 <p>参考<br>
@@ -272,6 +269,7 @@ outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</s
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/opencv/">opencv</a></li>
@@ -279,12 +277,12 @@ outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</s
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/golang-init-switch/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Go入門(13) - Switch文による条件分岐</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/golang-append-string/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Go入門 (12) - Goで文字列を連結するいくつかの方法</span>
   </a>
@@ -293,27 +291,28 @@ outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</s
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -367,12 +366,12 @@ outfile <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</s
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

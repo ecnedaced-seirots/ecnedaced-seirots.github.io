@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>EC2のノード監視はEventBridgeだけで可能だった | Go Buddy Go</title>
-<meta name="keywords" content="eventbrigde, monitoring, EC2, AWS" />
+<meta name="keywords" content="eventbrigde, monitoring, EC2, AWS">
 <meta name="description" content="タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="EC2のノード監視はEventBridgeだけで可能だった" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="EC2のノード監視はEventBridgeだけで可能だった" />
 <meta property="og:description" content="タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-05-27T11:22:42&#43;09:00" />
-<meta property="article:modified_time" content="2022-05-27T11:22:42&#43;09:00" />
+<meta property="article:published_time" content="2022-05-27T11:22:42+09:00" />
+<meta property="article:modified_time" content="2022-05-27T11:22:42+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="EC2のノード監視はEventBridgeだけで可能だった"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "eventbrigde", "monitoring", "EC2", "AWS"
   ],
-  "articleBody": "タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。\n参考\nEC2インスタンスの３つの死活監視\nさらに詳細\nEC2 インスタンスの状態が変化したときに、カスタマイズした E メール通知を受信するにはどうすればよいですか?\n 上記例の場合指定する状態が「任意の状態」なのでanyとなる。（どの状態でも通知がくる）\n「特定の状態」にチェックしてプルダウンからshutting-down,stopping,stopped,terminatedなどを選択すれば、これらの状態になった時のみ通知がくる。（試してないから断言できないけどそのはず）\n 「イベントソース」で設定する内容   サービスプロバイダー：AWSのサービス AWSのサービス：EC2 イベントタイプ：EC2 instance State-change Notification 任意の状態 or 特定の状態を選択 任意のインスタンス or 個別のインスタンスIDを選択   他の事例と同様に、上記をポチポチやると設定内容のJSONが生成されるので、それを見ると何をやるのか分かりやすい。\nまた上記の例では入力トランスフォーマーによりSNSに直接連携しているが、件名・本文をカスタマイズするなら、別途用意したLambda関数と連携するよう設定する。\n   ",
+  "articleBody": "タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。\n参考\nEC2インスタンスの３つの死活監視\nさらに詳細\nEC2 インスタンスの状態が変化したときに、カスタマイズした E メール通知を受信するにはどうすればよいですか?\n上記例の場合指定する状態が「任意の状態」なのでanyとなる。（どの状態でも通知がくる）\n「特定の状態」にチェックしてプルダウンからshutting-down,stopping,stopped,terminatedなどを選択すれば、これらの状態になった時のみ通知がくる。（試してないから断言できないけどそのはず）\n「イベントソース」で設定する内容 サービスプロバイダー：AWSのサービス AWSのサービス：EC2 イベントタイプ：EC2 instance State-change Notification 任意の状態 or 特定の状態を選択 任意のインスタンス or 個別のインスタンスIDを選択 他の事例と同様に、上記をポチポチやると設定内容のJSONが生成されるので、それを見ると何をやるのか分かりやすい。\nまた上記の例では入力トランスフォーマーによりSNSに直接連携しているが、件名・本文をカスタマイズするなら、別途用意したLambda関数と連携するよう設定する。\n",
   "wordCount" : "26",
   "inLanguage": "en",
   "datePublished": "2022-05-27T11:22:42+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       EC2のノード監視はEventBridgeだけで可能だった
     </h1>
-    <div class="post-meta">May 27, 2022
+    <div class="post-meta"><span title='2022-05-27 11:22:42 +0900 JST'>May 27, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。</p>
@@ -249,6 +248,7 @@
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/eventbrigde/">eventbrigde</a></li>
@@ -258,12 +258,12 @@
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>振動、周波数、霊性</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-13/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>Coin Locker Babies-3, Ryu Murakami </span>
   </a>
@@ -272,27 +272,28 @@
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -346,12 +347,12 @@
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

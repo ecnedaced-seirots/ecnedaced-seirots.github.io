@@ -6,20 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>MacにGNU版dateをインストール | Go Buddy Go</title>
-<meta name="keywords" content="memo, homebrew" />
+<meta name="keywords" content="memo, homebrew">
 <meta name="description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
 このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
+alias date=&#39;/usr/local/bin/gdate&#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800 参考
 Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- ">
+UNIX時間に変換・UNIX時間を取得する方法">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -28,33 +27,66 @@ UNIX時間に変換・UNIX時間を取得する方法
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="MacにGNU版dateをインストール" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="MacにGNU版dateをインストール" />
 <meta property="og:description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
 このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
+alias date=&#39;/usr/local/bin/gdate&#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800 参考
 Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- " />
+UNIX時間に変換・UNIX時間を取得する方法" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-10-18T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2021-10-18T00:00:00&#43;00:00" />
+<meta property="article:published_time" content="2021-10-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-10-18T00:00:00+00:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MacにGNU版dateをインストール"/>
 <meta name="twitter:description" content="Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
- Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
-$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
 このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。
-alias date=&#39;/usr/local/bin/gdate&#39;  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
-$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800  参考
+alias date=&#39;/usr/local/bin/gdate&#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800 参考
 Macでdateコマンドが違う件について
-UNIX時間に変換・UNIX時間を取得する方法
- "/>
+UNIX時間に変換・UNIX時間を取得する方法"/>
 
 
 <script type="application/ld+json">
@@ -83,11 +115,11 @@ UNIX時間に変換・UNIX時間を取得する方法
   "@type": "BlogPosting",
   "headline": "MacにGNU版dateをインストール",
   "name": "MacにGNU版dateをインストール",
-  "description": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\u0026quot;date\u0026quot;で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n ",
+  "description": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\nMac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\u0026quot;date\u0026quot;で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date=\u0026#39;/usr/local/bin/gdate\u0026#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d \u0026#39;2018/5/17 00:00:00\u0026#39; +\u0026#39;%s\u0026#39; 1526482800 参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法",
   "keywords": [
     "memo", "homebrew"
   ],
-  "articleBody": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\n Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils  /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\"date\"で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate'  やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800  参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n ",
+  "articleBody": "Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。\nMac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）\n$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）\nこのままだとコマンドがgdateなので、gdateを\"date\"で実行できるようにする。以下エイリアスを.bashrcに追記。\nalias date='/usr/local/bin/gdate' やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。\n$ date -d '2018/5/17 00:00:00' +'%s' 1526482800 参考\nMacでdateコマンドが違う件について\nUNIX時間に変換・UNIX時間を取得する方法\n",
   "wordCount" : "24",
   "inLanguage": "en",
   "datePublished": "2021-10-18T00:00:00Z",
@@ -119,56 +151,19 @@ UNIX時間に変換・UNIX時間を取得する方法
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -182,7 +177,7 @@ UNIX時間に変換・UNIX時間を取得する方法
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -213,23 +208,24 @@ UNIX時間に変換・UNIX時間を取得する方法
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       MacにGNU版dateをインストール
     </h1>
-    <div class="post-meta">October 18, 2021
+    <div class="post-meta"><span title='2021-10-18 00:00:00 +0000 UTC'>October 18, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。</p>
 <p> </p>
 <p>Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）</p>
-<pre><code>$ brew install coreutils
+<pre tabindex="0"><code>$ brew install coreutils
 </code></pre><p> </p>
 <p>/usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）</p>
 <p>このままだとコマンドがgdateなので、gdateを&quot;date&quot;で実行できるようにする。以下エイリアスを.bashrcに追記。</p>
-<pre><code>alias date='/usr/local/bin/gdate'
+<pre tabindex="0"><code>alias date=&#39;/usr/local/bin/gdate&#39;
 </code></pre><p> </p>
 <p>やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。</p>
-<pre><code>$ date -d '2018/5/17 00:00:00' +'%s'
+<pre tabindex="0"><code>$ date -d &#39;2018/5/17 00:00:00&#39; +&#39;%s&#39;
 1526482800
 </code></pre><p> </p>
 <p>参考<br>
@@ -260,6 +256,7 @@ UNIX時間に変換・UNIX時間を取得する方法
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/memo/">memo</a></li>
@@ -267,12 +264,12 @@ UNIX時間に変換・UNIX時間を取得する方法
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>単語rageを覚えたきっかけはディラン・トーマスの詩だった</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>AWS CLIのページャを無効化する</span>
   </a>
@@ -281,27 +278,28 @@ UNIX時間に変換・UNIX時間を取得する方法
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -355,12 +353,12 @@ UNIX時間に変換・UNIX時間を取得する方法
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

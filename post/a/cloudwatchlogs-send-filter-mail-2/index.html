@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2) | Go Buddy Go</title>
-<meta name="keywords" content="monitoring, cloudwatchlogs, cloudwatch, lambda, amazon sns, AWS" />
+<meta name="keywords" content="monitoring, cloudwatchlogs, cloudwatch, lambda, amazon sns, AWS">
 <meta name="description" content="表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
 変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os.">
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os.environ[&#39;ALARM_SUBJECT&#39;] ) except Exception as e: print(e) 参考">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -24,25 +24,60 @@ import base64 import json import zlib import datetime import os import boto3 fro
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" />
 <meta property="og:description" content="表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
 変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os." />
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os.environ[&#39;ALARM_SUBJECT&#39;] ) except Exception as e: print(e) 参考" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-14T12:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-11-14T12:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-11-14T12:00:00+09:00" />
+<meta property="article:modified_time" content="2021-11-14T12:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)"/>
 <meta name="twitter:description" content="表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
- 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
+各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
 変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os."/>
+import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os.environ[&#39;ALARM_SUBJECT&#39;] ) except Exception as e: print(e) 参考"/>
 
 
 <script type="application/ld+json">
@@ -71,12 +106,12 @@ import base64 import json import zlib import datetime import os import boto3 fro
   "@type": "BlogPosting",
   "headline": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)",
   "name": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ \u002b Lambdaでメール送信(2)",
-  "description": "表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。\nCloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信\n 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。\n変更前：lambda_function.py(1)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(\u0026#39;Loading function\u0026#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[\u0026#39;awslogs\u0026#39;][\u0026#39;data\u0026#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\u0026#34;logEvents\u0026#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\u0026#34;logEvents\u0026#34;][i], ensure_ascii=False)) try: sns = boto3.client(\u0026#39;sns\u0026#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;], Message = log_json[\u0026#39;message\u0026#39;], Subject = os.",
+  "description": "表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。\nCloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信\n各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。\n変更前：lambda_function.py(1)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(\u0026#39;Loading function\u0026#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[\u0026#39;awslogs\u0026#39;][\u0026#39;data\u0026#39;]), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\u0026#34;logEvents\u0026#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\u0026#34;logEvents\u0026#34;][i], ensure_ascii=False)) try: sns = boto3.client(\u0026#39;sns\u0026#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[\u0026#39;SNS_TOPIC_ARN\u0026#39;], Message = log_json[\u0026#39;message\u0026#39;], Subject = os.environ[\u0026#39;ALARM_SUBJECT\u0026#39;] ) except Exception as e: print(e) 参考",
   "keywords": [
     "monitoring", "cloudwatchlogs", "cloudwatch", "lambda", "amazon sns", "AWS"
   ],
-  "articleBody": "表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。\nCloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信\n 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。\n変更前：lambda_function.py(1)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = log_json['message'], Subject = os.environ['ALARM_SUBJECT'] ) except Exception as e: print(e) 参考\nCloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版\n 変更後：lambda_function.py(2)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): # ロググループ名取得 log_group = data_json['logGroup'] # ログストリーム名取得 log_stm = data_json['logStream'] # LogEvents取得 log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) #UNIX時間→時刻/JST変換 datetime_utc = log_json['timestamp'] / 1000.0 datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d%H:%M:%S') datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d%H:%M:%S') datetime_jst = datetime_utc + datetime.timedelta(hours = 9) # メール件名整形 subject_str = \"本番環境 - ログアラート \" + log_group # メッセージ本文整形 fix_msg = \"以下のアラートが発生しました\" + \"\\n\" log_group_msg = \"ロググループ名:\" + \"\\n\" + log_group log_stm_msg = \"ログストリーム名:\" + \"\\n\" + log_stm time_msg = \"発生時刻:\" + \"\\n\" + str(datetime_jst) log_msg = \"メッセージ:\" + \"\\n\" + log_json['message'] msg = fix_msg + \"\\n\\n\" + log_group_msg + \"\\n\\n\" + log_stm_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + log_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e) 参考\n【AWS】CloudWatch Logsからシステムログをメール通知する。\n 改良後のコードでは本文整形の他、メール件名を環境変数決め打ちからコード内でeventの情報から取得、に変更している。ログ種別は多義に渡るしログ監視以外のメール送信もあるから、動的に対応できる方が望ましいということで。本文冒頭に決め打ちメッセージ追加と変数名を変えたくらいで基本は参考元とほぼ同じ。タイムスタンプ変換まで書いてもらって非常にありがたい。\n 最終的に、送信されたメールはこんな感じ。\n 参考サイトさんのおかげですんなりできて助かった。（2度目）ちなみに、当初自力で応用しようとしてハマってた。Logs(サブスクリプションフィルタ)からLambdaに渡されるデータ構造が不明だったからだ。しかし以下公式にちゃんとサンプルと説明があったということを、最後に知った。\nCloudWatch Logs サブスクリプションフィルターの使用\n 以下、データサンプルの抜粋\n{ \"owner\": \"111111111111\", \"logGroup\": \"CloudTrail\", \"logStream\": \"111111111111_CloudTrail_us-east-1\", \"subscriptionFilters\": [ \"Destination\" ], \"messageType\": \"DATA_MESSAGE\", \"logEvents\": [ { \"id\": \"31953106606966983378809025079804211143289615424298221568\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" }, { \"id\": \"31953106606966983378809025079804211143289615424298221569\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" }, { \"id\": \"31953106606966983378809025079804211143289615424298221570\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" } ] }  そして上記ページにたどり着いたのは以下記事のコメントによる。\ncloudwatchlogs - lambda - SNSを試してみた\n 先に記載したコードはこのコメントで言及されている「複数イベントへの対処」が行われているバージョンとなる。改めて、先駆者の方々のおかげで非常に助かった。（3度目）\n ",
-  "wordCount" : "304",
+  "articleBody": "表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。\nCloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信\n各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。\n変更前：lambda_function.py(1)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = log_json['message'], Subject = os.environ['ALARM_SUBJECT'] ) except Exception as e: print(e) 参考\nCloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版\n変更後：lambda_function.py(2)\nimport base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): # ロググループ名取得 log_group = data_json['logGroup'] # ログストリーム名取得 log_stm = data_json['logStream'] # LogEvents取得 log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) #UNIX時間→時刻/JST変換 datetime_utc = log_json['timestamp'] / 1000.0 datetime_utc = datetime.datetime.fromtimestamp(datetime_utc).strftime('%Y/%m/%d %H:%M:%S') datetime_utc = datetime.datetime.strptime(datetime_utc, '%Y/%m/%d %H:%M:%S') datetime_jst = datetime_utc + datetime.timedelta(hours = 9) # メール件名整形 subject_str = \"本番環境 - ログアラート \" + log_group # メッセージ本文整形 fix_msg = \"以下のアラートが発生しました\" + \"\\n\" log_group_msg = \"ロググループ名:\" + \"\\n\" + log_group log_stm_msg = \"ログストリーム名:\" + \"\\n\" + log_stm time_msg = \"発生時刻:\" + \"\\n\" + str(datetime_jst) log_msg = \"メッセージ:\" + \"\\n\" + log_json['message'] msg = fix_msg + \"\\n\\n\" + log_group_msg + \"\\n\\n\" + log_stm_msg + \"\\n\\n\" + time_msg + \"\\n\\n\" + log_msg try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = msg, Subject = subject_str ) except Exception as e: print(e) 参考\n【AWS】CloudWatch Logsからシステムログをメール通知する。\n改良後のコードでは本文整形の他、メール件名を環境変数決め打ちからコード内でeventの情報から取得、に変更している。ログ種別は多義に渡るしログ監視以外のメール送信もあるから、動的に対応できる方が望ましいということで。本文冒頭に決め打ちメッセージ追加と変数名を変えたくらいで基本は参考元とほぼ同じ。タイムスタンプ変換まで書いてもらって非常にありがたい。\n最終的に、送信されたメールはこんな感じ。\n参考サイトさんのおかげですんなりできて助かった。（2度目）ちなみに、当初自力で応用しようとしてハマってた。Logs(サブスクリプションフィルタ)からLambdaに渡されるデータ構造が不明だったからだ。しかし以下公式にちゃんとサンプルと説明があったということを、最後に知った。\nCloudWatch Logs サブスクリプションフィルターの使用\n以下、データサンプルの抜粋\n{ \"owner\": \"111111111111\", \"logGroup\": \"CloudTrail\", \"logStream\": \"111111111111_CloudTrail_us-east-1\", \"subscriptionFilters\": [ \"Destination\" ], \"messageType\": \"DATA_MESSAGE\", \"logEvents\": [ { \"id\": \"31953106606966983378809025079804211143289615424298221568\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" }, { \"id\": \"31953106606966983378809025079804211143289615424298221569\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" }, { \"id\": \"31953106606966983378809025079804211143289615424298221570\", \"timestamp\": 1432826855000, \"message\": \"{\\\"eventVersion\\\":\\\"1.03\\\",\\\"userIdentity\\\":{\\\"type\\\":\\\"Root\\\"}\" } ] } そして上記ページにたどり着いたのは以下記事のコメントによる。\ncloudwatchlogs -\u003e lambda -\u003e SNSを試してみた\n先に記載したコードはこのコメントで言及されている「複数イベントへの対処」が行われているバージョンとなる。改めて、先駆者の方々のおかげで非常に助かった。（3度目）\n",
+  "wordCount" : "306",
   "inLanguage": "en",
   "datePublished": "2021-11-14T12:00:00+09:00",
   "dateModified": "2021-11-14T12:00:00+09:00",
@@ -107,56 +142,19 @@ import base64 import json import zlib import datetime import os import boto3 fro
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -170,7 +168,7 @@ import base64 import json import zlib import datetime import os import boto3 fro
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -201,10 +199,11 @@ import base64 import json import zlib import datetime import os import boto3 fro
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)
     </h1>
-    <div class="post-meta">November 14, 2021
+    <div class="post-meta"><span title='2021-11-14 12:00:00 +0900 JST'>November 14, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。<br>
@@ -212,104 +211,103 @@ import base64 import json import zlib import datetime import os import boto3 fro
 <p> </p>
 <p>各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。</p>
 <p>変更前：lambda_function.py(1)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> base64
-<span style="color:#f92672">import</span> json
-<span style="color:#f92672">import</span> zlib
-<span style="color:#f92672">import</span> datetime
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> boto3
-<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
-
-print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
-    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
-    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
-    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
-
-    print(log_entire_json)
-
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
-        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-
-        <span style="color:#66d9ef">try</span>:
-            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
-    
-            <span style="color:#75715e">#SNS Publish</span>
-            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
-                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
-                Message <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>],
-                Subject <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ALARM_SUBJECT&#39;</span>]
-            )
-    
-        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-            print(e)
-</code></pre></div><p>参考<br>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> zlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> boto3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
+</span></span><span style="display:flex;"><span>    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
+</span></span><span style="display:flex;"><span>    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
+</span></span><span style="display:flex;"><span>        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#SNS Publish</span>
+</span></span><span style="display:flex;"><span>            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+</span></span><span style="display:flex;"><span>                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+</span></span><span style="display:flex;"><span>                Message <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>],
+</span></span><span style="display:flex;"><span>                Subject <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ALARM_SUBJECT&#39;</span>]
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(e)
+</span></span></code></pre></div><p>参考<br>
 <a href="https://dev.classmethod.jp/articles/notification_cloudwatchlogs_subscriptoinfilter/">CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版</a></p>
 <p> </p>
 <p>変更後：lambda_function.py(2)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> base64
-<span style="color:#f92672">import</span> json
-<span style="color:#f92672">import</span> zlib
-<span style="color:#f92672">import</span> datetime
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> boto3
-<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
-
-print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
-    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
-    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
-    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
-
-    print(log_entire_json)
-
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
-        <span style="color:#75715e"># ロググループ名取得</span>
-        log_group <span style="color:#f92672">=</span> data_json[<span style="color:#e6db74">&#39;logGroup&#39;</span>]
-        
-        <span style="color:#75715e"># ログストリーム名取得</span>
-        log_stm <span style="color:#f92672">=</span> data_json[<span style="color:#e6db74">&#39;logStream&#39;</span>]
-        
-        <span style="color:#75715e"># LogEvents取得</span>
-        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-        
-        <span style="color:#75715e">#UNIX時間→時刻/JST変換</span>
-        datetime_utc <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;timestamp&#39;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000.0</span>
-        datetime_utc <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>fromtimestamp(datetime_utc)<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y/%m/</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
-        datetime_utc <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>strptime(datetime_utc, <span style="color:#e6db74">&#39;%Y/%m/</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
-        datetime_jst <span style="color:#f92672">=</span> datetime_utc <span style="color:#f92672">+</span> datetime<span style="color:#f92672">.</span>timedelta(hours <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>)
-        
-        <span style="color:#75715e"># メール件名整形</span>
-        subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境 - ログアラート &#34;</span> <span style="color:#f92672">+</span> log_group
-        
-        <span style="color:#75715e"># メッセージ本文整形</span>
-        fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のアラートが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-        log_group_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ロググループ名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_group
-        log_stm_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ログストリーム名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_stm
-        time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> str(datetime_jst)
-        log_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;メッセージ:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>]
-        msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_group_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_stm_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_msg
-
-        <span style="color:#66d9ef">try</span>:
-            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
-    
-            <span style="color:#75715e">#SNS Publish</span>
-            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
-                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
-                Message <span style="color:#f92672">=</span> msg,
-                Subject <span style="color:#f92672">=</span> subject_str
-            )
-    
-        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-            print(e)
-
-</code></pre></div><p>参考<br>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> zlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> boto3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
+</span></span><span style="display:flex;"><span>    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
+</span></span><span style="display:flex;"><span>    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ロググループ名取得</span>
+</span></span><span style="display:flex;"><span>        log_group <span style="color:#f92672">=</span> data_json[<span style="color:#e6db74">&#39;logGroup&#39;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ログストリーム名取得</span>
+</span></span><span style="display:flex;"><span>        log_stm <span style="color:#f92672">=</span> data_json[<span style="color:#e6db74">&#39;logStream&#39;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># LogEvents取得</span>
+</span></span><span style="display:flex;"><span>        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#UNIX時間→時刻/JST変換</span>
+</span></span><span style="display:flex;"><span>        datetime_utc <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;timestamp&#39;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000.0</span>
+</span></span><span style="display:flex;"><span>        datetime_utc <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>fromtimestamp(datetime_utc)<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y/%m/</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
+</span></span><span style="display:flex;"><span>        datetime_utc <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>strptime(datetime_utc, <span style="color:#e6db74">&#39;%Y/%m/</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
+</span></span><span style="display:flex;"><span>        datetime_jst <span style="color:#f92672">=</span> datetime_utc <span style="color:#f92672">+</span> datetime<span style="color:#f92672">.</span>timedelta(hours <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># メール件名整形</span>
+</span></span><span style="display:flex;"><span>        subject_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;本番環境 - ログアラート &#34;</span> <span style="color:#f92672">+</span> log_group
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># メッセージ本文整形</span>
+</span></span><span style="display:flex;"><span>        fix_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;以下のアラートが発生しました&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        log_group_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ロググループ名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_group
+</span></span><span style="display:flex;"><span>        log_stm_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ログストリーム名:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_stm
+</span></span><span style="display:flex;"><span>        time_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;発生時刻:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> str(datetime_jst)
+</span></span><span style="display:flex;"><span>        log_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;メッセージ:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>]
+</span></span><span style="display:flex;"><span>        msg <span style="color:#f92672">=</span> fix_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_group_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_stm_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> time_msg <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> log_msg
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#SNS Publish</span>
+</span></span><span style="display:flex;"><span>            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+</span></span><span style="display:flex;"><span>                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+</span></span><span style="display:flex;"><span>                Message <span style="color:#f92672">=</span> msg,
+</span></span><span style="display:flex;"><span>                Subject <span style="color:#f92672">=</span> subject_str
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(e)
+</span></span></code></pre></div><p>参考<br>
 <a href="https://zenn.dev/supersatton/articles/a2110223767a2c">【AWS】CloudWatch Logsからシステムログをメール通知する。</a></p>
 <p> </p>
 <p>改良後のコードでは本文整形の他、メール件名を環境変数決め打ちからコード内でeventの情報から取得、に変更している。ログ種別は多義に渡るしログ監視以外のメール送信もあるから、動的に対応できる方が望ましいということで。本文冒頭に決め打ちメッセージ追加と変数名を変えたくらいで基本は参考元とほぼ同じ。タイムスタンプ変換まで書いてもらって非常にありがたい。</p>
@@ -322,34 +320,33 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 <p><a href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#LambdaFunctionExample">CloudWatch Logs サブスクリプションフィルターの使用</a></p>
 <p> </p>
 <p>以下、データサンプルの抜粋</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;111111111111&#34;</span>,
-    <span style="color:#f92672">&#34;logGroup&#34;</span>: <span style="color:#e6db74">&#34;CloudTrail&#34;</span>,
-    <span style="color:#f92672">&#34;logStream&#34;</span>: <span style="color:#e6db74">&#34;111111111111_CloudTrail_us-east-1&#34;</span>,
-    <span style="color:#f92672">&#34;subscriptionFilters&#34;</span>: [
-        <span style="color:#e6db74">&#34;Destination&#34;</span>
-    ],
-    <span style="color:#f92672">&#34;messageType&#34;</span>: <span style="color:#e6db74">&#34;DATA_MESSAGE&#34;</span>,
-    <span style="color:#f92672">&#34;logEvents&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221568&#34;</span>,
-            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
-            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221569&#34;</span>,
-            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
-            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221570&#34;</span>,
-            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
-            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
-        }
-    ]
-}
-
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;owner&#34;</span>: <span style="color:#e6db74">&#34;111111111111&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;logGroup&#34;</span>: <span style="color:#e6db74">&#34;CloudTrail&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;logStream&#34;</span>: <span style="color:#e6db74">&#34;111111111111_CloudTrail_us-east-1&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;subscriptionFilters&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Destination&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;messageType&#34;</span>: <span style="color:#e6db74">&#34;DATA_MESSAGE&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;logEvents&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221568&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221569&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;31953106606966983378809025079804211143289615424298221570&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1432826855000</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;{\&#34;eventVersion\&#34;:\&#34;1.03\&#34;,\&#34;userIdentity\&#34;:{\&#34;type\&#34;:\&#34;Root\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p> </p>
 <p>そして上記ページにたどり着いたのは以下記事のコメントによる。</p>
 <p><a href="https://qiita.com/sadayuki-matsuno/items/83b70ee97755e534764f#comment-63156edaeeede0ed3fc5">cloudwatchlogs -&gt; lambda -&gt; SNSを試してみた</a></p>
 <p> </p>
@@ -380,6 +377,7 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
@@ -391,12 +389,12 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>英語メモ - elaborate</span>
   </a>
@@ -405,27 +403,28 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -479,12 +478,12 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

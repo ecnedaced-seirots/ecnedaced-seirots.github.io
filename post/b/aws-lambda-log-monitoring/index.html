@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>AWS Lambdaのログ監視方法を考えてみる | Go Buddy Go</title>
-<meta name="keywords" content="lambda, cloudwatchlogs, AWS" />
+<meta name="keywords" content="lambda, cloudwatchlogs, AWS">
 <meta name="description" content="AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -20,13 +20,48 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="AWS Lambdaのログ監視方法を考えてみる" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AWS Lambdaのログ監視方法を考えてみる" />
 <meta property="og:description" content="AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-01-23T15:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2022-01-23T15:00:00&#43;09:00" />
+<meta property="article:published_time" content="2022-01-23T15:00:00+09:00" />
+<meta property="article:modified_time" content="2022-01-23T15:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWS Lambdaのログ監視方法を考えてみる"/>
@@ -63,7 +98,7 @@
   "keywords": [
     "lambda", "cloudwatchlogs", "AWS"
   ],
-  "articleBody": "AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。\nこれまでやってきた検証では、Lambdaとは無関係のロググループにエラー出力させて、そのログのサブスクリプションフィルタのターゲットにログ監視用Lambda関数を指定している。一方、Lambda自体のログを監視するには若干捻りが必要そうである。\n 以下記事のように、適当なLambda関数のログにサブスクリプションフィルタを設定してエラー検知 ＆ SNS連携でメッセージ通知させること自体は問題ない。\nCloudWatch Logsの特定文字を検知してログ内容を通知するLambda Function\n 一応、実際に試してみた。\n Lambda① 適当な処理を実行 Lambda② ログ監視用関数。SNSと連携してメール送信  Lambda①のログにサブスクを設定。ターゲットはLambda②とする。これだけなら動作は想定内で、Lambda①でエラーログを1回発生させたら、Lambda②により通知メールが1回送信された。\n しかしLambda①も監視用の関数の場合は注意が必要である。例えばその関数がアラーム監視に紐付いている場合の挙動を想定すると：\n-＞Lambda①にエラー要因がなければ、アラームトリガー発生時は設定したSNSに連携され、ログにはエラーが出ない。（ログ監視通知は飛ばない）\nここまではいいとして、気をつけたいのはLambda①にエラー要因がある状態でトリガー発生した場合:\n-＞ Lambdaログにエラーが吐き出され、サブスクが検知 -＞ ログ監視通知のLambdaが起動し、通知を送信する。\nアラーム監視自体で大量にトリガーが発生した場合、Lambdaのログエラーもそれに準じて高騰することになり、2倍に大量通知が飛ぶことになる。やってはいけないレベルではないかもしれないが、ソリューションは検討しておく必要がある。\nそして、Lambda①がログ監視用関数の場合はそれ自体にLambdaをターゲットとするサブスクを設定してはいけない。\n  無限の呼び出しループが作成されるため、ログ配布関数のロググループにサブスクライブすることは避けてください。\n AWS Lambdaでのロギングのベストプラクティス\n つまり、Lambda②のログはLambdaと連携させての監視はできない。他のターゲットなら可能かは不明。どちらにしろ、logsのサブスクは直接SNSに連携できないし、これだけのためにKinesis他のソリューションを採用するのも大袈裟だ。いや、どうしてもっていうなら他の仕組みを実装するしかないけど、自動通知が必須でなければ運用回避でもいいわけで。そんな中以下の記事を目にして、一瞬ハッとした。\n  エラー出力をする前に、なんのために必要なのか考えないといけない\nよく自分も陥りがちなのは、「色々な例外がありそうだからとりあえずERROR出力をする」といったパターンです。とりあえず設定したログレベルは、一度リリースされると改修による不具合発生のリスクや、リソースの都合でななかな変更できない事が多いと思います。\n本当に検知や対処が必要なものであればERROR出力は必要です。しかし、ERROR通知を受けた後何もしないのであれば、通知する必要はないのかもしれません。実装の時点で、検知したエラーを元に何をしたいのかを考慮した上で適切なログレベルをつける事が大切です。\n Serverless時代のシステム監視、ノイズ通知だらけな日々を経験しての反省点\n 発想の転換。自分も「とにかくエラーは通知しなければいけない」と思い込んでいたふしがある。ちょっとクールダウンして再検討しよう。\n ",
+  "articleBody": "AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。\nこれまでやってきた検証では、Lambdaとは無関係のロググループにエラー出力させて、そのログのサブスクリプションフィルタのターゲットにログ監視用Lambda関数を指定している。一方、Lambda自体のログを監視するには若干捻りが必要そうである。\n以下記事のように、適当なLambda関数のログにサブスクリプションフィルタを設定してエラー検知 ＆ SNS連携でメッセージ通知させること自体は問題ない。\nCloudWatch Logsの特定文字を検知してログ内容を通知するLambda Function\n一応、実際に試してみた。\nLambda① 適当な処理を実行 Lambda② ログ監視用関数。SNSと連携してメール送信 Lambda①のログにサブスクを設定。ターゲットはLambda②とする。これだけなら動作は想定内で、Lambda①でエラーログを1回発生させたら、Lambda②により通知メールが1回送信された。\nしかしLambda①も監視用の関数の場合は注意が必要である。例えばその関数がアラーム監視に紐付いている場合の挙動を想定すると：\n-＞Lambda①にエラー要因がなければ、アラームトリガー発生時は設定したSNSに連携され、ログにはエラーが出ない。（ログ監視通知は飛ばない）\nここまではいいとして、気をつけたいのはLambda①にエラー要因がある状態でトリガー発生した場合:\n-＞ Lambdaログにエラーが吐き出され、サブスクが検知 -＞ ログ監視通知のLambdaが起動し、通知を送信する。\nアラーム監視自体で大量にトリガーが発生した場合、Lambdaのログエラーもそれに準じて高騰することになり、2倍に大量通知が飛ぶことになる。やってはいけないレベルではないかもしれないが、ソリューションは検討しておく必要がある。\nそして、Lambda①がログ監視用関数の場合はそれ自体にLambdaをターゲットとするサブスクを設定してはいけない。\n無限の呼び出しループが作成されるため、ログ配布関数のロググループにサブスクライブすることは避けてください。\nAWS Lambdaでのロギングのベストプラクティス\nつまり、Lambda②のログはLambdaと連携させての監視はできない。他のターゲットなら可能かは不明。どちらにしろ、logsのサブスクは直接SNSに連携できないし、これだけのためにKinesis他のソリューションを採用するのも大袈裟だ。いや、どうしてもっていうなら他の仕組みを実装するしかないけど、自動通知が必須でなければ運用回避でもいいわけで。そんな中以下の記事を目にして、一瞬ハッとした。\nエラー出力をする前に、なんのために必要なのか考えないといけない\nよく自分も陥りがちなのは、「色々な例外がありそうだからとりあえずERROR出力をする」といったパターンです。とりあえず設定したログレベルは、一度リリースされると改修による不具合発生のリスクや、リソースの都合でななかな変更できない事が多いと思います。\n本当に検知や対処が必要なものであればERROR出力は必要です。しかし、ERROR通知を受けた後何もしないのであれば、通知する必要はないのかもしれません。実装の時点で、検知したエラーを元に何をしたいのかを考慮した上で適切なログレベルをつける事が大切です。\nServerless時代のシステム監視、ノイズ通知だらけな日々を経験しての反省点\n発想の転換。自分も「とにかくエラーは通知しなければいけない」と思い込んでいたふしがある。ちょっとクールダウンして再検討しよう。\n",
   "wordCount" : "34",
   "inLanguage": "en",
   "datePublished": "2022-01-23T15:00:00+09:00",
@@ -95,56 +130,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -158,7 +156,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -189,10 +187,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       AWS Lambdaのログ監視方法を考えてみる
     </h1>
-    <div class="post-meta">January 23, 2022
+    <div class="post-meta"><span title='2022-01-23 15:00:00 +0900 JST'>January 23, 2022</span>
+
 </div>
   </header> 
   <div class="post-content"><p>AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。</p>
@@ -257,6 +256,7 @@
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
@@ -265,12 +265,12 @@
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-7/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>Coin Locker Babies-2, Ryu Murakami</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>TerraformでNATゲートウェイを作成する</span>
   </a>
@@ -279,27 +279,28 @@
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -353,12 +354,12 @@
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 

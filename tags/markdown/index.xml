@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Markdown on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/markdown/</link>
     <description>Recent content in Markdown on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ecnedaced-seirots.github.io/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>マークダウン記法</title>
       <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
       <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
-  Markdown 早見表 &amp;amp; 詳細
-  かんたんMarkdownの記法
-  Markdown記法 チートシート
-  GitHub Markdownの「シンタックスハイライト」に対応している言語一覧
-   </description>
+Markdown 早見表 &amp;amp; 詳細
+かんたんMarkdownの記法
+Markdown記法 チートシート
+GitHub Markdownの「シンタックスハイライト」に対応している言語一覧</description>
     </item>
-    
   </channel>
 </rss>

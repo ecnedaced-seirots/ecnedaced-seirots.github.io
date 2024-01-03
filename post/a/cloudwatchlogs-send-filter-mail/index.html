@@ -6,17 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信 | Go Buddy Go</title>
-<meta name="keywords" content="monitoring, cloudwatchlogs, cloudwatch, lambda, amazon sns, AWS" />
+<meta name="keywords" content="monitoring, cloudwatchlogs, cloudwatch, lambda, amazon sns, AWS">
 <meta name="description" content="AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ">
+参考
+CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
+CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
+今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
+過去記事:AWS EventBridge &#43; SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
+とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
+(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.6ee37ee267db133fafe9722a249e2fce047d2edad637121c38d87ddd7006fc4f.css" integrity="sha256-buN&#43;4mfbEz&#43;v6XIqJJ4vzgR9LtrWNxIcONh93XAG/E8=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -25,27 +28,68 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
-<meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" />
 <meta property="og:description" content="AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ" />
+参考
+CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
+CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
+今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
+過去記事:AWS EventBridge &#43; SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
+とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
+(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-10-31T14:00:00&#43;09:00" />
-<meta property="article:modified_time" content="2021-10-31T14:00:00&#43;09:00" />
+<meta property="article:published_time" content="2021-10-31T14:00:00+09:00" />
+<meta property="article:modified_time" content="2021-10-31T14:00:00+09:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信"/>
 <meta name="twitter:description" content="AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
- 参考
- CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用
- CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。
- 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ"/>
+参考
+CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
+CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
+今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
+過去記事:AWS EventBridge &#43; SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
+とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
+(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore."/>
 
 
 <script type="application/ld+json">
@@ -74,11 +118,11 @@
   "@type": "BlogPosting",
   "headline": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信",
   "name": "CloudWatchLogsのログ監視 - サブスクリプションフィルタ \u002b Lambdaでメール送信",
-  "description": "AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。\n今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)\n 参考\n CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用\n CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。\n 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ",
+  "description": "AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。\n今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)\n参考\nCloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用\nCloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。\n今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ\n過去記事:AWS EventBridge + SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成\nとりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成\n(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore.",
   "keywords": [
     "monitoring", "cloudwatchlogs", "cloudwatch", "lambda", "amazon sns", "AWS"
   ],
-  "articleBody": "AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。\n今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)\n 参考\n CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例   以下は今後の参考用\n CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例   処理概要  CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知   作業概要  SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認  ※ログストリーム作成は検証時のみ。通常は自動生成される。\n 今回の検証に使用したアイテム（個人メモ）    アイテム 名称     SNSトピック log-monitor-topic   Lambda用IAMロール send-log-filter-role   Lambda関数 send-log-filter-function   サブスクリプションフィルタ send-log-filter     やったこと  SNSトピック作成〜サブスクライブ\n過去記事:AWS EventBridge + SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。   Lambda用IAMロール作成\nとりあえず以下のマネージドポリシーをアタッチ。   CloudEatchLogsFullAccess AmazonSNSFullAccess   Lambda関数作成\n(1) 参考ブログのコード貼り付け  import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = log_json['message'], Subject = os.environ['ALARM_SUBJECT'] ) except Exception as e: print(e)  (2) 環境変数をセット(Configration/設定タブ ー＞ 左ペインのEnvironment variables/環境変数)\n   Key Value     SNS_TOPIC_ARN arn:aws:sns:ap-northeast-1:my-account-id:log-monitor-topic   CUSTOM_SUBJECT エラーログ送信テスト    ロググループ/ログストリーム作成\nマネコンから普通にできるので省略。   サブスクリプションフィルタ作成\nロググループの画面から作成する。   配信先として先に作成したLambda関数を指定する。ログフォーマットは当初OtherにしたがJSONでいいらしい。（まだよくわかっていない…）\n 事前にメッセージを投入しておけばここでテストできる。メッセージが何もない場合はスキップ。\n 最後に[Start streaming]押下で完了。\n 作成後のサブスクリプションフィルタ。作成後に変更したい場合はマネコンからはできないため、CLIから設定する。詳細は後述の補足事項に記載。\n テストログ送信〜メール通知確認\nこのテストログ送信方法については、クラメソさんや他の記事ではCLIからput-log-eventsを実行しているが、正直面倒くさい。マネコンからやる方が簡単なのでここではその手順を記載。  対象のログストリーム画面から、[Actions(アクション)] ー＞ [Create log event（ログイベントの作成）]と遷移し、テストイベントを発行する。\n メール通知を確認。届いた！\n …と、ここまで普通にできたっぽく書いているが、実際には何かとハマって手こずってしまった。当初メールが届かなくてね。複数の記事を参考にしているが、それぞれ微妙に手順や実装が異なるから、少しどこかをいじるとNGになったりする。\nメールが届かないのはSNSが原因と思ったけど（Lambdaでエラー出ていないから）、Lambda自体のログにテストイベントのメッセージが何も出力されていないことに気づいて、Lambdaがイベントを取得できていなくてSNSにメッセージが渡っていないことが原因とわかった。コードも若干入れ替えたり編集したりしたんで。自分は紆余曲折しておかしなことになったが、最初はクラメソさんのコードをそのまま使って手順通りにやればできるはず。応用はその後。\n 補足事項  サブスクリプション作成後の変更\nサブスク作成後はマネコンからは直接変更できないが、CLIで編集可能。aws logs put-subscripution-filterで同じサブスク名を指定すれば設定が上書きされる。  $ aws logs put-subscription-filter ¥ --log-group-name [your log group name] ¥ --filter-name [your subscription filter name] ¥ --filter-pattern [your filter pattern] ¥ --destination-arn [your destination arn] ※今回の場合Lambda関数のARN  フィルタパターン編集\nフィルタパターンでOR条件するには、キーワード間はスペース区切りとし、各キーワードの先頭に?をつける。除外フィルタはまた別に必要で複雑になる。Lambda関数内で設定することも可能なので、要件に応じて検討。  フィルタパターンOR条件例\nこれを作成済みのサブスクに適用したい場合は、上記1.のCLIコマンドの--filter-patternオプションの値として指定すればよい。\n\"?error ?Error ?ERROR ?fail ?Fail ?FAIL\"  除外キーワードをセットするのはちょっと面倒で、こんな風になる。以下の場合、メッセージが\"error event\"の場合は検知され、“error test\"の場合は検知されない。\n\"[( msg=¥\"*error*¥\" || msg=¥\"*Error*¥\" ) \u0026\u0026 ( msg!=¥\"*test*¥\" \u0026\u0026 msg!=¥\"*Test*¥\" \u0026\u0026 msg!=¥\"*TEST*¥\" )]\"  Lambdaコード内で除外キーワード定義することも可能だが、検知キーワードと除外キーワードが別れるのもどうなんかと思うし、迷うところ。\n APIから実装する際の追加作業\nサブスクリプションフィルタ作成時、マネコンだと自動で付与される権限がCLIでは付与されないため、事前にLambda側で権限を追加する。--statement-idは適当な文字列でいいと思われる。多分。  $ aws lambda add-permission ¥ --function-name [your function name] ¥ --statement-id \"your statement id\" ¥ --principal \"logs.ap-northeast-1.amazonaws.com\" ¥ --action \"lambda:InvokeFunction\" ¥ --source-arn \"arn:aws:logs:ap-northeast-1:[your account id]:log-group:*:*\" ¥ --source-account [your account id]  TerraformやCFnから作成する場合も同じ作業が必要になるはずだから要注意。\n参考: add-permission\n ",
+  "articleBody": "AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。\n今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)\n参考\nCloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用\nCloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。\n今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ\n過去記事:AWS EventBridge + SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成\nとりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成\n(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print('Loading function') def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event['awslogs']['data']), 16+zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[\"logEvents\"], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[\"logEvents\"][i], ensure_ascii=False)) try: sns = boto3.client('sns') #SNS Publish publishResponse = sns.publish( TopicArn = os.environ['SNS_TOPIC_ARN'], Message = log_json['message'], Subject = os.environ['ALARM_SUBJECT'] ) except Exception as e: print(e) (2) 環境変数をセット(Configration/設定タブ ー＞ 左ペインのEnvironment variables/環境変数)\nKey Value SNS_TOPIC_ARN arn:aws:sns:ap-northeast-1:my-account-id:log-monitor-topic CUSTOM_SUBJECT エラーログ送信テスト ロググループ/ログストリーム作成\nマネコンから普通にできるので省略。 サブスクリプションフィルタ作成\nロググループの画面から作成する。 配信先として先に作成したLambda関数を指定する。ログフォーマットは当初OtherにしたがJSONでいいらしい。（まだよくわかっていない…）\n事前にメッセージを投入しておけばここでテストできる。メッセージが何もない場合はスキップ。\n最後に[Start streaming]押下で完了。\n作成後のサブスクリプションフィルタ。作成後に変更したい場合はマネコンからはできないため、CLIから設定する。詳細は後述の補足事項に記載。\nテストログ送信〜メール通知確認\nこのテストログ送信方法については、クラメソさんや他の記事ではCLIからput-log-eventsを実行しているが、正直面倒くさい。マネコンからやる方が簡単なのでここではその手順を記載。 対象のログストリーム画面から、[Actions(アクション)] ー＞ [Create log event（ログイベントの作成）]と遷移し、テストイベントを発行する。\nメール通知を確認。届いた！\n…と、ここまで普通にできたっぽく書いているが、実際には何かとハマって手こずってしまった。当初メールが届かなくてね。複数の記事を参考にしているが、それぞれ微妙に手順や実装が異なるから、少しどこかをいじるとNGになったりする。\nメールが届かないのはSNSが原因と思ったけど（Lambdaでエラー出ていないから）、Lambda自体のログにテストイベントのメッセージが何も出力されていないことに気づいて、Lambdaがイベントを取得できていなくてSNSにメッセージが渡っていないことが原因とわかった。コードも若干入れ替えたり編集したりしたんで。自分は紆余曲折しておかしなことになったが、最初はクラメソさんのコードをそのまま使って手順通りにやればできるはず。応用はその後。\n補足事項 サブスクリプション作成後の変更\nサブスク作成後はマネコンからは直接変更できないが、CLIで編集可能。aws logs put-subscripution-filterで同じサブスク名を指定すれば設定が上書きされる。 $ aws logs put-subscription-filter ¥ --log-group-name [your log group name] ¥ --filter-name [your subscription filter name] ¥ --filter-pattern [your filter pattern] ¥ --destination-arn [your destination arn] ※今回の場合Lambda関数のARN フィルタパターン編集\nフィルタパターンでOR条件するには、キーワード間はスペース区切りとし、各キーワードの先頭に?をつける。除外フィルタはまた別に必要で複雑になる。Lambda関数内で設定することも可能なので、要件に応じて検討。 フィルタパターンOR条件例\nこれを作成済みのサブスクに適用したい場合は、上記1.のCLIコマンドの--filter-patternオプションの値として指定すればよい。\n\"?error ?Error ?ERROR ?fail ?Fail ?FAIL\" 除外キーワードをセットするのはちょっと面倒で、こんな風になる。以下の場合、メッセージが\"error event\"の場合は検知され、“error test\"の場合は検知されない。\n\"[( msg=¥\"*error*¥\" || msg=¥\"*Error*¥\" ) \u0026\u0026 ( msg!=¥\"*test*¥\" \u0026\u0026 msg!=¥\"*Test*¥\" \u0026\u0026 msg!=¥\"*TEST*¥\" )]\" Lambdaコード内で除外キーワード定義することも可能だが、検知キーワードと除外キーワードが別れるのもどうなんかと思うし、迷うところ。\nAPIから実装する際の追加作業\nサブスクリプションフィルタ作成時、マネコンだと自動で付与される権限がCLIでは付与されないため、事前にLambda側で権限を追加する。--statement-idは適当な文字列でいいと思われる。多分。 $ aws lambda add-permission ¥ --function-name [your function name] ¥ --statement-id \"your statement id\" ¥ --principal \"logs.ap-northeast-1.amazonaws.com\" ¥ --action \"lambda:InvokeFunction\" ¥ --source-arn \"arn:aws:logs:ap-northeast-1:[your account id]:log-group:*:*\" ¥ --source-account [your account id] TerraformやCFnから作成する場合も同じ作業が必要になるはずだから要注意。\n参考: add-permission\n",
   "wordCount" : "254",
   "inLanguage": "en",
   "datePublished": "2021-10-31T14:00:00+09:00",
@@ -110,56 +154,19 @@
     }
 
 </script>
-<noscript>
-    <style type="text/css">
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: #1d1e20;
-                --entry: #2e2e33;
-                --primary: rgba(255, 255, 255, 0.84);
-                --secondary: rgba(255, 255, 255, 0.56);
-                --tertiary: rgba(255, 255, 255, 0.16);
-                --content: rgba(255, 255, 255, 0.74);
-                --hljs-bg: #2e2e33;
-                --code-bg: #37383e;
-                --border: #333;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
 
 <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
-            <span class="logo-switches">
+            <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -173,7 +180,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
         <ul id="menu">
             <li>
@@ -204,10 +211,11 @@
 <article class="post-single">
   <header class="post-header">
     
-    <h1 class="post-title">
+    <h1 class="post-title entry-hint-parent">
       CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
     </h1>
-    <div class="post-meta">October 31, 2021
+    <div class="post-meta"><span title='2021-10-31 14:00:00 +0900 JST'>October 31, 2021</span>
+
 </div>
   </header> 
   <div class="post-content"><p>AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。</p>
@@ -294,41 +302,41 @@
 <li>Lambda関数作成<br>
 (1) 参考ブログのコード貼り付け</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> base64
-<span style="color:#f92672">import</span> json
-<span style="color:#f92672">import</span> zlib
-<span style="color:#f92672">import</span> datetime
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> boto3
-<span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
-
-print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
-    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
-    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
-    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
-
-    print(log_entire_json)
-
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
-        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
-
-        <span style="color:#66d9ef">try</span>:
-            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
-    
-            <span style="color:#75715e">#SNS Publish</span>
-            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
-                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
-                Message <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>],
-                Subject <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ALARM_SUBJECT&#39;</span>]
-            )
-    
-        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-            print(e)
-</code></pre></div><p> </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> zlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> boto3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botocore.exceptions <span style="color:#f92672">import</span> ClientError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lambda_handler</span>(event, context):
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> zlib<span style="color:#f92672">.</span>decompress(base64<span style="color:#f92672">.</span>b64decode(event[<span style="color:#e6db74">&#39;awslogs&#39;</span>][<span style="color:#e6db74">&#39;data&#39;</span>]), <span style="color:#ae81ff">16</span><span style="color:#f92672">+</span>zlib<span style="color:#f92672">.</span>MAX_WBITS)
+</span></span><span style="display:flex;"><span>    data_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(data)
+</span></span><span style="display:flex;"><span>    log_entire_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>    log_entire_len <span style="color:#f92672">=</span> len(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(log_entire_json)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(log_entire_len): 
+</span></span><span style="display:flex;"><span>        log_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(json<span style="color:#f92672">.</span>dumps(data_json[<span style="color:#e6db74">&#34;logEvents&#34;</span>][i], ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            sns <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;sns&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#SNS Publish</span>
+</span></span><span style="display:flex;"><span>            publishResponse <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>publish(
+</span></span><span style="display:flex;"><span>                TopicArn <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;SNS_TOPIC_ARN&#39;</span>],
+</span></span><span style="display:flex;"><span>                Message <span style="color:#f92672">=</span> log_json[<span style="color:#e6db74">&#39;message&#39;</span>],
+</span></span><span style="display:flex;"><span>                Subject <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ALARM_SUBJECT&#39;</span>]
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(e)
+</span></span></code></pre></div><p> </p>
 <p>(2) 環境変数をセット(Configration/設定タブ ー＞ 左ペインのEnvironment variables/環境変数)</p>
 <table>
 <thead>
@@ -394,7 +402,7 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 <li>サブスクリプション作成後の変更<br>
 サブスク作成後はマネコンからは直接変更できないが、CLIで編集可能。aws logs put-subscripution-filterで同じサブスク名を指定すれば設定が上書きされる。</li>
 </ol>
-<pre><code>$ aws logs put-subscription-filter ¥
+<pre tabindex="0"><code>$ aws logs put-subscription-filter ¥
 --log-group-name [your log group name] ¥
 --filter-name [your subscription filter name] ¥
 --filter-pattern [your filter pattern] ¥
@@ -406,10 +414,10 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 </ol>
 <p>フィルタパターンOR条件例<br>
 これを作成済みのサブスクに適用したい場合は、上記1.のCLIコマンドの<code>--filter-pattern</code>オプションの値として指定すればよい。</p>
-<pre><code>&quot;?error ?Error ?ERROR ?fail ?Fail ?FAIL&quot;
+<pre tabindex="0"><code>&#34;?error ?Error ?ERROR ?fail ?Fail ?FAIL&#34;
 </code></pre><p> </p>
 <p>除外キーワードをセットするのはちょっと面倒で、こんな風になる。以下の場合、メッセージが&quot;error event&quot;の場合は検知され、&ldquo;error test&quot;の場合は検知されない。</p>
-<pre><code>&quot;[( msg=¥&quot;*error*¥&quot; || msg=¥&quot;*Error*¥&quot; ) &amp;&amp; ( msg!=¥&quot;*test*¥&quot; &amp;&amp; msg!=¥&quot;*Test*¥&quot; &amp;&amp; msg!=¥&quot;*TEST*¥&quot; )]&quot;
+<pre tabindex="0"><code>&#34;[( msg=¥&#34;*error*¥&#34; || msg=¥&#34;*Error*¥&#34; ) &amp;&amp; ( msg!=¥&#34;*test*¥&#34; &amp;&amp; msg!=¥&#34;*Test*¥&#34; &amp;&amp; msg!=¥&#34;*TEST*¥&#34; )]&#34;
 </code></pre><p> </p>
 <p>Lambdaコード内で除外キーワード定義することも可能だが、検知キーワードと除外キーワードが別れるのもどうなんかと思うし、迷うところ。</p>
 <p> </p>
@@ -417,12 +425,12 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 <li>APIから実装する際の追加作業<br>
 サブスクリプションフィルタ作成時、マネコンだと自動で付与される権限がCLIでは付与されないため、事前にLambda側で権限を追加する。<code>--statement-id</code>は適当な文字列でいいと思われる。多分。</li>
 </ol>
-<pre><code>$ aws lambda add-permission ¥
+<pre tabindex="0"><code>$ aws lambda add-permission ¥
 --function-name [your function name] ¥
---statement-id &quot;your statement id&quot; ¥
---principal &quot;logs.ap-northeast-1.amazonaws.com&quot; ¥
---action &quot;lambda:InvokeFunction&quot; ¥
---source-arn &quot;arn:aws:logs:ap-northeast-1:[your account id]:log-group:*:*&quot; ¥
+--statement-id &#34;your statement id&#34; ¥
+--principal &#34;logs.ap-northeast-1.amazonaws.com&#34; ¥
+--action &#34;lambda:InvokeFunction&#34; ¥
+--source-arn &#34;arn:aws:logs:ap-northeast-1:[your account id]:log-group:*:*&#34; ¥
 --source-account [your account id]
 </code></pre><p> </p>
 <p>TerraformやCFnから作成する場合も同じ作業が必要になるはずだから要注意。</p>
@@ -451,6 +459,7 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
   </ul>
 
   </div>
+
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
@@ -462,12 +471,12 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/">
-    <span class="title">« Prev Page</span>
+    <span class="title">« Prev</span>
     <br>
     <span>「いてくれるだけでいい人」の理由</span>
   </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/">
-    <span class="title">Next Page »</span>
+    <span class="title">Next »</span>
     <br>
     <span>「ストックホルム症候群」の心理はヒトのデフォルト機能だった</span>
   </a>
@@ -476,27 +485,28 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
   </footer>
 </article>
     </main>
-    <footer class="footer">
-    <span>&copy; 2023 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
-    <button class="top-link" id="top-link" type="button" accesskey="g">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-            <path d="M12 6H0l6-6z" />
-        </svg>
-    </button>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
 </a>
 
 <script>
     let menu = document.getElementById('menu')
-    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-    menu.onscroll = function () {
-        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -550,12 +560,12 @@ print(<span style="color:#e6db74">&#39;Loading function&#39;</span>)
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
+        copybutton.innerHTML = 'copy';
 
         function copyingDone() {
-            copybutton.innerText = 'copied!';
+            copybutton.innerHTML = 'copied!';
             setTimeout(() => {
-                copybutton.innerText = 'copy';
+                copybutton.innerHTML = 'copy';
             }, 2000);
         }
 
