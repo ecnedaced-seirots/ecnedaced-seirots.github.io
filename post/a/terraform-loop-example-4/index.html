@@ -107,8 +107,8 @@ event_rule.tf
   "keywords": [
     "terraform", "AWS", "IaC", "EventBridge", "CodePipeline"
   ],
-  "articleBody": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \"aws_cloudwatch_event_rule\" \"pln-rule\" { for_each = var.events_param_list name = lookup(each.value, \"name\") description = \"Start the pipeline when detect CodeCommit repository state change.\" event_pattern = \u003c\u003c-EOT { \"source\": [\"aws.codecommit\"], \"detail-type\": [\"CodeCommit Repository State Change\"], \"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], \"detail\": { \"event\": [\"referenceCreated\", \"referenceUpdated\"], \"referenceType\": [\"branch\"], \"referenceName\" : [\"master\"] } } EOT } ######################################## # EventBridge target ######################################## resource \"aws_cloudwatch_event_target\" \"pln-rule\" { for_each = var.events_param_list rule = lookup(each.value, \"name\") arn = lookup(each.value, \"pipeline\") role_arn = var.events_role depends_on = [aws_cloudwatch_event_rule.pln-rule] } 当初event_patternのJSONはJSONファイルを外出しにしてファイル名指定でいくつもりだった。が、loop処理で回すのができなかった。いくつか試したのだが…。パターンとしては可変になるのがCodeCommitリポジトリ名だけなので、そこをloopで回せばいけるんじゃないかと思いヒアドキュメントでやったらできた。このような場合JSONファイルをルールの数だけ用意するより、ヒアドキュメントの方が意外と楽だ。\nJSON定義の一部。以下の\"repo_name\"に対して、変数リストから取り出したCodeCommitリポジトリ名が格納される。\n\"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], loop処理が参照する変数リストは以下の通り。\nrule.auto.tfvars\n################### # rule vars ################### events_param_list = { param1 = { name = \"cicd-event001\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001\" repo_name = \"repo001\" } param2 = { name = \"cicd-event002\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002\" repo_name = \"repo002\" } param3 = { name = \"cicd-event003\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003\" repo_name = \"repo003\" } } ################### # Events role ################### events_role = \"arn:aws:iam::012345678910:role/codepipeline-exe-role\" 上記ルールだけapplyした結果、成功。CICDリソース作成用のtfコードも含めて実行した結果も、成功。\nちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。\n…ということで、ここでは自動生成ではなく別途ルールを作成したけれども、そこまでこだわらないのであれば自動生成でもいいだろう。\n",
-  "wordCount" : "154",
+  "articleBody": "過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。\n以下tfコード本体に、ルールとターゲットを作成する処理を書く。\nevent_rule.tf\n######################################## # EventBridge rule ######################################## resource \"aws_cloudwatch_event_rule\" \"pln-rule\" { for_each = var.events_param_list name = lookup(each.value, \"name\") description = \"Start the pipeline when detect CodeCommit repository state change.\" event_pattern = \u003c\u003c-EOT { \"source\": [\"aws.codecommit\"], \"detail-type\": [\"CodeCommit Repository State Change\"], \"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], \"detail\": { \"event\": [\"referenceCreated\", \"referenceUpdated\"], \"referenceType\": [\"branch\"], \"referenceName\" : [\"master\"] } } EOT } ######################################## # EventBridge target ######################################## resource \"aws_cloudwatch_event_target\" \"pln-rule\" { for_each = var.events_param_list rule = lookup(each.value, \"name\") arn = lookup(each.value, \"pipeline\") role_arn = var.events_role depends_on = [aws_cloudwatch_event_rule.pln-rule] } 当初event_patternのJSONはJSONファイルを外出しにしてファイル名指定でいくつもりだった。が、loop処理で回すのができなかった。いくつか試したのだが…。パターンとしては可変になるのがCodeCommitリポジトリ名だけなので、そこをloopで回せばいけるんじゃないかと思いヒアドキュメントでやったらできた。このような場合JSONファイルをルールの数だけ用意するより、ヒアドキュメントの方が意外と楽だ。\nJSON定義の一部。以下の\"repo_name\"に対して、変数リストから取り出したCodeCommitリポジトリ名が格納される。\n\"resources\": [\"arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, \"repo_name\")}\"], loop処理が参照する変数リストは以下の通り。\nrule.auto.tfvars\n################### # rule vars ################### events_param_list = { param1 = { name = \"cicd-event001\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline001\" repo_name = \"repo001\" } param2 = { name = \"cicd-event002\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline002\" repo_name = \"repo002\" } param3 = { name = \"cicd-event003\" pipeline = \"arn:aws:codepipeline:ap-northeast-1:012345678910:pipeline003\" repo_name = \"repo003\" } } ################### # Events role ################### events_role = \"arn:aws:iam::012345678910:role/codepipeline-exe-role\" 上記ルールだけapplyした結果、成功。CICDリソース作成用のtfコードも含めて実行した結果も、成功。\nちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。\n…ということで、ここでは自動生成ではなく別途ルールを作成したけれども、そこまでこだわらないのであれば自動生成でもいいだろう。\nおまけ\nCodePipelineより汎用的によく利用されるであろう、CloudWatch アラームの例。\nevent_pattern=\u003c\u003c-EOT { \"source\":[\"aws.cloudwatch\"], \"detail-type:[\"CloudWatch Alarm State Change\"], \"resources\":[{ \"prefix\":\"arn:aws:cloudwatch:ap-northeast-1:${var.account.id}:alarm${lookup(each.value, \"alarm_name\")}\"}], \"detail\":{ \"state\":{ \"value\":[\"ALARM\"] } } } EOT ",
+  "wordCount" : "174",
   "inLanguage": "en",
   "datePublished": "2021-12-11T21:00:00+09:00",
   "dateModified": "2021-12-11T21:00:00+09:00",
@@ -281,8 +281,25 @@ events_role = &#34;arn:aws:iam::012345678910:role/codepipeline-exe-role&#34;
 <p>ちなみにイベントルールを別途作成しない場合、パイプラインに紐付くルールが自動で生成される。ルールを実行するためのIAMロールも、ルールと1:1で個別に自動生成される。親切と言えば親切だが、そんなにボコボコ作られてもなー、と思った。このIAMロールはリソースとして指定したCodePipelineを実行するだけだから、リソースを* にすればひとつで事足りる。各アイテムの名称も管理下におきたい。</p>
 <p>&hellip;ということで、ここでは自動生成ではなく別途ルールを作成したけれども、そこまでこだわらないのであれば自動生成でもいいだろう。</p>
 <p> </p>
-<p><img loading="lazy" src="/img/a/random_001.jpg" alt="Random"  />
+<p>おまけ<br>
+CodePipelineより汎用的によく利用されるであろう、CloudWatch アラームの例。</p>
+<pre tabindex="0"><code>event_pattern=&lt;&lt;-EOT
+  {
+    &#34;source&#34;:[&#34;aws.cloudwatch&#34;],
+    &#34;detail-type:[&#34;CloudWatch Alarm State Change&#34;],
+    &#34;resources&#34;:[{
+      &#34;prefix&#34;:&#34;arn:aws:cloudwatch:ap-northeast-1:${var.account.id}:alarm${lookup(each.value, &#34;alarm_name&#34;)}&#34;}],
+    &#34;detail&#34;:{
+      &#34;state&#34;:{
+        &#34;value&#34;:[&#34;ALARM&#34;]
+      }
+    }
+  }
+EOT
+</code></pre><p> </p>
+<p><img loading="lazy" src="/img/a/sake_bar_ecute.JPG" alt="ecute秋葉原"  />
 </p>
+<p> </p>
 
 
     
