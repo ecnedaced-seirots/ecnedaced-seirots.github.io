@@ -6,8 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 03 Jan 2024 15:48:23 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 19 Mar 2024 20:31:33 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>リモートデスクトップのオーディオ設定</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/</link>
+      <pubDate>Tue, 19 Mar 2024 20:31:33 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/</guid>
+      <description>&lt;p&gt;テレワーク、リモートワーク、在宅ワーククソ喰らえ的な立場ではあるが&amp;hellip;.。&lt;br&gt;
+リモートデスクトップ上のTeams会議で音声を有効にする設定なんぞ。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>異なるアカウント間のS3レプリケーション設定</title>
       <link>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</link>

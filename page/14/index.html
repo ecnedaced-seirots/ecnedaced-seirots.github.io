@@ -148,6 +148,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Quotes - タランティーノ小説より(1)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Some say luck is when preparation meets opportunity.
+- Once Upon a Time in Hollywood&#34;の小説版 (Quentin Tarantino) より。
+わかる、その発想好きだ。リアルワールドにおいてシャロン・テートを斬殺したチャールズ・マンソンのモノローグとして登場する言葉ってのがアレだけど…
+個人的な経験からしても、preparation（準備）はopportunity（好機）を引き寄せるのは実感として理解できる。だから “preparation gets opportunity” とも言えるんじゃないか？</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-11-27 13:00:00 +0900 JST'>November 27, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Quotes - タランティーノ小説より(1)" href="https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Python - Jinja2テンプレートで連続データを処理したい
     </h2>
   </header>
@@ -249,22 +264,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </div>
   <footer class="entry-footer"><span title='2021-11-19 21:00:00 +0900 JST'>November 19, 2021</span></footer>
   <a class="entry-link" aria-label="post link to 英語メモ - into the bargain" href="https://ecnedaced-seirots.github.io/post/a/english-into-the-bargain/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
-lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-14 23:00:00 +0900 JST'>November 14, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
