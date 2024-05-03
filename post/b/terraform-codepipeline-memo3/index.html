@@ -98,8 +98,8 @@
   "keywords": [
     "terraform", "CodePipeline", "BCN"
   ],
-  "articleBody": "TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。\n本件については以下の過去記事にも書いたけれども、改めて判明したことがあり。PollForSourceChanges = “false” or “true\"により、トリガーとなるEventBridgeルール（以降EBルール）がAWSマネージドにより自動作成されるか否かという問題なのだが。\nTerraformでCodePipeline - PollForSourceChangesの注意\nマネージド側でEBルールが自動生成されるかどうかは、状況により異なる。\n(1) 初回apply時でflase -＞ EBルールが自動生成される\n(2) (1)の後に、新規パイプライン追加時 -＞ 新規追加リソースに対するEBルールは自動生成されない\n(3) 元はtrueだったのをfalseに変更 -＞ EBルールは自動生成されない\n検証結果だとこうなったが仕様としてどうなのかはっきりさせたくてサポートに聞いてみたが、明確な回答は得られなかった。つまりやってる側も知らん、と。\nマネコンからパイプライン作るケースとCLIでも挙動が異なる、というのは教えてもらったが。CLIとTerraformが利用するAPIでは若干異なるかもしれない。\nちなみに(1)で自動生成された場合、関連するIAMリソースも同時に自動生成される。EBルールを実行用のIAMロールとそのポリシーだ。（EBルールに対して1:1:1で都度作成される）\n東京リージョンの場合\nIAMロール名規則：cwe-role-ap-northeast-1-[パイプライン名]\nIAMポリシー名規則：start-pipeline-execution-ap-northeast-1-[パイプライン名]\n(1)のケースでは、「EBルール + IAMロール + IAMポリシー」のセットが自動生成されるが、独自にEBルールを作成してこれをトリガーとしたい場合これらのリソースは完全に不要のため、手動で削除する。\nちなみに独自EBルールの場合、これに紐づくIAMロール/ポリシーはパイプライン毎に用意する必要はなく、ひとつでいい。（対応リソースは*で指定）\nまったくもって重箱の隅的小ネタではあるが、Terraformで環境構築 ＆ 運用していくには、いろんなことを考慮しないといけなんだなぁ、と改めてしみじみするなど。\n",
-  "wordCount" : "37",
+  "articleBody": "TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。\n本件については以下の過去記事にも書いたけれども、改めて判明したことがあり。PollForSourceChanges = “false” or “true\"により、トリガーとなるEventBridgeルール（以降EBルール）がAWSマネージドにより自動作成されるか否かという問題なのだが。\nTerraformでCodePipeline - PollForSourceChangesの注意\nマネージド側でEBルールが自動生成されるかどうかは、状況により異なる。\n(1) 初回apply時でflase -＞ EBルールが自動生成される\n(2) (1)の後に、新規パイプライン追加時 -＞ 新規追加リソースに対するEBルールは自動生成されない\n(3) 元はtrueだったのをfalseに変更 -＞ EBルールは自動生成されない\n検証結果だとこうなったが仕様としてどうなのかはっきりさせたくてサポートに聞いてみたが、明確な回答は得られなかった。つまりやってる側も知らん、と。\nマネコンからパイプライン作るケースとCLIでも挙動が異なる、というのは教えてもらったが。CLIとTerraformが利用するAPIでは若干異なるかもしれない。\nちなみに(1)で自動生成された場合、関連するIAMリソースも同時に自動生成される。EBルールを実行用のIAMロールとそのポリシーだ。（EBルールに対して1:1:1で都度作成される）\n東京リージョンの場合\nIAMロール名規則：cwe-role-ap-northeast-1-[パイプライン名]\nIAMポリシー名規則：start-pipeline-execution-ap-northeast-1-[パイプライン名]\n(1)のケースでは、「EBルール + IAMロール + IAMポリシー」のセットが自動生成されるが、独自にEBルールを作成してこれをトリガーとしたい場合これらのリソースは完全に不要のため、手動で削除する。\nちなみに独自EBルールの場合、これに紐づくIAMロール/ポリシーはパイプライン毎に用意する必要はなく、ひとつでいい。（対応リソースは*で指定）\nまったくもって重箱の隅的小ネタではあるが、Terraformで環境構築 ＆ 運用していくには、いろんなことを考慮しないといけないな、と改めてしみじみするなど。\n追記（2024年5月）\nPollForSourceChangesパラメータは公式ドキュメントに記載がなく、設定してもエラーになるという記事を見つけた。代わりにDetectChangesで期待値になったと。\nTerraformでCodepipelineの検出オプションを変更する\n確かに現時点でTerraform公式にPollForSourceChangesの記載がないんだけどDetectChangesも記載がない。 Resource: aws_codepipeline\n当該パラメータはconfiguration内で定義する。\nconfiguration - (Optional) A map of the action declaration’s configuration. Configurations options for action types and providers can be found in the Pipeline Structure Reference and Action Structure Reference documentation.\n先の記事にある通り、以下のリファレンスにはPollForSourceChangesの記載あり。DetectChangesの記載なし。\nCodePipeline pipeline structure reference\nTerraform公式とAWS間でパラメータがアンマッチなのかもしれない。ま、もういいや。\n",
+  "wordCount" : "80",
   "inLanguage": "en",
   "datePublished": "2022-05-02T11:44:04+09:00",
   "dateModified": "2022-05-02T11:44:04+09:00",
@@ -197,7 +197,7 @@
   <div class="post-content"><p>TerraformでCodePipeline作成時のオプション、PollForSourceChangesの注意点を深堀り。</p>
 <p> </p>
 <p>本件については以下の過去記事にも書いたけれども、改めて判明したことがあり。PollForSourceChanges = &ldquo;false&rdquo; or &ldquo;true&quot;により、トリガーとなるEventBridgeルール（以降EBルール）がAWSマネージドにより自動作成されるか否かという問題なのだが。</p>
-<p><a href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/">TerraformでCodePipeline - PollForSourceChangesの注意</a></p>
+<p><a href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/">TerraformでCodePipeline - PollForSourceChangesの注意</a></p>
 <p> </p>
 <p>マネージド側でEBルールが自動生成されるかどうかは、状況により異なる。</p>
 <p>(1) 初回apply時でflase -＞ EBルールが自動生成される<br>
@@ -214,7 +214,23 @@ IAMポリシー名規則：start-pipeline-execution-ap-northeast-1-[パイプラ
 <p> </p>
 <p>(1)のケースでは、「EBルール + IAMロール + IAMポリシー」のセットが自動生成されるが、独自にEBルールを作成してこれをトリガーとしたい場合これらのリソースは完全に不要のため、手動で削除する。</p>
 <p>ちなみに独自EBルールの場合、これに紐づくIAMロール/ポリシーはパイプライン毎に用意する必要はなく、ひとつでいい。（対応リソースは*で指定）</p>
-<p>まったくもって重箱の隅的小ネタではあるが、Terraformで環境構築 ＆ 運用していくには、いろんなことを考慮しないといけなんだなぁ、と改めてしみじみするなど。</p>
+<p>まったくもって重箱の隅的小ネタではあるが、Terraformで環境構築 ＆ 運用していくには、いろんなことを考慮しないといけないな、と改めてしみじみするなど。</p>
+<p> </p>
+<p><strong>追記（2024年5月）</strong><br>
+<code>PollForSourceChanges</code>パラメータは公式ドキュメントに記載がなく、設定してもエラーになるという記事を見つけた。代わりに<code>DetectChanges</code>で期待値になったと。<br>
+<a href="https://qiita.com/y-suzuki-biz/items/d78f354f6e20a5a087de">TerraformでCodepipelineの検出オプションを変更する</a></p>
+<p> </p>
+<p>確かに現時点でTerraform公式に<code>PollForSourceChanges</code>の記載がないんだけど<code>DetectChanges</code>も記載がない。
+<a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codepipeline">Resource: aws_codepipeline</a></p>
+<p> </p>
+<p>当該パラメータはconfiguration内で定義する。</p>
+<blockquote>
+<p>configuration - (Optional) A map of the action declaration&rsquo;s configuration. Configurations options for action types and providers can be found in the Pipeline Structure Reference and Action Structure Reference documentation.</p>
+</blockquote>
+<p>先の記事にある通り、以下のリファレンスには<code>PollForSourceChanges</code>の記載あり。<code>DetectChanges</code>の記載なし。<br>
+<a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html#action-requirements">CodePipeline pipeline structure reference</a></p>
+<p> </p>
+<p>Terraform公式とAWS間でパラメータがアンマッチなのかもしれない。ま、もういいや。</p>
 <p> </p>
 <p> </p>
 <p><img loading="lazy" src="/img/b/cafe_at_museu_maririm2.JPG" alt="BCN"  />
