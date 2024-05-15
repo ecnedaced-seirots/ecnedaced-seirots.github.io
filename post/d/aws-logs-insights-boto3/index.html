@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AWS Logs InsightsをCLIまたはPython(boto3)から実行 | Go Buddy Go</title>
+<meta name="keywords" content="AWS, aws cli, clooudwatchlogs, python">
+<meta name="description" content=" 
+CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AWS Logs InsightsをCLIまたはPython(boto3)から実行" />
+<meta property="og:description" content=" 
+CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-05-15T22:33:31+09:00" />
+<meta property="article:modified_time" content="2024-05-15T22:33:31+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS Logs InsightsをCLIまたはPython(boto3)から実行"/>
+<meta name="twitter:description" content=" 
+CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "AWS Logs InsightsをCLIまたはPython(boto3)から実行",
+      "item": "https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AWS Logs InsightsをCLIまたはPython(boto3)から実行",
+  "name": "AWS Logs InsightsをCLIまたはPython(boto3)から実行",
+  "description": " CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。\n",
+  "keywords": [
+    "AWS", "aws cli", "clooudwatchlogs", "python"
+  ],
+  "articleBody": " CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。\n（この記事は2021年10月に他のブログで書いた記事です）\n結論を先に言ってしまうと、CLIで取得可能な出力は限定的な様子。このためバリエーションとなるクエリを投げるにはSDKから行う必要がありそうだ。\nLogs InsightsのクエリをCLIで実行する際は、最初にクエリIDを取得し、そのIDを指定して結果を取得する2段階となる。\n参考\nAWS CLI - logs\nAmazon CloudWatch Logs InsightsをCLIから使ってみた #reinvent\nクエリID取得。ロググループとスキャン対象とする時間範囲をUNIXタイムスタンプで指定する。以下は単純に指定のロググループ・時刻範囲から10レコードを降順で取得するだけのクエリ。 $ aws logs start-query \\ --log-group-name '/ec2/var/log/messages' \\ --start-time 1629558000 \\ --end-time 1629644399 \\ --query-string 'fields @timestamp, @message | sort @timestamp desc | limit 10' 以下のようなクエリIDが返される。後続のコマンドでこのIDを指定する。\n{ \"queryId\": \"8e1d5b49-b83b-4b84-a32f-4aadf8ce3d11\" } クエリ結果を取得する。 $ aws logs get-query-results \\ --query-id '8e1d5b49-b83b-4b84-a32f-4aadf8ce3d11' すると実行結果として、JSON形式でメッセージやタイムスタンプ、メタデータが出力される。ちなみにここで出力される項目「@ptr」はログイベントのメタデータとなるもの。get-log-record実行時はこの値を指定する。\nここまでは簡単にできた。が、冒頭に書いたように、クエリを若干アレンジすると期待値にならないのだ。以下はメッセージに「“count_number_is\"を含む」というフィルタをかけた例。（面倒だからIDを変数に格納）\n$ query=`aws logs start-query \\ --log-group-name '/ec2/var/log/messages' \\ --start-time 1629558000 \\ --end-time 1629644399 \\ --output text \\ --query-string 'fileds @timestamp, @message | filter @message like /count_number_is/ | sort @timestamp desc' $ aws logs get-query-results --query-id $query 出力結果はこうなる。同じクエリをマネジメントコンソールから投げれば値が得られるのに、CLIでは結果が空になってしまう。ちなみに先のフィルタなしクエリでは\"recordsMatched”: 221.0,だった。今度は0。recordsScanned,bytesScannedの値は同じ。\n{ \"results\": [], \"statistics\": { \"recordsMatched\": 0.0, \"recordsScanned\": 1404.0, \"bytesScanned\": 167578.0 }, \"status\": \"Complete\" } ドキュメントを見ても制約らしきことは書かれていないが、他で検索しても適当な情報が見つからないのでPython SDKで試してみた。rubyでカスタムクエリを実行している例があったからきっとできるだろう、と。\n以下のクエリは最初のCLIでの成功例とまったく同じものである。“response\"の出力結果は当然期待値となる。（インタラクティブモードで実行）\nimport boto3 from datetime import datetime, timedelta import time client = boto3.client('logs') query = \"fields @timestamp, @message | sort @timestamp desc | limit 10\" log_group = '/ec2/var/log/messages' start_query_response = client.start_query( logGroupName=log_group, startTime=1629558000, endTime=1629644399, queryString=query, ) query_id = start_query_response['queryId'] response = None while response == None or response['status'] == 'Running': print('Waiting for query to complete ...') time.sleep(1) response = client.get_query_results( queryId=query_id ) print(response) 次にフィルタを追加してみる。queryを以下のように変更。\nquery = \"fields @timestamp, @message | sort @timestamp desc | filter @message like /count_number_is/\" すると、クエリのresponseは期待値になった！以下はサマリの出力だが、92レコードマッチという値がとれている。マネジメントコンソールでも同じクエリを投げてみると、同じく92レコードだった。この値だけ抜き出したい場合は別処理から抽出すればいい。\n'statistics': {'recordsMatched': 92.0, 'recordsScanned': 1404.0, 'bytesScanned': 167578.0} というわけでSDKなら自由にクエリを構成できた。CLIでクエリのバリエーションが効かないのは謎のままであるが、こういうのを運用する場合はどうせLambdaでやるわけだから今今無理に追求しないでおく。\n参考\nAPI reference(get_query_results)\nPythonコードは以下参考\nHow to query cloudwatch logs using boto3 in python\nGo SDKの例\nGoを使ってCloudWatch Logs Insightsでクエリを実行する\nRuby SDKの例\nCloudWatch Logs Insightsで始める簡単！！ログ集計\n",
+  "wordCount" : "225",
+  "inLanguage": "en",
+  "datePublished": "2024-05-15T22:33:31+09:00",
+  "dateModified": "2024-05-15T22:33:31+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      AWS Logs InsightsをCLIまたはPython(boto3)から実行
+    </h1>
+    <div class="post-meta"><span title='2024-05-15 22:33:31 +0900 JST'>May 15, 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。</p>
+<p>（この記事は2021年10月に他のブログで書いた記事です）</p>
+<p> </p>
+<p>結論を先に言ってしまうと、CLIで取得可能な出力は限定的な様子。このためバリエーションとなるクエリを投げるにはSDKから行う必要がありそうだ。</p>
+<p> </p>
+<!-- raw HTML omitted -->
+<p>Logs InsightsのクエリをCLIで実行する際は、最初にクエリIDを取得し、そのIDを指定して結果を取得する2段階となる。</p>
+<p>参考<br>
+<a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html%22">AWS CLI - logs</a><br>
+<a href="https://dev.classmethod.jp/articles/cloudwatch-logs-insights-cli/%22">Amazon CloudWatch Logs InsightsをCLIから使ってみた #reinvent</a></p>
+<p> </p>
+<ol>
+<li>クエリID取得。ロググループとスキャン対象とする時間範囲をUNIXタイムスタンプで指定する。以下は単純に指定のロググループ・時刻範囲から10レコードを降順で取得するだけのクエリ。</li>
+</ol>
+<pre tabindex="0"><code>$ aws logs start-query \
+--log-group-name &#39;/ec2/var/log/messages&#39; \
+--start-time 1629558000 \
+--end-time 1629644399 \
+--query-string &#39;fields @timestamp, @message
+| sort @timestamp desc
+| limit 10&#39;
+</code></pre><p> </p>
+<p>以下のようなクエリIDが返される。後続のコマンドでこのIDを指定する。</p>
+<pre tabindex="0"><code>{
+    &#34;queryId&#34;: &#34;8e1d5b49-b83b-4b84-a32f-4aadf8ce3d11&#34;
+}
+</code></pre><p> </p>
+<ol start="2">
+<li>クエリ結果を取得する。</li>
+</ol>
+<pre tabindex="0"><code>$ aws logs get-query-results \
+--query-id &#39;8e1d5b49-b83b-4b84-a32f-4aadf8ce3d11&#39;
+</code></pre><p> </p>
+<p>すると実行結果として、JSON形式でメッセージやタイムスタンプ、メタデータが出力される。ちなみにここで出力される項目「@ptr」はログイベントのメタデータとなるもの。get-log-record実行時はこの値を指定する。</p>
+<p> </p>
+<p>ここまでは簡単にできた。が、冒頭に書いたように、クエリを若干アレンジすると期待値にならないのだ。以下はメッセージに「&ldquo;count_number_is&quot;を含む」というフィルタをかけた例。（面倒だからIDを変数に格納）</p>
+<p> </p>
+<pre tabindex="0"><code>$ query=`aws logs start-query \
+--log-group-name &#39;/ec2/var/log/messages&#39; \
+--start-time 1629558000 \
+--end-time 1629644399 \
+--output text \
+--query-string &#39;fileds @timestamp, @message
+| filter @message like /count_number_is/
+| sort @timestamp desc&#39;
+</code></pre><p> </p>
+<pre tabindex="0"><code>$ aws logs get-query-results --query-id $query
+</code></pre><p> </p>
+<p>出力結果はこうなる。同じクエリをマネジメントコンソールから投げれば値が得られるのに、CLIでは結果が空になってしまう。ちなみに先のフィルタなしクエリでは&quot;recordsMatched&rdquo;: 221.0,だった。今度は0。recordsScanned,bytesScannedの値は同じ。</p>
+<pre tabindex="0"><code>{
+    &#34;results&#34;: [],
+    &#34;statistics&#34;: {
+        &#34;recordsMatched&#34;: 0.0,
+        &#34;recordsScanned&#34;: 1404.0,
+        &#34;bytesScanned&#34;: 167578.0
+    },
+    &#34;status&#34;: &#34;Complete&#34;
+}
+</code></pre><p> </p>
+<p>ドキュメントを見ても制約らしきことは書かれていないが、他で検索しても適当な情報が見つからないのでPython SDKで試してみた。rubyでカスタムクエリを実行している例があったからきっとできるだろう、と。</p>
+<p> </p>
+<!-- raw HTML omitted -->
+<p>以下のクエリは最初のCLIでの成功例とまったく同じものである。&ldquo;response&quot;の出力結果は当然期待値となる。（インタラクティブモードで実行）</p>
+<pre tabindex="0"><code>import boto3
+from datetime import datetime, timedelta
+import time
+
+client = boto3.client(&#39;logs&#39;)
+
+query = &#34;fields @timestamp, @message | sort @timestamp desc | limit 10&#34;
+log_group = &#39;/ec2/var/log/messages&#39;
+
+start_query_response = client.start_query(
+    logGroupName=log_group,
+    startTime=1629558000,
+    endTime=1629644399,
+    queryString=query,
+)
+
+query_id = start_query_response[&#39;queryId&#39;]
+
+response = None
+
+while response == None or response[&#39;status&#39;] == &#39;Running&#39;:
+    print(&#39;Waiting for query to complete ...&#39;)
+    time.sleep(1)
+    response = client.get_query_results(
+        queryId=query_id
+    )
+
+print(response)
+</code></pre><p> </p>
+<p>次にフィルタを追加してみる。queryを以下のように変更。</p>
+<pre tabindex="0"><code>query = &#34;fields @timestamp, @message | sort @timestamp desc | filter @message like /count_number_is/&#34;
+</code></pre><p> </p>
+<p>すると、クエリのresponseは期待値になった！以下はサマリの出力だが、92レコードマッチという値がとれている。マネジメントコンソールでも同じクエリを投げてみると、同じく92レコードだった。この値だけ抜き出したい場合は別処理から抽出すればいい。</p>
+<pre tabindex="0"><code>&#39;statistics&#39;: {&#39;recordsMatched&#39;: 92.0, &#39;recordsScanned&#39;: 1404.0, &#39;bytesScanned&#39;: 167578.0}
+</code></pre><p> </p>
+<p>というわけでSDKなら自由にクエリを構成できた。CLIでクエリのバリエーションが効かないのは謎のままであるが、こういうのを運用する場合はどうせLambdaでやるわけだから今今無理に追求しないでおく。</p>
+<p> </p>
+<p>参考<br>
+<a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/logs.html">API reference(get_query_results)</a></p>
+<p>Pythonコードは以下参考<br>
+<a href="https://stackoverflow.com/questions/59240107/how-to-query-cloudwatch-logs-using-boto3-in-python%22">How to query cloudwatch logs using boto3 in python</a></p>
+<p>Go SDKの例<br>
+<a href="https://techdo.mediado.jp/entry/2021/08/20/110000%22">Goを使ってCloudWatch Logs Insightsでクエリを実行する</a></p>
+<p>Ruby SDKの例<br>
+<a href="https://tech.ga-tech.co.jp/entry/2019/04/cloudwatch-logs-insights%22">CloudWatch Logs Insightsで始める簡単！！ログ集計</a></p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/b/delete-aws-config/">AWS ConfigをCLIから削除する</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
+    
+      <li><a href="/post/a/awscli-pager/">AWS CLIのページャを無効化する</a></li>
+    
+      <li><a href="/post/d/s3-cross-account-replication/">異なるアカウント間のS3レプリケーション設定</a></li>
+    
+      <li><a href="/post/c/rds-connection-check-from-ec2/">EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws-cli/">aws cli</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/">clooudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/">
+    <span class="title">Next »</span>
+    <br>
+    <span>リモートデスクトップのオーディオ設定</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

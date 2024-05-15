@@ -153,6 +153,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">「愛と幻想のファシズム」より(1)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>何日か前に読了した、村上龍著「愛と幻想のファシズム」より。
+「それで、人間というのは、他の動物でもそうだけど、嫌いなことをやり続けると拒絶反応を起こすんだ、病気になるんだよ、トウジお前IBMのセールスマンになれるか？」
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-16 22:00:00 +0900 JST'>December 16, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to 「愛と幻想のファシズム」より(1)" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-1/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Non title
     </h2>
   </header>
@@ -241,25 +255,6 @@ work_dir ├── cicd.auto.tfvars ├── cicd.tf ├── config.tf #初�
   </div>
   <footer class="entry-footer"><span title='2021-12-05 16:00:00 +0900 JST'>December 5, 2021</span></footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理の応用編" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Terraformのtfvarsファイルを自動生成する
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
-Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
-実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
-work_dir/ ├── codecommit.auto.tfvars * ├── codecommit.tf ├── config.tf ├── terraform.tfvars ├── variables.tf └── vpc.tf これとは別に、tfvars自動生成作業用ディレクトリの作業前はこの状態。以下3つのファイルを用意する。codecommit.tmplはテンプレートとなる。このファイル名はスクリプトから呼び出すので名称に注意。対象のAWSリソースによって変えるが、tfファイルの名称に合わせておけばよい。
-script_dir/ ├── codecommit.tmpl ├── create_vars.py └── data.csv codecommit.tmpl
-param{{ num }} = { repository_name = &#34;{{ repo_name }}&#34; description = &#34;{{ des }}&#34; } data.csv （今回の例ではヘッダーありの前提）
-num,repo_name,des 1,&#34;my-repo001&#34;,&#34;my-repo001の説明&#34; 2,&#34;my-repo002&#34;,&#34;my-repo002の説明&#34; 3,&#34;my-repo003&#34;,&#34;my-repo003の説明&#34; create_vars.py
-import sys import pandas as pd from jinja2 import Environment, FileSystemLoader def main(): # テンプレート読み込み env = Environment(loader=FileSystemLoader(&#39;....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-28 17:00:00 +0900 JST'>November 28, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to Terraformのtfvarsファイルを自動生成する" href="https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

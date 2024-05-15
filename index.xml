@@ -6,8 +6,16 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 19 Mar 2024 20:31:33 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 15 May 2024 22:33:31 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS Logs InsightsをCLIまたはPython(boto3)から実行</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</link>
+      <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>リモートデスクトップのオーディオ設定</title>
       <link>https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/</link>
