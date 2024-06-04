@@ -98,8 +98,8 @@
   "keywords": [
     "monitoring", "amazon sns", "lambda", "eventbridge", "AWS", "AWS Config"
   ],
-  "articleBody": "過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。\n（10月頃から金太郎飴のように類似の検証を重ね重ねやっていて脳内パズル状態甚だしいが、やらないことには整理ができないもんだから）\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)\nEventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。\n今回作成したリソース名称。\nアイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 config-event-function eventルール config-change-notify-rule eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。\n{ \"source\": [\"aws.config\"], \"detail-type\": [\"Config Configuration Item Change\"] } イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。\nimport json import boto3 import os print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): type = event['detail-type'] Msg = json.dumps(event) sub = '[AWS Config]' + str(type) client = boto3.client('sns') response = client.publish( TopicArn = sns_arn, Message = Msg, MessageStructure = 'context', Subject = sub ) return EC2インスタンスにつけたIAMロールをデタッチしてイベントルールが検知すると、JSONデータが丸ごと送信された。これをJSONファイルとして保存し、解析する。\n\u003e\u003e\u003e event_file = open('config_sample.json','r') \u003e\u003e\u003e type(event_file) ",
-  "wordCount" : "658",
+  "articleBody": "過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。\n（10月頃から金太郎飴のように類似の検証を重ね重ねやっていて脳内パズル状態甚だしいが、やらないことには整理ができない…）\nAWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)\nEventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。\n今回作成したリソース名称。\nアイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 config-event-function eventルール config-change-notify-rule eventルール(EventBridge)は、当初イベント内容を絞って試したが検知されなかったのでとりあえずAnyにした。\n{ \"source\": [\"aws.config\"], \"detail-type\": [\"Config Configuration Item Change\"] } イベント内容を確認するため、最初は以下のLambdaコードでメールを飛ばしてみる。SNSトピックは環境変数で指定。\nimport json import boto3 import os print('Loading function') sns_arn = os.environ['SNS_TOPIC_ARN'] def lambda_handler(event, context): type = event['detail-type'] Msg = json.dumps(event) sub = '[AWS Config]' + str(type) client = boto3.client('sns') response = client.publish( TopicArn = sns_arn, Message = Msg, MessageStructure = 'context', Subject = sub ) return EC2インスタンスにつけたIAMロールをデタッチしてイベントルールが検知すると、JSONデータが丸ごと送信された。これをJSONファイルとして保存し、解析する。\n\u003e\u003e\u003e event_file = open('config_sample.json','r') \u003e\u003e\u003e type(event_file) ",
+  "wordCount" : "661",
   "inLanguage": "en",
   "datePublished": "2021-12-26T16:00:00+09:00",
   "dateModified": "2021-12-26T16:00:00+09:00",
@@ -195,7 +195,7 @@
 </div>
   </header> 
   <div class="post-content"><p>過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。</p>
-<p>（10月頃から金太郎飴のように類似の検証を重ね重ねやっていて脳内パズル状態甚だしいが、やらないことには整理ができないもんだから）</p>
+<p>（10月頃から金太郎飴のように類似の検証を重ね重ねやっていて脳内パズル状態甚だしいが、やらないことには整理ができない&hellip;）</p>
 <p><a href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)</a></p>
 <p> </p>
 <p>EventBridgeのルールで変更を検知したいが、ConfigとEventBridgeのルールはそれぞれ独立している様子で、仕組みが今いち不明。基本的にConfigで設定するルールはコンプライアンスに沿っているかどうかをチェックするためのものであり、変更を検知する目的とは意味合いが違うみたいだ。これまでその辺もよくわかっていなかった。実を言うと今もよくわかってはいないが、何はともあれConfigを用意して試す。Configのルールはマネージドのルールから「ec2-instance-profile-attached」をつけておいた。S3バケット、IAMロールは自動で生成させた。</p>
@@ -384,6 +384,10 @@ Configの「変更内容」にあたるJSONは、発生したイベントによ�
 <a href="https://qiita.com/tomoki_s/items/0d3b249da6ce9cbafdeb">AWS Configの通知内容をLambdaで整形</a><br>
 <a href="https://qiita.com/t_tsuchida/items/a024664108b03a11e62f">【AWS config】設定変更時のみ独自の形式で通知を送る</a><br>
 <a href="https://qiita.com/kempe/items/52ff78b65fc04209f734">AWS Config Rules カスタムルールを作成してみよう</a></p>
+<p> </p>
+<p>追記（2024年6月）<br>
+タイムゾーンの変換処理は、Python3.9以降はZoneinfoモジュールを利用するとよい。<br>
+<a href="https://zenn.dev/shimo_s3/articles/e15fac5b62af48">Lambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん</a></p>
 <p> </p>
 <p><img loading="lazy" src="/img/a/jet_0002.JPG" alt="Airplane"  />
 
