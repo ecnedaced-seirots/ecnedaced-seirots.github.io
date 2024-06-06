@@ -3,7 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ecnedaced-seirots.github.io/</loc>
-    <lastmod>2024-05-15T22:33:31+09:00</lastmod>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/categories/k8s/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/kubernetes/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/post/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
+  </url><url>
+    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
+    <lastmod>2024-06-06T23:08:45+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/aws/</loc>
     <lastmod>2024-05-15T22:33:31+09:00</lastmod>
@@ -14,22 +32,13 @@
     <loc>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</loc>
     <lastmod>2024-05-15T22:33:31+09:00</lastmod>
   </url><url>
-    <loc>https://ecnedaced-seirots.github.io/categories/</loc>
-    <lastmod>2024-05-15T22:33:31+09:00</lastmod>
-  </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/</loc>
-    <lastmod>2024-05-15T22:33:31+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/post/</loc>
     <lastmod>2024-05-15T22:33:31+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/python/</loc>
     <lastmod>2024-05-15T22:33:31+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/categories/python/</loc>
-    <lastmod>2024-05-15T22:33:31+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/</loc>
     <lastmod>2024-05-15T22:33:31+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/memo/</loc>
@@ -408,9 +417,6 @@
     <lastmod>2022-01-10T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/tags/fluentbit/</loc>
-    <lastmod>2022-01-10T20:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://ecnedaced-seirots.github.io/tags/kubernetes/</loc>
     <lastmod>2022-01-10T20:00:00+09:00</lastmod>
   </url><url>
     <loc>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</loc>

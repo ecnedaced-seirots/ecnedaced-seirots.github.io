@@ -6,8 +6,15 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 15 May 2024 22:33:31 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jun 2024 23:08:45 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes</title>
+      <link>https://ecnedaced-seirots.github.io/tags/kubernetes/</link>
+      <pubDate>Thu, 06 Jun 2024 23:08:45 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
     <item>
       <title>AWS</title>
       <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
@@ -321,13 +328,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/fluentbit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/fluentbit/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>kubernetes</title>
-      <link>https://ecnedaced-seirots.github.io/tags/kubernetes/</link>
-      <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>

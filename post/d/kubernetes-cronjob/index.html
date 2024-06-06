@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kubernetes - CronJobオプションの検証 | Go Buddy Go</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content=" 
+（2020年10月の検証記事です）
+KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Kubernetes - CronJobオプションの検証" />
+<meta property="og:description" content=" 
+（2020年10月の検証記事です）
+KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-06-06T23:08:45+09:00" />
+<meta property="article:modified_time" content="2024-06-06T23:08:45+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes - CronJobオプションの検証"/>
+<meta name="twitter:description" content=" 
+（2020年10月の検証記事です）
+KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kubernetes - CronJobオプションの検証",
+      "item": "https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kubernetes - CronJobオプションの検証",
+  "name": "Kubernetes - CronJobオプションの検証",
+  "description": " （2020年10月の検証記事です）\nKubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。\n",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": " （2020年10月の検証記事です）\nKubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。\n気になっていた設定は以下。\nsuccessfulJobsHistoryLimit（成功時のPod履歴数。デフォルト3）\nfailedJobsHistoryLimit（失敗時のPod履歴数。デフォルト1）\nrestartPolicy (NeverかOnFailureか）\nbackoffLimit （失敗時のリトライ数。デフォルト6だが0にする必要があるか）\n上の2つは履歴数といっても実際にPodがその数だけ残るので、リソースが逼迫気味なワーカーノードでは気にしたいところ。\n以下サンプルマニフェスト。dateコマンド結果を吐き出すだけの無意味なタスク。\ncron_test_never.yaml\napiVersion: batch/v1beta1 kind: CronJob metadata: name: cron-test spec: schedule: \"*/1 * * * *\" concurrencyPolicy: Forbid successfulJobsHistoryLimit: 2 failedJobsHistoryLimit: 2 jobTemplate: spec: template: spec: containers: - name: cron-test image: busybox command: [\"/bin/sh\", \"-c\", \"echo $(date -u) \u003e /tmp/date.log\"] restartPolicy: Never 今回は深追いしていないが、concurrencyPolicy: Forbid は同時実行を抑止するため設定。backofflimit:0 はこの段階では設定しない。\n実行結果\n$ kubectl get cronjob NAME SCHEDULE SUSPEND ACTIVE LAST SCHEDULE AGE cron-test */1 * * * * False 0 7s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603592640-58wdq 0/1 Completed 0 54s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603592640-58wdq 0/1 Completed 0 84s cron-test-1603592700-8wlrx 0/1 Completed 0 24s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603592700-8wlrx 0/1 Completed 0 77s cron-test-1603592760-jdbcn 0/1 Completed 0 17s 指定通り、Podが2世代まで残る。次にsuccessfulJobsHistoryLimit: 0 にしてapply。\n$ kubectl get po No resources found in default namespace. $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603593300-vv7zd 0/1 ContainerCreating 0 1s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603593300-vv7zd 0/1 ContainerCreating 0 4s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603593300-vv7zd 0/1 Completed 0 7s $ kubectl get po No resources found in default namespace. 上記の繰り返しとなる。Podは実行中のみ存在し、Pod生成後10秒まではステータス取得可能らしい。restartPolicy: OnFailureでも同様のパターンでapplyしてみたが、正常時の動作はNeverと変わらなかった。\nCronJobではsuccessfulJobsHistoryLimit: 0にしておけば、backofflimit:0 設定は必要ない？と考えたが、失敗時の動作も見ておく必要があるのでそれも試してみた。\nエラーパターンではcommandの命令を以下のようにして、存在しないパスを指定した。\ncommand: [\"/usr/sh\", \"-c\", \"echo $(date -u) \u003e /tmp/date.log\"] restartPolicy: Never エラーケース\nrestartPolicy: Never\nfailedJobsHistoryLimit: 2\nbackokfflimit指定なし\n$ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603596240-srrjj 0/1 ContainerCreating 0 4s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603596240-kwk4q 0/1 ContainerCannotRun 0 6s cron-test-1603596240-srrjj 0/1 ContainerCannotRun 0 11s (snip) $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603596240-dxvt2 0/1 ContainerCannotRun 0 58s cron-test-1603596240-kwk4q 0/1 ContainerCannotRun 0 68s cron-test-1603596240-m69th 0/1 ContainerCannotRun 0 38s cron-test-1603596240-srrjj 0/1 ContainerCannotRun 0 73s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603596240-7b42n 0/1 ContainerCannotRun 0 7s cron-test-1603596240-dxvt2 0/1 ContainerCannotRun 0 107s cron-test-1603596240-kwk4q 0/1 ContainerCannotRun 0 117s cron-test-1603596240-m69th 0/1 ContainerCannotRun 0 87s cron-test-1603596240-srrjj 0/1 ContainerCannotRun 0 2m2s failedJobsHistoryLimit: 2に関わらず、backofflimitのデフォルト値6(実際は5)の分だけPodが残ってしまう！\nここで、backokfflimit:0をセットしてapply。\napiVersion: batch/v1beta1 kind: CronJob metadata: name: cron-test spec: schedule: \"*/1 * * * *\" concurrencyPolicy: Forbid successfulJobsHistoryLimit: 2 failedJobsHistoryLimit: 2 jobTemplate: spec: backoffLimit: 0 template: spec: containers: - name: cron-test image: busybox command: [\"/usr/sh\", \"-c\", \"echo $(date -u) \u003e /tmp/date.log\"] restartPolicy: Never $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603596900-2fgfp 0/1 ContainerCannotRun 0 2m10s cron-test-1603596960-rtvj2 0/1 ContainerCannotRun 0 69s cron-test-1603597020-mhgm8 0/1 ContainerCannotRun 0 9s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597020-mhgm8 0/1 ContainerCannotRun 0 96s cron-test-1603597080-548zl 0/1 ContainerCannotRun 0 36s backokfflimit:0により、failedJobsHistoryLimit: 2の指定通りに世代が残った。\n次にfailedJobsHistoryLimit: 0にしてapply。すると、Podが存在するのはタスク実行時のみとなった。\n$ kubectl get po No resources found in default namespace. $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597320-8kk2g 0/1 ContainerCannotRun 0 5s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597320-8kk2g 0/1 ContainerCannotRun 0 8s $ kubectl get po No resources found in default namespace. 確かに余分なリソースは食わないが、エラー調査がまったくできない。そこを考慮するならば、failedJobsHistoryLimit: 1が理想的かもしれない。\nrestartPolicy: OnFailure エラーケース\nrestartPolicy: OnFailure\nfailedJobsHistoryLimit: 2\nbackokfflimit指定なし\n$ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597980-swr2d 0/1 RunContainerError 0 19s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597980-swr2d 0/1 RunContainerError 1 32s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597980-swr2d 0/1 RunContainerError 2 42s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597980-swr2d 0/1 RunContainerError 3 66s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603597980-swr2d 0/1 CrashLoopBackOff 4 2m15s failedJobsHistoryLimit: 2は影響せず、同一podでリスタートを繰り返す。Neverパターンではステータスが\"ContainerCannotRun\"だったが、OnFailureでは\"RunContainerError\"となる。途中からCrashLoopBackOffになった。\n次にbackokfflimit:0をセットしてapply。\n$ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603598820-vnrfr 0/1 ContainerCreating 0 2s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603598820-vnrfr 0/1 RunContainerError 0 6s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603598820-vnrfr 0/1 RunContainerError 0 22s $ kubectl get po No resources found in default namespace. $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603598880-l2jmx 0/1 RunContainerError 0 12s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603598880-l2jmx 0/1 Terminating 1 23s $ kubectl get po No resources found in default namespace. 起動されるPodは常に1つだが、異なるPodが起動された。次にfailedJobsHistoryLimit: 0にしてapplyしたところ、動作としては上記と変わらず、起動の都度Podが変化した。Podがわずかな時間しか存在しないため調査が困難と想定する。\n結局どうすればいいか\n成功時も失敗時も余分なPodを起動させないようにしたい。ただしエラー発生時は調査可能にしておきたい。であれば、以下の設定が妥当かと思われる。\nsuccessfulJobsHistoryLimit: 0\nfailedJobsHistoryLimit: 1\nbackoffLimit: 0\nrestartPolicy: Never\n上記ステータスで改めてapply。\n$ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603600380-t8jgq 0/1 ContainerCreating 0 3s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603600380-t8jgq 0/1 ContainerCannotRun 0 57s $ kubectl get po NAME READY STATUS RESTARTS AGE cron-test-1603600440-pzf5r 0/1 ContainerCannotRun 0 24s #1分後は次のPodが起動 PodはCron実行時間単位で新たに起動されるので、1分毎に実行の場合はその間にログを取得する必要がある…といっても次に起動したPodで取得してもいいんだから、まぁどうにかなるか。\n",
+  "wordCount" : "684",
+  "inLanguage": "en",
+  "datePublished": "2024-06-06T23:08:45+09:00",
+  "dateModified": "2024-06-06T23:08:45+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kubernetes - CronJobオプションの検証
+    </h1>
+    <div class="post-meta"><span title='2024-06-06 23:08:45 +0900 JST'>June 6, 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>（2020年10月の検証記事です）</p>
+<p>KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。</p>
+<p> </p>
+<p>気になっていた設定は以下。</p>
+<p><strong>successfulJobsHistoryLimit（成功時のPod履歴数。デフォルト3）<br>
+failedJobsHistoryLimit（失敗時のPod履歴数。デフォルト1）<br>
+restartPolicy (NeverかOnFailureか）<br>
+backoffLimit （失敗時のリトライ数。デフォルト6だが0にする必要があるか）</strong></p>
+<p>上の2つは履歴数といっても実際にPodがその数だけ残るので、リソースが逼迫気味なワーカーノードでは気にしたいところ。</p>
+<p>以下サンプルマニフェスト。dateコマンド結果を吐き出すだけの無意味なタスク。</p>
+<p>cron_test_never.yaml</p>
+<pre tabindex="0"><code>apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-test
+spec:
+  schedule: &#34;*/1 * * * *&#34;
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron-test
+            image: busybox
+            command: [&#34;/bin/sh&#34;, &#34;-c&#34;, &#34;echo $(date -u) &gt; /tmp/date.log&#34;]
+restartPolicy: Never
+</code></pre><p> </p>
+<p>今回は深追いしていないが、concurrencyPolicy: Forbid は同時実行を抑止するため設定。backofflimit:0 はこの段階では設定しない。</p>
+<p>実行結果</p>
+<pre tabindex="0"><code>$ kubectl get cronjob
+NAME        SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cron-test   */1 * * * *   False     0        &lt;none&gt;          7s
+
+$ kubectl get po
+NAME                         READY   STATUS      RESTARTS   AGE
+cron-test-1603592640-58wdq   0/1     Completed   0          54s
+
+$ kubectl get po
+NAME                         READY   STATUS      RESTARTS   AGE
+cron-test-1603592640-58wdq   0/1     Completed   0          84s
+cron-test-1603592700-8wlrx   0/1     Completed   0          24s
+
+$ kubectl get po
+NAME                         READY   STATUS      RESTARTS   AGE
+cron-test-1603592700-8wlrx   0/1     Completed   0          77s
+cron-test-1603592760-jdbcn   0/1     Completed   0          17s
+</code></pre><p> </p>
+<p>指定通り、Podが2世代まで残る。次にsuccessfulJobsHistoryLimit: 0 にしてapply。</p>
+<pre tabindex="0"><code>$ kubectl get po
+No resources found in default namespace.
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603593300-vv7zd   0/1     ContainerCreating   0          1s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603593300-vv7zd   0/1     ContainerCreating   0          4s
+
+$ kubectl get po
+NAME                         READY   STATUS      RESTARTS   AGE
+cron-test-1603593300-vv7zd   0/1     Completed   0          7s
+
+$ kubectl get po
+No resources found in default namespace.
+</code></pre><p> </p>
+<p>上記の繰り返しとなる。Podは実行中のみ存在し、Pod生成後10秒まではステータス取得可能らしい。restartPolicy: OnFailureでも同様のパターンでapplyしてみたが、正常時の動作はNeverと変わらなかった。</p>
+<p>CronJobではsuccessfulJobsHistoryLimit: 0にしておけば、backofflimit:0 設定は必要ない？と考えたが、失敗時の動作も見ておく必要があるのでそれも試してみた。</p>
+<p>エラーパターンではcommandの命令を以下のようにして、存在しないパスを指定した。</p>
+<p> </p>
+<pre tabindex="0"><code>command: [&#34;/usr/sh&#34;, &#34;-c&#34;, &#34;echo $(date -u) &gt; /tmp/date.log&#34;]
+</code></pre><p> </p>
+<p><strong>restartPolicy: Never エラーケース</strong></p>
+<p>restartPolicy: Never<br>
+failedJobsHistoryLimit: 2<br>
+backokfflimit指定なし</p>
+<pre tabindex="0"><code>$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603596240-srrjj   0/1     ContainerCreating   0          4s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603596240-kwk4q   0/1     ContainerCannotRun   0          6s
+cron-test-1603596240-srrjj   0/1     ContainerCannotRun   0          11s
+
+(snip)
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603596240-dxvt2   0/1     ContainerCannotRun   0          58s
+cron-test-1603596240-kwk4q   0/1     ContainerCannotRun   0          68s
+cron-test-1603596240-m69th   0/1     ContainerCannotRun   0          38s
+cron-test-1603596240-srrjj   0/1     ContainerCannotRun   0          73s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603596240-7b42n   0/1     ContainerCannotRun   0          7s
+cron-test-1603596240-dxvt2   0/1     ContainerCannotRun   0          107s
+cron-test-1603596240-kwk4q   0/1     ContainerCannotRun   0          117s
+cron-test-1603596240-m69th   0/1     ContainerCannotRun   0          87s
+cron-test-1603596240-srrjj   0/1     ContainerCannotRun   0          2m2s
+</code></pre><p> </p>
+<p>failedJobsHistoryLimit: 2に関わらず、backofflimitのデフォルト値6(実際は5)の分だけPodが残ってしまう！</p>
+<p>ここで、backokfflimit:0をセットしてapply。</p>
+<p> </p>
+<pre tabindex="0"><code>apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-test
+spec:
+  schedule: &#34;*/1 * * * *&#34;
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+          - name: cron-test
+            image: busybox
+            command: [&#34;/usr/sh&#34;, &#34;-c&#34;, &#34;echo $(date -u) &gt; /tmp/date.log&#34;]
+restartPolicy: Never
+</code></pre><p> </p>
+<pre tabindex="0"><code>$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603596900-2fgfp   0/1     ContainerCannotRun   0          2m10s
+cron-test-1603596960-rtvj2   0/1     ContainerCannotRun   0          69s
+cron-test-1603597020-mhgm8   0/1     ContainerCannotRun   0          9s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603597020-mhgm8   0/1     ContainerCannotRun   0          96s
+cron-test-1603597080-548zl   0/1     ContainerCannotRun   0          36s
+</code></pre><p> </p>
+<p>backokfflimit:0により、failedJobsHistoryLimit: 2の指定通りに世代が残った。</p>
+<p>次にfailedJobsHistoryLimit: 0にしてapply。すると、Podが存在するのはタスク実行時のみとなった。</p>
+<pre tabindex="0"><code>$ kubectl get po
+No resources found in default namespace.
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603597320-8kk2g   0/1     ContainerCannotRun   0          5s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603597320-8kk2g   0/1     ContainerCannotRun   0          8s
+
+$ kubectl get po
+No resources found in default namespace.
+</code></pre><p> </p>
+<p>確かに余分なリソースは食わないが、エラー調査がまったくできない。そこを考慮するならば、failedJobsHistoryLimit: 1が理想的かもしれない。</p>
+<p><strong>restartPolicy: OnFailure エラーケース</strong></p>
+<p>restartPolicy: OnFailure<br>
+failedJobsHistoryLimit: 2<br>
+backokfflimit指定なし</p>
+<p> </p>
+<pre tabindex="0"><code>$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603597980-swr2d   0/1     RunContainerError   0          19s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603597980-swr2d   0/1     RunContainerError   1          32s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603597980-swr2d   0/1     RunContainerError   2          42s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603597980-swr2d   0/1     RunContainerError   3          66s
+
+$ kubectl get po
+NAME                         READY   STATUS             RESTARTS   AGE
+cron-test-1603597980-swr2d   0/1     CrashLoopBackOff   4          2m15s
+</code></pre><p> </p>
+<p>failedJobsHistoryLimit: 2は影響せず、同一podでリスタートを繰り返す。Neverパターンではステータスが&quot;ContainerCannotRun&quot;だったが、OnFailureでは&quot;RunContainerError&quot;となる。途中からCrashLoopBackOffになった。</p>
+<p>次にbackokfflimit:0をセットしてapply。</p>
+<p> </p>
+<pre tabindex="0"><code>$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603598820-vnrfr   0/1     ContainerCreating   0          2s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603598820-vnrfr   0/1     RunContainerError   0          6s
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603598820-vnrfr   0/1     RunContainerError   0          22s
+
+$ kubectl get po
+No resources found in default namespace.
+
+$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603598880-l2jmx   0/1     RunContainerError   0          12s
+
+$ kubectl get po
+NAME                         READY   STATUS        RESTARTS   AGE
+cron-test-1603598880-l2jmx   0/1     Terminating   1          23s
+
+$ kubectl get po
+No resources found in default namespace.
+</code></pre><p> </p>
+<p>起動されるPodは常に1つだが、異なるPodが起動された。次にfailedJobsHistoryLimit: 0にしてapplyしたところ、動作としては上記と変わらず、起動の都度Podが変化した。Podがわずかな時間しか存在しないため調査が困難と想定する。</p>
+<p> </p>
+<p><strong>結局どうすればいいか</strong><br>
+成功時も失敗時も余分なPodを起動させないようにしたい。ただしエラー発生時は調査可能にしておきたい。であれば、以下の設定が妥当かと思われる。</p>
+<p> </p>
+<p><strong>successfulJobsHistoryLimit: 0<br>
+failedJobsHistoryLimit: 1<br>
+backoffLimit: 0<br>
+restartPolicy: Never</strong></p>
+<p>上記ステータスで改めてapply。</p>
+<p> </p>
+<pre tabindex="0"><code>$ kubectl get po
+NAME                         READY   STATUS              RESTARTS   AGE
+cron-test-1603600380-t8jgq   0/1     ContainerCreating   0          3s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603600380-t8jgq   0/1     ContainerCannotRun   0          57s
+
+$ kubectl get po
+NAME                         READY   STATUS               RESTARTS   AGE
+cron-test-1603600440-pzf5r   0/1     ContainerCannotRun   0          24s #1分後は次のPodが起動
+</code></pre><p> </p>
+<p>PodはCron実行時間単位で新たに起動されるので、1分毎に実行の場合はその間にログを取得する必要がある&hellip;といっても次に起動したPodで取得してもいいんだから、まぁどうにかなるか。</p>
+<p> </p>
+
+    
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/kubernetes/">kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/">
+    <span class="title">Next »</span>
+    <br>
+    <span>AWS Logs InsightsをCLIまたはPython(boto3)から実行</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
