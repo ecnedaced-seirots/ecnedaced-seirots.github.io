@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lambda on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/lambda/</link>
+    <description>Recent content in Lambda on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 11 Jun 2024 22:24:49 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</link>
+      <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</link>
+      <pubDate>Tue, 11 Jun 2024 22:22:36 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

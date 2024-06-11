@@ -148,6 +148,39 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">MacにGNU版dateをインストール
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
+Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
+$ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
+このままだとコマンドがgdateなので、gdateを&#34;date&#34;で実行できるようにする。以下エイリアスを.bashrcに追記。
+alias date=&#39;/usr/local/bin/gdate&#39; やっとできた。以下は所定の日付時刻をエポックタイム(UNIXタイムスタンプ)に変換するコマンド。Mac版のdateだと使えないんだよこれが。
+$ date -d &#39;2018/5/17 00:00:00&#39; &#43;&#39;%s&#39; 1526482800 参考
+Macでdateコマンドが違う件について
+UNIX時間に変換・UNIX時間を取得する方法</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-10-18 00:00:00 +0000 UTC'>October 18, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to MacにGNU版dateをインストール" href="https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">AWS CLIのページャを無効化する
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
+configで設定 ~/.aws/configに以下記載する。
+[default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&#34;&#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-10-16 00:00:00 +0000 UTC'>October 16, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to AWS CLIのページャを無効化する" href="https://ecnedaced-seirots.github.io/post/a/awscli-pager/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">CloudWatchアラーム作成時のメモ（過去事例）
     </h2>
   </header>
@@ -302,42 +335,6 @@ IAMに設定した場合は、①アカウントでデプロイを実行するec
   </div>
   <footer class="entry-footer"><span title='2021-09-25 13:28:51 +0900 JST'>September 25, 2021</span></footer>
   <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Firefox/Chromeでアドオンなし全画面キャプチャ
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
-Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
-…が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
-Chromeの場合 Chromeでやる場合は一手間増える。
-Windows Ctrl &#43; Shift &#43; I 同時押しで開発ツール画面を表示 Ctrl &#43; Shift &#43; P 同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。 Mac command &#43; option &#43; I 同時押しで開発ツール画面を表示 command &#43; Shift &#43; P同時押しで入力欄を表示させる 「full」と入力してreturn。少し待つとDwonloadディレクトリに保存される。
-（デフォルト保存先） 手間といっても大したことじゃないが、なにせものぐさなんで。それでもアドオンなしで全画面キャプチャ可能になったのはありがたい。
-しかしここでもやはり画面が長すぎておかしなことになっている。途中で一回途切れて（矢印箇所）、再度記事の初めから出力されるというループに陥っている。ま、とにかくFirefoxでもChromeでも長すぎるとダメつうことだ。</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-09-23 00:00:00 +0000 UTC'>September 23, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to Firefox/Chromeでアドオンなし全画面キャプチャ" href="https://ecnedaced-seirots.github.io/post/a/browser-capture-all/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Macで必須のショートカット3選
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
-フルスクリーン解除 control&#43; command &#43; F
-アプリケーションの強制終了 command &#43; option &#43; esc
-スクリーンショット command &#43; shift &#43; 3
-それにしてもフルスクリーンて、あれ何のためにあるん？意図的にフルスクリーンにすることなくて変な風にキーボード触ってしまった時になっちまうんだけど、迷惑極まりない…
-追記
-もうひとつ迷惑なショートカット思い出したから追加。ターミナル画面が分割されるやつ。command &#43; D同時押しでなってしまうらしい。絶対使わんのに。戻すには、command &#43; Shift &#43; D。3選といいつつ、思い出したらまた書くかもな…</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-09-18 00:00:00 +0000 UTC'>September 18, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to Macで必須のショートカット3選" href="https://ecnedaced-seirots.github.io/post/a/mac-shortcut/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

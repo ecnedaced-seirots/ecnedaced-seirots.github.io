@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda | Go Buddy Go</title>
+<meta name="keywords" content="AWS, S3, RDS, Lambda, Python, PostgreSQL">
+<meta name="description" content=" 
+S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda" />
+<meta property="og:description" content=" 
+S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-06-11T22:24:49+09:00" />
+<meta property="article:modified_time" content="2024-06-11T22:24:49+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda"/>
+<meta name="twitter:description" content=" 
+S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
+      "item": "https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
+  "name": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
+  "description": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\n",
+  "keywords": [
+    "AWS", "S3", "RDS", "Lambda", "Python", "PostgreSQL"
+  ],
+  "articleBody": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\nS3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）\n前提条件\nRDSに接続するため、Lambdaの配置はVPCとする。\nPostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）\nimport json import boto3 import psycopg2 # SecretManagerからRDS/DB認証情報取得 # secret_name は実際に作成したシークレットを指定 def getCredentials(): credential = {} secret_name = \"secretname\" region_name = \"ap-northeast-1\" client = boto3.client( service_name='secretsmanager', region_name=region_name ) get_secret_value_response = client.get_secret_value( SecretId=secret_name ) secret = json.loads(get_secret_value_response['SecretString']) credential['username'] = secret['username'] credential['password'] = secret['password'] credential['host'] = \"RDS endpoint URL\" credential['db'] = \"databasename\" return credential def lambda_handler(event, context): #イベント全体の定義 data = event s = json.dumps(data) e = json.loads(s) #イベントデータからS3部分抽出 record = e['Records'] s3_event_record = (record[0]['s3'] #バケット名の定義 bucket = s3_event_record['bucket']['name'] print('bucket name:' + bucket) #オブジェクト名の定義（prefixを含む） key = s3_event_record['object']['key'] print('prefix:' + key) #オブジェクトのファイル名のみ抽出（ダウンロード時に使用） path = key.split('/') file = path[-1] #区切り文字で区切った最後の文字列を取得 tmpfile = '/tmp' + file #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード s3 = boto3.resource('s3') s3.Bucket(bucket).download_file(key, tmpfile) # DB接続 credential = getCredentials() connection = psycopg2.connect(user=credential['username'], password=credential['password'], host=credential['host'], database=credential['db']) cursor = connection.cursor() #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。 with open(tmpfile, 'r') as f: cursor.copy_from(f, 'data_tbl', sep=',') connection.commit() 参考\n・SecretManager経由の接続\nPostgreSQL with AWS Lambda using Python\n・インポート部分\ncopy data from csv to postgresql using python\n",
+  "wordCount" : "153",
+  "inLanguage": "en",
+  "datePublished": "2024-06-11T22:24:49+09:00",
+  "dateModified": "2024-06-11T22:24:49+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      S3上のCSVをRDS(PostgreSQL)にインポートするLambda
+    </h1>
+    <div class="post-meta"><span title='2024-06-11 22:24:49 +0900 JST'>June 11, 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）</p>
+<p> </p>
+<p>S3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）</p>
+<p> </p>
+<p><strong>前提条件</strong></p>
+<ol>
+<li>
+<p>RDSに接続するため、Lambdaの配置はVPCとする。</p>
+</li>
+<li>
+<p>PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）</p>
+</li>
+</ol>
+<pre tabindex="0"><code>import json
+import boto3
+import psycopg2
+
+# SecretManagerからRDS/DB認証情報取得
+# secret_name は実際に作成したシークレットを指定
+def getCredentials():
+    credential = {}
+    
+    secret_name = &#34;secretname&#34;
+    region_name = &#34;ap-northeast-1&#34;
+    
+    client = boto3.client(
+      service_name=&#39;secretsmanager&#39;,
+      region_name=region_name
+    )
+    
+    get_secret_value_response = client.get_secret_value(
+      SecretId=secret_name
+    )
+    
+    secret = json.loads(get_secret_value_response[&#39;SecretString&#39;])
+    
+    credential[&#39;username&#39;] = secret[&#39;username&#39;]
+    credential[&#39;password&#39;] = secret[&#39;password&#39;]
+    credential[&#39;host&#39;] = &#34;RDS endpoint URL&#34;
+    credential[&#39;db&#39;] = &#34;databasename&#34;
+    
+    return credential
+
+def lambda_handler(event, context):
+
+  #イベント全体の定義
+  data = event
+  s = json.dumps(data)
+  e = json.loads(s)
+  
+  #イベントデータからS3部分抽出
+  record = e[&#39;Records&#39;]
+  s3_event_record = (record[0][&#39;s3&#39;]
+  
+  #バケット名の定義
+  bucket = s3_event_record[&#39;bucket&#39;][&#39;name&#39;]
+  print(&#39;bucket name:&#39; + bucket)
+  
+  #オブジェクト名の定義（prefixを含む）
+  key = s3_event_record[&#39;object&#39;][&#39;key&#39;]
+  print(&#39;prefix:&#39; + key)
+  
+  #オブジェクトのファイル名のみ抽出（ダウンロード時に使用）
+  path = key.split(&#39;/&#39;)
+  file = path[-1] #区切り文字で区切った最後の文字列を取得
+  tmpfile = &#39;/tmp&#39; + file
+  
+  #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード
+  s3 = boto3.resource(&#39;s3&#39;)
+  s3.Bucket(bucket).download_file(key, tmpfile)
+  
+  # DB接続
+  credential = getCredentials()
+  connection = psycopg2.connect(user=credential[&#39;username&#39;], password=credential[&#39;password&#39;], host=credential[&#39;host&#39;], database=credential[&#39;db&#39;])
+  cursor = connection.cursor()
+  
+  #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。
+  with open(tmpfile, &#39;r&#39;) as f:
+    cursor.copy_from(f, &#39;data_tbl&#39;, sep=&#39;,&#39;)
+
+  connection.commit()
+</code></pre><p> </p>
+<p>参考<br>
+・SecretManager経由の接続<br>
+<a href="https://medium.com/@ianbinder/postgresql-with-aws-lambda-using-python-db93b2703bf8">PostgreSQL with AWS Lambda using Python</a></p>
+<p>・インポート部分<br>
+<a href="https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python">copy data from csv to postgresql using python</a></p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/d/rds-export-to-s3-lambda/">RDS(PostgreSQL)のデータをS3にエクスポートするLambda</a></li>
+    
+      <li><a href="/post/d/s3-cross-account-replication/">異なるアカウント間のS3レプリケーション設定</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-s3-export/">CloudWatchLogsからS3へログをエクスポートする</a></li>
+    
+      <li><a href="/post/d/aws-logs-insights-boto3/">AWS Logs InsightsをCLIまたはPython(boto3)から実行</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/s3/">S3</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/rds/">RDS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/postgresql/">PostgreSQL</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/">
+    <span class="title">Next »</span>
+    <br>
+    <span>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

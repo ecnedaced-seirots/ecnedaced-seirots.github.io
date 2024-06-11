@@ -138,6 +138,37 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理の応用編(4) - Lambda
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-12 22:00:00 +0900 JST'>December 12, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理の応用編(3) - Event rule
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
+以下tfコード本体に、ルールとターゲットを作成する処理を書く。
+event_rule.tf
+######################################## # EventBridge rule ######################################## resource &#34;aws_cloudwatch_event_rule&#34; &#34;pln-rule&#34; { for_each = var.events_param_list name = lookup(each.value, &#34;name&#34;) description = &#34;Start the pipeline when detect CodeCommit repository state change.&#34; event_pattern = &lt;&lt;-EOT { &#34;source&#34;: [&#34;aws.codecommit&#34;], &#34;detail-type&#34;: [&#34;CodeCommit Repository State Change&#34;], &#34;resources&#34;: [&#34;arn:aws:codecommit:ap-northeast-1:012345678910:${lookup(each.value, &#34;repo_name&#34;)}&#34;], &#34;detail&#34;: { &#34;event&#34;: [&#34;referenceCreated&#34;, &#34;referenceUpdated&#34;], &#34;referenceType&#34;: [&#34;branch&#34;], &#34;referenceName&#34; : [&#34;master&#34;] } } EOT } ######################################## # EventBridge target ######################################## resource &#34;aws_cloudwatch_event_target&#34; &#34;pln-rule&#34; { for_each = var....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-11 21:00:00 +0900 JST'>December 11, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(3) - Event rule" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Terraform loop処理の応用編(2) - CI/CD
     </h2>
   </header>
@@ -223,38 +254,6 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   </div>
   <footer class="entry-footer"><span title='2021-11-20 15:00:00 +0900 JST'>November 20, 2021</span></footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
-類似の過去記事
-CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする
-lambda_function.py
-import boto3 import json import os import re from botocore.exceptions import ClientError print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 t = e[&#39;time&#39;] trig = e[&#39;detail-type&#39;] alarm = e[&#39;resources&#39;] #これはリスト。文字列にするにはalarm[0] # 「理由」となる詳細抽出 reason = e[&#39;detail&#39;][&#39;state&#39;][&#39;reason&#39;] # リソース（ここではインスタンスID)を抽出し、文字列整形 resource = e[&#39;detail&#39;][&#39;configuration&#39;][&#39;metrics&#39;][0][&#39;metricStat&#39;][&#39;metric&#39;][&#39;dimensions&#39;] res_str = json.dumps(resource) res = re.sub(r&#34;[{}\&#34;]&#34;, &#34;&#34;, res_str) # 件名整形 subject_str = &#34;本番環境 - アラーム &#34; &#43; trig &#43; &#34; - &#34; &#43; res # メッセージ本文整形 fix_msg = &#34;以下のアラームが発生しました&#34; &#43; &#34;\n&#34; trig_msg = &#34;発生契機:&#34; &#43; &#34;\n&#34; &#43; trig time_msg = &#34;発生時刻:&#34; &#43; &#34;\n&#34; &#43; t alm_msg = &#34;アラーム:&#34; &#43; &#34;\n&#34; &#43; alarm[0] res_msg =&#34;対象リソース:&#34; &#34;\n&#34; &#43; res dtl_msg =&#34;理由:&#34; &#34;\n&#34; &#43; reason msg = fix_msg &#43; &#34;\n\n&#34; &#43; trig_msg &#43; &#34;\n\n&#34; &#43; time_msg &#43; &#34;\n\n&#34; &#43; alm_msg &#43; &#34;\n\n&#34; &#43; res_msg &#43; &#34;\n\n&#34; &#43; dtl_msg try: sns = boto3....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-14 23:00:00 +0900 JST'>November 14, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
-CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
-各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
-変更前：lambda_function.py(1)
-import base64 import json import zlib import datetime import os import boto3 from botocore.exceptions import ClientError print(&#39;Loading function&#39;) def lambda_handler(event, context): data = zlib.decompress(base64.b64decode(event[&#39;awslogs&#39;][&#39;data&#39;]), 16&#43;zlib.MAX_WBITS) data_json = json.loads(data) log_entire_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;], ensure_ascii=False)) log_entire_len = len(log_entire_json) print(log_entire_json) for i in range(log_entire_len): log_json = json.loads(json.dumps(data_json[&#34;logEvents&#34;][i], ensure_ascii=False)) try: sns = boto3.client(&#39;sns&#39;) #SNS Publish publishResponse = sns.publish( TopicArn = os.environ[&#39;SNS_TOPIC_ARN&#39;], Message = log_json[&#39;message&#39;], Subject = os.environ[&#39;ALARM_SUBJECT&#39;] ) except Exception as e: print(e) 参考...</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-14 12:00:00 +0900 JST'>November 14, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

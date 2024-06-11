@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>RDS(PostgreSQL)のデータをS3にエクスポートするLambda | Go Buddy Go</title>
+<meta name="keywords" content="AWS, S3, RDS, Lambda, Python, PostgreSQL">
+<meta name="description" content=" 
+RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="RDS(PostgreSQL)のデータをS3にエクスポートするLambda" />
+<meta property="og:description" content=" 
+RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-06-11T22:22:36+09:00" />
+<meta property="article:modified_time" content="2024-06-11T22:22:36+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RDS(PostgreSQL)のデータをS3にエクスポートするLambda"/>
+<meta name="twitter:description" content=" 
+RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "RDS(PostgreSQL)のデータをS3にエクスポートするLambda",
+      "item": "https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "RDS(PostgreSQL)のデータをS3にエクスポートするLambda",
+  "name": "RDS(PostgreSQL)のデータをS3にエクスポートするLambda",
+  "description": " RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。\n",
+  "keywords": [
+    "AWS", "S3", "RDS", "Lambda", "Python", "PostgreSQL"
+  ],
+  "articleBody": " RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。\n前提条件\nRDSに接続するため、Lambdaの配置はVPCとする。\nPostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。レイヤーに登録してから定義すればよいがちょっとハマりどころがある。\n上記に加えてaws_s3拡張機能のインストールが必要。\nDBに接続して以下コマンドを実行する。\nCREATE EXTENSION aws_s3CASCADE;\nRDS用のIAMロール作成 実行するLambda用のIAMロールとは別に、RDSにアタッチするロールを作成する。\n必要なアクション\n・s3.PutObject\n・s3.AbortMultipartUpload\nresourceとして格納先バケットを指定（arn:aws:s3:::バケット名/*）\nロールを作成したらDBインスタンスにアタッチする。RDSの対象DBの画面で「接続とセキュリティ」タブをスクロールして、「IAMロールの管理」を表示。作成したIAMロールと、機能：s3Exportを指定して「ロールの追加」。（簡単にできそうだと思ってたけど前提が結構面倒くさかった…）\nここまできて本題のコード。前回同様、認証情報はシークレットマネージャに格納して取得する方式。スキーマやテーブル名他名称部分は適宜置き換えで。あとDB接続時は本来with構文にする方が望ましい。\nimport json import boto3 import psycopg2 from datetime import datetime, date, time, timedelta # 認証情報をシークレットマネージャーから取得 def getCredentials(): credential = {} secret_name = \"postgres/mysecretname\" region_name = \"ap-northeast-1\" client = boto3.client( service_name='secretsmanager', region_name=region_name ) get_secret_value_response = client.get_secret_value( SecretId=secret_name ) secret = json.loads(get_secret_value_response['SecretString']) credential['username'] = secret['username'] credential['password'] = secret['password'] credential['host'] = \"RDS endpoint URL\" credential['db'] = \"databasename\" return credential def lambda_handler(event, context): # バケットとテーブル定義 bucket = 'my bucket name' tbl = 'mytbl' # 日付情報取得 yesterday = datetime.combine(date.today()-timedelta(1),time()) today = datetime.combine(date.today(),time()) # s3パス定義 key1 = yesterday.strftime(\"%Y\") key2 = yesterday.strftime(\"%m\") key3 = yesterday.strftime(\"%%d\") s3_path = key1 + \"/\" + key2 + \"/\" + key3 + 'tbl-export.txt' # DB接続 credential = getCredentials() connection = psycopg2.connect(user=credential['username'], password=credential['password'], host=credential['host'], database=credential['db']) cursor = connection.cursor() # クエリ定義 query = f''''select * from aws_s3.query_export_to_s3( 'select * from public.{tbl}', aws_commons.create_s3_uri( '{bucket}', '{s3_path}', 'ap-northeast-1' ) ))'''[1:-1] # クエリ実行（エクスポートが実行される） cursor.excute(query) # 接続クローズ cursor.close() connection.commit() 参考までに、以下はDBから直接クエリ実行する場合。コードではpythonから実行するため、query変数を定義してヒアドキュメントでクエリを記述。また、f-stringsによる変数展開を行うため記述が多少異なる形になった。\nselect * from aws_s3.query_export_to_s3( 'select * from public.data_tbl', aws_commons.create_s3_uri( 'bucketname', '2023/09/01/rds_export_data.csv', 'ap-northeast-1' ) ); ちなみにここではテーブルデータ全部を引っこ抜いているが、一定の時刻範囲で抽出したい場合はクエリを調整すればよいかと。（当然timestamp列が存在する前提）\n",
+  "wordCount" : "173",
+  "inLanguage": "en",
+  "datePublished": "2024-06-11T22:22:36+09:00",
+  "dateModified": "2024-06-11T22:22:36+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      RDS(PostgreSQL)のデータをS3にエクスポートするLambda
+    </h1>
+    <div class="post-meta"><span title='2024-06-11 22:22:36 +0900 JST'>June 11, 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。</p>
+<p> </p>
+<p><strong>前提条件</strong></p>
+<ol>
+<li>
+<p>RDSに接続するため、Lambdaの配置はVPCとする。</p>
+</li>
+<li>
+<p>PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。レイヤーに登録してから定義すればよいがちょっとハマりどころがある。</p>
+</li>
+<li>
+<p>上記に加えてaws_s3拡張機能のインストールが必要。</p>
+</li>
+</ol>
+<p>DBに接続して以下コマンドを実行する。</p>
+<p><code>CREATE EXTENSION aws_s3CASCADE;</code></p>
+<p> </p>
+<ol start="4">
+<li>RDS用のIAMロール作成</li>
+</ol>
+<p>実行するLambda用のIAMロールとは別に、RDSにアタッチするロールを作成する。</p>
+<p>必要なアクション</p>
+<p>・s3.PutObject<br>
+・s3.AbortMultipartUpload</p>
+<p>resourceとして格納先バケットを指定（arn:aws:s3:::バケット名/*）</p>
+<p>ロールを作成したらDBインスタンスにアタッチする。RDSの対象DBの画面で「接続とセキュリティ」タブをスクロールして、「IAMロールの管理」を表示。作成したIAMロールと、機能：s3Exportを指定して「ロールの追加」。（簡単にできそうだと思ってたけど前提が結構面倒くさかった&hellip;）</p>
+<p> </p>
+<p>ここまできて本題のコード。前回同様、認証情報はシークレットマネージャに格納して取得する方式。スキーマやテーブル名他名称部分は適宜置き換えで。あとDB接続時は本来with構文にする方が望ましい。</p>
+<p> </p>
+<pre tabindex="0"><code>import json
+import boto3
+import psycopg2
+from datetime import datetime, date, time, timedelta
+
+# 認証情報をシークレットマネージャーから取得
+def getCredentials():
+    credential = {}
+    
+    secret_name = &#34;postgres/mysecretname&#34;
+    region_name = &#34;ap-northeast-1&#34;
+    
+    client = boto3.client(
+      service_name=&#39;secretsmanager&#39;,
+      region_name=region_name
+    )
+    
+    get_secret_value_response = client.get_secret_value(
+      SecretId=secret_name
+    )
+    
+    secret = json.loads(get_secret_value_response[&#39;SecretString&#39;])
+    
+    credential[&#39;username&#39;] = secret[&#39;username&#39;]
+    credential[&#39;password&#39;] = secret[&#39;password&#39;]
+    credential[&#39;host&#39;] = &#34;RDS endpoint URL&#34;
+    credential[&#39;db&#39;] = &#34;databasename&#34;
+    
+    return credential
+
+def lambda_handler(event, context):
+  # バケットとテーブル定義
+  bucket = &#39;my bucket name&#39;
+  tbl = &#39;mytbl&#39;
+  
+  # 日付情報取得
+  yesterday = datetime.combine(date.today()-timedelta(1),time())
+  today = datetime.combine(date.today(),time())
+  
+  # s3パス定義
+  key1 = yesterday.strftime(&#34;%Y&#34;)
+  key2 = yesterday.strftime(&#34;%m&#34;)
+  key3 = yesterday.strftime(&#34;%%d&#34;)
+  s3_path = key1 + &#34;/&#34; + key2 + &#34;/&#34; + key3 + &#39;tbl-export.txt&#39;
+  
+  # DB接続
+  credential = getCredentials()
+  connection = psycopg2.connect(user=credential[&#39;username&#39;], password=credential[&#39;password&#39;], host=credential[&#39;host&#39;], database=credential[&#39;db&#39;])
+  cursor = connection.cursor()
+  
+  # クエリ定義
+  query = f&#39;&#39;&#39;&#39;select * from aws_s3.query_export_to_s3(
+    &#39;select * from public.{tbl}&#39;,
+    aws_commons.create_s3_uri(
+      &#39;{bucket}&#39;,
+      &#39;{s3_path}&#39;,
+      &#39;ap-northeast-1&#39;
+    )
+  ))&#39;&#39;&#39;[1:-1]
+
+  # クエリ実行（エクスポートが実行される）
+  cursor.excute(query)
+  
+  # 接続クローズ
+  cursor.close()
+  connection.commit()
+</code></pre><p> </p>
+<p>参考までに、以下はDBから直接クエリ実行する場合。コードではpythonから実行するため、query変数を定義してヒアドキュメントでクエリを記述。また、f-stringsによる変数展開を行うため記述が多少異なる形になった。</p>
+<p> </p>
+<pre tabindex="0"><code>select * from aws_s3.query_export_to_s3(
+    &#39;select * from public.data_tbl&#39;,
+    aws_commons.create_s3_uri(
+      &#39;bucketname&#39;,
+      &#39;2023/09/01/rds_export_data.csv&#39;,
+      &#39;ap-northeast-1&#39;
+    )
+  );
+</code></pre><p> </p>
+<p>ちなみにここではテーブルデータ全部を引っこ抜いているが、一定の時刻範囲で抽出したい場合はクエリを調整すればよいかと。（当然timestamp列が存在する前提）</p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/d/s3-cross-account-replication/">異なるアカウント間のS3レプリケーション設定</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
+    
+      <li><a href="/post/a/cloudwatchlogs-s3-export/">CloudWatchLogsからS3へログをエクスポートする</a></li>
+    
+      <li><a href="/post/d/aws-logs-insights-boto3/">AWS Logs InsightsをCLIまたはPython(boto3)から実行</a></li>
+    
+      <li><a href="/post/c/rds-connection-check-from-ec2/">EC2からRDSへ簡単な疎通確認するコマンド(Windows/Linux)</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/s3/">S3</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/rds/">RDS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/postgresql/">PostgreSQL</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</span>
+  </a>
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Kubernetes - CronJobオプションの検証</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
