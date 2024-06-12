@@ -6,8 +6,16 @@
     <description>Recent content in python on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 11 Jun 2024 22:24:49 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jun 2024 22:26:58 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pythonのdatetime, zoneinfo周辺など</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</link>
+      <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</title>
       <link>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</link>

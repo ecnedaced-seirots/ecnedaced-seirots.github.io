@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda | Go Buddy Go</title>
-<meta name="keywords" content="AWS, S3, RDS, Lambda, Python, PostgreSQL">
+<title>Pythonのdatetime, zoneinfo周辺など | Go Buddy Go</title>
+<meta name="keywords" content="python">
 <meta name="description" content=" 
-S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）">
+Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -57,18 +57,18 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
         }
 
     </style>
-</noscript><meta property="og:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda" />
+</noscript><meta property="og:title" content="Pythonのdatetime, zoneinfo周辺など" />
 <meta property="og:description" content=" 
-S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）" />
+Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2024-06-11T22:24:49+09:00" />
-<meta property="article:modified_time" content="2024-06-11T22:24:49+09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-06-12T22:26:58+09:00" />
+<meta property="article:modified_time" content="2024-06-12T22:26:58+09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda"/>
+<meta name="twitter:title" content="Pythonのdatetime, zoneinfo周辺など"/>
 <meta name="twitter:description" content=" 
-S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）"/>
+Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。"/>
 
 
 <script type="application/ld+json">
@@ -85,8 +85,8 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
-      "item": "https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/"
+      "name": "Pythonのdatetime, zoneinfo周辺など",
+      "item": "https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/"
     }
   ]
 }
@@ -95,20 +95,20 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
-  "name": "S3上のCSVをRDS(PostgreSQL)にインポートするLambda",
-  "description": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\n",
+  "headline": "Pythonのdatetime, zoneinfo周辺など",
+  "name": "Pythonのdatetime, zoneinfo周辺など",
+  "description": " Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。\n",
   "keywords": [
-    "AWS", "S3", "RDS", "Lambda", "Python", "PostgreSQL"
+    "python"
   ],
-  "articleBody": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\nS3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）\n前提条件\nRDSに接続するため、Lambdaの配置はVPCとする。\nPostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）\nimport json import boto3 import psycopg2 # SecretManagerからRDS/DB認証情報取得 # secret_name は実際に作成したシークレットを指定 def getCredentials(): credential = {} secret_name = \"secretname\" region_name = \"ap-northeast-1\" client = boto3.client( service_name='secretsmanager', region_name=region_name ) get_secret_value_response = client.get_secret_value( SecretId=secret_name ) secret = json.loads(get_secret_value_response['SecretString']) credential['username'] = secret['username'] credential['password'] = secret['password'] credential['host'] = \"RDS endpoint URL\" credential['db'] = \"databasename\" return credential def lambda_handler(event, context): #イベント全体の定義 data = event s = json.dumps(data) e = json.loads(s) #イベントデータからS3部分抽出 record = e['Records'] s3_event_record = (record[0]['s3'] #バケット名の定義 bucket = s3_event_record['bucket']['name'] print('bucket name:' + bucket) #オブジェクト名の定義（prefixを含む） key = s3_event_record['object']['key'] print('prefix:' + key) #オブジェクトのファイル名のみ抽出（ダウンロード時に使用） path = key.split('/') file = path[-1] #区切り文字で区切った最後の文字列を取得 tmpfile = '/tmp' + file #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード s3 = boto3.resource('s3') s3.Bucket(bucket).download_file(key, tmpfile) # DB接続 credential = getCredentials() connection = psycopg2.connect(user=credential['username'], password=credential['password'], host=credential['host'], database=credential['db']) cursor = connection.cursor() #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。 with open(tmpfile, 'r') as f: cursor.copy_from(f, 'data_tbl', sep=',') connection.commit() 参考\n・SecretManager経由の接続\nPostgreSQL with AWS Lambda using Python\n・インポート部分\ncopy data from csv to postgresql using python\n",
-  "wordCount" : "153",
+  "articleBody": " Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。\n\u003e\u003e\u003e from datetime import datetime \u003e\u003e\u003e rom zoneinfo import ZoneInfo # 現在時刻をTokyoのタイムゾーンとしてセットする \u003e\u003e\u003e from zoneinfo import ZoneInfo \u003e\u003e\u003e tz = ZoneInfo(\"Asia/Tokyo\") \u003e\u003e\u003e now = datetime.now(tz) \u003e\u003e\u003e print(now) 2024-06-12 22:12:59.704388+09:00 # ミリ秒までいらない。replaceで切り捨てる。 \u003e\u003e\u003e now2 = now.replace(microsecond = 0) \u003e\u003e\u003e print(now2) 2024-06-12 22:12:59+09:00 # 日付/時間だけ取得する \u003e\u003e\u003e day = now2.date() \u003e\u003e\u003e print(day) 2024-06-12 \u003e\u003e\u003e time = now2.time() \u003e\u003e\u003e print(time) 22:12:59 ちなみにzoneinfoは、\nWindows環境では「tzdata」をpipで入れておかないとエラーになる。\nとのことだ。確かにWindowsでは動かなかった。\n参考\nLambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん\nPython 標準ライブラリ zoneinfo IANAタイムゾーン\npython datetimeの切り捨て\n[Python]datetimeから日付のみを取得するには？\n",
+  "wordCount" : "70",
   "inLanguage": "en",
-  "datePublished": "2024-06-11T22:24:49+09:00",
-  "dateModified": "2024-06-11T22:24:49+09:00",
+  "datePublished": "2024-06-12T22:26:58+09:00",
+  "dateModified": "2024-06-12T22:26:58+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/"
+    "@id": "https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/"
   },
   "publisher": {
     "@type": "Organization",
@@ -191,100 +191,49 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      S3上のCSVをRDS(PostgreSQL)にインポートするLambda
+      Pythonのdatetime, zoneinfo周辺など
     </h1>
-    <div class="post-meta"><span title='2024-06-11 22:24:49 +0900 JST'>June 11, 2024</span>
+    <div class="post-meta"><span title='2024-06-12 22:26:58 +0900 JST'>June 12, 2024</span>
 
 </div>
   </header> 
   <div class="post-content"><p> </p>
-<p>S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）</p>
+<p>Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。</p>
 <p> </p>
-<p>S3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）</p>
-<p> </p>
-<p><strong>前提条件</strong></p>
-<ol>
-<li>
-<p>RDSに接続するため、Lambdaの配置はVPCとする。</p>
-</li>
-<li>
-<p>PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）</p>
-</li>
-</ol>
-<pre tabindex="0"><code>import json
-import boto3
-import psycopg2
+<pre tabindex="0"><code>&gt;&gt;&gt; from datetime import datetime
+&gt;&gt;&gt; rom zoneinfo import ZoneInfo
 
-# SecretManagerからRDS/DB認証情報取得
-# secret_name は実際に作成したシークレットを指定
-def getCredentials():
-    credential = {}
-    
-    secret_name = &#34;secretname&#34;
-    region_name = &#34;ap-northeast-1&#34;
-    
-    client = boto3.client(
-      service_name=&#39;secretsmanager&#39;,
-      region_name=region_name
-    )
-    
-    get_secret_value_response = client.get_secret_value(
-      SecretId=secret_name
-    )
-    
-    secret = json.loads(get_secret_value_response[&#39;SecretString&#39;])
-    
-    credential[&#39;username&#39;] = secret[&#39;username&#39;]
-    credential[&#39;password&#39;] = secret[&#39;password&#39;]
-    credential[&#39;host&#39;] = &#34;RDS endpoint URL&#34;
-    credential[&#39;db&#39;] = &#34;databasename&#34;
-    
-    return credential
+# 現在時刻をTokyoのタイムゾーンとしてセットする
+&gt;&gt;&gt; from zoneinfo import ZoneInfo
+&gt;&gt;&gt; tz = ZoneInfo(&#34;Asia/Tokyo&#34;)
+&gt;&gt;&gt; now = datetime.now(tz)
+&gt;&gt;&gt; print(now)
+2024-06-12 22:12:59.704388+09:00
 
-def lambda_handler(event, context):
+# ミリ秒までいらない。replaceで切り捨てる。
+&gt;&gt;&gt; now2 = now.replace(microsecond = 0)
+&gt;&gt;&gt; print(now2)
+2024-06-12 22:12:59+09:00
 
-  #イベント全体の定義
-  data = event
-  s = json.dumps(data)
-  e = json.loads(s)
-  
-  #イベントデータからS3部分抽出
-  record = e[&#39;Records&#39;]
-  s3_event_record = (record[0][&#39;s3&#39;]
-  
-  #バケット名の定義
-  bucket = s3_event_record[&#39;bucket&#39;][&#39;name&#39;]
-  print(&#39;bucket name:&#39; + bucket)
-  
-  #オブジェクト名の定義（prefixを含む）
-  key = s3_event_record[&#39;object&#39;][&#39;key&#39;]
-  print(&#39;prefix:&#39; + key)
-  
-  #オブジェクトのファイル名のみ抽出（ダウンロード時に使用）
-  path = key.split(&#39;/&#39;)
-  file = path[-1] #区切り文字で区切った最後の文字列を取得
-  tmpfile = &#39;/tmp&#39; + file
-  
-  #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード
-  s3 = boto3.resource(&#39;s3&#39;)
-  s3.Bucket(bucket).download_file(key, tmpfile)
-  
-  # DB接続
-  credential = getCredentials()
-  connection = psycopg2.connect(user=credential[&#39;username&#39;], password=credential[&#39;password&#39;], host=credential[&#39;host&#39;], database=credential[&#39;db&#39;])
-  cursor = connection.cursor()
-  
-  #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。
-  with open(tmpfile, &#39;r&#39;) as f:
-    cursor.copy_from(f, &#39;data_tbl&#39;, sep=&#39;,&#39;)
-
-  connection.commit()
+# 日付/時間だけ取得する
+&gt;&gt;&gt; day = now2.date()
+&gt;&gt;&gt; print(day)
+2024-06-12
+&gt;&gt;&gt; time = now2.time()
+&gt;&gt;&gt; print(time)
+22:12:59
 </code></pre><p> </p>
+<p>ちなみにzoneinfoは、</p>
+<blockquote>
+<p>Windows環境では「tzdata」をpipで入れておかないとエラーになる。</p>
+</blockquote>
+<p>とのことだ。確かにWindowsでは動かなかった。</p>
+<p> </p>
 <p>参考<br>
-・SecretManager経由の接続<br>
-<a href="https://medium.com/@ianbinder/postgresql-with-aws-lambda-using-python-db93b2703bf8">PostgreSQL with AWS Lambda using Python</a></p>
-<p>・インポート部分<br>
-<a href="https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python">copy data from csv to postgresql using python</a></p>
+<a href="https://zenn.dev/shimo_s3/articles/e15fac5b62af48">Lambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん</a><br>
+<a href="https://marusankakusikaku.jp/python/standard-library/zoneinfo/">Python 標準ライブラリ zoneinfo IANAタイムゾーン</a><br>
+<a href="https://teratail.com/questions/285022">python datetimeの切り捨て</a><br>
+<a href="https://www.choge-blog.com/programming/pythondatetimegetdateonly/">[Python]datetimeから日付のみを取得するには？</a></p>
 <p> </p>
 
     
@@ -293,15 +242,15 @@ def lambda_handler(event, context):
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/d/rds-export-to-s3-lambda/">RDS(PostgreSQL)のデータをS3にエクスポートするLambda</a></li>
-    
-      <li><a href="/post/d/s3-cross-account-replication/">異なるアカウント間のS3レプリケーション設定</a></li>
-    
-      <li><a href="/post/a/cloudwatchlogs-export-lambda/">CloudWatch LogsからS3にエクスポート(Lambda/Python)</a></li>
-    
-      <li><a href="/post/a/cloudwatchlogs-s3-export/">CloudWatchLogsからS3へログをエクスポートする</a></li>
-    
       <li><a href="/post/d/aws-logs-insights-boto3/">AWS Logs InsightsをCLIまたはPython(boto3)から実行</a></li>
+    
+      <li><a href="/post/c/opencv-horizontal-join-resize/">OpenCVで画像をリサイズして横に連結する</a></li>
+    
+      <li><a href="/post/c/opencv-horizontal-join/">OpenCVで画像を横に連結する</a></li>
+    
+      <li><a href="/post/b/python-get-last-string/">Pythonで区切り文字の最後の要素を取得</a></li>
+    
+      <li><a href="/post/b/python-json-dumps-load/">Pythonの辞書・文字列変換とJSON処理</a></li>
     
   </ul>
 
@@ -309,23 +258,13 @@ def lambda_handler(event, context):
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/s3/">S3</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/rds/">RDS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/postgresql/">PostgreSQL</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Pythonのdatetime, zoneinfo周辺など</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
     <span class="title">Next »</span>
     <br>
-    <span>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</span>
+    <span>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</span>
   </a>
 </nav>
 

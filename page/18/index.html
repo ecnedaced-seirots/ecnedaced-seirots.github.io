@@ -148,6 +148,29 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">単語rageを覚えたきっかけはディラン・トーマスの詩だった
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>“rage&#34;という英単語がある。名詞としては「激情、激怒、憤怒」、自動詞として「怒る、暴れる」という意味だ。これを知ったきっかけは、Tumblrで見かけた以下の引用だった。
+Do not go gentle into that good night.
+Rage, rage against the dying of the light.
+パッと見てすぐに意味は理解できなかったが何か心を捉えられた感があった。“rage&#34;という単語を初めて見たので調べたところ、意味は先述の通り。
+これはウェールズの詩人ディラン・トーマス(Dylan Thomas) の詩の一部である。でもTumblrの投稿にはOscar Wildeって書いたあったような記憶がある。それで最近までずっとこの引用元をOscar Wildeだと思い込んでいたんだから。間違いだったんだなあれは。
+それはさておき、今日この詩について少し文献を調べてみたら、この引用に対して今までの自分の解釈が若干ズレていたことがわかった。以下は引用元の詩全体である。
+Do not go gentle into that good night,
+Old age should burn and rage at close of day;
+Rage, rage against the dying of the light.
+Though wise men at their end know dark is right,
+Because their words had forked no lightning they
+Do not go gentle into that good night....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-10-19 00:00:00 +0000 UTC'>October 19, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to 単語rageを覚えたきっかけはディラン・トーマスの詩だった" href="https://ecnedaced-seirots.github.io/post/a/dylan-thomas/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">MacにGNU版dateをインストール
     </h2>
   </header>
@@ -305,36 +328,6 @@ $ aws codepipeline start-pipeline-execution --name [パイプライン名] ア�
   </div>
   <footer class="entry-footer"><span title='2021-10-03 10:00:00 +0900 JST'>October 3, 2021</span></footer>
   <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AWS環境で、クロスアカウントでCI/CDしたい。とりあえずBuildフェーズはいらなくてDeployだけでいい。Deployの実行はパイプラインあり/なし両方可能。どちらも単一アカウント内なら複雑な設定もなく比較的容易にできることはわかっているが、クロスアカウントとなると何かと面倒だ。でもやってみる。ここではまずはパイプラインなしとする。
-参考
-異なる AWS アカウントでアプリケーションをデプロイする
-（上記ページにリンクあり。assumeロールの設定は以下参考）
-IAM チュートリアル: AWS アカウント間の IAM ロールを使用したアクセスの委任
-環境前提 配布元となるAWS開発環境(Dev)にCodeCommitのローカルリポジトリがあり、そこから別アカウントの検証環境(Stg)にデプロイする。その先には本番環境がある想定だが構成は同じになるはず。
-① 配布元(Dev)
-② 配布先(Stg)
-概要 ①配布元のアカウントから②配布先のec2にデプロイ可能とするため、②配布先アカウント側で①アカウントのassumeを可能とするIAMロールを作成する。（ロールAとする）① 配布元アカウント側でロールAにassumeし、デプロイを実行する。
-基本的に必要となるのはIAM周りの設定であり、ネットワーク系の特別な実装は必要ない。
-作業内容 配布先②アカウントにて、配置用のS3バケットを作成する。IAMロールのポリシーでバケットへのアクセス権限を定義するため、バケットポリシーは設定しなくても問題なし。(注1)
-配布先②アカウントにて、①がassumeするためのロールAを作成する。
-ロールAで定義する内容 (1) 信頼ポリシーで②のアカウントIDを指定してassumeを許可する。このときrootか②側のIAMロールどちらかを指定する。
-rootに設定した場合は、①アカウントでデプロイを実行するユーザのグループにassume可能とするインラインポリシーを適用する。
-IAMに設定した場合は、①アカウントでデプロイを実行するec2にこのIAMロールを適用する。実行環境がec2の場合はこれでよいが、クライアント端末の場合はrootにする。
-インラインポリシー例 (①アカウントで設定) デプロイ実行ユーザが所属するグループの画面を開き、[アクセス許可] タブ –&gt; [アクセス許可の追加] –&gt; [インラインポリシーの作成] [JSON] タブ選択
-以下の内容を設定する。
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;sts:AssumeRole&#34;, &#34;Resource&#34;: &#34;arn:aws:iam::②配布先のアカウントID:role/ロールA&#34; } } (2) ①のアカウントが資材配置用のS3にアクセスするための権限を定義したポリシーを適用する。ちゃんと書いてないけど以下にcodedeploy, ec2の操作権限も追加する。codedeployの権限は何が必要かわからないのでとりあえず全許可にしておいた。ECSへのデプロイだとec2のterminate権限が必要みたいだが、今回の場合ec2は参照のみでOKだと思う。
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: &#34;s3:ListAllMyBuckets&#34;, &#34;Resource&#34;: &#34;*&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:ListBucket&#34;, &#34;s3:GetBucketLocation&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app&#34; #検証環境の資材格納バケット名 }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;s3:GetObject&#34;, &#34;s3:PutObject&#34;, &#34;s3:DeleteObject&#34; ], &#34;Resource&#34;: &#34;arn:aws:s3:::staging-app/*&#34; } ] } ②配布先アカウントにて、deployのアプリケーションとデプロイメントグループを作成する。詳細は割愛。 ①配布元アカウントのec2（または同アカウントのcredentialsをセットした端末）にログインし、ロールAにスイッチする。ちなみにマネジメントコンソールでもスイッチして作業可能だが、deployのpushコマンドがCLIでしかできないため、ここではCLI前提で話を進める。 この時先で作成したロールAにスイッチするため、以下のコマンドを実行する。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-09-25 13:28:51 +0900 JST'>September 25, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to AWS CodeDeployでクロスアカウントデプロイの実行（パイプラインなし）" href="https://ecnedaced-seirots.github.io/post/a/cross-account-codedeploy/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

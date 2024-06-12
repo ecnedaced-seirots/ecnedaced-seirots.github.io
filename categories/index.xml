@@ -6,13 +6,20 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 11 Jun 2024 22:24:49 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jun 2024 22:26:58 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lambda</title>
-      <link>https://ecnedaced-seirots.github.io/categories/lambda/</link>
+      <title>Python</title>
+      <link>https://ecnedaced-seirots.github.io/categories/python/</link>
+      <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/categories/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AWS Lambda</title>
+      <link>https://ecnedaced-seirots.github.io/categories/aws-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/categories/aws-lambda/</guid>
       <description></description>
     </item>
     <item>
@@ -20,13 +27,6 @@
       <link>https://ecnedaced-seirots.github.io/categories/k8s/</link>
       <pubDate>Thu, 06 Jun 2024 23:08:45 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/categories/k8s/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://ecnedaced-seirots.github.io/categories/python/</link>
-      <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/python/</guid>
       <description></description>
     </item>
     <item>
@@ -174,13 +174,6 @@
       <link>https://ecnedaced-seirots.github.io/categories/mind-hacks/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/categories/mind-hacks/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AWS Lambda</title>
-      <link>https://ecnedaced-seirots.github.io/categories/aws-lambda/</link>
-      <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/aws-lambda/</guid>
       <description></description>
     </item>
     <item>

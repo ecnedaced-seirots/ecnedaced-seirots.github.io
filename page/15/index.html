@@ -148,6 +148,28 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理の超シンプルな例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前回投稿で言及したTerraformのループ処理を、めっちゃシンプルなパターンでやってみた。
+前回投稿
+Terraform loop処理のリンク集
+参考記事
+Terraformで配列をloopする時はfor_eachを使った方がいい
+やったこと Terraformのセットアップは割愛。作業ディレクトリには以下のtfコードがある。
+work_dir/ ├── codecommit.tf ├── init.tf ├── variables.tf └── vpc.tf 以下は初期化ファイル。terraform init で初期化実行すみである。VPCも別途サクッと作ってある。ひとりPoCだからremote_stateにする必要もないのだが、なんとなくtfstateをS3に保管するためbackendの定義がある。
+init.tf
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } terraform { required_version = &#34;1.0.11&#34; backend &#34;s3&#34; { bucket = &#34;my-terraform-poc-repository&#34; key = &#34;poc/poc.tfstate&#34; region = &#34;ap-northeast-1&#34; } } で、肝心のloop処理。最初なので脳に優しく、超シンプルなパターンでいく。CodeCommitリポジトリの作成はパラメータが少ないので、参考記事を参照し、これで試した。他にもパラメータが少ないやつならなんでもいいけど。今回セットする値はrepository_nameとdescriptionの2点だけ。
+variable.tf
+variable &#34;codecommit_param_list&#34; { type = map(map(string)) default = { param1 = { repository_name = &#34;repo001&#34; description = &#34;desciption for repo001&#34; } param2 = { repository_name = &#34;repo002&#34; description = &#34;desciption for repo002&#34; } param3 = { repository_name = &#34;repo003&#34; description = &#34;desciption for repo003&#34; } } } codecommit....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-11-23 15:00:00 +0900 JST'>November 23, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の超シンプルな例" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Terraform loop処理のリンク集
     </h2>
   </header>
@@ -245,19 +267,6 @@ import base64 import json import zlib import datetime import os import boto3 fro
   </div>
   <footer class="entry-footer"><span title='2021-11-14 12:00:00 +0900 JST'>November 14, 2021</span></footer>
   <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">英語メモ - elaborate
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>elaborate 複雑な、入り組んだ 精巧な、精密な 入念な、苦心の末の 他動詞としては「〜を詳しく調べる」
-Irvine Welshの&#34;Trainspotting&#34;読書中に登場した単語だと思うが、何ページかはもう覚えていない。</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-13 13:00:00 +0900 JST'>November 13, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to 英語メモ - elaborate" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
