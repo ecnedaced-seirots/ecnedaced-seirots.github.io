@@ -28,6 +28,7 @@ import boto3 import collections from datetime import datetime, date, time, timed
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/">
 <noscript>
     <style>
         #theme-toggle,
@@ -64,7 +65,10 @@ import boto3 import collections from datetime import datetime, date, time, timed
         }
 
     </style>
-</noscript><meta property="og:title" content="CloudWatch LogsからS3にエクスポート(Lambda/Python)" />
+</noscript>
+  
+
+<meta property="og:title" content="CloudWatch LogsからS3にエクスポート(Lambda/Python)" />
 <meta property="og:description" content="CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
@@ -180,6 +184,8 @@ import boto3 import collections from datetime import datetime, date, time, timed
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -381,11 +387,11 @@ START RequestId: 4880df55-4576-4ccd-8edc-daecb18b0686 Version: $LATEST
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">Cloudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/s3/">S3</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws-cli/">aws cli</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws-cli/">Aws Cli</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/ryu-quotes-3/">

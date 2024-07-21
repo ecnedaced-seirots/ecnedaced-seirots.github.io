@@ -24,6 +24,7 @@ import base64 import json import zlib import datetime import os import boto3 fro
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,7 +61,10 @@ import base64 import json import zlib import datetime import os import boto3 fro
         }
 
     </style>
-</noscript><meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" />
+</noscript>
+  
+
+<meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)" />
 <meta property="og:description" content="表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
@@ -168,6 +172,8 @@ import base64 import json import zlib import datetime import os import boto3 fro
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -380,11 +386,11 @@ import base64 import json import zlib import datetime import os import boto3 fro
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">Cloudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

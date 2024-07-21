@@ -21,6 +21,7 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/">
 <noscript>
     <style>
         #theme-toggle,
@@ -57,7 +58,10 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
         }
 
     </style>
-</noscript><meta property="og:title" content="Pythonのdatetime, zoneinfo周辺など" />
+</noscript>
+  
+
+<meta property="og:title" content="Pythonのdatetime, zoneinfo周辺など" />
 <meta property="og:description" content=" 
 Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。" />
 <meta property="og:type" content="article" />
@@ -101,8 +105,8 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
   "keywords": [
     "python"
   ],
-  "articleBody": " Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。\n\u003e\u003e\u003e from datetime import datetime \u003e\u003e\u003e rom zoneinfo import ZoneInfo # 現在時刻をTokyoのタイムゾーンとしてセットする \u003e\u003e\u003e from zoneinfo import ZoneInfo \u003e\u003e\u003e tz = ZoneInfo(\"Asia/Tokyo\") \u003e\u003e\u003e now = datetime.now(tz) \u003e\u003e\u003e print(now) 2024-06-12 22:12:59.704388+09:00 # ミリ秒までいらない。replaceで切り捨てる。 \u003e\u003e\u003e now2 = now.replace(microsecond = 0) \u003e\u003e\u003e print(now2) 2024-06-12 22:12:59+09:00 # 日付/時間だけ取得する \u003e\u003e\u003e day = now2.date() \u003e\u003e\u003e print(day) 2024-06-12 \u003e\u003e\u003e time = now2.time() \u003e\u003e\u003e print(time) 22:12:59 ちなみにzoneinfoは、\nWindows環境では「tzdata」をpipで入れておかないとエラーになる。\nとのことだ。確かにWindowsでは動かなかった。\n参考\nLambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん\nPython 標準ライブラリ zoneinfo IANAタイムゾーン\npython datetimeの切り捨て\n[Python]datetimeから日付のみを取得するには？\n",
-  "wordCount" : "70",
+  "articleBody": " Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。\n\u003e\u003e\u003e from datetime import datetime \u003e\u003e\u003e from zoneinfo import ZoneInfo # 現在時刻をTokyoのタイムゾーンとしてセットする \u003e\u003e\u003e tz = ZoneInfo(\"Asia/Tokyo\") \u003e\u003e\u003e now = datetime.now(tz) \u003e\u003e\u003e print(now) 2024-06-12 22:12:59.704388+09:00 # ミリ秒までいらない。replaceで切り捨てる。 \u003e\u003e\u003e now2 = now.replace(microsecond = 0) \u003e\u003e\u003e print(now2) 2024-06-12 22:12:59+09:00 # 日付/時間だけ取得する \u003e\u003e\u003e day = now2.date() \u003e\u003e\u003e print(day) 2024-06-12 \u003e\u003e\u003e time = now2.time() \u003e\u003e\u003e print(time) 22:12:59 時刻を任意のタイムゾーンに変換するにはastimezoneを利用できるが、元の値がnaiveかawareかで意味が変わってくるらしい。\nnaiveから：ローカルタイムとみなしてタイムゾーン変更します。 awareから：タイムゾーン変更します。 dt_jst = dt.astimezone(tz) ちなみにzoneinfoは、\nWindows環境では「tzdata」をpipで入れておかないとエラーになる。\nとのことだ。確かにWindowsでは動かなかった。\n参考\nLambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん\nPython 標準ライブラリ zoneinfo IANAタイムゾーン\npython datetimeの切り捨て\n[Python]datetimeから日付のみを取得するには？\n【Python datetime】naiveとawareの変換\n",
+  "wordCount" : "73",
   "inLanguage": "en",
   "datePublished": "2024-06-12T22:26:58+09:00",
   "dateModified": "2024-06-12T22:26:58+09:00",
@@ -159,6 +163,8 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -201,10 +207,9 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
 <p>Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。</p>
 <p> </p>
 <pre tabindex="0"><code>&gt;&gt;&gt; from datetime import datetime
-&gt;&gt;&gt; rom zoneinfo import ZoneInfo
+&gt;&gt;&gt; from zoneinfo import ZoneInfo
 
 # 現在時刻をTokyoのタイムゾーンとしてセットする
-&gt;&gt;&gt; from zoneinfo import ZoneInfo
 &gt;&gt;&gt; tz = ZoneInfo(&#34;Asia/Tokyo&#34;)
 &gt;&gt;&gt; now = datetime.now(tz)
 &gt;&gt;&gt; print(now)
@@ -222,6 +227,11 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
 &gt;&gt;&gt; time = now2.time()
 &gt;&gt;&gt; print(time)
 22:12:59
+</code></pre><p>時刻を任意のタイムゾーンに変換するにはastimezoneを利用できるが、元の値がnaiveかawareかで意味が変わってくるらしい。</p>
+<pre><code>naiveから：ローカルタイムとみなしてタイムゾーン変更します。
+awareから：タイムゾーン変更します。
+</code></pre>
+<pre tabindex="0"><code>dt_jst = dt.astimezone(tz)  
 </code></pre><p> </p>
 <p>ちなみにzoneinfoは、</p>
 <blockquote>
@@ -233,7 +243,8 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
 <a href="https://zenn.dev/shimo_s3/articles/e15fac5b62af48">Lambda(Python3.9)でzoneinfoを使ってタイムゾーン設定するとかんたん</a><br>
 <a href="https://marusankakusikaku.jp/python/standard-library/zoneinfo/">Python 標準ライブラリ zoneinfo IANAタイムゾーン</a><br>
 <a href="https://teratail.com/questions/285022">python datetimeの切り捨て</a><br>
-<a href="https://www.choge-blog.com/programming/pythondatetimegetdateonly/">[Python]datetimeから日付のみを取得するには？</a></p>
+<a href="https://www.choge-blog.com/programming/pythondatetimegetdateonly/">[Python]datetimeから日付のみを取得するには？</a><br>
+<a href="https://qiita.com/SaitoTsutomu/items/ad66a614b92a76316f0e">【Python datetime】naiveとawareの変換</a></p>
 <p> </p>
 
     
@@ -258,9 +269,14 @@ Pythonの時間の扱い、何度書いても忘れてしまう。そしてタ�
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">Python</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/d/git-merge-branch/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む</span>
+  </a>
   <a class="next" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
     <span class="title">Next »</span>
     <br>

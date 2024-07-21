@@ -22,6 +22,7 @@ cicd.tf
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,7 +59,10 @@ cicd.tf
         }
 
     </style>
-</noscript><meta property="og:title" content="Terraform loop処理の応用編(2) - CI/CD" />
+</noscript>
+  
+
+<meta property="og:title" content="Terraform loop処理の応用編(2) - CI/CD" />
 <meta property="og:description" content="前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
 cicd.tf
 #################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var." />
@@ -162,6 +166,8 @@ cicd.tf
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -474,7 +480,7 @@ variable &#34;pipeline_param_list&#34; {
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">Terraform</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/codedeploy/">CodeDeploy</a></li>

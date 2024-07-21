@@ -31,6 +31,7 @@ trust-policy.json
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/">
 <noscript>
     <style>
         #theme-toggle,
@@ -67,7 +68,10 @@ trust-policy.json
         }
 
     </style>
-</noscript><meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" />
+</noscript>
+  
+
+<meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" />
 <meta property="og:description" content="表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
@@ -189,6 +193,8 @@ trust-policy.json
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -433,10 +439,10 @@ $ aws iam attach-role-policy --role-name custom-event-mail-role --policy-arn arn
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">EventBridge</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

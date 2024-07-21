@@ -24,6 +24,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,7 +61,10 @@ import boto3 import json import os import re from botocore.exceptions import Cli
         }
 
     </style>
-</noscript><meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" />
+</noscript>
+  
+
+<meta property="og:title" content="AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" />
 <meta property="og:description" content="以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
 とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
@@ -168,6 +172,8 @@ import boto3 import json import os import re from botocore.exceptions import Cli
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -326,10 +332,10 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">EventBridge</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

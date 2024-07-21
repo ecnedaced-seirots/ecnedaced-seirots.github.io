@@ -28,6 +28,7 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/">
 <noscript>
     <style>
         #theme-toggle,
@@ -64,7 +65,10 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
         }
 
     </style>
-</noscript><meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" />
+</noscript>
+  
+
+<meta property="og:title" content="CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" />
 <meta property="og:description" content="AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
 参考
@@ -180,6 +184,8 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -462,11 +468,11 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">Cloudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

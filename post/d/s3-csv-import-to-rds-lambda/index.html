@@ -21,6 +21,7 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/">
 <noscript>
     <style>
         #theme-toggle,
@@ -57,7 +58,10 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
         }
 
     </style>
-</noscript><meta property="og:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda" />
+</noscript>
+  
+
+<meta property="og:title" content="S3上のCSVをRDS(PostgreSQL)にインポートするLambda" />
 <meta property="og:description" content=" 
 S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）" />
 <meta property="og:type" content="article" />
@@ -101,8 +105,8 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
   "keywords": [
     "AWS", "S3", "RDS", "Lambda", "Python", "PostgreSQL"
   ],
-  "articleBody": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\nS3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）\n前提条件\nRDSに接続するため、Lambdaの配置はVPCとする。\nPostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）\nimport json import boto3 import psycopg2 # SecretManagerからRDS/DB認証情報取得 # secret_name は実際に作成したシークレットを指定 def getCredentials(): credential = {} secret_name = \"secretname\" region_name = \"ap-northeast-1\" client = boto3.client( service_name='secretsmanager', region_name=region_name ) get_secret_value_response = client.get_secret_value( SecretId=secret_name ) secret = json.loads(get_secret_value_response['SecretString']) credential['username'] = secret['username'] credential['password'] = secret['password'] credential['host'] = \"RDS endpoint URL\" credential['db'] = \"databasename\" return credential def lambda_handler(event, context): #イベント全体の定義 data = event s = json.dumps(data) e = json.loads(s) #イベントデータからS3部分抽出 record = e['Records'] s3_event_record = (record[0]['s3'] #バケット名の定義 bucket = s3_event_record['bucket']['name'] print('bucket name:' + bucket) #オブジェクト名の定義（prefixを含む） key = s3_event_record['object']['key'] print('prefix:' + key) #オブジェクトのファイル名のみ抽出（ダウンロード時に使用） path = key.split('/') file = path[-1] #区切り文字で区切った最後の文字列を取得 tmpfile = '/tmp' + file #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード s3 = boto3.resource('s3') s3.Bucket(bucket).download_file(key, tmpfile) # DB接続 credential = getCredentials() connection = psycopg2.connect(user=credential['username'], password=credential['password'], host=credential['host'], database=credential['db']) cursor = connection.cursor() #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。 with open(tmpfile, 'r') as f: cursor.copy_from(f, 'data_tbl', sep=',') connection.commit() 参考\n・SecretManager経由の接続\nPostgreSQL with AWS Lambda using Python\n・インポート部分\ncopy data from csv to postgresql using python\n",
-  "wordCount" : "153",
+  "articleBody": " S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）\nRDSのデータをS3にエクスポートする逆パターンについては以下記事参照。\nRDS(PostgreSQL)のデータをS3にエクスポートするLambda\nS3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）\n前提条件\nRDSに接続するため、Lambdaの配置はVPCとする。 PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛） import json import boto3 import psycopg2 # SecretManagerからRDS/DB認証情報取得 # secret_name は実際に作成したシークレットを指定 def getCredentials(): credential = {} secret_name = \"secretname\" region_name = \"ap-northeast-1\" client = boto3.client( service_name='secretsmanager', region_name=region_name ) get_secret_value_response = client.get_secret_value( SecretId=secret_name ) secret = json.loads(get_secret_value_response['SecretString']) credential['username'] = secret['username'] credential['password'] = secret['password'] credential['host'] = \"RDS endpoint URL\" credential['db'] = \"databasename\" return credential def lambda_handler(event, context): #イベント全体の定義 data = event s = json.dumps(data) e = json.loads(s) #イベントデータからS3部分抽出 record = e['Records'] s3_event_record = (record[0]['s3'] #バケット名の定義 bucket = s3_event_record['bucket']['name'] print('bucket name:' + bucket) #オブジェクト名の定義（prefixを含む） key = s3_event_record['object']['key'] print('prefix:' + key) #オブジェクトのファイル名のみ抽出（ダウンロード時に使用） path = key.split('/') file = path[-1] #区切り文字で区切った最後の文字列を取得 tmpfile = '/tmp' + file #バケット上のCSVを/tmp/ファイル名.csvとして一時領域にダウンロード s3 = boto3.resource('s3') s3.Bucket(bucket).download_file(key, tmpfile) # DB接続 credential = getCredentials() connection = psycopg2.connect(user=credential['username'], password=credential['password'], host=credential['host'], database=credential['db']) cursor = connection.cursor() #ダウンロードしたCSVをDBにインポート。sepは区切り文字指定。 with open(tmpfile, 'r') as f: cursor.copy_from(f, 'data_tbl', sep=',') connection.commit() 参考\n・SecretManager経由の接続\nPostgreSQL with AWS Lambda using Python\n・インポート部分\ncopy data from csv to postgresql using python\n",
+  "wordCount" : "155",
   "inLanguage": "en",
   "datePublished": "2024-06-11T22:24:49+09:00",
   "dateModified": "2024-06-11T22:24:49+09:00",
@@ -159,6 +163,8 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -199,17 +205,15 @@ S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あ
   </header> 
   <div class="post-content"><p> </p>
 <p>S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）</p>
+<p>RDSのデータをS3にエクスポートする逆パターンについては以下記事参照。<br>
+<a href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/">RDS(PostgreSQL)のデータをS3にエクスポートするLambda</a></p>
 <p> </p>
 <p>S3イベントがトリガーでLambdaが起動し、S3バケット内のCSVを一時領域にダウンロードしてRDSにインポートという流れ。DB認証情報はSecretManagerに格納して取得している。（認証取得は環境変数セットでもいけるけど昨今の流れ的にはSecret格納が優勢ということで）</p>
 <p> </p>
 <p><strong>前提条件</strong></p>
 <ol>
-<li>
-<p>RDSに接続するため、Lambdaの配置はVPCとする。</p>
-</li>
-<li>
-<p>PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）</p>
-</li>
+<li>RDSに接続するため、Lambdaの配置はVPCとする。</li>
+<li>PostgreSQL接続時に外部ライブラリのpsycopg2が必要となる。Lambdaのレイヤーに登録してからコード内で定義する。（今回詳細手順は割愛）</li>
 </ol>
 <pre tabindex="0"><code>import json
 import boto3
@@ -312,8 +316,8 @@ def lambda_handler(event, context):
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/s3/">S3</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/rds/">RDS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">Python</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/postgresql/">PostgreSQL</a></li>
     </ul>
 <nav class="paginav">

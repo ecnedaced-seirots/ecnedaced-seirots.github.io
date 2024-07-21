@@ -24,6 +24,7 @@ lambda_logs.tf（定数バージョン）
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,7 +61,10 @@ lambda_logs.tf（定数バージョン）
         }
 
     </style>
-</noscript><meta property="og:title" content="Terraform loop処理の応用編(4) - Lambda" />
+</noscript>
+  
+
+<meta property="og:title" content="Terraform loop処理の応用編(4) - Lambda" />
 <meta property="og:description" content="今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
 この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
 work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
@@ -168,6 +172,8 @@ lambda_logs.tf（定数バージョン）
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -500,11 +506,11 @@ variable &#34;logs_param_list&#34; {
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">Terraform</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">Cloudwatchlogs</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/life-1214/">

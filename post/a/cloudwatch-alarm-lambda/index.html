@@ -25,6 +25,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,7 +62,10 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
         }
 
     </style>
-</noscript><meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" />
+</noscript>
+  
+
+<meta property="og:title" content="CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" />
 <meta property="og:description" content="CloudWatchアラーム &#43; SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge &#43; SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
 ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
@@ -171,6 +175,8 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -362,12 +368,12 @@ $ aws events put-rule --name &#34;cw-alarm-rule&#34; \
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">cloudwatchalarm</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">Cloudwatchalarm</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">EventBridge</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

@@ -23,6 +23,7 @@ event_rule.tf
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-4/">
 <noscript>
     <style>
         #theme-toggle,
@@ -59,7 +60,10 @@ event_rule.tf
         }
 
     </style>
-</noscript><meta property="og:title" content="Terraform loop処理の応用編(3) - Event rule" />
+</noscript>
+  
+
+<meta property="og:title" content="Terraform loop処理の応用編(3) - Event rule" />
 <meta property="og:description" content="過去記事Terraform loop処理の応用編(2)で、AWS Code兄弟のリソースをTerraformのloop処理で作成した。それとは別に、CodePipelineのトリガーをEventBridgeルールにしたかったので追加処理を書いた。パイプラインの数だけ対応するルールを作成するため、これもloop処理で書く。Code兄弟の分も含めて全て同じtfファイルにまとめてもよいが、ここでは分割している。
 以下tfコード本体に、ルールとターゲットを作成する処理を書く。
 event_rule.tf
@@ -165,6 +169,8 @@ event_rule.tf
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -324,10 +330,10 @@ EOT
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">Terraform</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/iac/">IaC</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">EventBridge</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/codepipeline/">CodePipeline</a></li>
     </ul>
 <nav class="paginav">

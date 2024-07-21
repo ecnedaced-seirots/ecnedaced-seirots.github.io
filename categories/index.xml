@@ -6,8 +6,15 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 12 Jun 2024 22:26:58 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jul 2024 22:28:40 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git</title>
+      <link>https://ecnedaced-seirots.github.io/categories/git/</link>
+      <pubDate>Sun, 21 Jul 2024 22:28:40 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/categories/git/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Python</title>
       <link>https://ecnedaced-seirots.github.io/categories/python/</link>
@@ -23,7 +30,7 @@
       <description></description>
     </item>
     <item>
-      <title>k8s</title>
+      <title>K8s</title>
       <link>https://ecnedaced-seirots.github.io/categories/k8s/</link>
       <pubDate>Thu, 06 Jun 2024 23:08:45 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/categories/k8s/</guid>
@@ -104,13 +111,6 @@
       <link>https://ecnedaced-seirots.github.io/categories/terraform/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/categories/terraform/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Git</title>
-      <link>https://ecnedaced-seirots.github.io/categories/git/</link>
-      <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/git/</guid>
       <description></description>
     </item>
     <item>

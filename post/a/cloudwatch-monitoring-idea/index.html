@@ -42,6 +42,7 @@ CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく�
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/">
 <noscript>
     <style>
         #theme-toggle,
@@ -78,7 +79,10 @@ CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく�
         }
 
     </style>
-</noscript><meta property="og:title" content="AWS監視の方式を整理したい" />
+</noscript>
+  
+
+<meta property="og:title" content="AWS監視の方式を整理したい" />
 <meta property="og:description" content="AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
 監視方式大枠 ノード監視
@@ -222,6 +226,8 @@ CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく�
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -444,12 +450,12 @@ SSM(Systems Manager)は使わずにprocstatプラグインだけでもなんと�
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">cloudwatchlogs</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">cloudwatchalarm</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws-systems-manager/">aws systems manager</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">eventbridge</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/">Cloudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">Cloudwatchalarm</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws-systems-manager/">Aws Systems Manager</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">EventBridge</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

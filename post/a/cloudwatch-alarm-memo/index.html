@@ -32,6 +32,7 @@ snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-memo/">
 <noscript>
     <style>
         #theme-toggle,
@@ -68,7 +69,10 @@ snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&
         }
 
     </style>
-</noscript><meta property="og:title" content="CloudWatchアラーム作成時のメモ（過去事例）" />
+</noscript>
+  
+
+<meta property="og:title" content="CloudWatchアラーム作成時のメモ（過去事例）" />
 <meta property="og:description" content="AWSで、CloudWatchアラームのメッセージをSNSトピックかましてメール送信。昔からよくあるオーソドックスなパターンだが、しばらく縁がなかったので記憶がかすんでいる。過去に構築した時の記録を掘り返してみる。
 数年前、CloudFormation（CFn）で環境構築したのだが（主担当は別のメンバー）、CWアラーム作成はCFnで作るのに不向きということでAWS CLIで作成していた。何故CFnが不向きなのか、理由は何だったか思い出せない。以下の記事を見ると普通にCFnでアラーム作成しているから問題なさそうではあるのだが&hellip;
 CloudFormationでCloudWatchAlermを作成する
@@ -192,6 +196,8 @@ snstopic=&#34;arn:aws:sns:ap-northeast-1:[AWSアカウントID]:test-alert-mail&
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -305,10 +311,10 @@ $ aws cloudwatch put-metric-alarm \
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">cloudwatchalarm</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">amazon sns</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">Cloudwatchalarm</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">

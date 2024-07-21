@@ -27,6 +27,7 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,7 +64,10 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
         }
 
     </style>
-</noscript><meta property="og:title" content="Terraformのtfvarsファイルを自動生成する" />
+</noscript>
+  
+
+<meta property="og:title" content="Terraformのtfvarsファイルを自動生成する" />
 <meta property="og:description" content="過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
 Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
@@ -177,6 +181,8 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -362,10 +368,10 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">terraform</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">python</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/pandas/">pandas</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/jinja2/">jinja2</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">Terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/python/">Python</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/pandas/">Pandas</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/jinja2/">Jinja2</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-2/">

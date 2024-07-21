@@ -46,6 +46,7 @@ $ aws codepipeline start-pipeline-execution --name [パイプライン名] ア�
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/aws-crossaccount-pipeline-1/">
 <noscript>
     <style>
         #theme-toggle,
@@ -82,7 +83,10 @@ $ aws codepipeline start-pipeline-execution --name [パイプライン名] ア�
         }
 
     </style>
-</noscript><meta property="og:title" content="AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" />
+</noscript>
+  
+
+<meta property="og:title" content="AWS CodeDeployでクロスアカウントデプロイ実行（パイプラインあり-1）" />
 <meta property="og:description" content="前回投稿ではパイプラインなしでAWS クロスアカウントデプロイをやった。次はパイプラインを使ってやってみる。長くなるので前半/後半に分ける。
 やりたいこと
 AWSの異なるアカウント間で、CodePipelineによりCodeDeployからec2インスタンスにリソースをデプロイする。ソースはリソース配布側のCodeCommit。この記事では配布元を開発環境/アカウントA、配布先を検証環境/アカウントBとして話を進める。（ec2はオートスケールもなくただ単に配布するだけなので単一アカウントだったら簡単な話なんだが、アカウント跨ぐとなるとめっちゃ面倒くさい&hellip;）
@@ -234,6 +238,8 @@ $ aws codepipeline start-pipeline-execution --name [パイプライン名] ア�
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
             </div>
         </div>
         <ul id="menu">
