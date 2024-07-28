@@ -6,8 +6,16 @@
     <description>Recent content in Git on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Jul 2024 10:42:40 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2024 11:04:57 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gitでリモート追跡ブランチを削除する</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/</link>
+      <pubDate>Sun, 28 Jul 2024 11:04:57 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Gitでリモート追跡ブランチを削除。基本的なことだけど、改めて。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Gitで強制的にpullを実行したい時と、commitを取り消したい時</title>
       <link>https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/</link>
