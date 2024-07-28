@@ -6,8 +6,16 @@
     <description>Recent content in Git on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 21 Jul 2024 22:28:40 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2024 10:42:40 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gitで強制的にpullを実行したい時と、commitを取り消したい時</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/</link>
+      <pubDate>Sun, 28 Jul 2024 10:42:40 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む</title>
       <link>https://ecnedaced-seirots.github.io/post/d/git-merge-branch/</link>

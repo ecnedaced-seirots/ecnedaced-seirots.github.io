@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む | Go Buddy Go</title>
+<title>Gitで強制的にpullを実行したい時と、commitを取り消したい時 | Go Buddy Go</title>
 <meta name="keywords" content="Git">
 <meta name="description" content=" 
-masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。">
+Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/git-merge-branch/">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -21,7 +21,7 @@ masterブランチに別の作業ブランチの変更が取り込まれてい�
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/git-merge-branch/">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,18 +61,18 @@ masterブランチに別の作業ブランチの変更が取り込まれてい�
 </noscript>
   
 
-<meta property="og:title" content="Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む" />
+<meta property="og:title" content="Gitで強制的にpullを実行したい時と、commitを取り消したい時" />
 <meta property="og:description" content=" 
-masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。" />
+Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/git-merge-branch/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2024-07-21T22:28:40+09:00" />
-<meta property="article:modified_time" content="2024-07-21T22:28:40+09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-07-28T10:42:40+09:00" />
+<meta property="article:modified_time" content="2024-07-28T10:42:40+09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む"/>
+<meta name="twitter:title" content="Gitで強制的にpullを実行したい時と、commitを取り消したい時"/>
 <meta name="twitter:description" content=" 
-masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。"/>
+Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。"/>
 
 
 <script type="application/ld+json">
@@ -89,8 +89,8 @@ masterブランチに別の作業ブランチの変更が取り込まれてい�
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む",
-      "item": "https://ecnedaced-seirots.github.io/post/d/git-merge-branch/"
+      "name": "Gitで強制的にpullを実行したい時と、commitを取り消したい時",
+      "item": "https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/"
     }
   ]
 }
@@ -99,20 +99,20 @@ masterブランチに別の作業ブランチの変更が取り込まれてい�
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む",
-  "name": "Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む",
-  "description": " masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。\n",
+  "headline": "Gitで強制的にpullを実行したい時と、commitを取り消したい時",
+  "name": "Gitで強制的にpullを実行したい時と、commitを取り消したい時",
+  "description": " Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。\n",
   "keywords": [
     "Git"
   ],
-  "articleBody": " masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。\n以下コマンド実行。\n$ git checkout master $ git pull origin master $ git checkout [作業ブランチ] $ git merge master $ git push origin [作業ブランチ] 参考\nGit】作業ブランチに最新のmasterを反映させる方法\n合わせてこれも。mergeのタイミングで画面が切り替わってこんなメッセージが表示される場合がある。\nPlease enter a commit message to explain why this merge is necessary.\nこれはコミットメッセージ残せよ、と言ってるのはわかるけど入力しようにも画面が反応しないし、戸惑う人も多いと思う。簡潔に言うと、コミットメッセージ残さない場合は、「esc押下 + :q」で抜ける。コミットメッセージ残すならi押下でメッセージを入力。(vimと同じ)。\n環境によってはターミナルがGNU nanoエディタのケースもある。その場合は「Ctrl + X」で抜ける。\n参考\n【Git】マージする時に「Please enter a commit message to explain why this merge is necessary」と表示された時の対処法\n次に、他の作業ブランチの変更を取り込むケース。想定する場面としては、他の作業ブランチの変更がmasterにマージされていれば自分の作業ブランチでmasterをマージすればよいのだが、何らかの事情でそれができないタイミングでは他ブランチの変更を直接取り込むことになる。\n現在のブランチtest1に、test2ブランチの差分を取り込む例。（ブランチtest1にて実施）\ntest2ブランチをfetchする\n$ git fetch origin test2 差分を確認\n$ git diff test1 origin/test2 mergeで取り込む\n$ git merge origin/test2 先に書いたようにコミットメッセージ残しなさい、とvim画面が開いたら:qで抜ける。\n参考\n【Git】git mergeコマンドで異なるブランチの更新分を取り込む\n（元ネタは2023年執筆記事）\n",
-  "wordCount" : "83",
+  "articleBody": " Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。\n$ git fetch origin [ブランチ名] $ git reset --hard origin/[ブランチ名] やってることは、指定した対象ブランチの状態をfetchで実質ダウンロードして、それをcheckout中のブランチにセットするイメージ。これが実行された時点で、それまでのcheckout中ブランチの状態は消滅する。\ngit pull origin/[ブランチ名] して、何故か期待値と違う状況になることもあるから…「細かい話はいいからとにかくpullできりゃいいんだよ！」てな時に。\nTipsその2。Gitで、意図せぬコミットをしてしまった場合。そもそも不要なリソースなら$ git rm [ファイル名]で削除すればよい。が、「git管理下には起きたくないが必要なリソース」の場合はどうするか。\n例えば本来なら.gitignoreに書いておくべきだが、それがない段階でやってしまうケースとか。絶対ありえる状況だけど、いざとなったら「あれ、どうするんだっけ」と詰まったのでメモ。\n以下により、対象リソースが「git管理外だがOS上には残る」状態にできる。\n$ git rm --cached [ファイル名] $ git rm --cached -r [ディレクトリ名] git add（追加）しただけの段階で気づいたら、以下実行。\n$ git reset [ファイル名] $ git reset /ディレクトリ名/ しかし一番最初に実行した追加を取り消すには、コミット取り消しと同様に git rm --cached を使う、とのこと。\ngit レポジトリを作成した直後、一番最初のに実行した git add を取り消したい場合、まだ HEAD の参照が存在しないため、上記の git reset を使った取消方法が利用できません。（これは、新規追加したファイルを初めての git add した場合も同様です。）レポジトリ内にリセット対象があってはじめてリセットできるのです。\nさて、そのような場合の git add の取り消しは、インデックスのファイルを直接削除するコマンド「git rm –cached」を利用するしかありません。\ngit add の取り消し方法と、関連コマンドまとめ\n無事クリーンにした後は、.gitignoreへ書いておくのを忘れずに。\nこのテーマ、他にも追加・コミットの段階や戻したい状態により対応内容が異なってくる様子だが、追いすぎると際限なくなるので今回はこれだけにしておく。\n（2022年執筆記事の焼き直しです）\n",
+  "wordCount" : "73",
   "inLanguage": "en",
-  "datePublished": "2024-07-21T22:28:40+09:00",
-  "dateModified": "2024-07-21T22:28:40+09:00",
+  "datePublished": "2024-07-28T10:42:40+09:00",
+  "dateModified": "2024-07-28T10:42:40+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/d/git-merge-branch/"
+    "@id": "https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/"
   },
   "publisher": {
     "@type": "Organization",
@@ -197,57 +197,51 @@ masterブランチに別の作業ブランチの変更が取り込まれてい�
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む
+      Gitで強制的にpullを実行したい時と、commitを取り消したい時
     </h1>
-    <div class="post-meta"><span title='2024-07-21 22:28:40 +0900 JST'>July 21, 2024</span>
+    <div class="post-meta"><span title='2024-07-28 10:42:40 +0900 JST'>July 28, 2024</span>
 
 </div>
   </header> 
   <div class="post-content"><p> </p>
-<p>masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。</p>
-<p>以下コマンド実行。</p>
-<pre tabindex="0"><code>$ git checkout master
-
-$ git pull origin master
-
-$ git checkout [作業ブランチ]
-
-$ git merge master
-
-$ git push origin [作業ブランチ]
+<p>Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。</p>
+<pre tabindex="0"><code>$ git fetch origin [ブランチ名]
+$ git reset --hard origin/[ブランチ名]
 </code></pre><p> </p>
-<p>参考<br>
-<a href="href=%22https://mizukazu.com/%E3%80%90git%E3%80%91%E4%BD%9C%E6%A5%AD%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%81%AB%E6%9C%80%E6%96%B0%E3%81%AEmaster%E3%82%92%E5%8F%8D%E6%98%A0%E3%81%95%E3%81%9B%E3%82%8B%E6%96%B9%E6%B3%95%EF%BC%81/">Git】作業ブランチに最新のmasterを反映させる方法</a></p>
+<p>やってることは、指定した対象ブランチの状態をfetchで実質ダウンロードして、それをcheckout中のブランチにセットするイメージ。これが実行された時点で、それまでのcheckout中ブランチの状態は消滅する。</p>
+<p><code>git pull origin/[ブランチ名]</code> して、何故か期待値と違う状況になることもあるから&hellip;「細かい話はいいからとにかくpullできりゃいいんだよ！」てな時に。</p>
 <p> </p>
-<p>合わせてこれも。mergeのタイミングで画面が切り替わってこんなメッセージが表示される場合がある。</p>
+<p>Tipsその2。Gitで、意図せぬコミットをしてしまった場合。そもそも不要なリソースなら<code>$ git rm [ファイル名]</code>で削除すればよい。が、「git管理下には起きたくないが必要なリソース」の場合はどうするか。</p>
+<p>例えば本来なら.gitignoreに書いておくべきだが、それがない段階でやってしまうケースとか。絶対ありえる状況だけど、いざとなったら「あれ、どうするんだっけ」と詰まったのでメモ。</p>
+<p>以下により、対象リソースが「git管理外だがOS上には残る」状態にできる。</p>
+<pre tabindex="0"><code>$ git rm --cached [ファイル名]
+$ git rm --cached -r [ディレクトリ名]
+</code></pre><p> </p>
+<p>git add（追加）しただけの段階で気づいたら、以下実行。</p>
+<pre tabindex="0"><code>$ git reset [ファイル名]
+$ git reset /ディレクトリ名/
+</code></pre><p> </p>
+<p>しかし一番最初に実行した追加を取り消すには、コミット取り消しと同様に <code>git rm --cached</code> を使う、とのこと。</p>
 <blockquote>
-<p>Please enter a commit message to explain why this merge is necessary.</p>
+<p>git レポジトリを作成した直後、一番最初のに実行した git add を取り消したい場合、まだ HEAD の参照が存在しないため、上記の git reset を使った取消方法が利用できません。（これは、新規追加したファイルを初めての git add した場合も同様です。）レポジトリ内にリセット対象があってはじめてリセットできるのです。</p>
+<p>さて、そのような場合の git add の取り消しは、インデックスのファイルを直接削除するコマンド「git rm &ndash;cached」を利用するしかありません。</p>
 </blockquote>
+<p><a href="https://www-creators.com/archives/1282">git add の取り消し方法と、関連コマンドまとめ</a></p>
 <p> </p>
-<p>これはコミットメッセージ残せよ、と言ってるのはわかるけど入力しようにも画面が反応しないし、戸惑う人も多いと思う。簡潔に言うと、コミットメッセージ残さない場合は、「esc押下 + :q」で抜ける。コミットメッセージ残すならi押下でメッセージを入力。(vimと同じ)。</p>
-<p>環境によってはターミナルがGNU nanoエディタのケースもある。その場合は「Ctrl + X」で抜ける。</p>
-<p>参考<br>
-<a href="https://codeclub965.com/?p=2985">【Git】マージする時に「Please enter a commit message to explain why this merge is necessary」と表示された時の対処法</a></p>
+<p>無事クリーンにした後は、.gitignoreへ書いておくのを忘れずに。</p>
+<p>このテーマ、他にも追加・コミットの段階や戻したい状態により対応内容が異なってくる様子だが、追いすぎると際限なくなるので今回はこれだけにしておく。</p>
+<p>（2022年執筆記事の焼き直しです）</p>
 <p> </p>
-<p>次に、他の作業ブランチの変更を取り込むケース。想定する場面としては、他の作業ブランチの変更がmasterにマージされていれば自分の作業ブランチでmasterをマージすればよいのだが、何らかの事情でそれができないタイミングでは他ブランチの変更を直接取り込むことになる。</p>
-<p>現在のブランチtest1に、test2ブランチの差分を取り込む例。（ブランチtest1にて実施）</p>
-<p> </p>
-<p>test2ブランチをfetchする</p>
-<pre tabindex="0"><code>$ git fetch origin test2
-</code></pre><p> </p>
-<p>差分を確認</p>
-<pre tabindex="0"><code>$ git diff test1 origin/test2
-</code></pre><p> </p>
-<p>mergeで取り込む</p>
-<pre tabindex="0"><code>$ git merge origin/test2
-</code></pre><p> </p>
-<p>先に書いたようにコミットメッセージ残しなさい、とvim画面が開いたら:qで抜ける。</p>
-<p> </p>
-<p>参考<br>
-<a href="https://pointsandlines.jp/env-tool/git-merge-other-branch">【Git】git mergeコマンドで異なるブランチの更新分を取り込む</a></p>
-<p>（元ネタは2023年執筆記事）</p>
 
     
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/d/git-merge-branch/">Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む</a></li>
+    
+  </ul>
 
   </div>
 
@@ -256,15 +250,10 @@ $ git push origin [作業ブランチ]
       <li><a href="https://ecnedaced-seirots.github.io/tags/git/">Git</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Gitで強制的にpullを実行したい時と、commitを取り消したい時</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/git-merge-branch/">
     <span class="title">Next »</span>
     <br>
-    <span>Pythonのdatetime, zoneinfo周辺など</span>
+    <span>Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む</span>
   </a>
 </nav>
 
