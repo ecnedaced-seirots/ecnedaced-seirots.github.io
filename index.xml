@@ -6,8 +6,15 @@
     <description>Recent content on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Jul 2024 11:04:57 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2024 21:06:07 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</guid>
+      <description>&lt;p&gt;AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Gitでリモート追跡ブランチを削除する</title>
       <link>https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/</link>

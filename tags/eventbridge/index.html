@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>EventBridge | Go Buddy Go</title>
+<title>Eventbridge | Go Buddy Go</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -59,13 +59,13 @@
 </noscript>
   
 
-<meta property="og:title" content="EventBridge" />
+<meta property="og:title" content="Eventbridge" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/eventbridge/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="EventBridge"/>
+<meta name="twitter:title" content="Eventbridge"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -138,9 +138,35 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    EventBridge
+    Eventbridge
   </h1>
 </header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-28 21:06:07 +0900 JST'>July 28, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">EC2のノード監視はEventBridgeだけで可能だった
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-05-27 11:22:42 +0900 JST'>May 27, 2022</span></footer>
+  <a class="entry-link" aria-label="post link to EC2のノード監視はEventBridgeだけで可能だった" href="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/"></a>
+</article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
@@ -236,29 +262,12 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   <footer class="entry-footer"><span title='2021-11-03 21:00:00 +0900 JST'>November 3, 2021</span></footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
-Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
-上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。
-各種リソースに類似の名称が多くて混乱するので、これも自分用に整理。以下、今回作成したリソース名称。
-アイテム 名称 SNSトピック custom-event-notification Lambda用IAMロール custom-event-mail-role Lambda関数 custom-mail-function eventルール custom-mail-rule ではここから作業内容の記録に入る。
-SNSトピック作成
-$ aws sns create-topic --name custom-event-notification サブスク（サブスクリプション）作成
-$ aws sns subscribe --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification --protocol email --notification-endpoint [my mail address] { &#34;SubscriptionArn&#34;: &#34;pending confirmation&#34; } 指定したアドレスにメールが届くので、リンク押下してconfirmする。その後マネコンのSNS画面を見るとサブスクのステータスがconfirmedになっているはず。
-または、以下確認コマンド
-$ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:ap-northeast-1:my-account-id:custom-event-notification ここからLambdaの作業に入る。最初にLambda用のIAMロールを作成。以下の内容で信頼ポリシー用のJSONファイルを用意し、それを指定してロール作成実行。
-trust-policy.json
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;lambda.amazonaws.com&#34; }, &#34;Action&#34;: &#34;sts:AssumeRole&#34; } ] } $ aws iam create-role --role-name custom-event-mail-role --assume-role-policy-document file://trust-policy....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-10-25 20:00:00 +0900 JST'>October 25, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://ecnedaced-seirots.github.io/tags/eventbridge/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

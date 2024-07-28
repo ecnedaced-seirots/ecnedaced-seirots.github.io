@@ -144,6 +144,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-28 21:06:07 +0900 JST'>July 28, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">S3上のCSVをRDS(PostgreSQL)にインポートするLambda
     </h2>
   </header>

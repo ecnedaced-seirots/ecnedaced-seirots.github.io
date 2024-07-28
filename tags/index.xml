@@ -6,8 +6,29 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Jul 2024 11:04:57 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2024 21:06:07 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Eventbridge</title>
+      <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lambada</title>
+      <link>https://ecnedaced-seirots.github.io/tags/lambada/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/lambada/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Git</title>
       <link>https://ecnedaced-seirots.github.io/tags/git/</link>
@@ -20,13 +41,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/python/</link>
       <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     <item>
@@ -174,13 +188,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/ec2/</link>
       <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/ec2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Eventbrigde</title>
-      <link>https://ecnedaced-seirots.github.io/tags/eventbrigde/</link>
-      <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/eventbrigde/</guid>
       <description></description>
     </item>
     <item>
@@ -384,13 +391,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/lgs/</link>
       <pubDate>Fri, 31 Dec 2021 06:00:00 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/lgs/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>EventBridge</title>
-      <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
-      <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/eventbridge/</guid>
       <description></description>
     </item>
     <item>

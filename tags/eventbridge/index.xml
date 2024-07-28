@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>EventBridge on Go Buddy Go</title>
+    <title>Eventbridge on Go Buddy Go</title>
     <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
-    <description>Recent content in EventBridge on Go Buddy Go</description>
+    <description>Recent content in Eventbridge on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 26 Dec 2021 16:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2024 21:06:07 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/eventbridge/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</title>
+      <link>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</guid>
+      <description>&lt;p&gt;AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>EC2のノード監視はEventBridgeだけで可能だった</title>
+      <link>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</link>
+      <pubDate>Fri, 27 May 2022 11:22:42 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/</guid>
+      <description>&lt;p&gt;タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
       <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>

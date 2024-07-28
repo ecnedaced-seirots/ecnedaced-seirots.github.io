@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>EC2のノード監視はEventBridgeだけで可能だった | Go Buddy Go</title>
-<meta name="keywords" content="eventbridge, monitoring, EC2, AWS">
-<meta name="description" content="タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。">
+<title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要 | Go Buddy Go</title>
+<meta name="keywords" content="AWS, Lambada, eventbridge">
+<meta name="description" content="AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -20,7 +20,7 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,16 +60,16 @@
 </noscript>
   
 
-<meta property="og:title" content="EC2のノード監視はEventBridgeだけで可能だった" />
-<meta property="og:description" content="タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。" />
+<meta property="og:title" content="EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" />
+<meta property="og:description" content="AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-05-27T11:22:42+09:00" />
-<meta property="article:modified_time" content="2022-05-27T11:22:42+09:00" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-07-28T21:06:07+09:00" />
+<meta property="article:modified_time" content="2024-07-28T21:06:07+09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="EC2のノード監視はEventBridgeだけで可能だった"/>
-<meta name="twitter:description" content="タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。"/>
+<meta name="twitter:title" content="EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要"/>
+<meta name="twitter:description" content="AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。"/>
 
 
 <script type="application/ld+json">
@@ -86,8 +86,8 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "EC2のノード監視はEventBridgeだけで可能だった",
-      "item": "https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/"
+      "name": "EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要",
+      "item": "https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"
     }
   ]
 }
@@ -96,20 +96,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "EC2のノード監視はEventBridgeだけで可能だった",
-  "name": "EC2のノード監視はEventBridgeだけで可能だった",
-  "description": "タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。\n",
+  "headline": "EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要",
+  "name": "EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要",
+  "description": "AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。\n",
   "keywords": [
-    "eventbridge", "monitoring", "EC2", "AWS"
+    "AWS", "Lambada", "eventbridge"
   ],
-  "articleBody": "タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。\n参考\nEC2インスタンスの３つの死活監視\nさらに詳細\nEC2 インスタンスの状態が変化したときに、カスタマイズした E メール通知を受信するにはどうすればよいですか?\n上記例の場合指定する状態が「任意の状態」なのでanyとなる。（どの状態でも通知がくる）\n「特定の状態」にチェックしてプルダウンからshutting-down,stopping,stopped,terminatedなどを選択すれば、これらの状態になった時のみ通知がくる。（試してないから断言できないけどそのはず）\n「イベントソース」で設定する内容 サービスプロバイダー：AWSのサービス AWSのサービス：EC2 イベントタイプ：EC2 instance State-change Notification 任意の状態 or 特定の状態を選択 任意のインスタンス or 個別のインスタンスIDを選択 他の事例と同様に、上記をポチポチやると設定内容のJSONが生成されるので、それを見ると何をやるのか分かりやすい。\nまた上記の例では入力トランスフォーマーによりSNSに直接連携しているが、件名・本文をカスタマイズするなら、別途用意したLambda関数と連携するよう設定する。\n",
-  "wordCount" : "26",
+  "articleBody": "AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。\nValidationException: RoleArn is not supported for target arn:aws:lambda:ap-northeast-1:[アカウントID]:function:lambda-hoge-func\nTerraformのドキュメントでもオプション扱いで、ロール指定が必要なサービスは以下の通りらしい。\nrole_arn (Optional) The Amazon Resource Name (ARN) of the IAM role to be used for this target when the rule is triggered. Required if ecs_target is used or target in arn is EC2 instance, Kinesis data stream or Step Functions state machine.\nResource: aws_cloudwatch_event_target\nちなみに上記には書かれていないが、CodePipelineのイベント検知として利用する場合もIAMロールが必要である。通常パイプライン作成時のオプションによって自動でルールが生成されるから、放置してると気が付かないかもしれない。（コンソールまたはAPIから個別にルールを作成することも可能である）\n冒頭の件はtfコードのパラメータからrole_arnを削除したら解消した。結論として、以下でも言及されているようにLambdaがターゲットの場合はLambda側でLambdaパーミッションがセットされていればよい。（設定したEventBridgeルールがLambdaを実行することを、Lambdaが許可する）\n参考\nAdding lambda target role to AWS Eventbridge rule in Cloudformation fails\n（これは2022年1月のネタなのだがすっかり忘れていて、2024年夏になってCFnで再び同じエラーに遭遇した）\n",
+  "wordCount" : "72",
   "inLanguage": "en",
-  "datePublished": "2022-05-27T11:22:42+09:00",
-  "dateModified": "2022-05-27T11:22:42+09:00",
+  "datePublished": "2024-07-28T21:06:07+09:00",
+  "dateModified": "2024-07-28T21:06:07+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/b/ec2-node-monitor-eb/"
+    "@id": "https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"
   },
   "publisher": {
     "@type": "Organization",
@@ -194,45 +194,29 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      EC2のノード監視はEventBridgeだけで可能だった
+      EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要
     </h1>
-    <div class="post-meta"><span title='2022-05-27 11:22:42 +0900 JST'>May 27, 2022</span>
+    <div class="post-meta"><span title='2024-07-28 21:06:07 +0900 JST'>July 28, 2024</span>
 
 </div>
   </header> 
-  <div class="post-content"><p>タイトルの件、CloudWatchアラーム作るとかAWS Configをかますとか必要と思っていたけど、なくてもできると知る。</p>
+  <div class="post-content"><p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。</p>
+<blockquote>
+<p>ValidationException: RoleArn is not supported for target arn:aws:lambda:ap-northeast-1:[アカウントID]:function:lambda-hoge-func</p>
+</blockquote>
+<p> </p>
+<p>Terraformのドキュメントでもオプション扱いで、ロール指定が必要なサービスは以下の通りらしい。</p>
+<blockquote>
+<p>role_arn (Optional) The Amazon Resource Name (ARN) of the IAM role to be used for this target when the rule is triggered. Required if ecs_target is used or target in arn is EC2 instance, Kinesis data stream or Step Functions state machine.</p>
+</blockquote>
+<p><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target">Resource: aws_cloudwatch_event_target</a></p>
+<p>ちなみに上記には書かれていないが、CodePipelineのイベント検知として利用する場合もIAMロールが必要である。通常パイプライン作成時のオプションによって自動でルールが生成されるから、放置してると気が付かないかもしれない。（コンソールまたはAPIから個別にルールを作成することも可能である）</p>
+<p> </p>
+<p>冒頭の件はtfコードのパラメータからrole_arnを削除したら解消した。結論として、以下でも言及されているようにLambdaがターゲットの場合はLambda側でLambdaパーミッションがセットされていればよい。（設定したEventBridgeルールがLambdaを実行することを、Lambdaが許可する）</p>
+<p> </p>
 <p>参考<br>
-<a href="https://blog.serverworks.co.jp/tech/2020/04/03/ec2/">EC2インスタンスの３つの死活監視</a></p>
-<p>さらに詳細<br>
-<a href="https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-email-instance-state-change/">EC2 インスタンスの状態が変化したときに、カスタマイズした E メール通知を受信するにはどうすればよいですか?</a></p>
-<p> </p>
-<p>上記例の場合指定する状態が「任意の状態」なのでanyとなる。（どの状態でも通知がくる）</p>
-<p>「特定の状態」にチェックしてプルダウンからshutting-down,stopping,stopped,terminatedなどを選択すれば、これらの状態になった時のみ通知がくる。（試してないから断言できないけどそのはず）</p>
-<p> </p>
-<h3 id="イベントソースで設定する内容">「イベントソース」で設定する内容<a hidden class="anchor" aria-hidden="true" href="#イベントソースで設定する内容">#</a></h3>
-<p> </p>
-<ul>
-<li>サービスプロバイダー：AWSのサービス</li>
-<li>AWSのサービス：EC2</li>
-<li>イベントタイプ：EC2 instance State-change Notification</li>
-<li>任意の状態 or 特定の状態を選択</li>
-<li>任意のインスタンス or 個別のインスタンスIDを選択</li>
-</ul>
-<p> </p>
-<p>他の事例と同様に、上記をポチポチやると設定内容のJSONが生成されるので、それを見ると何をやるのか分かりやすい。</p>
-<p>また上記の例では入力トランスフォーマーによりSNSに直接連携しているが、件名・本文をカスタマイズするなら、別途用意したLambda関数と連携するよう設定する。</p>
-<p> </p>
-<p> </p>
-<p><img loading="lazy" src="/img/b/kamakura_0614_001.jpg" alt="鎌倉"  />
-
-<img loading="lazy" src="/img/b/kamakura_0614_005.jpg" alt="鎌倉"  />
-
-<img loading="lazy" src="/img/b/kamakura_0614_002.jpg" alt="鎌倉"  />
-
-<img loading="lazy" src="/img/b/kamakura_0614_003.jpg" alt="鎌倉"  />
-
-<img loading="lazy" src="/img/b/kamakura_0614_004.jpg" alt="鎌倉"  />
-</p>
+<a href="https://stackoverflow.com/questions/65053916/adding-lambda-target-role-to-aws-eventbridge-rule-in-cloudformation-fails">Adding lambda target role to AWS Eventbridge rule in Cloudformation fails</a></p>
+<p>（これは2022年1月のネタなのだがすっかり忘れていて、2024年夏になってCFnで再び同じエラーに遭遇した）</p>
 <p> </p>
 
     
@@ -240,6 +224,8 @@
   <br/>
   <h3>関連がありそうな記事</h3>
   <ul>
+    
+      <li><a href="/post/b/ec2-node-monitor-eb/">EC2のノード監視はEventBridgeだけで可能だった</a></li>
     
       <li><a href="/post/a/aws-events-custom-mail-3/">AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
     
@@ -249,29 +235,21 @@
     
       <li><a href="/post/a/cloudwatch-alarm-lambda/">CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</a></li>
     
-      <li><a href="/post/a/aws-events-custom-mail/">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
-    
   </ul>
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">Eventbridge</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/ec2/">EC2</a></li>
       <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambada/">Lambada</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">Eventbridge</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/vax-frequency-spirituality/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>振動、周波数、霊性</span>
-  </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/ryu-quotes-13/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/">
     <span class="title">Next »</span>
     <br>
-    <span>Coin Locker Babies-3, Ryu Murakami </span>
+    <span>Gitでリモート追跡ブランチを削除する</span>
   </a>
 </nav>
 

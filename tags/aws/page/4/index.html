@@ -144,6 +144,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">TerraformのSNSサブスクリプションで複数メールアドレス指定
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Terraformで、「AWS SNSトピックのサブスク &#43; エンドポイントがメール」のパターンで、複数のメールアドレスを指定したかった。しかし、通常の記述方法だとエラーになってしまうのである。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-01-08 11:00:00 +0900 JST'>January 8, 2022</span></footer>
+  <a class="entry-link" aria-label="post link to TerraformのSNSサブスクリプションで複数メールアドレス指定" href="https://ecnedaced-seirots.github.io/post/b/aws-sns-topic-multi-endpoint/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">EKS FargateクラスタをTerraformで作成する(2)
     </h2>
   </header>
@@ -218,26 +231,6 @@
   </div>
   <footer class="entry-footer"><span title='2021-12-26 16:00:00 +0900 JST'>December 26, 2021</span></footer>
   <a class="entry-link" aria-label="post link to AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CloudWatch LogsからS3にエクスポート(Lambda/Python)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
-参考
-boto3 API Reference
-LambdaよりCloudWatchログをS3に保存方法紹介
-ちなみに過去マネコンから実行する手順書いた。
-CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
-S3バケットポリシー（log-export-xxxxxxxx）
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] } Lambdaコード(Python3.9)
-import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-12-19 12:19:37 +0900 JST'>December 19, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to CloudWatch LogsからS3にエクスポート(Lambda/Python)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

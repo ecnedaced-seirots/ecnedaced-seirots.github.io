@@ -159,6 +159,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-28 21:06:07 +0900 JST'>July 28, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Gitでリモート追跡ブランチを削除する
     </h2>
   </header>
@@ -233,20 +246,6 @@
   </div>
   <footer class="entry-footer"><span title='2024-06-11 22:22:36 +0900 JST'>June 11, 2024</span></footer>
   <a class="entry-link" aria-label="post link to RDS(PostgreSQL)のデータをS3にエクスポートするLambda" href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Kubernetes - CronJobオプションの検証
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> （2020年10月の検証記事です）
-KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-06-06 23:08:45 +0900 JST'>June 6, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Kubernetes - CronJobオプションの検証" href="https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
