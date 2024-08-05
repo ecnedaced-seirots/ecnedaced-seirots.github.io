@@ -201,6 +201,7 @@
 </div>
   </header> 
   <div class="post-content"><p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。</p>
+<p> </p>
 <blockquote>
 <p>ValidationException: RoleArn is not supported for target arn:aws:lambda:ap-northeast-1:[アカウントID]:function:lambda-hoge-func</p>
 </blockquote>
@@ -210,6 +211,7 @@
 <p>role_arn (Optional) The Amazon Resource Name (ARN) of the IAM role to be used for this target when the rule is triggered. Required if ecs_target is used or target in arn is EC2 instance, Kinesis data stream or Step Functions state machine.</p>
 </blockquote>
 <p><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target">Resource: aws_cloudwatch_event_target</a></p>
+<p> </p>
 <p>ちなみに上記には書かれていないが、CodePipelineのイベント検知として利用する場合もIAMロールが必要である。通常パイプライン作成時のオプションによって自動でルールが生成されるから、放置してると気が付かないかもしれない。（コンソールまたはAPIから個別にルールを作成することも可能である）</p>
 <p> </p>
 <p>冒頭の件はtfコードのパラメータからrole_arnを削除したら解消した。結論として、以下でも言及されているようにLambdaがターゲットの場合はLambda側でLambdaパーミッションがセットされていればよい。（設定したEventBridgeルールがLambdaを実行することを、Lambdaが許可する）</p>
