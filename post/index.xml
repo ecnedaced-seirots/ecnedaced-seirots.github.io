@@ -6,8 +6,16 @@
     <description>Recent content in Posts on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Jul 2024 21:06:07 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 30 May 2025 13:49:16 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ゴッドクリーナーの嘘にいいかげん気づいて欲しい</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/cheat-of-god-cleaner/</link>
+      <pubDate>Fri, 30 May 2025 13:49:16 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/cheat-of-god-cleaner/</guid>
+      <description>&lt;p&gt;約10ヶ月ぶりの投稿。ずっと放置してたけど、改めて自分の過去記事見ると何か新鮮だなぁ〜⭐︎&lt;/p&gt;
+&lt;p&gt;さてゴッドクリーナーが何かというのはあまり時間をとれないため省略するが、このタイトルに少しでもピンと来た人なら説明不要だろう。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</title>
       <link>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</link>
