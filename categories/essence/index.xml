@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Essence on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/categories/essence/</link>
+    <description>Recent content in Essence on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 02 Jul 2025 17:26:42 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/essence/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>システムエンジニアによるフラワーエッセンスPoC記録（序章）</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/essence-poc/</link>
+      <pubDate>Wed, 02 Jul 2025 17:26:42 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/essence-poc/</guid>
+      <description>&lt;p&gt;唐突だが「フラワーエッセンス」である。そしてPoCと言えば&amp;hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

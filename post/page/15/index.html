@@ -159,6 +159,22 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理の応用編(4) - Lambda
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
+この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
+work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
+lambda_logs.tf（定数バージョン）
+################################################# # Lambda archive data ################################################# data &#34;archive_file&#34; &#34;data-lambda-func001&#34; { type = &#34;zip&#34; source_dir = &#34;lambda/code/func001&#34; output_path = &#34;lambda/upload/lambda-func001....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-12 22:00:00 +0900 JST'>December 12, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(4) - Lambda" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Terraform loop処理の応用編(3) - Event rule
     </h2>
   </header>
@@ -251,20 +267,6 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
   </div>
   <footer class="entry-footer"><span title='2021-11-27 13:00:00 +0900 JST'>November 27, 2021</span></footer>
   <a class="entry-link" aria-label="post link to Quotes - タランティーノ小説より(1)" href="https://ecnedaced-seirots.github.io/post/a/quotes-tarantino-movie-1/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Python - Jinja2テンプレートで連続データを処理したい
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな…
-とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
-【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた </p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-24 00:10:00 +0900 JST'>November 24, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to Python - Jinja2テンプレートで連続データを処理したい" href="https://ecnedaced-seirots.github.io/post/a/jinja2-python/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>システムエンジニアによるフラワーエッセンスPoC記録（序章） | Go Buddy Go</title>
+<meta name="keywords" content="mind hacks, Lifelog">
+<meta name="description" content="唐突だが「フラワーエッセンス」である。そしてPoCと言えば&hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/e/essence-poc/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/e/essence-poc/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="システムエンジニアによるフラワーエッセンスPoC記録（序章）" />
+<meta property="og:description" content="唐突だが「フラワーエッセンス」である。そしてPoCと言えば&hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/e/essence-poc/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2025-07-02T17:26:42+09:00" />
+<meta property="article:modified_time" content="2025-07-02T17:26:42+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="システムエンジニアによるフラワーエッセンスPoC記録（序章）"/>
+<meta name="twitter:description" content="唐突だが「フラワーエッセンス」である。そしてPoCと言えば&hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "システムエンジニアによるフラワーエッセンスPoC記録（序章）",
+      "item": "https://ecnedaced-seirots.github.io/post/e/essence-poc/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "システムエンジニアによるフラワーエッセンスPoC記録（序章）",
+  "name": "システムエンジニアによるフラワーエッセンスPoC記録（序章）",
+  "description": "唐突だが「フラワーエッセンス」である。そしてPoCと言えば\u0026hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。\n",
+  "keywords": [
+    "mind hacks", "Lifelog"
+  ],
+  "articleBody": "唐突だが「フラワーエッセンス」である。そしてPoCと言えば…、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。\n俺：「要件定義の次に設計に入るけど、その前にPoC（ポック）というのをやる場合があるよ」\n若手A: 「は？」（ポカン）\n俺：「PoC（ピーオーシー）。英語で\"Proof of Concept\"なんだけど、略してPcC（ポック）て言うことが多いね」\n若手A: 「は？」（ポカン）\n俺：「えーと、“Proof\"は『実証』、“Concept\"は、『コンセプト』。」\n若手A: 「は？」（ポカン）\nProof of Concept,略してPoC。アプリケーション/システム開発で、ある機能を実現したい要件があるとして、これこれこういう方式でやればできるだろうというアイディアがあったとする。しかし、頭の中ではできても実際に本当に実現できるのか、期待値になるのか確証がない。確証を得るために（実証する）、そのアイディアを用いた「コンセプト」が問題なく実現できるかどうか、手を動かして検証することを示す。\nおそらく若手Aには、「実証」と「コンセプト」が全く結びつかなかったのだろう（それぞれの単語の意味を理解していなかった可能性もあり）。IT業界以外の人とか業界でも新人なら知らなくて当然だからいいのだが、この時の俺には丁寧に説明する時間も心の余裕もなかったので、「あとは自分で調べといて」で締めた。若手Aとの会話のやり取りをスローモーションのように感じていたのだ。数ヶ月後、若手Aは遁走した。いいんだけど、頼むから転職先は別の業界にしてくれよな、と思った。\n前置きが長くなったが、フラワーエッセンスのPoC（実証検証）。\n「フラワーエッセンス」なるものがある。花の周波数を水に転写したものだ。これを用いた「フラワーエッセンス療法」というものがあり、おもに感情的・精神的な課題に効果があると言われる。で、「xxxxな課題に、このエッセンスが効果がありそうだけど実際どうなのか？」をPoCした記録、を書こうとしているわけである。\nなぜ書くかというと、情報があまりに少ないからだ。「実際どーなのよ？」て情報集めたいだけど、非常に情報が少ない、かつ、ヒットしたとしてもあまりに「ゆるふわ」または「エモーショナル」な内容が多いもんで…\nまぁ、こう言っちゃなんだけど、「フラワーエッセンス」なんていかにも「女子向け」なイメージだし、実際利用者も女子がほとんど。自分自身、そういうものがあるのは知っていたけど、印象だけとらえて「俺には関係ねぇ」ものだと思っていた。\n「お花の波動が詰まったエッセンスが〜、潜在意識に〜…、魂の気づきが〜…」とか言われても、いかにも「ゆるふわ」、軟弱っぽいイメージじゃないすか。記事書いてる人がいかにも「お花畑」だったりするし。こんなこと言うと、本物の花畑に失礼だけどね。あと深掘りしていくと実は「フラワー」以外のエッセンスも多々あったりするのだが、「エッセンス」って単語だけとっても、語感がフェミニンな印象だしね。\nそんな風にイメージだけでとらえていた自分に誤りがあったのは認めるが、世の中の社会人メンズが積極的にこの療法に関心を持つことはまずないだろうと想像する。それは、「フラワーエッセンス」という単語の語感の問題もあるが、流通している情報が、基本ほぼ女子による、女子向けの内容に偏っているせいもあると俺は思った（マーケットとしてもその範囲だけで閉じてしまってる感あり）。あとスピリチュアル調強めな記事が多いのも、スピに関心がない、または忌避感を抱く一般人を遠ざけているよな〜、と思ったり。\nある情報を的確に伝えるためには、言葉を選ぶ必要がある。ゆるふわ記事や女子向けの情報が悪い、適切ではないと言うことでなく、他のアプローチがあっていいじゃないかと思うのだ。実際自分はふとしたきっかけでフラワーエッセンスを使ってみて、「これは面白い」と思った。だから、一部のスピ愛好家やゆるふわ女子だけに流通し、それ以外の大多数が知らない、または知っていても避けているのは、非常にもったいないと思う。\n…つーのが、フラワーエッセンスPoC記録をちょっくら書いてみようと思った経緯っすね⭐︎\n「システムエンジニアによる」ってのは、まぁ「釣り」ってわけじゃないけど、一応自分はSEの端くれだから、論理的整合性を最重要とする世界に浸ってるんで。日常生活でもリアリスティック、ロジカル \u0026 サイエンティフィックな視点を重要視してるわけですよ。エンジニアだから、というより元々そういう性格。スピな世界を否定はしないが、スピも現実のひとつとして認知する立場なんで。ちょっとその辺りを主張したかった。\n要するにフラワーエッセンス使ってみた記録を、スピ的視点は脇において、「フツーに現実的な視点で役に立ちそうな内容」を基準として書いてみようと。ま、役に立つかどうかはわからないが、メンズはもちろん、レディースでも、スピに興味ない人とか、リアリスト、合理主義舎、科学的視点を重要視する人も関心を持ってくれたらいいと思いつつ。（続く）\n",
+  "wordCount" : "28",
+  "inLanguage": "en",
+  "datePublished": "2025-07-02T17:26:42+09:00",
+  "dateModified": "2025-07-02T17:26:42+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/e/essence-poc/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      システムエンジニアによるフラワーエッセンスPoC記録（序章）
+    </h1>
+    <div class="post-meta"><span title='2025-07-02 17:26:42 +0900 JST'>July 2, 2025</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>唐突だが「フラワーエッセンス」である。そしてPoCと言えば&hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。</p>
+<p> </p>
+<p>俺：「要件定義の次に設計に入るけど、その前にPoC（ポック）というのをやる場合があるよ」<br>
+若手A: 「は？」（ポカン）<br>
+俺：「PoC（ピーオーシー）。英語で&quot;Proof of Concept&quot;なんだけど、略してPcC（ポック）て言うことが多いね」<br>
+若手A: 「は？」（ポカン）<br>
+俺：「えーと、&ldquo;Proof&quot;は『実証』、&ldquo;Concept&quot;は、『コンセプト』。」<br>
+若手A: 「は？」（ポカン）</p>
+<p> </p>
+<p> </p>
+<p>Proof of Concept,略してPoC。アプリケーション/システム開発で、ある機能を実現したい要件があるとして、これこれこういう方式でやればできるだろうというアイディアがあったとする。しかし、頭の中ではできても実際に本当に実現できるのか、期待値になるのか確証がない。確証を得るために（実証する）、そのアイディアを用いた「コンセプト」が問題なく実現できるかどうか、手を動かして検証することを示す。</p>
+<p>おそらく若手Aには、「実証」と「コンセプト」が全く結びつかなかったのだろう（それぞれの単語の意味を理解していなかった可能性もあり）。IT業界以外の人とか業界でも新人なら知らなくて当然だからいいのだが、この時の俺には丁寧に説明する時間も心の余裕もなかったので、「あとは自分で調べといて」で締めた。若手Aとの会話のやり取りをスローモーションのように感じていたのだ。数ヶ月後、若手Aは遁走した。いいんだけど、頼むから転職先は別の業界にしてくれよな、と思った。</p>
+<p> </p>
+<p>前置きが長くなったが、フラワーエッセンスのPoC（実証検証）。</p>
+<p> </p>
+<p>「フラワーエッセンス」なるものがある。花の周波数を水に転写したものだ。これを用いた「フラワーエッセンス療法」というものがあり、おもに感情的・精神的な課題に効果があると言われる。で、「xxxxな課題に、このエッセンスが効果がありそうだけど実際どうなのか？」をPoCした記録、を書こうとしているわけである。</p>
+<p> </p>
+<p>なぜ書くかというと、情報があまりに少ないからだ。「実際どーなのよ？」て情報集めたいだけど、非常に情報が少ない、かつ、ヒットしたとしてもあまりに「ゆるふわ」または「エモーショナル」な内容が多いもんで&hellip;</p>
+<p>まぁ、こう言っちゃなんだけど、「フラワーエッセンス」なんていかにも「女子向け」なイメージだし、実際利用者も女子がほとんど。自分自身、そういうものがあるのは知っていたけど、印象だけとらえて「俺には関係ねぇ」ものだと思っていた。</p>
+<p>「お花の波動が詰まったエッセンスが〜、潜在意識に〜&hellip;、魂の気づきが〜&hellip;」とか言われても、いかにも「ゆるふわ」、軟弱っぽいイメージじゃないすか。記事書いてる人がいかにも「お花畑」だったりするし。こんなこと言うと、本物の花畑に失礼だけどね。あと深掘りしていくと実は「フラワー」以外のエッセンスも多々あったりするのだが、「エッセンス」って単語だけとっても、語感がフェミニンな印象だしね。</p>
+<p>そんな風にイメージだけでとらえていた自分に誤りがあったのは認めるが、世の中の社会人メンズが積極的にこの療法に関心を持つことはまずないだろうと想像する。それは、「フラワーエッセンス」という単語の語感の問題もあるが、流通している情報が、基本ほぼ女子による、女子向けの内容に偏っているせいもあると俺は思った（マーケットとしてもその範囲だけで閉じてしまってる感あり）。あとスピリチュアル調強めな記事が多いのも、スピに関心がない、または忌避感を抱く一般人を遠ざけているよな〜、と思ったり。</p>
+<p> </p>
+<p>ある情報を的確に伝えるためには、言葉を選ぶ必要がある。ゆるふわ記事や女子向けの情報が悪い、適切ではないと言うことでなく、他のアプローチがあっていいじゃないかと思うのだ。実際自分はふとしたきっかけでフラワーエッセンスを使ってみて、「これは面白い」と思った。だから、一部のスピ愛好家やゆるふわ女子だけに流通し、それ以外の大多数が知らない、または知っていても避けているのは、非常にもったいないと思う。</p>
+<p> </p>
+<p>&hellip;つーのが、フラワーエッセンスPoC記録をちょっくら書いてみようと思った経緯っすね⭐︎</p>
+<p> </p>
+<p>「システムエンジニアによる」ってのは、まぁ「釣り」ってわけじゃないけど、一応自分はSEの端くれだから、論理的整合性を最重要とする世界に浸ってるんで。日常生活でもリアリスティック、ロジカル &amp; サイエンティフィックな視点を重要視してるわけですよ。エンジニアだから、というより元々そういう性格。スピな世界を否定はしないが、スピも現実のひとつとして認知する立場なんで。ちょっとその辺りを主張したかった。</p>
+<p> </p>
+<p>要するにフラワーエッセンス使ってみた記録を、スピ的視点は脇において、「フツーに現実的な視点で役に立ちそうな内容」を基準として書いてみようと。ま、役に立つかどうかはわからないが、メンズはもちろん、レディースでも、スピに興味ない人とか、リアリスト、合理主義舎、科学的視点を重要視する人も関心を持ってくれたらいいと思いつつ。（続く）</p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/e/limits-of-spiritual-idea/">「引き寄せの法則」「思考の現実化」および「魂の学び」の限界点</a></li>
+    
+      <li><a href="/post/e/cheat-of-god-cleaner/">ゴッドクリーナーの嘘にいいかげん気づいて欲しい</a></li>
+    
+      <li><a href="/post/b/how-to-spent-june-2022/">バルセロナストリート</a></li>
+    
+      <li><a href="/post/b/italy-now-and-luc-montagnier/">イタリアの現状と、リュック・モンタニエ博士の急逝</a></li>
+    
+      <li><a href="/post/b/mind-hacks-rem-sleep/">レム睡眠と夢と記憶</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/mind-hacks/">Mind Hacks</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lifelog/">Lifelog</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/e/limits-of-spiritual-idea/">
+    <span class="title">Next »</span>
+    <br>
+    <span>「引き寄せの法則」「思考の現実化」および「魂の学び」の限界点</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
