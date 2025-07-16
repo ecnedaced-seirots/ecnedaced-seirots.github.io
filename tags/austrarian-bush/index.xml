@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Austrarian Bush on Go Buddy Go</title>
+    <link>http://localhost:1313/tags/austrarian-bush/</link>
+    <description>Recent content in Austrarian Bush on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 16 Jul 2025 11:42:28 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/austrarian-bush/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</title>
+      <link>http://localhost:1313/post/e/australian-bush-cognis-focus/</link>
+      <pubDate>Wed, 16 Jul 2025 11:42:28 +0900</pubDate>
+      <guid>http://localhost:1313/post/e/australian-bush-cognis-focus/</guid>
+      <description>&lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録、第一弾はオーストラリアンブッシュフラワーエッセンスのCognis。Cognis（認知）、である。このストレートなネーミングセンスに痺れる。タイトルの通り、全く発展著しくない俺様の脳活動底上げを期待して購入した。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
