@@ -6,8 +6,16 @@
     <description>Recent content in Brain Hacks on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 16 Jul 2025 11:42:28 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2025 18:09:47 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/brain-hacks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</link>
+      <pubDate>Wed, 13 Aug 2025 18:09:47 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&amp;hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</title>
       <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/</link>

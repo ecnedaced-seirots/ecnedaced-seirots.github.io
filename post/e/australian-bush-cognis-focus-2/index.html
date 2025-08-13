@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた | Go Buddy Go</title>
+<meta name="keywords" content="mind hacks, brain hacks, Lifelog">
+<meta name="description" content=" 
+システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた" />
+<meta property="og:description" content=" 
+システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2025-08-13T18:09:47+09:00" />
+<meta property="article:modified_time" content="2025-08-13T18:09:47+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた"/>
+<meta name="twitter:description" content=" 
+システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた",
+      "item": "https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた",
+  "name": "オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた",
+  "description": " システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが\u0026hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。\n",
+  "keywords": [
+    "mind hacks", "brain hacks", "Lifelog"
+  ],
+  "articleBody": " システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが…、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。\n前回記事\nオーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる\n実際試してみたのは今年5月の3週間くらい。認知・記憶力に何かと懸念がある自分の親父に飲んでもらった。10年くらい前からサプリはいろいろとってもらってて、当時は若干改善したものの、ここ数年はサプリでは解決不能な状態だった。一応、ギリギリ日常生活はできているが、ここで歯止めかけないとまずいな、というような。\nちなみに病院連れて行くつもりはない。薬を飲むことが有効な解決方法とは考えられないし、そもそも現代西洋医学の認知症診断自体を、俺は信頼していない。\nで、エネルギー的に深い働きかけの作用を持つフラワーエッセンスに希みを託し、いつも親父が使っている水筒にCognis（現：Focus）を混ぜて飲んでもらったのだ。\n結論から言うと、記憶力にはさほど改善は見られなかったが、何よりも、親父の「ソウル」が変化した。これはすごいと思った。どういうことかと言うと、本来の本人の魂を取り戻したという作用があった。別にそれまで、魂の抜け殻みたいにボーッとしていたわけじゃないよ。でも明らかに意欲が減退して、喜びを感じることも少なくなっている印象だった。\nそれが、エッセンスを開始してから、笑うことが増えたし、「以前の親父」に戻った印象が強くなった。俺の親父の「以前の親父」がどんなやつかなんて俺にしか説明できないが、説明しても伝わらないだろうからパス。どっちにしても上手く説明できないが…\nここで俺は重要なことに気づいた。今まで親の認知症予防・対策として、脳の機能にばかりフォーカスしていたが、そうじゃないんだと。そっちも重要だけど、本人の「ソウル/魂」にもフォーカスしてやらないとダメなんだと。本人が、自らのソウルとともに生きること。それが最重要なのだと。\nちなみにCognis（現：Focus）は以下エッセンスのコンビネーションとなっている。\nBush Fuchsia（ブッシュフューシャ） Isopogon（アイソポゴン） Jacaranda（ジャカランダ） Paw Paw（ポーポー） Sundew（サンデュー） 俺の想像では、「ソウル」に作用したのは上記のうちPaw Paw（ポーポー）の力が大きいのではないかと思う。このエッセンスには「ハイヤーセルフに働きかける」作用がある、という指標があるからだ。「ハイヤーセルフ」って表現はスピ界隈でよく聞くものであまりこの場には書きたくないのだが…、現実的な言葉で言うなら「自分自身の奥底にあるソウル」と解釈しておけばいいと思う。テキトーに言ってますけど。\n話戻って、現代社会では認知症関係なく、若い世代でも肉体とソウルが乖離している人は大勢いると思うよ。俺自身もそんな時期があったし、気をつけていないと再発しちまう、という自覚はある。そう言う時は、ただ生きているだけの「オートマシン」なんだ。知力や認知機能に問題がなくても、オートマシンじゃ意味がない。\nまずはソウルを取り戻せ。本人がソウルをしっかり保持できていれば、認知力や記憶力なんて多少衰えてもいい。日常生活に支障をきたさない範囲で、少しでも改善できれば、その程度でOKだよ。（俺的目標）\nそして思った。常日頃、自分自身にも「俺は今、本当に自分のソウルとともに生きているのだろうか？」と問いかける必要があるな、と。\n…と、ここまでが今回の大雑把な検証結果である。\nCognisはもっと継続したかったが、希釈不可で一回7適だからなくなるのが早くてね…（500mlの水筒には15〜20適ほど入れていた）、最初のボトルが終わった時点で次の検証に移った。しかし、国内で普通に購入するとそこそこ高価ではあるが、個人輸入でお得に仕入れることができると知ったから、後ほどオーストラリア直送で仕入れましたよ。他に検証したいのがあるから、そっちが落ち着いたらまた再開しようと思う。\n作用には当然個人差があるし、認知症の程度や周囲の環境も人それぞれだから、「絶対効果あるよ！」などとは言えない。しかし、老親の認知症対策に取り組んでいる人にとって、フラワーエッセンスはひとつの選択肢になりえるだろう、とは言っておきたい。\n最後に、以下リンクのブログは、認知症チャレンジとしてフラワーエッセンス（アロマ等その他のリソースも併用）を使用した経緯を書いたもの。これは素晴らしい記録である。10年ほど前の記事だが、このブログを消さずに残してくれているのは本当ににありがたい。同じ立場にいる人にはぜひ一読を勧める。\nご機嫌な脳ミソ\n",
+  "wordCount" : "31",
+  "inLanguage": "en",
+  "datePublished": "2025-08-13T18:09:47+09:00",
+  "dateModified": "2025-08-13T18:09:47+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      オーストラリアンブッシュ Cognis（現：Focus）の認知症予防をPoCしてみた
+    </h1>
+    <div class="post-meta"><span title='2025-08-13 18:09:47 +0900 JST'>August 13, 2025</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。</p>
+<p>前回記事<br>
+<a href="https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/">オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</a></p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bush-cognis_3545.jpeg" alt="オーストラリアンブッシュ"  />
+</p>
+<p> </p>
+<p>実際試してみたのは今年5月の3週間くらい。認知・記憶力に何かと懸念がある自分の親父に飲んでもらった。10年くらい前からサプリはいろいろとってもらってて、当時は若干改善したものの、ここ数年はサプリでは解決不能な状態だった。一応、ギリギリ日常生活はできているが、ここで歯止めかけないとまずいな、というような。</p>
+<p>ちなみに病院連れて行くつもりはない。薬を飲むことが有効な解決方法とは考えられないし、そもそも現代西洋医学の認知症診断自体を、俺は信頼していない。</p>
+<p>で、エネルギー的に深い働きかけの作用を持つフラワーエッセンスに希みを託し、いつも親父が使っている水筒にCognis（現：Focus）を混ぜて飲んでもらったのだ。</p>
+<p> </p>
+<p>結論から言うと、記憶力にはさほど改善は見られなかったが、何よりも、親父の「ソウル」が変化した。これはすごいと思った。どういうことかと言うと、本来の本人の魂を取り戻したという作用があった。別にそれまで、魂の抜け殻みたいにボーッとしていたわけじゃないよ。でも明らかに意欲が減退して、喜びを感じることも少なくなっている印象だった。</p>
+<p>それが、エッセンスを開始してから、笑うことが増えたし、「以前の親父」に戻った印象が強くなった。俺の親父の「以前の親父」がどんなやつかなんて俺にしか説明できないが、説明しても伝わらないだろうからパス。どっちにしても上手く説明できないが&hellip;</p>
+<p> </p>
+<p>ここで俺は重要なことに気づいた。今まで親の認知症予防・対策として、脳の機能にばかりフォーカスしていたが、そうじゃないんだと。そっちも重要だけど、本人の「ソウル/魂」にもフォーカスしてやらないとダメなんだと。本人が、自らのソウルとともに生きること。それが最重要なのだと。</p>
+<p>ちなみにCognis（現：Focus）は以下エッセンスのコンビネーションとなっている。</p>
+<ul>
+<li>Bush Fuchsia（ブッシュフューシャ）</li>
+<li>Isopogon（アイソポゴン）</li>
+<li>Jacaranda（ジャカランダ）</li>
+<li>Paw Paw（ポーポー）</li>
+<li>Sundew（サンデュー）</li>
+</ul>
+<p> </p>
+<p>俺の想像では、「ソウル」に作用したのは上記のうちPaw Paw（ポーポー）の力が大きいのではないかと思う。このエッセンスには「ハイヤーセルフに働きかける」作用がある、という指標があるからだ。「ハイヤーセルフ」って表現はスピ界隈でよく聞くものであまりこの場には書きたくないのだが&hellip;、現実的な言葉で言うなら「自分自身の奥底にあるソウル」と解釈しておけばいいと思う。テキトーに言ってますけど。</p>
+<p> </p>
+<p> </p>
+<p>話戻って、現代社会では認知症関係なく、若い世代でも肉体とソウルが乖離している人は大勢いると思うよ。俺自身もそんな時期があったし、気をつけていないと再発しちまう、という自覚はある。そう言う時は、ただ生きているだけの「オートマシン」なんだ。知力や認知機能に問題がなくても、オートマシンじゃ意味がない。</p>
+<p> </p>
+<p>まずはソウルを取り戻せ。本人がソウルをしっかり保持できていれば、認知力や記憶力なんて多少衰えてもいい。日常生活に支障をきたさない範囲で、少しでも改善できれば、その程度でOKだよ。（俺的目標）</p>
+<p> </p>
+<p>そして思った。常日頃、自分自身にも「俺は今、本当に自分のソウルとともに生きているのだろうか？」と問いかける必要があるな、と。</p>
+<p> </p>
+<p>&hellip;と、ここまでが今回の大雑把な検証結果である。</p>
+<p> </p>
+<p>Cognisはもっと継続したかったが、希釈不可で一回7適だからなくなるのが早くてね&hellip;（500mlの水筒には15〜20適ほど入れていた）、最初のボトルが終わった時点で次の検証に移った。しかし、国内で普通に購入するとそこそこ高価ではあるが、個人輸入でお得に仕入れることができると知ったから、後ほどオーストラリア直送で仕入れましたよ。他に検証したいのがあるから、そっちが落ち着いたらまた再開しようと思う。</p>
+<p> </p>
+<p>作用には当然個人差があるし、認知症の程度や周囲の環境も人それぞれだから、「絶対効果あるよ！」などとは言えない。しかし、老親の認知症対策に取り組んでいる人にとって、フラワーエッセンスはひとつの選択肢になりえるだろう、とは言っておきたい。</p>
+<p>最後に、以下リンクのブログは、認知症チャレンジとしてフラワーエッセンス（アロマ等その他のリソースも併用）を使用した経緯を書いたもの。これは素晴らしい記録である。10年ほど前の記事だが、このブログを消さずに残してくれているのは本当ににありがたい。同じ立場にいる人にはぜひ一読を勧める。</p>
+<p><a href="https://peachybrain.blogspot.com/">ご機嫌な脳ミソ</a></p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/e/australian-bush-cognis-focus/">オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</a></li>
+    
+      <li><a href="/post/e/essence-poc/">システムエンジニアによるフラワーエッセンスPoC記録（序章）</a></li>
+    
+      <li><a href="/post/b/mind-hacks-rem-sleep/">レム睡眠と夢と記憶</a></li>
+    
+      <li><a href="/post/e/limits-of-spiritual-idea/">「引き寄せの法則」「思考の現実化」および「魂の学び」の限界点</a></li>
+    
+      <li><a href="/post/e/cheat-of-god-cleaner/">ゴッドクリーナーの嘘にいいかげん気づいて欲しい</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/mind-hacks/">Mind Hacks</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/brain-hacks/">Brain Hacks</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lifelog/">Lifelog</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/">
+    <span class="title">Next »</span>
+    <br>
+    <span>オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
