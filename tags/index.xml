@@ -6,8 +6,22 @@
     <description>Recent content in Tags on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 13 Aug 2025 18:09:47 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 01 Sep 2025 22:08:05 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
+      <pubDate>Mon, 01 Sep 2025 22:08:05 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tips</title>
+      <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
+      <pubDate>Mon, 01 Sep 2025 22:08:05 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/tips/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Brain Hacks</title>
       <link>https://ecnedaced-seirots.github.io/tags/brain-hacks/</link>
@@ -27,13 +41,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/mind-hacks/</link>
       <pubDate>Wed, 13 Aug 2025 18:09:47 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/mind-hacks/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/tags/aws/</link>
-      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/aws/</guid>
       <description></description>
     </item>
     <item>
@@ -181,13 +188,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/monitoring/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/monitoring/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tips</title>
-      <link>https://ecnedaced-seirots.github.io/tags/tips/</link>
-      <pubDate>Fri, 09 Sep 2022 22:52:50 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/tips/</guid>
       <description></description>
     </item>
     <item>
