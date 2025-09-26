@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AIDD on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/aidd/</link>
+    <description>Recent content in AIDD on Go Buddy Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Fri, 26 Sep 2025 22:47:38 +0900</lastBuildDate>
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/aidd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI駆動開発はエンジニアをパラダイスに導いてくれるのか</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/aidd/</link>
+      <pubDate>Fri, 26 Sep 2025 22:47:38 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/aidd/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;たまたま以下の記事を拾った。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.i3design.jp/in-pocket/15348&#34;&gt;AI駆動開発とは？次世代の主流となる最新開発スタイルをわかりやすく解説&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

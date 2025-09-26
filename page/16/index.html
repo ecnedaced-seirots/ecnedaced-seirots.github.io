@@ -154,6 +154,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理の応用編(2) - CI/CD
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前回投稿Terraform loop処理の応用編 の続き。CodeDeployを作成するTerraformコードに、CodeCommit, CodePipelineを追加して通して作ってみる。
+cicd.tf
+#################################### # CodeCommit #################################### resource &#34;aws_codecommit_repository&#34; &#34;codecommit_repos&#34; { for_each = var.codecommit_param_list repository_name = lookup(each.value, &#34;repository_name&#34;) description = lookup(each.value, &#34;description&#34;) } #################################### # CodeDeploy Application #################################### resource &#34;aws_codedeploy_app&#34; &#34;codedeploy&#34; { for_each = var.deploy_param_list name = lookup(each.value, &#34;name&#34;) compute_platform = &#34;Server&#34; } #################################### # CodeDeploy Deployment Group #################################### resource &#34;aws_codedeploy_deployment_group&#34; &#34;codedeploy_grp&#34; { for_each = var.deploy_param_list app_name = lookup(each.value, &#34;name&#34;) deployment_group_name = lookup(each.value, &#34;deployment_group_name&#34;) depends_on = [aws_codedeploy_app.codedeploy] service_role_arn = var....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-06 00:20:00 +0900 JST'>December 6, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理の応用編(2) - CI/CD" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Terraform loop処理の応用編
     </h2>
   </header>
@@ -255,22 +269,6 @@ Terraform職人再入門2020 </p>
   </div>
   <footer class="entry-footer"><span title='2021-11-21 21:00:00 +0900 JST'>November 21, 2021</span></footer>
   <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
-AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ
-とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
-lambda_function.py （イベント監視メール通知用）
-import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-21 00:30:00 +0900 JST'>November 21, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
