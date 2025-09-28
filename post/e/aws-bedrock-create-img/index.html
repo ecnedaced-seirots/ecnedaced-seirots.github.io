@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Amazon Bedrockでイメージ生成を試してみる | Go Buddy Go</title>
+<meta name="keywords" content="amazon bedrock">
+<meta name="description" content=" 
+AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Amazon Bedrockでイメージ生成を試してみる" />
+<meta property="og:description" content=" 
+AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2025-09-28T14:12:55+09:00" />
+<meta property="article:modified_time" content="2025-09-28T14:12:55+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Amazon Bedrockでイメージ生成を試してみる"/>
+<meta name="twitter:description" content=" 
+AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Amazon Bedrockでイメージ生成を試してみる",
+      "item": "https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Amazon Bedrockでイメージ生成を試してみる",
+  "name": "Amazon Bedrockでイメージ生成を試してみる",
+  "description": " AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。\n",
+  "keywords": [
+    "amazon bedrock"
+  ],
+  "articleBody": " AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。\nやったこと\nマネコンにログイン後、Amazon Bedrockに遷移。（IAMの権限はある状態）\nお手軽に各種モデルを試すことができる「プレイグラウンド」を使ってみる。使用開始前にモデルの使用をリクエストするが、10月以降はリクエストせずとも使用可能になるというようなメッセージが表示されていた。とりあえずリクエストすると即座に承認される。\n画像を生成・いじるためAmazon Novaを選択する。\n実は最初、既存の画像を編集させてみようと、あるモノクロのイラスト画像をアップロードした。単純に透明度30%で色がけして欲しかっただけなのだが、命令文が日本語でも英語でも、結果は無残なものになった。よくもここまでグロテスクな画像にしてくれたなお前、的な。あんなおぞましい画像はとても公開できない。こんなところに、AIの闇を感じる。\nちなみに「オリジナルの描画は変えないでくれ」と英語で指示したところ、美少女がちょこんと座っている場面（オリジナル画像とはまったく異なる） + 「色鉛筆」で構成された画像が生成されてしまった。美少女がそこそこ可愛かったから一瞬DLしようかと思ったが、「いらんだろ」と我にかえってやめた。こんなことを繰り返していると発狂しそうになる。\nまぁ、「餅は餅屋」の通り、単純な画像編集なら画像加工ソフト or サービスを使え、ということだろう。\nということで編集はやめて生成に切り替えた。デフォルトでは3個画像が生成されるため、1に設定しておく。最初は日本語で指示してみた。英語の方が期待値を得られやすいのは認識していたが、どうなるのか結果を見たかったので。プロンプト（命令文）は以下。\n渋谷のスクランブル交差点をベースにしてサイバーパンクっぽいイラストを描いて\nすると…\n非常に残念な結果になった。\n「ちげーじゃんかよ！サイバーパンクはどこに行ったんだよ！！」\nということで、やっぱり英文で指示してみる。\nCreate A cyberpunk-style illustration based on Shibuya’s Scramble Crossing.\n（illustrationを作れというのは変なので、後でillustration imageに変えた。細かいことは気にしないようだが）\nすると。\n一応、それっぽい画像が生成された。しかし、cyberpunk風というよりvaporwave風だね。確かに両者は被るところはあるけど、もう一歩踏み込んで欲しい。\n同じ命令を繰り返したらどうなるか。\nうーん、「これしか出来んのか」的な…。看板の文字が中国語っぽいのもなんかね。\nバリエーションを生成してみたが。\n「君、もういいよ」。\n….。\nやはり、抽象的な概念をテキストで指示するのは限界があるな、という感想。\nとはいえ、世の中にはすでにAI生成によるコンテンツが溢れかえっている。それに対して言いたいことはいくつかあるが、本題からそれるので今はやめておく。\nちなみに実行後はAPIリクエスト(awscli)の構文が生成され、参照できる。以下は英文で一から生成を指示したときの構文でシンプルだが、画像をアップロードして編集させたときのリクエストは、画像データをテキストに変換するためbody部分が膨大になった。\naws bedrock-runtime invoke-model \\ --model-id amazon.nova-canvas-v1:0 \\ --body \"{\\\"textToImageParams\\\":{\\\"text\\\":\\\"Create A cyberpunk-style illustration based on Shibuya's Scramble Crossing.\\\"},\\\"taskType\\\":\\\"TEXT_IMAGE\\\",\\\"imageGenerationConfig\\\":{\\\"cfgScale\\\":6.5,\\\"seed\\\":12,\\\"width\\\":1024,\\\"height\\\":816,\\\"numberOfImages\\\":1}}\" \\ --cli-binary-format raw-in-base64-out \\ \\ --region ap-northeast-1 \\ invoke-model-output.txt ということで特に技術的に深いことは何もやっておらず、遊んでみただけ的な内容で⚪︎ソみたいだという理由がわかっていただけたと思うが、もちろんBedrockが⚪︎ソと言いたいわけではない。今度はコード生成なんぞを試してみたい。\n",
+  "wordCount" : "70",
+  "inLanguage": "en",
+  "datePublished": "2025-09-28T14:12:55+09:00",
+  "dateModified": "2025-09-28T14:12:55+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Amazon Bedrockでイメージ生成を試してみる
+    </h1>
+    <div class="post-meta"><span title='2025-09-28 14:12:55 +0900 JST'>September 28, 2025</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。</p>
+<p> </p>
+<p>やったこと</p>
+<p>マネコンにログイン後、Amazon Bedrockに遷移。（IAMの権限はある状態）<br>
+お手軽に各種モデルを試すことができる「プレイグラウンド」を使ってみる。使用開始前にモデルの使用をリクエストするが、10月以降はリクエストせずとも使用可能になるというようなメッセージが表示されていた。とりあえずリクエストすると即座に承認される。</p>
+<p>画像を生成・いじるためAmazon Novaを選択する。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bedrock-%e3%83%a2%e3%83%86%e3%82%99%e3%83%ab%e9%81%b8%e6%8a%9e.jpg" alt="Bedrock"  />
+</p>
+<p> </p>
+<p>実は最初、既存の画像を編集させてみようと、あるモノクロのイラスト画像をアップロードした。単純に透明度30%で色がけして欲しかっただけなのだが、命令文が日本語でも英語でも、結果は無残なものになった。よくもここまでグロテスクな画像にしてくれたなお前、的な。あんなおぞましい画像はとても公開できない。こんなところに、AIの闇を感じる。</p>
+<p>ちなみに「オリジナルの描画は変えないでくれ」と英語で指示したところ、美少女がちょこんと座っている場面（オリジナル画像とはまったく異なる） + 「色鉛筆」で構成された画像が生成されてしまった。美少女がそこそこ可愛かったから一瞬DLしようかと思ったが、「いらんだろ」と我にかえってやめた。こんなことを繰り返していると発狂しそうになる。</p>
+<p>まぁ、「餅は餅屋」の通り、単純な画像編集なら画像加工ソフト or サービスを使え、ということだろう。</p>
+<p> </p>
+<p>ということで編集はやめて生成に切り替えた。デフォルトでは3個画像が生成されるため、1に設定しておく。最初は日本語で指示してみた。英語の方が期待値を得られやすいのは認識していたが、どうなるのか結果を見たかったので。プロンプト（命令文）は以下。</p>
+<p> </p>
+<blockquote>
+<p>渋谷のスクランブル交差点をベースにしてサイバーパンクっぽいイラストを描いて</p>
+</blockquote>
+<p> </p>
+<p>すると&hellip;</p>
+<p> </p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bedrock-%e7%94%bb%e5%83%8f%e7%94%9f%e6%88%901.jpg" alt="Bedrock"  />
+</p>
+<p> </p>
+<p>非常に残念な結果になった。</p>
+<p> </p>
+<p>「ちげーじゃんかよ！サイバーパンクはどこに行ったんだよ！！」</p>
+<p> </p>
+<p>ということで、やっぱり英文で指示してみる。</p>
+<p> </p>
+<blockquote>
+<p>Create A cyberpunk-style illustration based on Shibuya&rsquo;s Scramble Crossing.</p>
+</blockquote>
+<p>（illustrationを作れというのは変なので、後でillustration imageに変えた。細かいことは気にしないようだが）</p>
+<p> </p>
+<p>すると。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bedrock-%e7%94%bb%e5%83%8f%e7%94%9f%e6%88%902.jpg" alt="Bedrock"  />
+</p>
+<p><img loading="lazy" src="/img/e/bedrock-create-img1.jpg" alt="Bedrock"  />
+</p>
+<p>一応、それっぽい画像が生成された。しかし、cyberpunk風というよりvaporwave風だね。確かに両者は被るところはあるけど、もう一歩踏み込んで欲しい。</p>
+<p> </p>
+<p>同じ命令を繰り返したらどうなるか。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bedrock-%e7%94%bb%e5%83%8f%e7%94%9f%e6%88%904.jpg" alt="Bedrock"  />
+</p>
+<p><img loading="lazy" src="/img/e/bodrock-create-img2.jpg" alt="Bedrock"  />
+</p>
+<p> </p>
+<p>うーん、「これしか出来んのか」的な&hellip;。看板の文字が中国語っぽいのもなんかね。</p>
+<p>バリエーションを生成してみたが。</p>
+<p> </p>
+<p><img loading="lazy" src="/img/e/bedrock-%e7%94%bb%e5%83%8f%e7%94%9f%e6%88%903.jpg" alt="Bedrock"  />
+</p>
+<p> </p>
+<p>「君、もういいよ」。</p>
+<p>&hellip;.。</p>
+<p> </p>
+<p>やはり、抽象的な概念をテキストで指示するのは限界があるな、という感想。</p>
+<p>とはいえ、世の中にはすでにAI生成によるコンテンツが溢れかえっている。それに対して言いたいことはいくつかあるが、本題からそれるので今はやめておく。</p>
+<p> </p>
+<p>ちなみに実行後はAPIリクエスト(awscli)の構文が生成され、参照できる。以下は英文で一から生成を指示したときの構文でシンプルだが、画像をアップロードして編集させたときのリクエストは、画像データをテキストに変換するためbody部分が膨大になった。</p>
+<p> </p>
+<pre tabindex="0"><code>aws bedrock-runtime invoke-model \
+--model-id amazon.nova-canvas-v1:0 \
+--body &#34;{\&#34;textToImageParams\&#34;:{\&#34;text\&#34;:\&#34;Create A cyberpunk-style illustration based on Shibuya&#39;s Scramble Crossing.\&#34;},\&#34;taskType\&#34;:\&#34;TEXT_IMAGE\&#34;,\&#34;imageGenerationConfig\&#34;:{\&#34;cfgScale\&#34;:6.5,\&#34;seed\&#34;:12,\&#34;width\&#34;:1024,\&#34;height\&#34;:816,\&#34;numberOfImages\&#34;:1}}&#34; \
+--cli-binary-format raw-in-base64-out \
+ \
+--region ap-northeast-1 \
+invoke-model-output.txt
+</code></pre><p> </p>
+<p>ということで特に技術的に深いことは何もやっておらず、遊んでみただけ的な内容で⚪︎ソみたいだという理由がわかっていただけたと思うが、もちろんBedrockが⚪︎ソと言いたいわけではない。今度はコード生成なんぞを試してみたい。</p>
+<p> </p>
+
+    
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-bedrock/">Amazon Bedrock</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/e/aidd/">
+    <span class="title">Next »</span>
+    <br>
+    <span>AI駆動開発はエンジニアをパラダイスに導いてくれるのか</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

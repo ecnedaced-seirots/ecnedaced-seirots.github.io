@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AI on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/ai/</link>
-    <description>Recent content in AI on Go Buddy Go</description>
+    <title>Amazon Bedrock on Go Buddy Go</title>
+    <link>https://ecnedaced-seirots.github.io/tags/amazon-bedrock/</link>
+    <description>Recent content in Amazon Bedrock on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 28 Sep 2025 14:12:55 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/ai/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/amazon-bedrock/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Amazon Bedrockでイメージ生成を試してみる</title>
       <link>https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/</link>
@@ -15,15 +15,6 @@
       <guid>https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;AWSのAIサービス Amazon Bedrockでイメージ生成を試してみた。といっても技術的なことはほぼやっていない。この記事自体が、どーでもいい⚪︎ソみたいなものだ。だから読まなくていいですが、⚪︎ソみたいな理由は読んでもらえればわかります。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>AI駆動開発はエンジニアをパラダイスに導いてくれるのか</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/aidd/</link>
-      <pubDate>Fri, 26 Sep 2025 22:47:38 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/aidd/</guid>
-      <description>&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;たまたま以下の記事を拾った。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.i3design.jp/in-pocket/15348&#34;&gt;AI駆動開発とは？次世代の主流となる最新開発スタイルをわかりやすく解説&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

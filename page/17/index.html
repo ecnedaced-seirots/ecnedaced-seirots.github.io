@@ -154,6 +154,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Terraform loop処理のリンク集
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Terraformでループ処理ってどうするんだっけ…と調べたらいろいろ出てきた。読んでも全然頭に入らないがとりあえず参考リンクをメモ。パッと見る限りcountよりfor_eachの方がお勧め？ひとつのリソースに2個以上のパラメータをセットする場合は以下記事の「for_eachを使った書き方（その2）」を参考にすればいいかな。
+for_eachを知らずにcountを使って作成したところ、追加や削除の際に色々と意図しない挙動になったので、回避策について備忘録を残しておきたいと思います。
+Terraformで配列をloopする時はfor_eachを使った方がいい 以下もちゃんと読めば有益そうなのだが、マニアックすぎて理解が追いつかない。
+Terraformでのloop処理の書き方（for, for_each, count） Terraformのループ処理(for_each,for)について Terraformでimportを使う理由とfor_eachをつかったリソース定義に実リソースをimportする方法 これはcountを使う方法。多分使わないけど比較用にメモ。
+Terraformで超サクッとループでリソースを用意する方法 上記記事のリンクにあったこっちの記事の方にピピっときた。IntelliJでTerraformね、これはやってみよう。仕事じゃ使えないけど。
+新記法対応！ IntelliJ IDEAを使ってTerraformを書いてみた IntelliJはさておき、久しぶりに使ってみたらプロバイダの記述方法が変わっていてハマった。今現在は以下の方式で書く。
+terraform { required_providers { aws = { source = &#34;hashicorp/aws&#34; version = &#34;3.66.0&#34; } } } 以下記事に最近変わった細かい規則とかいろいろ書いてある。ロックファイルとか面倒くせぇな、なくていいのに。…と思ったが、ドキュメント読む限り気にしなくてよさげ。
+Terraform職人再入門2020 </p>
+  </div>
+  <footer class="entry-footer"><span title='2021-11-21 21:00:00 +0900 JST'>November 21, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to Terraform loop処理のリンク集" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)
     </h2>
   </header>
@@ -245,40 +264,6 @@ Irvine Welshの&#34;Trainspotting&#34;読書中に登場した単語だと思う
   </div>
   <footer class="entry-footer"><span title='2021-11-13 13:00:00 +0900 JST'>November 13, 2021</span></footer>
   <a class="entry-link" aria-label="post link to 英語メモ - elaborate" href="https://ecnedaced-seirots.github.io/post/a/english-elaborate/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWS監視の方式を整理したい
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが…、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
-監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
-監視方式大枠 ノード監視
-CloudWatchアラーム(ステータスチェック) ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※ハード障害等でインスタンスが落ちた時に発動される想定。手動で落とした時は発動しないので通知は来ない。
-閾値監視
-CloudWatchアラーム（閾値チェック） ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※EC2インスタンスのCPU使用率、ディスク使用率を想定。メモリ監視は別途カスタムメトリクスの実装がいる。
-ログ監視
-CloudWatchLogsでログ出力（サブスクリプションフィルタキーワード検知）ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※これだけEventBridgeを使用しない。
-プロセス監視
-EC2インスタンス上のプロセス数監視に相当する。検索すると「プロセス落ちていたらインスタンス再起動」アクションの事例が多いが、今回やりたいのはメール通知だけ。一応メモっておくけど。 CWエージェント &#43; SSM &#43; インスタンス停止、Lamabdaなし
-EC2上のプロセスを監視し自動復旧する
-CWエージェント &#43; SSM &#43; 自動再起動、Lamabdaなし
-AWSでプロセス監視を実装したい
-CWエージェント &#43; Lamabda &#43; SSM &#43; 自動再起動
-EC2のプロセス監視と自動再起動
-procstat事例
-以下はSSMを使用せず、procstatプラグインを使用してプロセス監視する例。記事には監視設定以降の通知イベント事例はなし。
-CloudWatch Agent でProcstatプラグインの利用が可能になりました
-SSMを使わずCloudwatchでEC2上のプロセス監視をしてみる
-以下は途中まで参照したところ（後半は有料サービスの案内）、アラームを作成するところまでわかりやすかった。であれば、閾値監視と同様にEBルールを挟んでLambdaをターゲットに指定 ー＞ SNSトピックに渡されてメール送信、でいけるはず。
-CloudWatchでプロセス監視する手順をLinuxとWindowsともに詳しく紹介
-イベント監視
-イベント発生 ー＞ (EventBridgeルール) ー＞ Lambda ー＞ SNSトピック ー＞ メール送信 ※1....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-11-07 13:00:00 +0900 JST'>November 7, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to AWS監視の方式を整理したい" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
