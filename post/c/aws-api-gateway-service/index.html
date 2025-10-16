@@ -102,8 +102,8 @@
   "keywords": [
     "AWS", "API Gateway"
   ],
-  "articleBody": "API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。\n特にECSと直接連携できるのか気になった。間にALBまたはサービスディスカバリ（ECSの機能）を挟む必要があるらしい。あとこの場合RESTではなくHTTP APIになる模様。それともどっちでもいける？ あといずれのパターンでも、GatewayがVPC内のリソースにアクセスするためにVPCリンクを作成する必要がある。\nチュートリアル: Amazon ECS サービスへのプライベート統合を使用した HTTP API の構築 ※間にALBを挟む例 ECSをAPI Gatewayと組み合わせる ※サービスディスカバリ事例\nAPI Gateway 統合を使用して Fargate で実行されているマイクロサービスを呼び出す ※Step Functions使用例\n以下は若干古い記事なので現在の仕様と異なる可能性あり。つまり過去は制約があってこの構成になったが、今なら先のリンクのような別のソリューションがある。一応参考までに貼っておく。\nAPI Gateway経由でのみアクセス可能なAPIをECSで構築する\nAPI GatewayとAPIサーバの連携\nこれも貼っておく。REST APIの事例も欲しい。\nAPI Gateway の HTTP API が 5つのAWSサービスとの統合をサポート\n（追記）\nECSとの統合例として、以下記事はREST/HTTP両方のパターンを比較できる。REST APIでもECS統合はできるがALBに加えてNLBも挟むなど複雑化する。そういえばこの構成で途中までPoCした記憶もうっすらあるのだが、リソース間の依存関係が複雑でものすごくわかりにくかった（VPCリンクとNLBが曲者）\n【AWS】HTTP API vs REST API ECS FargateとAPI Gatewayの統合をする上での比較\nついでにAPI Gateway + ALB統合の事例も貼っておく。API GatewayからALBのパターンはあり。逆は多分ない。（ALBのターゲットグループでターゲットに指定可能なのはIP, EC2, Lambda。転送先としてならURLの指定可能）\nAPI Gateway REST API を Application Load Balancer と統合する方法を教えてください。\nExternalのApplication Load Balancer(ALB)をAPIGateway+InternalのALBに置き換えてみた ※HTTP APIの事例\nALB(Application Load Balancer)とAmazon API Gatewayの違い\n",
-  "wordCount" : "74",
+  "articleBody": "API GatewayのバックエンドとしてはLambdaが王道ではあるが、他のサービスと連携させたいときに何が選べて、どうすれば実現できるのかいまいち不明だったので軽く調べてみた。\n特にECSと直接連携できるのか気になった。間にALBまたはサービスディスカバリ（ECSの機能）を挟む必要があるらしい。あとこの場合RESTではなくHTTP APIになる模様。それともどっちでもいける？ あといずれのパターンでも、GatewayがVPC内のリソースにアクセスするためにVPCリンクを作成する必要がある。\nチュートリアル: Amazon ECS サービスへのプライベート統合を使用した HTTP API の構築 ※間にALBを挟む例 ECSをAPI Gatewayと組み合わせる ※サービスディスカバリ事例\nAPI Gateway 統合を使用して Fargate で実行されているマイクロサービスを呼び出す ※Step Functions使用例\n以下は若干古い記事なので現在の仕様と異なる可能性あり。つまり過去は制約があってこの構成になったが、今なら先のリンクのような別のソリューションがある。一応参考までに貼っておく。\nAPI Gateway経由でのみアクセス可能なAPIをECSで構築する\nAPI GatewayとAPIサーバの連携\nこれも貼っておく。REST APIの事例も欲しい。\nAPI Gateway の HTTP API が 5つのAWSサービスとの統合をサポート\n（追記）\nECSとの統合例として、以下記事はREST/HTTP両方のパターンを比較できる。REST APIでもECS統合はできるがALBに加えてNLBも挟むなど複雑化する。そういえばこの構成で途中までPoCした記憶もうっすらあるのだが、リソース間の依存関係が複雑でものすごくわかりにくかった（VPCリンクとNLBが曲者）\n【AWS】HTTP API vs REST API ECS FargateとAPI Gatewayの統合をする上での比較\nついでにAPI Gateway + ALB統合の事例も貼っておく。API GatewayからALBのパターンはあり。逆は多分ない。（ALBのターゲットグループでターゲットに指定可能なのはIP, EC2, Lambda。転送先としてならURLの指定可能） -＞逆もありだった。後述。\nAPI Gateway REST API を Application Load Balancer と統合する方法を教えてください。\nExternalのApplication Load Balancer(ALB)をAPIGateway+InternalのALBに置き換えてみた ※HTTP APIの事例\nALB(Application Load Balancer)とAmazon API Gatewayの違い\n（追記 2）\nALBからAPI Gatewayにルーティングする例。ALBでは、APIのVPCエンドポイントIPをターゲットとして指定する。API Gateway側にもカスタムドメインが必要らしいが、そうでない事例もあり、その辺りは要調査。\nプライベートエンドポイントと Application Load Balancer を使用して、Amazon API Gateway API を内部 Web サイトにデプロイする ※公式\n[技術検証]ALBでターゲットをAPI Gatewayにして相互TLSトラストストア検証できるか\nALB経由でPrivate API GatewayにリクエストするためのCloudFormationメモ\n（それにしても俺は何でこんなことばかりやっているんだ？？？）\n",
+  "wordCount" : "98",
   "inLanguage": "en",
   "datePublished": "2023-04-12T23:17:54+09:00",
   "dateModified": "2023-04-12T23:17:54+09:00",
@@ -219,10 +219,18 @@
 ECSとの統合例として、以下記事はREST/HTTP両方のパターンを比較できる。REST APIでもECS統合はできるがALBに加えてNLBも挟むなど複雑化する。そういえばこの構成で途中までPoCした記憶もうっすらあるのだが、リソース間の依存関係が複雑でものすごくわかりにくかった（VPCリンクとNLBが曲者）<br>
 <a href="https://qiita.com/arie0703/items/d929c182cf6bfcee05a2">【AWS】HTTP API vs REST API ECS FargateとAPI Gatewayの統合をする上での比較</a></p>
 <p> </p>
-<p>ついでにAPI Gateway + ALB統合の事例も貼っておく。API GatewayからALBのパターンはあり。逆は多分ない。（ALBのターゲットグループでターゲットに指定可能なのはIP, EC2, Lambda。転送先としてならURLの指定可能）</p>
+<p>ついでにAPI Gateway + ALB統合の事例も貼っておく。API GatewayからALBのパターンはあり。逆は多分ない。（ALBのターゲットグループでターゲットに指定可能なのはIP, EC2, Lambda。転送先としてならURLの指定可能） -＞逆もありだった。後述。</p>
 <p><a href="https://repost.aws/ja/knowledge-center/api-gateway-application-load-balancers">API Gateway REST API を Application Load Balancer と統合する方法を教えてください。</a><br>
 <a href="https://note.com/navitime_tech/n/n430b685b1a2c">ExternalのApplication Load Balancer(ALB)をAPIGateway+InternalのALBに置き換えてみた</a> ※HTTP APIの事例<br>
 <a href="https://serverless.co.jp/blog/0yf0okc80eu/">ALB(Application Load Balancer)とAmazon API Gatewayの違い</a></p>
+<p> </p>
+<p>（追記 2）<br>
+ALBからAPI Gatewayにルーティングする例。ALBでは、APIのVPCエンドポイントIPをターゲットとして指定する。API Gateway側にもカスタムドメインが必要らしいが、そうでない事例もあり、その辺りは要調査。</p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/prescriptive-guidance/latest/patterns/deploy-an-amazon-api-gateway-api-on-an-internal-website-using-private-endpoints-and-an-application-load-balancer.html">プライベートエンドポイントと Application Load Balancer を使用して、Amazon API Gateway API を内部 Web サイトにデプロイする</a> ※公式<br>
+<a href="https://iret.media/119438">[技術検証]ALBでターゲットをAPI Gatewayにして相互TLSトラストストア検証できるか</a><br>
+<a href="https://blog.nybeyond.com/learning/aws-alb-private-api-gateway-cloudformation/">ALB経由でPrivate API GatewayにリクエストするためのCloudFormationメモ</a></p>
+<p> </p>
+<p>（それにしても俺は何でこんなことばかりやっているんだ？？？）</p>
 <p> </p>
 <p><img loading="lazy" src="/img/c/sakura_20230326_8177.JPG" alt="Sakura"  />
 </p>
