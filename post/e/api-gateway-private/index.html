@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録 | Go Buddy Go</title>
+<meta name="keywords" content="AWS, API Gateway">
+<meta name="description" content=" 
+2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。">
+<meta name="author" content="">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/e/api-gateway-private/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/e/api-gateway-private/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録" />
+<meta property="og:description" content=" 
+2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/e/api-gateway-private/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2025-10-19T23:30:06+09:00" />
+<meta property="article:modified_time" content="2025-10-19T23:30:06+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録"/>
+<meta name="twitter:description" content=" 
+2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Amazon API Gateway(Private) + カスタムドメイン周辺備忘録",
+      "item": "https://ecnedaced-seirots.github.io/post/e/api-gateway-private/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Amazon API Gateway(Private) + カスタムドメイン周辺備忘録",
+  "name": "Amazon API Gateway(Private) \u002b カスタムドメイン周辺備忘録",
+  "description": " 2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。\n",
+  "keywords": [
+    "AWS", "API Gateway"
+  ],
+  "articleBody": " 2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。\nプライベートAPIでカスタムドメインを使用する場合、API本体のリソースポリシーのほかにカスタムドメイン用のリソースポリシー設定が必須となる。デフォルトはすべてdeny。関連つけるVPCエンドポイントのARNからのアクセスを許可する。\n公式\nAPI Gateway でのプライベート API のカスタムドメイン名\nAPI Gateway のプライベート REST API\nプライベート API の作成\n別のアカウントにある API Gateway プライベート REST APIにアクセスする | AWS re:Post\nその他\nプライベート API を組織内で効果的に運用するための実践的なアプローチ【 Amazon API Gateway】\n方式は大きく以下の3通りある模様。\n１．接続元のAPIGateway InterfaceエンドポイントとプライベートAPIGatewayを関連付けする。\n２．接続元のAPIGatewayInterfaceエンドポイントでプライベートDNSを有効にする。\n３．上記を行わず、パブリックDNS名でプライベート接続を行う。\n引用元\n【AWS】プライベートのAPIGatewayの接続をためしてみた あめがえるのITブログ\nカスタムドメイン周り。最初の記事は2021年で前段にALBを配置するパターンだが、参考のため貼っておく。「やり方の概略」、基本は今もほぼ同じのはず。2番目「リソースポリシーに気をつけよう」。3番目、カスタムドメインの基本概念。\nプライベート API Gateway にカスタムドメインを設定したい\nAPI Gatewayプライベートカスタムドメイン作成時のハマりポイント\nApigatewayのカスタムドメインとは何か・なぜ必要か\nまだ頭の中整理できていない。以下過去記事でも自分メモを書き散らかしているが、同じことをグルグルと繰り返している気がするな。いつ抜けられるんだ？\nECSをAmazon API Gatewayのバックエンドにするケース\n",
+  "wordCount" : "55",
+  "inLanguage": "en",
+  "datePublished": "2025-10-19T23:30:06+09:00",
+  "dateModified": "2025-10-19T23:30:06+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ecnedaced-seirots.github.io/post/e/api-gateway-private/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Go Buddy Go",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録
+    </h1>
+    <div class="post-meta"><span title='2025-10-19 23:30:06 +0900 JST'>October 19, 2025</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p> </p>
+<p>2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。</p>
+<p> </p>
+<p>プライベートAPIでカスタムドメインを使用する場合、API本体のリソースポリシーのほかにカスタムドメイン用のリソースポリシー設定が必須となる。デフォルトはすべてdeny。関連つけるVPCエンドポイントのARNからのアクセスを許可する。</p>
+<p> </p>
+<p>公式<br>
+<a href="https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-custom-domains.html">API Gateway でのプライベート API のカスタムドメイン名</a><br>
+<a href="https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-apis.html">API Gateway のプライベート REST API</a><br>
+<a href="https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-api-create.html">プライベート API の作成</a><br>
+<a href="https://repost.aws/ja/knowledge-center/api-gateway-private-cross-account-vpce">別のアカウントにある API Gateway プライベート REST APIにアクセスする | AWS re:Post</a></p>
+<p> </p>
+<p>その他<br>
+<a href="https://blog.usize-tech.com/amazon-api-gateway-practical-private-api-architectures/">プライベート API を組織内で効果的に運用するための実践的なアプローチ【 Amazon API Gateway】</a></p>
+<p> </p>
+<p>方式は大きく以下の3通りある模様。</p>
+<p> </p>
+<blockquote>
+<p>１．接続元のAPIGateway InterfaceエンドポイントとプライベートAPIGatewayを関連付けする。<br>
+２．接続元のAPIGatewayInterfaceエンドポイントでプライベートDNSを有効にする。<br>
+３．上記を行わず、パブリックDNS名でプライベート接続を行う。</p>
+</blockquote>
+<p>引用元<br>
+<a href="https://amegaeru.hatenablog.jp/entry/2025/01/14/000000">【AWS】プライベートのAPIGatewayの接続をためしてみた あめがえるのITブログ</a></p>
+<p> </p>
+<p>カスタムドメイン周り。最初の記事は2021年で前段にALBを配置するパターンだが、参考のため貼っておく。「<strong>やり方の概略</strong>」、基本は今もほぼ同じのはず。2番目「リソースポリシーに気をつけよう」。3番目、カスタムドメインの基本概念。</p>
+<p><a href="https://blog.serverworks.co.jp/private-apigateway-custom-domain">プライベート API Gateway にカスタムドメインを設定したい</a><br>
+<a href="https://tech.nri-net.com/entry/api_gateway_private_custom_domain_creation">API Gatewayプライベートカスタムドメイン作成時のハマりポイント</a><br>
+<a href="https://zenn.dev/osachi/articles/93077357202b19">Apigatewayのカスタムドメインとは何か・なぜ必要か</a></p>
+<p> </p>
+<p>まだ頭の中整理できていない。以下過去記事でも自分メモを書き散らかしているが、同じことをグルグルと繰り返している気がするな。いつ抜けられるんだ？</p>
+<p><a href="https://ecnedaced-seirots.github.io/post/c/aws-api-gateway-service/">ECSをAmazon API Gatewayのバックエンドにするケース</a></p>
+<p> </p>
+
+    
+
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/c/aws-api-gateway-service/">ECSをAmazon API Gatewayのバックエンドにするケース</a></li>
+    
+      <li><a href="/post/e/aws-region-specific-service/">AWSでリージョン別に利用可能なサービスを調べる</a></li>
+    
+      <li><a href="/post/d/aws-eventbridge-lambda-target/">EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</a></li>
+    
+      <li><a href="/post/d/s3-csv-import-to-rds-lambda/">S3上のCSVをRDS(PostgreSQL)にインポートするLambda</a></li>
+    
+      <li><a href="/post/d/rds-export-to-s3-lambda/">RDS(PostgreSQL)のデータをS3にエクスポートするLambda</a></li>
+    
+  </ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/api-gateway/">API Gateway</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/e/aws-bedrock-create-img/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Amazon Bedrockでイメージ生成を試してみる</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

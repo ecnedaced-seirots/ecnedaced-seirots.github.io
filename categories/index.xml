@@ -6,8 +6,15 @@
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Sep 2025 14:12:55 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 19 Oct 2025 23:30:06 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>API Gateway</title>
+      <link>https://ecnedaced-seirots.github.io/categories/api-gateway/</link>
+      <pubDate>Sun, 19 Oct 2025 23:30:06 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/categories/api-gateway/</guid>
+      <description></description>
+    </item>
     <item>
       <title>AI</title>
       <link>https://ecnedaced-seirots.github.io/categories/ai/</link>
@@ -97,13 +104,6 @@
       <link>https://ecnedaced-seirots.github.io/categories/opencv/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/categories/opencv/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>API Gateway</title>
-      <link>https://ecnedaced-seirots.github.io/categories/api-gateway/</link>
-      <pubDate>Wed, 12 Apr 2023 23:17:54 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/api-gateway/</guid>
       <description></description>
     </item>
     <item>

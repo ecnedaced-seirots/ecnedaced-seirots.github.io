@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>AWS | Go Buddy Go</title>
+<title>Posts | Go Buddy Go</title>
 <meta name="keywords" content="">
-<meta name="description" content="">
+<meta name="description" content="Posts - Go Buddy Go">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/tags/aws/">
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/tags/aws/index.xml">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/tags/aws/">
+<link rel="alternate" type="application/rss+xml" href="https://ecnedaced-seirots.github.io/post/index.xml">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/">
 <noscript>
     <style>
         #theme-toggle,
@@ -59,15 +59,30 @@
 </noscript>
   
 
-<meta property="og:title" content="AWS" />
+<meta property="og:title" content="Posts" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/tags/aws/" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="AWS"/>
+<meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ecnedaced-seirots.github.io/post/"
+    }
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -138,103 +153,25 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    AWS
+    Posts
   </h1>
 </header>
 
-<article class="post-entry tag-entry"> 
+<article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録
+    <h2 class="entry-hint-parent">最初の投稿
     </h2>
   </header>
   <div class="entry-content">
-    <p> 2024年終わりにAWS API GatewayのプライベートREST APIで、カスタムドメインが使えるようになった。従来はALB/NLBをGatewayの前段において多段構成にする必要があったが、その必要がなくなった。その辺りの諸々備忘録。
-...</p>
+    <p>とりあえず最初の投稿。</p>
   </div>
-  <footer class="entry-footer"><span title='2025-10-19 23:30:06 +0900 JST'>October 19, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to Amazon API Gateway(Private) &#43; カスタムドメイン周辺備忘録" href="https://ecnedaced-seirots.github.io/post/e/api-gateway-private/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWSでリージョン別に利用可能なサービスを調べる
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AWSでリージョン別に利用可能なサービスを調べたい時は、以下ページを見ればよい。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-09-01 22:08:05 +0900 JST'>September 1, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to AWSでリージョン別に利用可能なサービスを調べる" href="https://ecnedaced-seirots.github.io/post/e/aws-region-specific-service/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-07-28 21:06:07 +0900 JST'>July 28, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">S3上のCSVをRDS(PostgreSQL)にインポートするLambda
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-06-11 22:24:49 +0900 JST'>June 11, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to S3上のCSVをRDS(PostgreSQL)にインポートするLambda" href="https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">RDS(PostgreSQL)のデータをS3にエクスポートするLambda
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-06-11 22:22:36 +0900 JST'>June 11, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to RDS(PostgreSQL)のデータをS3にエクスポートするLambda" href="https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AWS Logs InsightsをCLIまたはPython(boto3)から実行
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-05-15 22:33:31 +0900 JST'>May 15, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to AWS Logs InsightsをCLIまたはPython(boto3)から実行" href="https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">異なるアカウント間のS3レプリケーション設定
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>S3レプリケーションのポイントとして重要なのが、ソース/レプリケート先両方のバケットでバージョニングを有効にすること。異なるアカウントへのレプリケーションの場合、レプリケート先のバケットポリシーでソースバケットからのアクセスを許可すること。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-01-03 15:48:23 +0900 JST'>January 3, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to 異なるアカウント間のS3レプリケーション設定" href="https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/"></a>
+  <footer class="entry-footer"><span title='2021-09-04 00:00:00 +0000 UTC'>September 4, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to 最初の投稿" href="https://ecnedaced-seirots.github.io/post/a/first/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="https://ecnedaced-seirots.github.io/tags/aws/page/2/">Next&nbsp;&nbsp;»
+    <a class="prev" href="https://ecnedaced-seirots.github.io/post/page/21/">
+      «&nbsp;Prev&nbsp;
     </a>
   </nav>
 </footer>
