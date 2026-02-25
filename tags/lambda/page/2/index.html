@@ -144,6 +144,26 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">CloudWatch LogsからS3にエクスポート(Lambda/Python)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
+参考
+boto3 API Reference
+LambdaよりCloudWatchログをS3に保存方法紹介
+ちなみに過去マネコンから実行する手順書いた。
+CloudWatchLogsからS3へログをエクスポートする 今回の検証に使用したアイテム（個人メモ） アイテム 名称 Lambda用IAMロール lambda_basic_execution Lambda関数 log-export-function S3バケット log-export-xxxxxxxx Lambda用IAMロールの権限はlogsフルアクセスのみ。S3もいると思ってたがなくてもできた。バケットポリシー側で許可しているからか。S3バケット名は環境変数で指定した。ちなみに対象バケットは、動作不可になるためオブジェクトロックを設定しないこと。
+S3バケットポリシー（log-export-xxxxxxxx）
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:GetBucketAcl&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx&#34; }, { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Principal&#34;: { &#34;Service&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34; }, &#34;Action&#34;: &#34;s3:PutObject&#34;, &#34;Resource&#34;: &#34;arn:aws:s3:::log-export-xxxxxxxx/*&#34;, &#34;Condition&#34;: { &#34;StringEquals&#34;: { &#34;s3:x-amz-acl&#34;: &#34;bucket-owner-full-control&#34; } } } ] } Lambdaコード(Python3.9)
+import boto3 import collections from datetime import datetime, date, time, timedelta import os def lambda_handler(event, context): log_g = event....</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-19 12:19:37 +0900 JST'>December 19, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to CloudWatch LogsからS3にエクスポート(Lambda/Python)" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Terraform loop処理の応用編(4) - Lambda
     </h2>
   </header>
@@ -243,26 +263,6 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   <footer class="entry-footer"><span title='2021-11-03 21:00:00 +0900 JST'>November 3, 2021</span></footer>
   <a class="entry-link" aria-label="post link to CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AWSでのログ監視メール送信はサブスクリプションフィルタ &#43; Lambda &#43; SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
-今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
-参考
-CloudWatch Logs を文字列検知してログ内容をメールを送信してみた サブスクリプションフィルター版 【AWS】CloudWatch Logsからシステムログをメール通知する。 CloudWatch Logs のサブスクリプションフィルタを使って特定文字列を検知したログをEメール通知する ※CLI実装例 以下は今後の参考用
-CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい ※除外キーワードをコードで記述する例 CloudWatchLogsからLambda経由でログメッセージを通知する ※Terraform実装例 処理概要 CWLにログが出力される CWLのサブスクリプションフィルタでキーワード検知 Lambda関数起動 SNSに連携される メール通知 作業概要 SNSトピック作成〜サブスクライブ Lambda用IAMロール作成 Lambda関数作成 ロググループ/ログストリーム作成 ロググループにサブスクリプションフィルタ作成 （配信先に3.のLambda関数を指定） テストログ送信〜メール通知確認 ※ログストリーム作成は検証時のみ。通常は自動生成される。
-今回の検証に使用したアイテム（個人メモ） アイテム 名称 SNSトピック log-monitor-topic Lambda用IAMロール send-log-filter-role Lambda関数 send-log-filter-function サブスクリプションフィルタ send-log-filter やったこと SNSトピック作成〜サブスクライブ
-過去記事:AWS EventBridge &#43; SNSからのメール件名をカスタマイズするに書いたので省略。ここではCLIでやってるけどマネコンでも特にハマるところはない。アクセスポリシーはデフォルトにした。 Lambda用IAMロール作成
-とりあえず以下のマネージドポリシーをアタッチ。 CloudEatchLogsFullAccess AmazonSNSFullAccess Lambda関数作成
-(1) 参考ブログのコード貼り付け import base64 import json import zlib import datetime import os import boto3 from botocore....</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-10-31 14:00:00 +0900 JST'>October 31, 2021</span></footer>
-  <a class="entry-link" aria-label="post link to CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信" href="https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://ecnedaced-seirots.github.io/tags/lambda/">
@@ -275,7 +275,7 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
     </main>
     
 <footer class="footer">
-    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

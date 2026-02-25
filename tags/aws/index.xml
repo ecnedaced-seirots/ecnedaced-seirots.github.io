@@ -24,6 +24,14 @@
       <description>&lt;p&gt;AWSでリージョン別に利用可能なサービスを調べたい時は、以下ページを見ればよい。&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Lambdaの実行時間をCloudWatch Logs Insightsで集計</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</link>
+      <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</title>
       <link>https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/</link>
       <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>

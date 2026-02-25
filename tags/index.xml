@@ -65,6 +65,20 @@
       <description></description>
     </item>
     <item>
+      <title>Clooudwatchlogs</title>
+      <link>https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/</link>
+      <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lambda</title>
+      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
+      <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Eventbridge</title>
       <link>https://ecnedaced-seirots.github.io/tags/eventbridge/</link>
       <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
@@ -90,13 +104,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/python/</link>
       <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Lambda</title>
-      <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
-      <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/lambda/</guid>
       <description></description>
     </item>
     <item>
@@ -132,13 +139,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/aws-cli/</link>
       <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/aws-cli/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Clooudwatchlogs</title>
-      <link>https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/</link>
-      <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/</guid>
       <description></description>
     </item>
     <item>
@@ -184,17 +184,17 @@
       <description></description>
     </item>
     <item>
-      <title>Cloudwachlogs</title>
-      <link>https://ecnedaced-seirots.github.io/tags/cloudwachlogs/</link>
-      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/cloudwachlogs/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Cloudwatch</title>
       <link>https://ecnedaced-seirots.github.io/tags/cloudwatch/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/cloudwatch/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloudwatchlogs</title>
+      <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
+      <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</guid>
       <description></description>
     </item>
     <item>
@@ -314,13 +314,6 @@
       <link>https://ecnedaced-seirots.github.io/tags/codedeploy/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
       <guid>https://ecnedaced-seirots.github.io/tags/codedeploy/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Cloudwatchlogs</title>
-      <link>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</link>
-      <pubDate>Thu, 03 Feb 2022 21:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/tags/cloudwatchlogs/</guid>
       <description></description>
     </item>
     <item>

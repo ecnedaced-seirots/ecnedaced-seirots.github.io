@@ -6,8 +6,16 @@
     <description>Recent content in CloudWatch Logs on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 03 Feb 2022 21:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jun 2025 20:30:30 +0900</lastBuildDate>
     <atom:link href="https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lambdaの実行時間をCloudWatch Logs Insightsで集計</title>
+      <link>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</link>
+      <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
+      <guid>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</guid>
+      <description>&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Logs Insightsで秒毎のログイベント数をカウントするクエリ</title>
       <link>https://ecnedaced-seirots.github.io/post/b/cloudwatch-logs-insights-bin/</link>

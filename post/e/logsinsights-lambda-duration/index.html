@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Lambdaの実行時間をCloudWatch Logs Insightsで集計 | Go Buddy Go</title>
-<meta name="keywords" content="">
+<meta name="keywords" content="clooudwatchlogs, lambda, AWS">
 <meta name="description" content=" 
 タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。">
 <meta name="author" content="">
@@ -103,7 +103,7 @@
   "name": "Lambdaの実行時間をCloudWatch Logs Insightsで集計",
   "description": " タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。\n",
   "keywords": [
-    
+    "clooudwatchlogs", "lambda", "AWS"
   ],
   "articleBody": " タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。\nで、以下記事参考にさせてもらった。おぉぉ、これは便利！！\nCloudWatch LogsInsightsでLambdaの速度を計測してみよう\n対象のロググループと時間帯をセット後、以下のクエリにより95パーセンタイル、中央値、平均値、最小値、最大値を集計できる。\nfilter @type = \"REPORT\" | stats count(*) as `count`, pct(@duration, 95) as pct95, pct(@duration, 50) as pct50, avg(@duration) as avgtime, min(@duration) as mintime, max@duration) as maxtime 上記記事からの引用だが、デフォルトで以下のフィールドが用意されている。ということは…\n@ingestionTime @logStream @message @requestId @timestamp @type @billedDuration @duration @initDuration @maxMemoryUsed @memorySize メモリ使用値を集計するなら、これでいけるってことか。\nfilter @type = \"REPORT\" | stats count(*) as `count`, avg(@maxMemoryUsed) as avgmem, min(@maxMemoryUsed) as minmem, max(@maxMemoryUsed) as maxmem 無関係だけど時事ネタなど。「JA民営化」要注意キーワードね。\n【時事問題】米価高騰の犯人は？ 仕組まれた価格操作の可能性？ 農林中金が狙われている？\n",
   "wordCount" : "68",
@@ -249,10 +249,29 @@
 
     
 
+  <br/>
+  <h3>関連がありそうな記事</h3>
+  <ul>
+    
+      <li><a href="/post/d/aws-logs-insights-boto3/">AWS Logs InsightsをCLIまたはPython(boto3)から実行</a></li>
+    
+      <li><a href="/post/b/cloudwatchlogs-send-filter-mail-3/">CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</a></li>
+    
+      <li><a href="/post/b/aws-lambda-log-monitoring/">AWS Lambdaのログ監視方法を考えてみる</a></li>
+    
+      <li><a href="/post/a/lambda-function-export/">AWS Lambda関数をダウンロードする</a></li>
+    
+      <li><a href="/post/a/aws-events-custom-mail-3/">AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
+    
+  </ul>
+
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="https://ecnedaced-seirots.github.io/tags/clooudwatchlogs/">Clooudwatchlogs</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://ecnedaced-seirots.github.io/post/e/limits-of-spiritual-idea/">
@@ -272,7 +291,7 @@
     </main>
     
 <footer class="footer">
-    <span>&copy; 2025 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
