@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jinja2 on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/jinja2/</link>
+    <link>http://localhost:1313/tags/jinja2/</link>
     <description>Recent content in Jinja2 on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 28 Nov 2021 17:00:00 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/jinja2/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/jinja2/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
+      <link>http://localhost:1313/post/a/terraform_auto_create_tfvars/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
+      <guid>http://localhost:1313/post/a/terraform_auto_create_tfvars/</guid>
       <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
 Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
@@ -24,9 +24,9 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
     </item>
     <item>
       <title>Python - Jinja2テンプレートで連続データを処理したい</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
+      <link>http://localhost:1313/post/a/jinja2-python/</link>
       <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
+      <guid>http://localhost:1313/post/a/jinja2-python/</guid>
       <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
 とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
 【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた </description>

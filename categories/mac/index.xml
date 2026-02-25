@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mac on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/mac/</link>
+    <link>http://localhost:1313/categories/mac/</link>
     <description>Recent content in Mac on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sat, 22 Jan 2022 11:00:00 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/mac/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/mac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Macでファイルをデフォルトで開くアプリを設定</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</link>
+      <link>http://localhost:1313/post/b/mac-files-setting/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</guid>
+      <guid>http://localhost:1313/post/b/mac-files-setting/</guid>
       <description>&lt;p&gt;Macで、特定の拡張子がつくファイルを開く時のデフォルトアプリケーションを設定したい時。例えばスクリプト系は一律mi.appとしたいが、最近始めたGoはまだ設定されていない。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MacにPython3を再インストール</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</link>
+      <link>http://localhost:1313/post/a/mac-python3-re-install/</link>
       <pubDate>Sat, 30 Oct 2021 12:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</guid>
+      <guid>http://localhost:1313/post/a/mac-python3-re-install/</guid>
       <description>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
 $ brew install python3 $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9) pythonだけで実行するとゴニョゴニョ言われる。
 $ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &amp;#34;/usr/local/lib/python3.9/site-packages:&amp;#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH で、この後pythonを実行すると2系になってしまう。
@@ -27,9 +27,9 @@ $ python WARNING: Python 2.7 is not recommended. This version is included in mac
     </item>
     <item>
       <title>MacにGNU版dateをインストール</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</link>
+      <link>http://localhost:1313/post/a/mac-installe-gdate/</link>
       <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</guid>
+      <guid>http://localhost:1313/post/a/mac-installe-gdate/</guid>
       <description>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
 Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
 $ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
@@ -41,9 +41,9 @@ UNIX時間に変換・UNIX時間を取得する方法</description>
     </item>
     <item>
       <title>Macで必須のショートカット3選</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</link>
+      <link>http://localhost:1313/post/a/mac-shortcut/</link>
       <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</guid>
+      <guid>http://localhost:1313/post/a/mac-shortcut/</guid>
       <description>私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
 フルスクリーン解除 control+ command + F
 アプリケーションの強制終了 command + option + esc

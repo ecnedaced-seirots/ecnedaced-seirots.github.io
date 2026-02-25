@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aws Systems Manager on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/aws-systems-manager/</link>
+    <link>http://localhost:1313/tags/aws-systems-manager/</link>
     <description>Recent content in Aws Systems Manager on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 07 Nov 2021 13:00:00 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/aws-systems-manager/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/aws-systems-manager/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS監視の方式を整理したい</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</link>
+      <link>http://localhost:1313/post/a/cloudwatch-monitoring-idea/</link>
       <pubDate>Sun, 07 Nov 2021 13:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-monitoring-idea/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatch-monitoring-idea/</guid>
       <description>AWSで過去普通にやってた監視実装も、2,3年経つと（或いはそれより短い周期で）陳腐化する。以前は限られたサービスのリソース範囲でやれることをやっていればよかったが、今はSSM(Systems Manager)、Lambda、EventBridgeなどの「登場人物」が増えて、カスタマイズが可能になったからだ。やれることが増えた分、実装が複雑になる。その分チャレンジングな分野になって楽しめると言えないこともないが&amp;hellip;、時間が足りないんだ。頭痛ぇな、まったく。絡み合った糸をほぐすためにまとめてみる。
 監視の種別としては大枠としてノード監視、閾値監視、ログ監視、プロセス監視、イベント監視と想定する。それぞれの実装方式が若干異なってくるため整理したい。
 監視方式大枠 ノード監視

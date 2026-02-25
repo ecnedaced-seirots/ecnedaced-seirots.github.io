@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要 | Go Buddy Go</title>
-<meta name="keywords" content="AWS, Lambada, eventbridge">
+<meta name="keywords" content="AWS, Lambda, eventbridge">
 <meta name="description" content="AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/">
+<link rel="canonical" href="http://localhost:1313/post/d/aws-eventbridge-lambda-target/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/d/aws-eventbridge-lambda-target/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,7 +63,7 @@
 <meta property="og:title" content="EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要" />
 <meta property="og:description" content="AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール &#43; ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="http://localhost:1313/post/d/aws-eventbridge-lambda-target/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2024-07-28T21:06:07+09:00" />
 <meta property="article:modified_time" content="2024-07-28T21:06:07+09:00" />
 
@@ -81,13 +81,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "https://ecnedaced-seirots.github.io/post/"
+      "item": "http://localhost:1313/post/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要",
-      "item": "https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"
+      "item": "http://localhost:1313/post/d/aws-eventbridge-lambda-target/"
     }
   ]
 }
@@ -100,7 +100,7 @@
   "name": "EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要",
   "description": "AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。\n",
   "keywords": [
-    "AWS", "Lambada", "eventbridge"
+    "AWS", "Lambda", "eventbridge"
   ],
   "articleBody": "AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。\nValidationException: RoleArn is not supported for target arn:aws:lambda:ap-northeast-1:[アカウントID]:function:lambda-hoge-func\nTerraformのドキュメントでもオプション扱いで、ロール指定が必要なサービスは以下の通りらしい。\nrole_arn (Optional) The Amazon Resource Name (ARN) of the IAM role to be used for this target when the rule is triggered. Required if ecs_target is used or target in arn is EC2 instance, Kinesis data stream or Step Functions state machine.\nResource: aws_cloudwatch_event_target\nちなみに上記には書かれていないが、CodePipelineのイベント検知として利用する場合もIAMロールが必要である。通常パイプライン作成時のオプションによって自動でルールが生成されるから、放置してると気が付かないかもしれない。（コンソールまたはAPIから個別にルールを作成することも可能である）\n冒頭の件はtfコードのパラメータからrole_arnを削除したら解消した。結論として、以下でも言及されているようにLambdaがターゲットの場合はLambda側でLambdaパーミッションがセットされていればよい。（設定したEventBridgeルールがLambdaを実行することを、Lambdaが許可する）\n参考\nAdding lambda target role to AWS Eventbridge rule in Cloudformation fails\n（これは2022年1月のネタなのだがすっかり忘れていて、2024年夏になってCFnで再び同じエラーに遭遇した）\n",
   "wordCount" : "72",
@@ -109,14 +109,14 @@
   "dateModified": "2024-07-28T21:06:07+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/d/aws-eventbridge-lambda-target/"
+    "@id": "http://localhost:1313/post/d/aws-eventbridge-lambda-target/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Go Buddy Go",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -138,7 +138,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,22 +166,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                <a href="http://localhost:1313/categories/" title="Categories">
                     <span>Categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                <a href="http://localhost:1313/tags/" title="Tags">
                     <span>Tags</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                <a href="http://localhost:1313/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -227,15 +227,15 @@
   <h3>関連がありそうな記事</h3>
   <ul>
     
+      <li><a href="/post/d/s3-csv-import-to-rds-lambda/">S3上のCSVをRDS(PostgreSQL)にインポートするLambda</a></li>
+    
+      <li><a href="/post/d/rds-export-to-s3-lambda/">RDS(PostgreSQL)のデータをS3にエクスポートするLambda</a></li>
+    
       <li><a href="/post/b/ec2-node-monitor-eb/">EC2のノード監視はEventBridgeだけで可能だった</a></li>
     
       <li><a href="/post/a/aws-events-custom-mail-3/">AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</a></li>
     
       <li><a href="/post/a/aws-events-custom-mail-2/">AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</a></li>
-    
-      <li><a href="/post/a/cloudwatch-monitoring-idea/">AWS監視の方式を整理したい</a></li>
-    
-      <li><a href="/post/a/cloudwatch-alarm-lambda/">CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</a></li>
     
   </ul>
 
@@ -243,17 +243,17 @@
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambada/">Lambada</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">Eventbridge</a></li>
+      <li><a href="http://localhost:1313/tags/aws/">AWS</a></li>
+      <li><a href="http://localhost:1313/tags/lambda/">Lambda</a></li>
+      <li><a href="http://localhost:1313/tags/eventbridge/">Eventbridge</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/e/cheat-of-god-cleaner/">
+  <a class="prev" href="http://localhost:1313/post/e/cheat-of-god-cleaner/">
     <span class="title">« Prev</span>
     <br>
     <span>ゴッドクリーナーの嘘にいいかげん気づいて欲しい</span>
   </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/">
+  <a class="next" href="http://localhost:1313/post/d/git-delete-remote-tracking-branch/">
     <span class="title">Next »</span>
     <br>
     <span>Gitでリモート追跡ブランチを削除する</span>
@@ -265,7 +265,7 @@
     </main>
     
 <footer class="footer">
-    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="http://localhost:1313/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

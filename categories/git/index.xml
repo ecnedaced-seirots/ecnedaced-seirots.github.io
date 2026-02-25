@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/git/</link>
+    <link>http://localhost:1313/categories/git/</link>
     <description>Recent content in Git on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 28 Jul 2024 11:04:57 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gitでリモート追跡ブランチを削除する</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/</link>
+      <link>http://localhost:1313/post/d/git-delete-remote-tracking-branch/</link>
       <pubDate>Sun, 28 Jul 2024 11:04:57 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/git-delete-remote-tracking-branch/</guid>
+      <guid>http://localhost:1313/post/d/git-delete-remote-tracking-branch/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;Gitでリモート追跡ブランチを削除。基本的なことだけど、改めて。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gitで強制的にpullを実行したい時と、commitを取り消したい時</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/</link>
+      <link>http://localhost:1313/post/d/how-to-force-gt-pull/</link>
       <pubDate>Sun, 28 Jul 2024 10:42:40 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/how-to-force-gt-pull/</guid>
+      <guid>http://localhost:1313/post/d/how-to-force-gt-pull/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;Gitで強制的にpullを実行したい時。とりあえず以下実行すればよいだろう。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gitで現在の作業ブランチにmasterや他の作業ブランチの変更を取り込む</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/git-merge-branch/</link>
+      <link>http://localhost:1313/post/d/git-merge-branch/</link>
       <pubDate>Sun, 21 Jul 2024 22:28:40 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/git-merge-branch/</guid>
+      <guid>http://localhost:1313/post/d/git-merge-branch/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;masterブランチに別の作業ブランチの変更が取り込まれていて、それを現在の作業ブランチに取り込みたい時。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gitで所定のリソースを管理対象外にする</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</link>
+      <link>http://localhost:1313/post/b/git-reset-tips/</link>
       <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</guid>
+      <guid>http://localhost:1313/post/b/git-reset-tips/</guid>
       <description>&lt;p&gt;Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。&lt;/p&gt;</description>
     </item>
   </channel>

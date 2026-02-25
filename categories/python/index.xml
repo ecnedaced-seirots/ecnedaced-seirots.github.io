@@ -2,54 +2,54 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/python/</link>
+    <link>http://localhost:1313/categories/python/</link>
     <description>Recent content in Python on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 12 Jun 2024 22:26:58 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pythonのdatetime, zoneinfo周辺など</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</link>
+      <link>http://localhost:1313/post/d/python-datetime-timezone/</link>
       <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</guid>
+      <guid>http://localhost:1313/post/d/python-datetime-timezone/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS Logs InsightsをCLIまたはPython(boto3)から実行</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</link>
+      <link>http://localhost:1313/post/d/aws-logs-insights-boto3/</link>
       <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</guid>
+      <guid>http://localhost:1313/post/d/aws-logs-insights-boto3/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonで区切り文字の最後の要素を取得</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</link>
+      <link>http://localhost:1313/post/b/python-get-last-string/</link>
       <pubDate>Wed, 16 Feb 2022 13:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</guid>
+      <guid>http://localhost:1313/post/b/python-get-last-string/</guid>
       <description>&lt;p&gt;Pythonで、区切り文字の最後の要素を取得する。「要素」と言ってるのは、一旦リストにする必要があるため。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonの辞書・文字列変換とJSON処理</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</link>
+      <link>http://localhost:1313/post/b/python-json-dumps-load/</link>
       <pubDate>Thu, 10 Feb 2022 18:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</guid>
+      <guid>http://localhost:1313/post/b/python-json-dumps-load/</guid>
       <description>&lt;p&gt;Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&amp;hellip;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
+      <link>http://localhost:1313/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
+      <guid>http://localhost:1313/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
+      <link>http://localhost:1313/post/a/terraform_auto_create_tfvars/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
+      <guid>http://localhost:1313/post/a/terraform_auto_create_tfvars/</guid>
       <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
 Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
@@ -61,9 +61,9 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
     </item>
     <item>
       <title>Python - Jinja2テンプレートで連続データを処理したい</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
+      <link>http://localhost:1313/post/a/jinja2-python/</link>
       <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
+      <guid>http://localhost:1313/post/a/jinja2-python/</guid>
       <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
 とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
 【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた </description>

@@ -2,55 +2,55 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mind Hacks on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/mind-hacks/</link>
+    <link>http://localhost:1313/tags/mind-hacks/</link>
     <description>Recent content in Mind Hacks on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 13 Aug 2025 18:09:47 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/mind-hacks/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/mind-hacks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>オーストラリアンブッシュ Cognis（現：Focus）で認知症予防をPoCしてみた</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</link>
+      <link>http://localhost:1313/post/e/australian-bush-cognis-focus-2/</link>
       <pubDate>Wed, 13 Aug 2025 18:09:47 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</guid>
+      <guid>http://localhost:1313/post/e/australian-bush-cognis-focus-2/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&amp;hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。&lt;/p&gt;</description>
     </item>
     <item>
       <title>オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/</link>
+      <link>http://localhost:1313/post/e/australian-bush-cognis-focus/</link>
       <pubDate>Wed, 16 Jul 2025 11:42:28 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/</guid>
+      <guid>http://localhost:1313/post/e/australian-bush-cognis-focus/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録、第一弾はオーストラリアンブッシュフラワーエッセンスのCognis。&lt;/p&gt;
 &lt;p&gt;Cognis（認知）である。このストレートなネーミングセンスに痺れる。タイトルの通り、全く発展著しくない俺様の脳活動上げ底&amp;hellip;じゃなくて底上げを期待して購入した。&lt;/p&gt;</description>
     </item>
     <item>
       <title>システムエンジニアによるフラワーエッセンスPoC記録（序章）</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/essence-poc/</link>
+      <link>http://localhost:1313/post/e/essence-poc/</link>
       <pubDate>Wed, 02 Jul 2025 17:26:42 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/essence-poc/</guid>
+      <guid>http://localhost:1313/post/e/essence-poc/</guid>
       <description>&lt;p&gt;唐突だが「フラワーエッセンス」である。そしてPoCと言えば&amp;hellip;、しばらく前に職場で、若手A(ほぼド新人）との会話。システム開発におけるフェーズについて軽く説明していた。&lt;/p&gt;</description>
     </item>
     <item>
       <title>「引き寄せの法則」「思考の現実化」および「魂の学び」の限界点</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/limits-of-spiritual-idea/</link>
+      <link>http://localhost:1313/post/e/limits-of-spiritual-idea/</link>
       <pubDate>Mon, 23 Jun 2025 11:03:03 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/limits-of-spiritual-idea/</guid>
+      <guid>http://localhost:1313/post/e/limits-of-spiritual-idea/</guid>
       <description>&lt;p&gt;「引き寄せの法則」（ポジティブ・シンキングを兼ねる）の限界を示す分かりやすい説明。&lt;/p&gt;</description>
     </item>
     <item>
       <title>レム睡眠と夢と記憶</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</link>
+      <link>http://localhost:1313/post/b/mind-hacks-rem-sleep/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</guid>
+      <guid>http://localhost:1313/post/b/mind-hacks-rem-sleep/</guid>
       <description>&lt;p&gt;今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。&lt;/p&gt;</description>
     </item>
     <item>
       <title>「いてくれるだけでいい人」の理由</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</link>
+      <link>http://localhost:1313/post/a/skill-in-communication/</link>
       <pubDate>Wed, 03 Nov 2021 10:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</guid>
+      <guid>http://localhost:1313/post/a/skill-in-communication/</guid>
       <description>職場とか、いろんなチーム・グループの中で、「この人がいてくれると安心」「いてくれるだけでいい」と思える人が稀にいる。本当に、稀に、だが。そういう人と、その他の人々の違いは一体何なのか、とモヤっと不思議に思っていた。若干解明できそうなのが、以下の記事。ここに書かれている要因だけではないと思うが、理由の一部としては納得できる。
 「いるだけでチームの雰囲気をよくする人」の口癖4つ。“ど” から始まるあの言葉がかなり使える
 （以降軽くNSFW画像あり。閲覧注意）
@@ -76,9 +76,9 @@
     </item>
     <item>
       <title>「ストックホルム症候群」の心理はヒトのデフォルト機能だった</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</link>
+      <link>http://localhost:1313/post/a/stockholm-syndrome/</link>
       <pubDate>Sat, 30 Oct 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</guid>
+      <guid>http://localhost:1313/post/a/stockholm-syndrome/</guid>
       <description>昨年の過去ツイのスレッドでちょっと気になるのを見つけたので、若干手を入れてここにまとめて書いておく。
 暴力の加害者に対して被害者が好意を抱く「ストックホルム症候群」と567脳、マスク厨の心理は似てないか？側から見ると、あの人たちは自由や人権を奪われている今の状況を愛しているように見える。
 その裏では「認知的不協和の解消」が発生している可能性がある。これは、自分の内部の矛盾に一貫性を持たせようとする機能。「新しい生活様式」だの、自粛しろマスクつけろだの、不自由で不本意な状況を強いられているが、それを受け入れている自分に葛藤が生じているはずなのだ。
@@ -103,9 +103,9 @@ Rage, rage against the dying of the light.
     </item>
     <item>
       <title>Tumblrについて、ひとり言</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/sns-influence/</link>
+      <link>http://localhost:1313/post/a/sns-influence/</link>
       <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/sns-influence/</guid>
+      <guid>http://localhost:1313/post/a/sns-influence/</guid>
       <description>SNSって誰をフォローするかも大きいけど誰にフォローされるか、も相当影響でかいんだなと思う。
 もともとSNS嫌いだからほとんどやってないけど、Tumblrは例外で、ここしばらく依存症に近いくらい使っている。全然使っていなかった時期もあるんだけどね。今は諸事情によりヘビーユーザー。
 当初はフォロワー僅か、だったが逆に好き勝手なことが書けた。Tumblrってテキスト投稿には向いてないと思うけど、それすら気にせずに画像だろうが音声だろうがテキストだろうが、好きなように投稿する。それがTumblrの良さ。

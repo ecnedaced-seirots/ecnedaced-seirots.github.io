@@ -2,69 +2,76 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lambda on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/lambda/</link>
+    <link>http://localhost:1313/tags/lambda/</link>
     <description>Recent content in Lambda on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 17 Jun 2025 20:30:30 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lambdaの実行時間をCloudWatch Logs Insightsで集計</title>
-      <link>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</link>
+      <link>http://localhost:1313/post/e/logsinsights-lambda-duration/</link>
       <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/e/logsinsights-lambda-duration/</guid>
+      <guid>http://localhost:1313/post/e/logsinsights-lambda-duration/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;タイトルのまんま。Lambdaの実行時間を、CloudWatch Logs Insightsで集計したい。&lt;/p&gt;</description>
     </item>
     <item>
+      <title>EventBridgeからLambdaを呼び出す時はIAM Roleの指定は不要</title>
+      <link>http://localhost:1313/post/d/aws-eventbridge-lambda-target/</link>
+      <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
+      <guid>http://localhost:1313/post/d/aws-eventbridge-lambda-target/</guid>
+      <description>&lt;p&gt;AWS EventBridgeのルールからターゲットを呼び出す時は常にIAMロールもセットにするもんだと思っていたら、違っていた。TerraformでEventBridgeのルール + ターゲットを作成しようとしてターゲットのパラメータとしてrole_arnを指定したところ、以下のエラーで失敗した。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</link>
+      <link>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</guid>
+      <guid>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）&lt;/p&gt;</description>
     </item>
     <item>
       <title>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</link>
+      <link>http://localhost:1313/post/d/rds-export-to-s3-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:22:36 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</guid>
+      <guid>http://localhost:1313/post/d/rds-export-to-s3-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(3)</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</link>
+      <link>http://localhost:1313/post/b/cloudwatchlogs-send-filter-mail-3/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
+      <guid>http://localhost:1313/post/b/cloudwatchlogs-send-filter-mail-3/</guid>
       <description>&lt;p&gt;約1年前の記事 &lt;a href=&#34;https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/&#34;&gt;CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信(2)&lt;/a&gt; の改良版の話。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS Lambdaのログ監視方法を考えてみる</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</link>
+      <link>http://localhost:1313/post/b/aws-lambda-log-monitoring/</link>
       <pubDate>Sun, 23 Jan 2022 15:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/aws-lambda-log-monitoring/</guid>
+      <guid>http://localhost:1313/post/b/aws-lambda-log-monitoring/</guid>
       <description>&lt;p&gt;AWS Lambdaは関数が呼び出されると自動でCloudWatch Logsにログを吐く。このログの監視についてベストプラクティスを考えてみた。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS Lambda関数をダウンロードする</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</link>
+      <link>http://localhost:1313/post/a/lambda-function-export/</link>
       <pubDate>Sun, 26 Dec 2021 21:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/lambda-function-export/</guid>
+      <guid>http://localhost:1313/post/a/lambda-function-export/</guid>
       <description>&lt;p&gt;AWS Lambdaでサイズがでかいリソースをアップロードすると、こんなメッセージが表示されてコードが見れないことがある。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWSイベント監視 - Config &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</link>
+      <link>http://localhost:1313/post/a/aws-events-custom-mail-3/</link>
       <pubDate>Sun, 26 Dec 2021 16:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-3/</guid>
+      <guid>http://localhost:1313/post/a/aws-events-custom-mail-3/</guid>
       <description>&lt;p&gt;過去に類似のテーマで、CloudTrailによるイベント監視 + 通知メールカスタマイズをしてみた。今回はイベントソースをAWS Configにしてみる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
+      <link>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
@@ -77,9 +84,9 @@ import boto3 import collections from datetime import datetime, date, time, timed
     </item>
     <item>
       <title>Terraform loop処理の応用編(4) - Lambda</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</link>
+      <link>http://localhost:1313/post/a/terraform-loop-example-5/</link>
       <pubDate>Sun, 12 Dec 2021 22:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/terraform-loop-example-5/</guid>
+      <guid>http://localhost:1313/post/a/terraform-loop-example-5/</guid>
       <description>今日のTerraform loopネタはLambda関数作成。ログ監視の一貫なので、CloudWatchLogsのロググループとサブスクリプションフィルタ作成も一緒にやる。
 この例でのディレクトリ構成は以下の通り。lambda/upload配下のzipファイルはTerraformにより生成されたもので、初回は空である。
 work_dir ├── config.tf #初期化ファイル ├── lambda │ ├── code │ │ ├── func001 │ │ │ └── lambda-func001.py │ │ ├── func002 │ │ │ └── lambda-func002.py │ │ └── func003 │ │ └── lambda-func003.py │ └── upload │ ├── lambda-func001.zip │ ├── lambda-func002.zip │ └── lambda-func003.zip ├── lambda.auto.tfvars ├── lambda_cwl.tf ├── terraform.tfvars #regionのみ定義 └── variables.tf 最初に、すべて定数で記述したパターン。
@@ -88,9 +95,9 @@ lambda_logs.tf（定数バージョン）
     </item>
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ(2)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</link>
+      <link>http://localhost:1313/post/a/aws-events-custom-mail-2/</link>
       <pubDate>Sun, 21 Nov 2021 00:30:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/</guid>
+      <guid>http://localhost:1313/post/a/aws-events-custom-mail-2/</guid>
       <description>以下過去記事の続き。この時はメール本文がJSON生データで送信された。これを、人間が状況を判別可能な状態までもっていきたい。
 AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ
 とういことで、再度検証。使用したAWS各種サービスのリソースは前回と同様で、Lambda関数のコードだけ入れ替え。何度も同じようなことをやっていて何がなんだか分からなくなっているがもうヤケクソ。
@@ -99,9 +106,9 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     </item>
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</link>
+      <link>http://localhost:1313/post/a/cloudwatch-alarm-lambda-3/</link>
       <pubDate>Sat, 20 Nov 2021 15:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatch-alarm-lambda-3/</guid>
       <description>表題のテーマ、過去にもCloudWatchアラーム通知メールのカスタマイズについて書いたが、表示時刻がUTCなのでJSTに変換しようと考えた。
 過去記事
 CloudWatchアラーム + SNSからのメール本文をカスタマイズする(2)
@@ -115,9 +122,9 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     </item>
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(2)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</link>
+      <link>http://localhost:1313/post/a/cloudwatch-alarm-lambda-2/</link>
       <pubDate>Sun, 14 Nov 2021 23:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-2/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatch-alarm-lambda-2/</guid>
       <description>表題の件、過去記事ではメール件名カスタマイズが主題だったが、メール本文を人間が判読可能なフォーマットにすべく、Lambdaコードを改良してみた。これがSNSに渡り、整形された本文がメール送信される想定である。前回はメール件名を環境変数にしたが今回はコード内から値を取り出している。
 類似の過去記事
 CloudWatchアラーム + SNSからのメール件名をカスタマイズする
@@ -126,9 +133,9 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     </item>
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信(2)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</link>
+      <link>http://localhost:1313/post/a/cloudwatchlogs-send-filter-mail-2/</link>
       <pubDate>Sun, 14 Nov 2021 12:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail-2/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatchlogs-send-filter-mail-2/</guid>
       <description>表題の件、以下の過去記事に書いたが、この時点では送信される本文ががログメッセージだけとなっていて、通知メールとしては不十分なため本文もカスタマイズしてみた。
 CloudWatchLogsのログ監視 - サブスクリプションフィルタ + Lambdaでメール送信
 各種設定は冒頭の過去記事と同様のため割愛するとして、コードは変更前・後両方載せておく。
@@ -137,9 +144,9 @@ import base64 import json import zlib import datetime import os import boto3 fro
     </item>
     <item>
       <title>CloudWatchアラーム &#43; SNSからのメール件名をカスタマイズする</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</link>
+      <link>http://localhost:1313/post/a/cloudwatch-alarm-lambda/</link>
       <pubDate>Wed, 03 Nov 2021 21:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatch-alarm-lambda/</guid>
       <description>CloudWatchアラーム + SNSトピックでメール飛ばす時の件名を変更したい。ということで、過去記事 AWS EventBridge + SNSからのメール件名をカスタマイズする でイベントからのメール通知でやったことを、アラームに変えてやってみた。アラームのトリガーはEC2インスタンスCPU使用率閾値超えとする。
 ベースの参照は以下クラメソさんネタ。ただしこちらは本文のカスタマイズであり、件名は変えていない。またLambdaも使用していない。これに先の過去記事パターンを合体させてやってみた。
 CloudWatch アラームの通知メールを少しでも読みやすくしたい
@@ -149,9 +156,9 @@ $ aws cloudwatch put-metric-alarm --alarm-name &amp;#34;CPU_Utilization_Test&amp
     </item>
     <item>
       <title>CloudWatchLogsのログ監視 - サブスクリプションフィルタ &#43; Lambdaでメール送信</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</link>
+      <link>http://localhost:1313/post/a/cloudwatchlogs-send-filter-mail/</link>
       <pubDate>Sun, 31 Oct 2021 14:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-send-filter-mail/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatchlogs-send-filter-mail/</guid>
       <description>AWSでのログ監視メール送信はサブスクリプションフィルタ + Lambda + SNSを使用するのがスタンダード。みんなやっていそうなことだが未経験だったのでやってみた。基本参考にしたのは王道クラメソさんの記事だったが、ちょっとわかりにくいところがあったので他の記事も合わせて参照して若干やり方変えつつ検証した。
 今回はマネコン作業メインでやったが、CLIやTerraformなどAPI経由で実装する場合追加作業が発生するため注意が必要。(後述 補足事項に記載)
 参考
@@ -164,9 +171,9 @@ CloudWatchLogsの内容をフィルタリングしてLambdaで通知させたい
     </item>
     <item>
       <title>AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカスタマイズ</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</link>
+      <link>http://localhost:1313/post/a/aws-events-custom-mail/</link>
       <pubDate>Mon, 25 Oct 2021 20:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail/</guid>
+      <guid>http://localhost:1313/post/a/aws-events-custom-mail/</guid>
       <description>表題の件、通知メールの件名はわかりやすいのにしたいよねというニーズに対応すべく、以下参考に試してみた。やったことはほぼこちらの記事の通り。
 Amazon SNS で送られる CloudWatch Events ルールの通知内容をカスタマイズする
 上記の通りやっていけばできるんだけれど、整理するためにも自分用に記録残す。ちなみに2021年10月現在、CloudWatch EventsはEventBridgeになっている。移行期間中だからまだ違和感があるが、この記事では名称は「EventBridge」とする。それと後半で書いているが、今回の事例ではCloudTrailが有効になっていることが前提なので、現状無効の場合は有効にしておく。

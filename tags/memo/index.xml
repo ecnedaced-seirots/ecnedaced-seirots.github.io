@@ -2,82 +2,82 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Memo on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/memo/</link>
+    <link>http://localhost:1313/tags/memo/</link>
     <description>Recent content in Memo on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 19 Mar 2024 20:31:33 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/memo/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/memo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>リモートデスクトップのオーディオ設定</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/</link>
+      <link>http://localhost:1313/post/d/remote-desktop-audio-setting/</link>
       <pubDate>Tue, 19 Mar 2024 20:31:33 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/remote-desktop-audio-setting/</guid>
+      <guid>http://localhost:1313/post/d/remote-desktop-audio-setting/</guid>
       <description>&lt;p&gt;テレワーク、リモートワーク、在宅ワーククソ喰らえ的な立場ではあるが&amp;hellip;.。&lt;br&gt;
 リモートデスクトップ上のTeams会議で音声を有効にする設定なんぞ。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gitで所定のリソースを管理対象外にする</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</link>
+      <link>http://localhost:1313/post/b/git-reset-tips/</link>
       <pubDate>Wed, 06 Apr 2022 19:16:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/git-reset-tips/</guid>
+      <guid>http://localhost:1313/post/b/git-reset-tips/</guid>
       <description>&lt;p&gt;Gitで、例えば間違えて管理下におきたくないファイルをコミットしてしまった場合に、ファイルを残したまま管理外にしたいとする。&lt;/p&gt;</description>
     </item>
     <item>
       <title>リモートデスクトップのショートカット</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</link>
+      <link>http://localhost:1313/post/b/rdp-connect/</link>
       <pubDate>Fri, 01 Apr 2022 14:59:44 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/rdp-connect/</guid>
+      <guid>http://localhost:1313/post/b/rdp-connect/</guid>
       <description>&lt;p&gt;ネタ以下のネタだけど、RDP（リモートデスクトップ）のショートカット。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Firefoxでソースを表示</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</link>
+      <link>http://localhost:1313/post/b/firefox-show-source/</link>
       <pubDate>Mon, 28 Mar 2022 17:11:08 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/firefox-show-source/</guid>
+      <guid>http://localhost:1313/post/b/firefox-show-source/</guid>
       <description>&lt;p&gt;Firefoxでソースを表示するには。&lt;/p&gt;</description>
     </item>
     <item>
       <title>サクラエディタで先頭列を置換する</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</link>
+      <link>http://localhost:1313/post/b/sakura-replace/</link>
       <pubDate>Sat, 26 Mar 2022 10:43:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/sakura-replace/</guid>
+      <guid>http://localhost:1313/post/b/sakura-replace/</guid>
       <description>&lt;p&gt;サクラエディタで、一時的にコメント入れるとか先頭列だけ置換したいとき。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MS Officeの邪魔なサジェストを無効にする</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</link>
+      <link>http://localhost:1313/post/b/ms-outlook-excel-disable-suggest/</link>
       <pubDate>Sat, 05 Feb 2022 11:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/ms-outlook-excel-disable-suggest/</guid>
+      <guid>http://localhost:1313/post/b/ms-outlook-excel-disable-suggest/</guid>
       <description>&lt;h3 id=&#34;迷惑サジェスト-その１&#34;&gt;迷惑サジェスト その１&lt;/h3&gt;
 &lt;p&gt;Outlookで「登録名の先頭の数文字の入力で候補を表示する」を無効にしたい。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Macでファイルをデフォルトで開くアプリを設定</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</link>
+      <link>http://localhost:1313/post/b/mac-files-setting/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/mac-files-setting/</guid>
+      <guid>http://localhost:1313/post/b/mac-files-setting/</guid>
       <description>&lt;p&gt;Macで、特定の拡張子がつくファイルを開く時のデフォルトアプリケーションを設定したい時。例えばスクリプト系は一律mi.appとしたいが、最近始めたGoはまだ設定されていない。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
+      <link>http://localhost:1313/post/b/aws-create-nat-gateway/</link>
       <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
+      <guid>http://localhost:1313/post/b/aws-create-nat-gateway/</guid>
       <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
+      <link>http://localhost:1313/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
+      <guid>http://localhost:1313/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MacにPython3を再インストール</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</link>
+      <link>http://localhost:1313/post/a/mac-python3-re-install/</link>
       <pubDate>Sat, 30 Oct 2021 12:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</guid>
+      <guid>http://localhost:1313/post/a/mac-python3-re-install/</guid>
       <description>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
 $ brew install python3 $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9) pythonだけで実行するとゴニョゴニョ言われる。
 $ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &amp;#34;/usr/local/lib/python3.9/site-packages:&amp;#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH で、この後pythonを実行すると2系になってしまう。
@@ -85,18 +85,18 @@ $ python WARNING: Python 2.7 is not recommended. This version is included in mac
     </item>
     <item>
       <title>Github Actionsメモ</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/github-actions/</link>
+      <link>http://localhost:1313/post/a/github-actions/</link>
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/github-actions/</guid>
+      <guid>http://localhost:1313/post/a/github-actions/</guid>
       <description>GitHub ActionsでCIか。このブログについては今の時点でも不自由していないから無理にやらなくてもいい気がする、けど調べておこう。
 Hugo + GitHub Pages + GitHub Actions で独自ドメインのウェブサイトを構築する
 今日はとうとう電車の中で堂々と中指を突き立てた俺様であったが、週末くらいは心穏やかに過ごそう、ふぅ。</description>
     </item>
     <item>
       <title>MacにGNU版dateをインストール</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</link>
+      <link>http://localhost:1313/post/a/mac-installe-gdate/</link>
       <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-installe-gdate/</guid>
+      <guid>http://localhost:1313/post/a/mac-installe-gdate/</guid>
       <description>Mac OSで標準搭載されているdateコマンドはBSD版であり、Linux標準のGNU版と微妙に異なる。Linuxと実行結果が異なったり、使用できないオプションがあったりとか。それが困るから、自宅のMacでもGNU版のdateが使いたいのである。数年前に標準のdateを入れたのだが、その後Mac本体を買い替えたタイミングで消えてしまった。
 Mac OSでgnu/dateを使いたい場合、brewから入れる。install dateではなく、coreutilsとする。（他のGNU系コマンド一式が含まれる）
 $ brew install coreutils /usr/local/bin/gdateにインストールされた。（正確にはシンボリックリンク）
@@ -108,18 +108,18 @@ UNIX時間に変換・UNIX時間を取得する方法</description>
     </item>
     <item>
       <title>AWS CLIのページャを無効化する</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
+      <link>http://localhost:1313/post/a/awscli-pager/</link>
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
+      <guid>http://localhost:1313/post/a/awscli-pager/</guid>
       <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
 configで設定 ~/.aws/configに以下記載する。
 [default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&amp;#34;&amp;#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</description>
     </item>
     <item>
       <title>Firefox/Chromeでアドオンなし全画面キャプチャ</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</link>
+      <link>http://localhost:1313/post/a/browser-capture-all/</link>
       <pubDate>Thu, 23 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/browser-capture-all/</guid>
+      <guid>http://localhost:1313/post/a/browser-capture-all/</guid>
       <description>かつてブラウザで全画面キャプチャしたい時はChromeにアドオンを入れて使っていたがこのアドオンはキャプチャしたデータをどこかに送信しているという話をどこかで読んで、ちょっとなぁ、と思った。しかし最近になってChromeでもFirefoxでもアドオンなしで全画面キャプチャが可能になっていることを知った。自宅で見るブラウザはほぼFirefoxでChromeは滅多に使わないが、職場では事情が変わったりするので両方書いておく。
 Firefoxの場合 F12キーで開発ツール画面を表示する。ツール画面右上のカメラアイコンをクリック。これだけ。素晴らしい。画像はデフォルトでDwonloadディレクトリに保存される。
 &amp;hellip;が、画面左側に小さな字でさりげなく「画像が大きすぎたため、xxxxxのサイズに切り抜きました」と言われている。画面が長すぎると途中で切られてしまうわけだ。結果的には以下のようになった。矢印の箇所は実際にここで画面が切れている。自分の投稿記事でやってみたんだけどまぁ実際この記事は長すぎるね。
@@ -130,9 +130,9 @@ Windows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Sh
     </item>
     <item>
       <title>Macで必須のショートカット3選</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</link>
+      <link>http://localhost:1313/post/a/mac-shortcut/</link>
       <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/mac-shortcut/</guid>
+      <guid>http://localhost:1313/post/a/mac-shortcut/</guid>
       <description>私的にMacで必須のショートカットを3つ挙げるとしたらこんなところかな。
 フルスクリーン解除 control+ command + F
 アプリケーションの強制終了 command + option + esc
@@ -144,18 +144,18 @@ Windows Ctrl + Shift + I 同時押しで開発ツール画面を表示 Ctrl + Sh
     </item>
     <item>
       <title>サクラエディタで半角スペースを可視化</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/sakura/</link>
+      <link>http://localhost:1313/post/a/sakura/</link>
       <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/sakura/</guid>
+      <guid>http://localhost:1313/post/a/sakura/</guid>
       <description>サクラエディタで半角スペースを可視化したい。環境が変わって入れ直した時とか都度やり直す羽目になるからメモ。
 メニューから[設定] 〜 [タイプ別設定] を選択。
 「カラー」タブ 半角空白 「色分け/表示」にチェック </description>
     </item>
     <item>
       <title>マークダウン記法</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/markdown/</link>
+      <link>http://localhost:1313/post/a/markdown/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/markdown/</guid>
+      <guid>http://localhost:1313/post/a/markdown/</guid>
       <description>マークダウン記法の参考リンク。取り急ぎこれくらいあればいいかな。
 Markdown 早見表 &amp;amp; 詳細
 かんたんMarkdownの記法

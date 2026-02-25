@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Healthcare on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/healthcare/</link>
+    <link>http://localhost:1313/categories/healthcare/</link>
     <description>Recent content in Healthcare on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Fri, 11 Feb 2022 17:00:00 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/healthcare/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/healthcare/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>グリシン酸マグネシウムが入手困難！</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</link>
+      <link>http://localhost:1313/post/b/magnesium-suppliment/</link>
       <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/magnesium-suppliment/</guid>
+      <guid>http://localhost:1313/post/b/magnesium-suppliment/</guid>
       <description>&lt;p&gt;数年前からずっと飲んできた、ソラレー社(Solaray)のマグネシウム・グリシネートが生産停止になってしまった。最後に購入したのは去年の11月だ。&lt;/p&gt;</description>
     </item>
     <item>
       <title>タウリン(Taurine)の効能いろいろ</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</link>
+      <link>http://localhost:1313/post/a/healthcare-taurine/</link>
       <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</guid>
+      <guid>http://localhost:1313/post/a/healthcare-taurine/</guid>
       <description>タウリンの効果。過去に見つけたネタをバラバラにメモっていたのをまとめておく。
 タウリンとは、一言で言うと。
 タウリンは分子量124の含硫アミノ酸。タンパク質の構成成分にはならないが、細胞内の遊離アミノ酸としてはグルタミンと並んでもっとも高濃度に存在し、かつグルタミンに類似する成分。またタウリンは脳内のアミノ酸の中では2番目に多く存在する。

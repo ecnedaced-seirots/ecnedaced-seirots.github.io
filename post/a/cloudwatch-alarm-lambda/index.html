@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -14,18 +14,18 @@ CloudWatch アラームの通知メールを少しでも読みやすくしたい
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
 $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34; EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">
+<link rel="canonical" href="http://localhost:1313/post/a/cloudwatch-alarm-lambda/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/a/cloudwatch-alarm-lambda/">
 <noscript>
     <style>
         #theme-toggle,
@@ -73,7 +73,7 @@ CloudWatch アラームの通知メールを少しでも読みやすくしたい
 CLIよりCloudWatchアラーム作成。少ない負荷でもアラームステータスになるように閾値は10%にしてある。
 $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ --metric-name &#34;CPUUtilization&#34; \ --namespace &#34;AWS/EC2&#34; \ --statistic &#34;Maximum&#34; \ --period 60 \ --evaluation-periods 1 \ --datapoints-to-alarm 1 \ --threshold 10 \ --comparison-operator &#34;GreaterThanThreshold&#34; \ --dimensions &#34;Name=InstanceId,Value=i-0xxxxxxxxxxx9&#34; EventBridgeルールの作成。以下の場合、&ldquo;CPU_Utilization_&ldquo;を含むアラームと関連付けられる" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="http://localhost:1313/post/a/cloudwatch-alarm-lambda/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-11-03T21:00:00+09:00" />
 <meta property="article:modified_time" content="2021-11-03T21:00:00+09:00" />
 
@@ -96,13 +96,13 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "https://ecnedaced-seirots.github.io/post/"
+      "item": "http://localhost:1313/post/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "CloudWatchアラーム + SNSからのメール件名をカスタマイズする",
-      "item": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"
+      "item": "http://localhost:1313/post/a/cloudwatch-alarm-lambda/"
     }
   ]
 }
@@ -124,14 +124,14 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
   "dateModified": "2021-11-03T21:00:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda/"
+    "@id": "http://localhost:1313/post/a/cloudwatch-alarm-lambda/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Go Buddy Go",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -153,7 +153,7 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -181,22 +181,22 @@ $ aws cloudwatch put-metric-alarm --alarm-name &#34;CPU_Utilization_Test&#34; \ 
         </div>
         <ul id="menu">
             <li>
-                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                <a href="http://localhost:1313/categories/" title="Categories">
                     <span>Categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                <a href="http://localhost:1313/tags/" title="Tags">
                     <span>Tags</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                <a href="http://localhost:1313/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -368,21 +368,21 @@ $ aws events put-rule --name &#34;cw-alarm-rule&#34; \
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatchalarm/">Cloudwatchalarm</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">Eventbridge</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="http://localhost:1313/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="http://localhost:1313/tags/cloudwatchalarm/">Cloudwatchalarm</a></li>
+      <li><a href="http://localhost:1313/tags/monitoring/">Monitoring</a></li>
+      <li><a href="http://localhost:1313/tags/lambda/">Lambda</a></li>
+      <li><a href="http://localhost:1313/tags/amazon-sns/">Amazon Sns</a></li>
+      <li><a href="http://localhost:1313/tags/eventbridge/">Eventbridge</a></li>
+      <li><a href="http://localhost:1313/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/">
+  <a class="prev" href="http://localhost:1313/post/a/healthcare-taurine/">
     <span class="title">« Prev</span>
     <br>
     <span>タウリン(Taurine)の効能いろいろ</span>
   </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/skill-in-communication/">
+  <a class="next" href="http://localhost:1313/post/a/skill-in-communication/">
     <span class="title">Next »</span>
     <br>
     <span>「いてくれるだけでいい人」の理由</span>
@@ -394,7 +394,7 @@ $ aws events put-rule --name &#34;cw-alarm-rule&#34; \
     </main>
     
 <footer class="footer">
-    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="http://localhost:1313/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

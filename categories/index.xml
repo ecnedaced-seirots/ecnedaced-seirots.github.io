@@ -2,213 +2,213 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 19 Oct 2025 23:30:06 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>API Gateway</title>
-      <link>https://ecnedaced-seirots.github.io/categories/api-gateway/</link>
+      <link>http://localhost:1313/categories/api-gateway/</link>
       <pubDate>Sun, 19 Oct 2025 23:30:06 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/api-gateway/</guid>
+      <guid>http://localhost:1313/categories/api-gateway/</guid>
       <description></description>
     </item>
     <item>
       <title>AI</title>
-      <link>https://ecnedaced-seirots.github.io/categories/ai/</link>
+      <link>http://localhost:1313/categories/ai/</link>
       <pubDate>Sun, 28 Sep 2025 14:12:55 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/ai/</guid>
+      <guid>http://localhost:1313/categories/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>AWS</title>
-      <link>https://ecnedaced-seirots.github.io/categories/aws/</link>
+      <link>http://localhost:1313/categories/aws/</link>
       <pubDate>Mon, 01 Sep 2025 22:08:05 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/aws/</guid>
+      <guid>http://localhost:1313/categories/aws/</guid>
       <description></description>
     </item>
     <item>
       <title>Essence</title>
-      <link>https://ecnedaced-seirots.github.io/categories/essence/</link>
+      <link>http://localhost:1313/categories/essence/</link>
       <pubDate>Wed, 13 Aug 2025 18:09:47 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/essence/</guid>
+      <guid>http://localhost:1313/categories/essence/</guid>
       <description></description>
     </item>
     <item>
       <title>Mind Hacks</title>
-      <link>https://ecnedaced-seirots.github.io/categories/mind-hacks/</link>
+      <link>http://localhost:1313/categories/mind-hacks/</link>
       <pubDate>Mon, 23 Jun 2025 11:03:03 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/mind-hacks/</guid>
+      <guid>http://localhost:1313/categories/mind-hacks/</guid>
       <description></description>
     </item>
     <item>
       <title>CloudWatch Logs</title>
-      <link>https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/</link>
+      <link>http://localhost:1313/categories/cloudwatch-logs/</link>
       <pubDate>Tue, 17 Jun 2025 20:30:30 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/cloudwatch-logs/</guid>
+      <guid>http://localhost:1313/categories/cloudwatch-logs/</guid>
       <description></description>
     </item>
     <item>
       <title>Life</title>
-      <link>https://ecnedaced-seirots.github.io/categories/life/</link>
+      <link>http://localhost:1313/categories/life/</link>
       <pubDate>Fri, 30 May 2025 13:49:16 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/life/</guid>
+      <guid>http://localhost:1313/categories/life/</guid>
       <description></description>
     </item>
     <item>
       <title>AWS Lambda</title>
-      <link>https://ecnedaced-seirots.github.io/categories/aws-lambda/</link>
+      <link>http://localhost:1313/categories/aws-lambda/</link>
       <pubDate>Sun, 28 Jul 2024 21:06:07 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/aws-lambda/</guid>
+      <guid>http://localhost:1313/categories/aws-lambda/</guid>
       <description></description>
     </item>
     <item>
       <title>Git</title>
-      <link>https://ecnedaced-seirots.github.io/categories/git/</link>
+      <link>http://localhost:1313/categories/git/</link>
       <pubDate>Sun, 28 Jul 2024 11:04:57 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/git/</guid>
+      <guid>http://localhost:1313/categories/git/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
-      <link>https://ecnedaced-seirots.github.io/categories/python/</link>
+      <link>http://localhost:1313/categories/python/</link>
       <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/python/</guid>
+      <guid>http://localhost:1313/categories/python/</guid>
       <description></description>
     </item>
     <item>
       <title>K8s</title>
-      <link>https://ecnedaced-seirots.github.io/categories/k8s/</link>
+      <link>http://localhost:1313/categories/k8s/</link>
       <pubDate>Thu, 06 Jun 2024 23:08:45 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/k8s/</guid>
+      <guid>http://localhost:1313/categories/k8s/</guid>
       <description></description>
     </item>
     <item>
       <title>Tips</title>
-      <link>https://ecnedaced-seirots.github.io/categories/tips/</link>
+      <link>http://localhost:1313/categories/tips/</link>
       <pubDate>Tue, 19 Mar 2024 20:31:33 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/tips/</guid>
+      <guid>http://localhost:1313/categories/tips/</guid>
       <description></description>
     </item>
     <item>
       <title>S3</title>
-      <link>https://ecnedaced-seirots.github.io/categories/s3/</link>
+      <link>http://localhost:1313/categories/s3/</link>
       <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/s3/</guid>
+      <guid>http://localhost:1313/categories/s3/</guid>
       <description></description>
     </item>
     <item>
       <title>RDS</title>
-      <link>https://ecnedaced-seirots.github.io/categories/rds/</link>
+      <link>http://localhost:1313/categories/rds/</link>
       <pubDate>Thu, 14 Sep 2023 21:34:36 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/rds/</guid>
+      <guid>http://localhost:1313/categories/rds/</guid>
       <description></description>
     </item>
     <item>
       <title>OpenCV</title>
-      <link>https://ecnedaced-seirots.github.io/categories/opencv/</link>
+      <link>http://localhost:1313/categories/opencv/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/opencv/</guid>
+      <guid>http://localhost:1313/categories/opencv/</guid>
       <description></description>
     </item>
     <item>
       <title>Monitoring</title>
-      <link>https://ecnedaced-seirots.github.io/categories/monitoring/</link>
+      <link>http://localhost:1313/categories/monitoring/</link>
       <pubDate>Sun, 25 Dec 2022 15:40:13 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/monitoring/</guid>
+      <guid>http://localhost:1313/categories/monitoring/</guid>
       <description></description>
     </item>
     <item>
       <title>Wave</title>
-      <link>https://ecnedaced-seirots.github.io/categories/wave/</link>
+      <link>http://localhost:1313/categories/wave/</link>
       <pubDate>Wed, 29 Jun 2022 16:54:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/wave/</guid>
+      <guid>http://localhost:1313/categories/wave/</guid>
       <description></description>
     </item>
     <item>
       <title>Reading</title>
-      <link>https://ecnedaced-seirots.github.io/categories/reading/</link>
+      <link>http://localhost:1313/categories/reading/</link>
       <pubDate>Sat, 07 May 2022 11:51:58 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/reading/</guid>
+      <guid>http://localhost:1313/categories/reading/</guid>
       <description></description>
     </item>
     <item>
       <title>Terraform</title>
-      <link>https://ecnedaced-seirots.github.io/categories/terraform/</link>
+      <link>http://localhost:1313/categories/terraform/</link>
       <pubDate>Mon, 02 May 2022 11:44:04 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/terraform/</guid>
+      <guid>http://localhost:1313/categories/terraform/</guid>
       <description></description>
     </item>
     <item>
       <title>English</title>
-      <link>https://ecnedaced-seirots.github.io/categories/english/</link>
+      <link>http://localhost:1313/categories/english/</link>
       <pubDate>Sat, 19 Feb 2022 00:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/english/</guid>
+      <guid>http://localhost:1313/categories/english/</guid>
       <description></description>
     </item>
     <item>
       <title>Healthcare</title>
-      <link>https://ecnedaced-seirots.github.io/categories/healthcare/</link>
+      <link>http://localhost:1313/categories/healthcare/</link>
       <pubDate>Fri, 11 Feb 2022 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/healthcare/</guid>
+      <guid>http://localhost:1313/categories/healthcare/</guid>
       <description></description>
     </item>
     <item>
       <title>Go</title>
-      <link>https://ecnedaced-seirots.github.io/categories/go/</link>
+      <link>http://localhost:1313/categories/go/</link>
       <pubDate>Sun, 06 Feb 2022 23:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/go/</guid>
+      <guid>http://localhost:1313/categories/go/</guid>
       <description></description>
     </item>
     <item>
       <title>CICD</title>
-      <link>https://ecnedaced-seirots.github.io/categories/cicd/</link>
+      <link>http://localhost:1313/categories/cicd/</link>
       <pubDate>Fri, 04 Feb 2022 21:00:30 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/cicd/</guid>
+      <guid>http://localhost:1313/categories/cicd/</guid>
       <description></description>
     </item>
     <item>
       <title>Mac</title>
-      <link>https://ecnedaced-seirots.github.io/categories/mac/</link>
+      <link>http://localhost:1313/categories/mac/</link>
       <pubDate>Sat, 22 Jan 2022 11:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/mac/</guid>
+      <guid>http://localhost:1313/categories/mac/</guid>
       <description></description>
     </item>
     <item>
       <title>Fluent Bit</title>
-      <link>https://ecnedaced-seirots.github.io/categories/fluent-bit/</link>
+      <link>http://localhost:1313/categories/fluent-bit/</link>
       <pubDate>Mon, 10 Jan 2022 20:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/fluent-bit/</guid>
+      <guid>http://localhost:1313/categories/fluent-bit/</guid>
       <description></description>
     </item>
     <item>
       <title>EKS</title>
-      <link>https://ecnedaced-seirots.github.io/categories/eks/</link>
+      <link>http://localhost:1313/categories/eks/</link>
       <pubDate>Mon, 03 Jan 2022 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/eks/</guid>
+      <guid>http://localhost:1313/categories/eks/</guid>
       <description></description>
     </item>
     <item>
       <title>Github</title>
-      <link>https://ecnedaced-seirots.github.io/categories/github/</link>
+      <link>http://localhost:1313/categories/github/</link>
       <pubDate>Sat, 23 Oct 2021 00:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/github/</guid>
+      <guid>http://localhost:1313/categories/github/</guid>
       <description></description>
     </item>
     <item>
       <title>Tokyo</title>
-      <link>https://ecnedaced-seirots.github.io/categories/tokyo/</link>
+      <link>http://localhost:1313/categories/tokyo/</link>
       <pubDate>Wed, 15 Sep 2021 23:53:34 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/tokyo/</guid>
+      <guid>http://localhost:1313/categories/tokyo/</guid>
       <description></description>
     </item>
     <item>
       <title>Uncategorized</title>
-      <link>https://ecnedaced-seirots.github.io/categories/uncategorized/</link>
+      <link>http://localhost:1313/categories/uncategorized/</link>
       <pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/categories/uncategorized/</guid>
+      <guid>http://localhost:1313/categories/uncategorized/</guid>
       <description></description>
     </item>
   </channel>

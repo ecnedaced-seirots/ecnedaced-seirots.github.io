@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aws Cli on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/aws-cli/</link>
+    <link>http://localhost:1313/tags/aws-cli/</link>
     <description>Recent content in Aws Cli on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 15 May 2024 22:33:31 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/aws-cli/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/aws-cli/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS Logs InsightsをCLIまたはPython(boto3)から実行</title>
-      <link>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</link>
+      <link>http://localhost:1313/post/d/aws-logs-insights-boto3/</link>
       <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</guid>
+      <guid>http://localhost:1313/post/d/aws-logs-insights-boto3/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS ConfigをCLIから削除する</title>
-      <link>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</link>
+      <link>http://localhost:1313/post/b/delete-aws-config/</link>
       <pubDate>Sat, 01 Jan 2022 13:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/b/delete-aws-config/</guid>
+      <guid>http://localhost:1313/post/b/delete-aws-config/</guid>
       <description>&lt;p&gt;イベント監視通知のためにAWS Configを設定して検証したが、個人PoCであり普段は必要ないため削除しようと思った。微々たる金額だが課金対象だし。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
+      <link>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
+      <guid>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
@@ -40,9 +40,9 @@ import boto3 import collections from datetime import datetime, date, time, timed
     </item>
     <item>
       <title>AWS CLIのページャを無効化する</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</link>
+      <link>http://localhost:1313/post/a/awscli-pager/</link>
       <pubDate>Sat, 16 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/awscli-pager/</guid>
+      <guid>http://localhost:1313/post/a/awscli-pager/</guid>
       <description>AWS CLI v2でデフォルトになっているページャを無効化する方法は2種類ある。
 configで設定 ~/.aws/configに以下記載する。
 [default] cli_pager= 環境変数で設定 $ export AWS_PAGER=&amp;#34;&amp;#34; 1.の方が推奨されているようだが、k8s(Kubernetes)のPodの場合は、マニフェストのENVに2.の環境変数を書いておけば期待値になる。</description>

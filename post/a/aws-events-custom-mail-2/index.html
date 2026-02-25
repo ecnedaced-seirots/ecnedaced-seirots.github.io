@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -13,18 +13,18 @@ AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカ
 lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3.">
 <meta name="author" content="">
-<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">
+<link rel="canonical" href="http://localhost:1313/post/a/aws-events-custom-mail-2/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/a/aws-events-custom-mail-2/">
 <noscript>
     <style>
         #theme-toggle,
@@ -71,7 +71,7 @@ AWSイベント監視 - CloudTrail &#43; EventBridge &#43; Lambdaでメールカ
 lambda_function.py （イベント監視メール通知用）
 import boto3 import json import os import re from botocore.exceptions import ClientError from datetime import datetime, timezone, timedelta from dateutil import parser print(&#39;Loading function&#39;) sns_arn = os.environ[&#39;SNS_TOPIC_ARN&#39;] def lambda_handler(event, context): data = event s = json.dumps(data) e = json.loads(s) print(e) # eventから項目を抽出 dtl = e[&#39;detail&#39;] #詳細(detail)を定義 e_type = e[&#39;detail-type&#39;] # イベントタイプ 例：&#39;AWS API Call via CloudTrail&#39; t = e[&#39;time&#39;] # 発生時刻 evt_name = dtl[&#39;eventName&#39;] # イベント名 例：DeleteBucket evt_src = dtl[&#39;eventSource&#39;] # イベントソース 例：s3." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="http://localhost:1313/post/a/aws-events-custom-mail-2/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-11-21T00:30:00+09:00" />
 <meta property="article:modified_time" content="2021-11-21T00:30:00+09:00" />
 
@@ -93,13 +93,13 @@ import boto3 import json import os import re from botocore.exceptions import Cli
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "https://ecnedaced-seirots.github.io/post/"
+      "item": "http://localhost:1313/post/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "AWSイベント監視 - CloudTrail + EventBridge + Lambdaでメールカスタマイズ(2)",
-      "item": "https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"
+      "item": "http://localhost:1313/post/a/aws-events-custom-mail-2/"
     }
   ]
 }
@@ -121,14 +121,14 @@ import boto3 import json import os import re from botocore.exceptions import Cli
   "dateModified": "2021-11-21T00:30:00+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ecnedaced-seirots.github.io/post/a/aws-events-custom-mail-2/"
+    "@id": "http://localhost:1313/post/a/aws-events-custom-mail-2/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Go Buddy Go",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -150,7 +150,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -178,22 +178,22 @@ import boto3 import json import os import re from botocore.exceptions import Cli
         </div>
         <ul id="menu">
             <li>
-                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
+                <a href="http://localhost:1313/categories/" title="Categories">
                     <span>Categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
+                <a href="http://localhost:1313/tags/" title="Tags">
                     <span>Tags</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
             <li>
-                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
+                <a href="http://localhost:1313/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -332,19 +332,19 @@ import boto3 import json import os import re from botocore.exceptions import Cli
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ecnedaced-seirots.github.io/tags/monitoring/">Monitoring</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/amazon-sns/">Amazon Sns</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/lambda/">Lambda</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/eventbridge/">Eventbridge</a></li>
-      <li><a href="https://ecnedaced-seirots.github.io/tags/aws/">AWS</a></li>
+      <li><a href="http://localhost:1313/tags/monitoring/">Monitoring</a></li>
+      <li><a href="http://localhost:1313/tags/amazon-sns/">Amazon Sns</a></li>
+      <li><a href="http://localhost:1313/tags/lambda/">Lambda</a></li>
+      <li><a href="http://localhost:1313/tags/eventbridge/">Eventbridge</a></li>
+      <li><a href="http://localhost:1313/tags/aws/">AWS</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ecnedaced-seirots.github.io/post/a/terraform-loop-memo/">
+  <a class="prev" href="http://localhost:1313/post/a/terraform-loop-memo/">
     <span class="title">« Prev</span>
     <br>
     <span>Terraform loop処理のリンク集</span>
   </a>
-  <a class="next" href="https://ecnedaced-seirots.github.io/post/a/cloudwatch-alarm-lambda-3/">
+  <a class="next" href="http://localhost:1313/post/a/cloudwatch-alarm-lambda-3/">
     <span class="title">Next »</span>
     <br>
     <span>CloudWatchアラーム &#43; SNSからのメール本文をカスタマイズする(3)</span>
@@ -356,7 +356,7 @@ import boto3 import json import os import re from botocore.exceptions import Cli
     </main>
     
 <footer class="footer">
-    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="http://localhost:1313/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

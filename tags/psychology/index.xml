@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Psychology on Go Buddy Go</title>
-    <link>https://ecnedaced-seirots.github.io/tags/psychology/</link>
+    <link>http://localhost:1313/tags/psychology/</link>
     <description>Recent content in Psychology on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 03 Nov 2021 10:00:00 +0900</lastBuildDate>
-    <atom:link href="https://ecnedaced-seirots.github.io/tags/psychology/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/psychology/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>「いてくれるだけでいい人」の理由</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</link>
+      <link>http://localhost:1313/post/a/skill-in-communication/</link>
       <pubDate>Wed, 03 Nov 2021 10:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/skill-in-communication/</guid>
+      <guid>http://localhost:1313/post/a/skill-in-communication/</guid>
       <description>職場とか、いろんなチーム・グループの中で、「この人がいてくれると安心」「いてくれるだけでいい」と思える人が稀にいる。本当に、稀に、だが。そういう人と、その他の人々の違いは一体何なのか、とモヤっと不思議に思っていた。若干解明できそうなのが、以下の記事。ここに書かれている要因だけではないと思うが、理由の一部としては納得できる。
 「いるだけでチームの雰囲気をよくする人」の口癖4つ。“ど” から始まるあの言葉がかなり使える
 （以降軽くNSFW画像あり。閲覧注意）
@@ -38,9 +38,9 @@
     </item>
     <item>
       <title>「ストックホルム症候群」の心理はヒトのデフォルト機能だった</title>
-      <link>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</link>
+      <link>http://localhost:1313/post/a/stockholm-syndrome/</link>
       <pubDate>Sat, 30 Oct 2021 17:00:00 +0900</pubDate>
-      <guid>https://ecnedaced-seirots.github.io/post/a/stockholm-syndrome/</guid>
+      <guid>http://localhost:1313/post/a/stockholm-syndrome/</guid>
       <description>昨年の過去ツイのスレッドでちょっと気になるのを見つけたので、若干手を入れてここにまとめて書いておく。
 暴力の加害者に対して被害者が好意を抱く「ストックホルム症候群」と567脳、マスク厨の心理は似てないか？側から見ると、あの人たちは自由や人権を奪われている今の状況を愛しているように見える。
 その裏では「認知的不協和の解消」が発生している可能性がある。これは、自分の内部の矛盾に一貫性を持たせようとする機能。「新しい生活様式」だの、自粛しろマスクつけろだの、不自由で不本意な状況を強いられているが、それを受け入れている自分に葛藤が生じているはずなのだ。
