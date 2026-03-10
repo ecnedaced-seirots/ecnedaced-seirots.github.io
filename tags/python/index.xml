@@ -2,140 +2,140 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Go Buddy Go</title>
-    <link>http://localhost:1313/tags/python/</link>
+    <link>https://ecnedaced-seirots.github.io/tags/python/</link>
     <description>Recent content in Python on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 12 Jun 2024 22:26:58 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pythonのdatetime, zoneinfo周辺など</title>
-      <link>http://localhost:1313/post/d/python-datetime-timezone/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</link>
       <pubDate>Wed, 12 Jun 2024 22:26:58 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/python-datetime-timezone/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/python-datetime-timezone/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;Pythonの時間の扱い、何度書いても忘れてしまう。そしてタイムゾーンの変換は、python3.9以降はzoneinfoが便利と最近知る。&lt;/p&gt;</description>
     </item>
     <item>
       <title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</title>
-      <link>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）&lt;/p&gt;</description>
     </item>
     <item>
       <title>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</title>
-      <link>http://localhost:1313/post/d/rds-export-to-s3-lambda/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:22:36 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/rds-export-to-s3-lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS Logs InsightsをCLIまたはPython(boto3)から実行</title>
-      <link>http://localhost:1313/post/d/aws-logs-insights-boto3/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</link>
       <pubDate>Wed, 15 May 2024 22:33:31 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/aws-logs-insights-boto3/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/aws-logs-insights-boto3/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;CloudWatch Logs Insightsのクエリを、マネジメントコンソールからではなく、AWS CLI及びPython SDK(boto3)から投げてみる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>OpenCVで画像をリサイズして横に連結する</title>
-      <link>http://localhost:1313/post/c/opencv-horizontal-join-resize/</link>
+      <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</link>
       <pubDate>Wed, 10 May 2023 23:13:19 +0900</pubDate>
-      <guid>http://localhost:1313/post/c/opencv-horizontal-join-resize/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join-resize/</guid>
       <description>&lt;p&gt;前回投稿でやったOpenCV(Python)の画像連結を少し応用。高さが異なる画像をリサイズして結合させてみた。これもめっちゃ簡単にできて感動。&lt;/p&gt;</description>
     </item>
     <item>
       <title>OpenCVで画像を横に連結する</title>
-      <link>http://localhost:1313/post/c/opencv-horizontal-join/</link>
+      <link>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</link>
       <pubDate>Sun, 07 May 2023 23:11:44 +0900</pubDate>
-      <guid>http://localhost:1313/post/c/opencv-horizontal-join/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/c/opencv-horizontal-join/</guid>
       <description>&lt;p&gt;画像を横に連結したい事情があり、OpenCVでできそうだなと軽く調べたら、すごく簡単にできた。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonで区切り文字の最後の要素を取得</title>
-      <link>http://localhost:1313/post/b/python-get-last-string/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</link>
       <pubDate>Wed, 16 Feb 2022 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/python-get-last-string/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-get-last-string/</guid>
       <description>&lt;p&gt;Pythonで、区切り文字の最後の要素を取得する。「要素」と言ってるのは、一旦リストにする必要があるため。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonの辞書・文字列変換とJSON処理</title>
-      <link>http://localhost:1313/post/b/python-json-dumps-load/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</link>
       <pubDate>Thu, 10 Feb 2022 18:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/python-json-dumps-load/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-json-dumps-load/</guid>
       <description>&lt;p&gt;Pythonの辞書・文字列変換と、JSON処理。必須項目でしょっちゅう使うくせに覚えられない&amp;hellip;&lt;/p&gt;</description>
     </item>
     <item>
       <title>OpenCVで画像ファイルを保存する</title>
-      <link>http://localhost:1313/post/b/python-opencv-2/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</link>
       <pubDate>Sun, 06 Feb 2022 20:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/python-opencv-2/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-2/</guid>
       <description>&lt;p&gt;OpenCV(Python)で、グレースケールの出力と画像ファイルの保存をしてみる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(9) - if else文</title>
-      <link>http://localhost:1313/post/b/golang-init-if-2/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</link>
       <pubDate>Sun, 30 Jan 2022 10:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-if-2/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if-2/</guid>
       <description>&lt;p&gt;Go言語におけるif-else文の覚書。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(8) - if文の基本</title>
-      <link>http://localhost:1313/post/b/golang-init-if/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</link>
       <pubDate>Wed, 26 Jan 2022 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-if/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-if/</guid>
       <description>&lt;p&gt;Go言語におけるif文の基本覚書。&lt;/p&gt;</description>
     </item>
     <item>
       <title>PythonでOpenCV始めてみる</title>
-      <link>http://localhost:1313/post/b/python-opencv-1/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</link>
       <pubDate>Tue, 25 Jan 2022 22:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/python-opencv-1/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/python-opencv-1/</guid>
       <description>&lt;p&gt;画像処理ライブラリのOpenCVをいじってみようと思った。OpenCVがやりたいというより、Python + 画像処理なら両方好きだからモチベーションを維持できそうと思ったのだ。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(7) - mapのrange,deleteなど</title>
-      <link>http://localhost:1313/post/b/golang-init-map-2/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</link>
       <pubDate>Mon, 24 Jan 2022 21:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-map-2/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map-2/</guid>
       <description>&lt;p&gt;Goのmap操作続き。range, 追加やdeleteなど。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(6) - mapの基本</title>
-      <link>http://localhost:1313/post/b/golang-init-map/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</link>
       <pubDate>Sat, 22 Jan 2022 14:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-map/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-map/</guid>
       <description>&lt;p&gt;Goのmapはkey:valueの配列で構成されており、Pythonの辞書に似ている。ほぼ辞書と同等の使い方ができるようだが、若干挙動が異なる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(5) - for文の基本</title>
-      <link>http://localhost:1313/post/b/golang-init-for/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</link>
       <pubDate>Mon, 17 Jan 2022 23:51:03 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-for/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-for/</guid>
       <description>&lt;p&gt;Go言語におけるfor文の基本覚書。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Go入門(3) - スライス(Slice)の扱い</title>
-      <link>http://localhost:1313/post/b/golang-init-slice/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</link>
       <pubDate>Sun, 16 Jan 2022 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/golang-init-slice/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/golang-init-slice/</guid>
       <description>&lt;p&gt;Goには配列と似た「スライス(Slice)」というデータ構造の概念がある。要素数の指定が不要で、配列より柔軟にデータを扱うことができる。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pythonライブラリのローカルインストール方法</title>
-      <link>http://localhost:1313/post/a/python-package-localinstall/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</link>
       <pubDate>Thu, 30 Dec 2021 17:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/python-package-localinstall/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/python-package-localinstall/</guid>
       <description>&lt;p&gt;Pythonライブラリをローカルインストールする必要に迫られて対応した記録。実行した環境はWindowsだが、Linuxでも同様らしい。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Terraformのtfvarsファイルを自動生成する</title>
-      <link>http://localhost:1313/post/a/terraform_auto_create_tfvars/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</link>
       <pubDate>Sun, 28 Nov 2021 17:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/terraform_auto_create_tfvars/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/terraform_auto_create_tfvars/</guid>
       <description>過去記事からの派生案件で、Terraformで使うtfvarsファイルについて、繰り返しデータを多数投入する想定のため、これを自動生成したいと考えた。
 Terraform loop処理の超シンプルな例 Python - Jinja2テンプレートで連続データを処理したい
 実際に使用するファイル群は過去記事に記載しているがこんな想定で。（もちろん実際は他にもいろいろ必要）自動生成したいのは、以下の*印をつけたcodecommit.auto.tfvarsである。（この時点では手動で値を記述したもの）
@@ -147,18 +147,18 @@ import sys import pandas as pd from jinja2 import Environment, FileSystemLoader 
     </item>
     <item>
       <title>Python - Jinja2テンプレートで連続データを処理したい</title>
-      <link>http://localhost:1313/post/a/jinja2-python/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</link>
       <pubDate>Wed, 24 Nov 2021 00:10:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/jinja2-python/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/jinja2-python/</guid>
       <description>Jinja2テンプレートで連続データを処理したい。元データはCSVとかで。いや、Jinja2でなくてもいいかもしれないけど、ちょっと思いつかないな&amp;hellip;
 とりあえず参考リンク。最初のリンクは、CSVをJSONに変換しているんだよな、CSVのままでやりたいんだけど。しかし例は分かりやすい。
 【jinja2】テンプレートエンジンでデータの連続差し込み PythonのテンプレートエンジンJinja2を使ってみた </description>
     </item>
     <item>
       <title>MacにPython3を再インストール</title>
-      <link>http://localhost:1313/post/a/mac-python3-re-install/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</link>
       <pubDate>Sat, 30 Oct 2021 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/mac-python3-re-install/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/mac-python3-re-install/</guid>
       <description>Mac上のpython3。しばらく前にhomebrewと一緒に削除してしまったので入れ直した。
 $ brew install python3 $ which python3 /usr/local/bin/python3 $ python3 -V Python 3.9.7 $ pip3 -V pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9) pythonだけで実行するとゴニョゴニョ言われる。
 $ python Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python 2.x! PYTHONPATH is currently: &amp;#34;/usr/local/lib/python3.9/site-packages:&amp;#34; You should `unset PYTHONPATH` to fix this. $ unset PYTHONPATH で、この後pythonを実行すると2系になってしまう。

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,18 +9,18 @@
 <meta name="keywords" content="terraform, cloudwatch, BCN">
 <meta name="description" content="AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/post/b/terraform-cwl-metric-alarm/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+<link rel="canonical" href="https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/">
+<link crossorigin="anonymous" href="https://ecnedaced-seirots.github.io/assets/css/stylesheet.980a4746f3d24b2020ae40668515381ae8d834818500131a4766a0cfd26a2f5f.css" integrity="sha256-mApHRvPSSyAgrkBmhRU4GujYNIGFABMaR2agz9JqL18=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="https://ecnedaced-seirots.github.io/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://ecnedaced-seirots.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ecnedaced-seirots.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ecnedaced-seirots.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ecnedaced-seirots.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ecnedaced-seirots.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/post/b/terraform-cwl-metric-alarm/">
+<link rel="alternate" hreflang="en" href="https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,7 +63,7 @@
 <meta property="og:title" content="SNSメトリクスの監視を作成するTerraformコード" />
 <meta property="og:description" content="AWSで、SNSトピックを送信先として監視を行っていて、SNSが配信に失敗していないかどうかを監視するケース。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/b/terraform-cwl-metric-alarm/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-04-29T18:18:09+09:00" />
 <meta property="article:modified_time" content="2022-04-29T18:18:09+09:00" />
 
@@ -81,13 +81,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "http://localhost:1313/post/"
+      "item": "https://ecnedaced-seirots.github.io/post/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "SNSメトリクスの監視を作成するTerraformコード",
-      "item": "http://localhost:1313/post/b/terraform-cwl-metric-alarm/"
+      "item": "https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/"
     }
   ]
 }
@@ -109,14 +109,14 @@
   "dateModified": "2022-04-29T18:18:09+09:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/post/b/terraform-cwl-metric-alarm/"
+    "@id": "https://ecnedaced-seirots.github.io/post/b/terraform-cwl-metric-alarm/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Go Buddy Go",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
+      "url": "https://ecnedaced-seirots.github.io/favicon.ico"
     }
   }
 }
@@ -138,7 +138,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
+            <a href="https://ecnedaced-seirots.github.io/" accesskey="h" title="Go Buddy Go (Alt + H)">Go Buddy Go</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,22 +166,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="Categories">
+                <a href="https://ecnedaced-seirots.github.io/categories/" title="Categories">
                     <span>Categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="Tags">
+                <a href="https://ecnedaced-seirots.github.io/tags/" title="Tags">
                     <span>Tags</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://ecnedaced-seirots.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/archives/" title="Archive">
+                <a href="https://ecnedaced-seirots.github.io/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -228,7 +228,7 @@ resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;metric_alarm_001&#34; {
 <p>しかしこの監視で人為的にアラームを発生させるのはほぼ無理だから、テストはできないと思われ。</p>
 <p> </p>
 <p> </p>
-<p><img loading="lazy" src="/img/b/barceloneta5.JPG" alt="BCN"  />
+<p><img loading="lazy" src="https://ecnedaced-seirots.github.io/img/b/barceloneta5.JPG" alt="BCN"  />
 </p>
 
     
@@ -237,15 +237,15 @@ resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;metric_alarm_001&#34; {
   <h3>関連がありそうな記事</h3>
   <ul>
     
-      <li><a href="/post/b/terraform-codepipeline-memo2/">TerraformでCodePipeline - 要追加作業</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo2/">TerraformでCodePipeline - 要追加作業</a></li>
     
-      <li><a href="/post/b/terraform-codepipeline-memo/">TerraformでCodePipeline - PollForSourceChangesの注意</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo/">TerraformでCodePipeline - PollForSourceChangesの注意</a></li>
     
-      <li><a href="/post/b/english-glad-to/">英語メモ - I&#39;d be glad to.</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/post/b/english-glad-to/">英語メモ - I&#39;d be glad to.</a></li>
     
-      <li><a href="/post/b/cloudwatch-agent-tips/">CloudWatch Agent: LinuxとWindowsの違い</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/post/b/cloudwatch-agent-tips/">CloudWatch Agent: LinuxとWindowsの違い</a></li>
     
-      <li><a href="/post/b/terraform-ec2-ami/">Terraform - EC2インスタンス作成時のAMI参照</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/post/b/terraform-ec2-ami/">Terraform - EC2インスタンス作成時のAMI参照</a></li>
     
   </ul>
 
@@ -253,17 +253,17 @@ resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;metric_alarm_001&#34; {
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/terraform/">Terraform</a></li>
-      <li><a href="http://localhost:1313/tags/cloudwatch/">Cloudwatch</a></li>
-      <li><a href="http://localhost:1313/tags/bcn/">BCN</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/terraform/">Terraform</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/cloudwatch/">Cloudwatch</a></li>
+      <li><a href="https://ecnedaced-seirots.github.io/tags/bcn/">BCN</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/post/b/terraform-codepipeline-memo3/">
+  <a class="prev" href="https://ecnedaced-seirots.github.io/post/b/terraform-codepipeline-memo3/">
     <span class="title">« Prev</span>
     <br>
     <span>TerraformでCodePipeline - PollForSourceChangesの注意(2)</span>
   </a>
-  <a class="next" href="http://localhost:1313/post/b/quantal-physics-frequency/">
+  <a class="next" href="https://ecnedaced-seirots.github.io/post/b/quantal-physics-frequency/">
     <span class="title">Next »</span>
     <br>
     <span>周波数・量子物理学周辺に注目したい</span>
@@ -275,7 +275,7 @@ resource &#34;aws_cloudwatch_metric_alarm&#34; &#34;metric_alarm_001&#34; {
     </main>
     
 <footer class="footer">
-    <span>&copy; 2026 <a href="http://localhost:1313/">Go Buddy Go</a></span>
+    <span>&copy; 2026 <a href="https://ecnedaced-seirots.github.io/">Go Buddy Go</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

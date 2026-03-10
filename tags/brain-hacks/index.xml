@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Brain Hacks on Go Buddy Go</title>
-    <link>http://localhost:1313/tags/brain-hacks/</link>
+    <link>https://ecnedaced-seirots.github.io/tags/brain-hacks/</link>
     <description>Recent content in Brain Hacks on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 13 Aug 2025 18:09:47 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/brain-hacks/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/brain-hacks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>オーストラリアンブッシュ Cognis（現：Focus）で認知症予防をPoCしてみた</title>
-      <link>http://localhost:1313/post/e/australian-bush-cognis-focus-2/</link>
+      <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</link>
       <pubDate>Wed, 13 Aug 2025 18:09:47 +0900</pubDate>
-      <guid>http://localhost:1313/post/e/australian-bush-cognis-focus-2/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus-2/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録。前回から1ヶ月ほど経過してしまったが&amp;hellip;、前回記事で書いたオーストラリアンブッシュ Cognis（現：Focus）を、親の認知症対策に有効かどうかを検証してみた件について書く。&lt;/p&gt;</description>
     </item>
     <item>
       <title>オーストラリアンブッシュ Cognis（現：Focus）で脳活動底上げを図ってみる</title>
-      <link>http://localhost:1313/post/e/australian-bush-cognis-focus/</link>
+      <link>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/</link>
       <pubDate>Wed, 16 Jul 2025 11:42:28 +0900</pubDate>
-      <guid>http://localhost:1313/post/e/australian-bush-cognis-focus/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/e/australian-bush-cognis-focus/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;システムエンジニアによるフラワーエッセンスPoC（Proof of Concept）記録、第一弾はオーストラリアンブッシュフラワーエッセンスのCognis。&lt;/p&gt;
 &lt;p&gt;Cognis（認知）である。このストレートなネーミングセンスに痺れる。タイトルの通り、全く発展著しくない俺様の脳活動上げ底&amp;hellip;じゃなくて底上げを期待して購入した。&lt;/p&gt;</description>
     </item>
     <item>
       <title>レム睡眠と夢と記憶</title>
-      <link>http://localhost:1313/post/b/mind-hacks-rem-sleep/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</link>
       <pubDate>Sun, 02 Jan 2022 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/mind-hacks-rem-sleep/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/mind-hacks-rem-sleep/</guid>
       <description>&lt;p&gt;今朝目覚めの前に、REST APIのリクエストURL記述について、これなら上手くいくとかいかないとか議論しているような夢を見た。&lt;/p&gt;</description>
     </item>
     <item>
       <title>タウリン(Taurine)の効能いろいろ</title>
-      <link>http://localhost:1313/post/a/healthcare-taurine/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</link>
       <pubDate>Sat, 06 Nov 2021 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/healthcare-taurine/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/healthcare-taurine/</guid>
       <description>タウリンの効果。過去に見つけたネタをバラバラにメモっていたのをまとめておく。
 タウリンとは、一言で言うと。
 タウリンは分子量124の含硫アミノ酸。タンパク質の構成成分にはならないが、細胞内の遊離アミノ酸としてはグルタミンと並んでもっとも高濃度に存在し、かつグルタミンに類似する成分。またタウリンは脳内のアミノ酸の中では2番目に多く存在する。

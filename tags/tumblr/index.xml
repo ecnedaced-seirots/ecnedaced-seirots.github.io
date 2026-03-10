@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tumblr on Go Buddy Go</title>
-    <link>http://localhost:1313/tags/tumblr/</link>
+    <link>https://ecnedaced-seirots.github.io/tags/tumblr/</link>
     <description>Recent content in Tumblr on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sat, 25 Dec 2021 09:00:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/tumblr/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/tumblr/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>飛行機画像ブログのリンク集</title>
-      <link>http://localhost:1313/post/a/aviation-blog/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</link>
       <pubDate>Sat, 25 Dec 2021 09:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/aviation-blog/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/aviation-blog/</guid>
       <description>&lt;p&gt;I miss the aiport and airplane vibes.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Tumblrについて、ひとり言</title>
-      <link>http://localhost:1313/post/a/sns-influence/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/sns-influence/</link>
       <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/a/sns-influence/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/sns-influence/</guid>
       <description>SNSって誰をフォローするかも大きいけど誰にフォローされるか、も相当影響でかいんだなと思う。
 もともとSNS嫌いだからほとんどやってないけど、Tumblrは例外で、ここしばらく依存症に近いくらい使っている。全然使っていなかった時期もあるんだけどね。今は諸事情によりヘビーユーザー。
 当初はフォロワー僅か、だったが逆に好き勝手なことが書けた。Tumblrってテキスト投稿には向いてないと思うけど、それすら気にせずに画像だろうが音声だろうがテキストだろうが、好きなように投稿する。それがTumblrの良さ。

@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on Go Buddy Go</title>
-    <link>http://localhost:1313/tags/network/</link>
+    <link>https://ecnedaced-seirots.github.io/tags/network/</link>
     <description>Recent content in Network on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 23 Jan 2022 10:00:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TerraformでNATゲートウェイを作成する</title>
-      <link>http://localhost:1313/post/b/terraform-nat-gateway/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</link>
       <pubDate>Sun, 23 Jan 2022 10:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/terraform-nat-gateway/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/terraform-nat-gateway/</guid>
       <description>&lt;p&gt;TerraformでNAT Gatewayを作る。EKS Fargateの検証する時に、EKSリソースと一緒に自動生成したいからだ。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS NATゲートウェイの作成と設定</title>
-      <link>http://localhost:1313/post/b/aws-create-nat-gateway/</link>
+      <link>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</link>
       <pubDate>Sun, 09 Jan 2022 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/b/aws-create-nat-gateway/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/b/aws-create-nat-gateway/</guid>
       <description>&lt;p&gt;小ネタ。AWSのNATゲートウェイは業務では利用することが多いし自分で作ったりもしていた。個人アカでは利用したことがなかったが、先日必要に迫られて作ってみた。&lt;/p&gt;</description>
     </item>
   </channel>

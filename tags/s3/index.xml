@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>S3 on Go Buddy Go</title>
-    <link>http://localhost:1313/tags/s3/</link>
+    <link>https://ecnedaced-seirots.github.io/tags/s3/</link>
     <description>Recent content in S3 on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 11 Jun 2024 22:24:49 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/s3/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/tags/s3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>S3上のCSVをRDS(PostgreSQL)にインポートするLambda</title>
-      <link>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:24:49 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/s3-csv-import-to-rds-lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-csv-import-to-rds-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;S3上のCSVファイルをRDS(PostgreSQL)にインポートするという「あるある」パターンのLambda。（Python3.9, エラー処理抜き）&lt;/p&gt;</description>
     </item>
     <item>
       <title>RDS(PostgreSQL)のデータをS3にエクスポートするLambda</title>
-      <link>http://localhost:1313/post/d/rds-export-to-s3-lambda/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</link>
       <pubDate>Tue, 11 Jun 2024 22:22:36 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/rds-export-to-s3-lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/rds-export-to-s3-lambda/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;RDSのデータをS3にエクスポートするLambdaという「あるある」パターン。DBはPostgreSQL、Python3.9、エラー処理抜き。&lt;/p&gt;</description>
     </item>
     <item>
       <title>異なるアカウント間のS3レプリケーション設定</title>
-      <link>http://localhost:1313/post/d/s3-cross-account-replication/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</link>
       <pubDate>Wed, 03 Jan 2024 15:48:23 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/s3-cross-account-replication/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/s3-cross-account-replication/</guid>
       <description>&lt;p&gt;S3レプリケーションのポイントとして重要なのが、ソース/レプリケート先両方のバケットでバージョニングを有効にすること。異なるアカウントへのレプリケーションの場合、レプリケート先のバケットポリシーでソースバケットからのアクセスを許可すること。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CloudWatch LogsからS3にエクスポート(Lambda/Python)</title>
-      <link>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</link>
       <pubDate>Sun, 19 Dec 2021 12:19:37 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/cloudwatchlogs-export-lambda/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-export-lambda/</guid>
       <description>CloudWatch Logsから、LmabdaでログをS3にエクスポートする。対象のロググループとバケット内の第一階層を引数で指定するようにした。今回の事例ではエクスポートの範囲は「前日0時〜実行当日の0時」となる。
 参考
 boto3 API Reference
@@ -48,9 +48,9 @@ import boto3 import collections from datetime import datetime, date, time, timed
     </item>
     <item>
       <title>CloudWatchLogsからS3へログをエクスポートする</title>
-      <link>http://localhost:1313/post/a/cloudwatchlogs-s3-export/</link>
+      <link>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</link>
       <pubDate>Sat, 23 Oct 2021 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/post/a/cloudwatchlogs-s3-export/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/a/cloudwatchlogs-s3-export/</guid>
       <description>CloudWatchLogsからS3へログをエクスポートする。基本的に以下の通りにやればできるのだが、説明が冗長だったりわかりにくいところがあるので自分用に書いておく。IAMユーザ作成の手順とかいらん。親切のつもりだろうけど、無駄に記事が長くなって読む気が失せる&amp;hellip;
 コンソールを使用してログデータを Amazon S3 にエクスポートする
 概要。ログストリームのエクスポートはログストリームの画面ではなく、ロググループの画面から行う。事前にログエクスポート専用S3バケットを用意し、ドキュメントの通りにバケットポリシーを設定しておく。適当なランダム値のプレフィクスを作成し、バケットポリシーに反映する。バケットにオブジェクトロックがかかっていると動作しないので注意。

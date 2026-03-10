@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>K8s on Go Buddy Go</title>
-    <link>http://localhost:1313/categories/k8s/</link>
+    <link>https://ecnedaced-seirots.github.io/categories/k8s/</link>
     <description>Recent content in K8s on Go Buddy Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Thu, 06 Jun 2024 23:08:45 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ecnedaced-seirots.github.io/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes - CronJobオプションの検証</title>
-      <link>http://localhost:1313/post/d/kubernetes-cronjob/</link>
+      <link>https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/</link>
       <pubDate>Thu, 06 Jun 2024 23:08:45 +0900</pubDate>
-      <guid>http://localhost:1313/post/d/kubernetes-cronjob/</guid>
+      <guid>https://ecnedaced-seirots.github.io/post/d/kubernetes-cronjob/</guid>
       <description>&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;（2020年10月の検証記事です）&lt;/p&gt;
 &lt;p&gt;KubernetesのCronJobは、Job同様にオプション設定によってPodの扱いが変わってくるようなので試してみた。実行環境はMacOS上のminikube。&lt;/p&gt;</description>
